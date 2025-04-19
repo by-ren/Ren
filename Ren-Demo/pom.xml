@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Spring Boot 父项目（管理版本和默认配置） -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.0</version> <!-- 使用最新稳定版 -->
+    </parent>
+
+    <!-- 所属公司、项目名、版本 -->
+    <groupId>com.ren</groupId>
+    <artifactId>Ren-Demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>ren-system</module>
+    </modules>
+
+    <!-- 全局参数，可以在全局中直接使用，一次配置，多地方使用 -->
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!--<dependencyManagement> 在 Maven 中用于集中管理依赖的版本和配置，确保多模块项目中的依赖一致性，同时避免重复定义。-->
+    <!--父 POM 通过 <dependencyManagement> 声明依赖的版本、作用域（scope）、排除项（exclusions）等配置，子模块无需重复指定版本，直接继承父配置的版本号，但是注意，子模块还是需要引入的。-->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Lombok（简化代码） -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.30</version>
+            </dependency>
+
+            <!-- 开发工具（热部署、自动重启） -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-devtools</artifactId>
+                <optional>true</optional>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!--
+    <build> 部分用于配置项目的构建行为。
+    这里的 <plugin> 配置是 Spring Boot Maven 插件（spring-boot-maven-plugin），它是 Spring Boot 项目的核心工具之一，主要作用是简化 Spring Boot 应用的构建、打包和运行
+
+    这个插件的作用
+    创建可执行 JAR/WAR
+    默认情况下，Maven 打包生成的 JAR 是普通库文件（不含依赖），无法直接通过 java -jar 运行。而 Spring Boot Maven 插件会将所有依赖（包括内嵌的 Tomcat/Jetty 服务器）打包成一个 "fat JAR"，使应用可以直接运行。
+
+    支持 Spring Boot 特性
+    自动识别并内嵌 src/main/resources 中的静态资源（HTML/CSS/JS）。
+    集成 Spring Boot DevTools（开发时热部署、自动重启）。
+
+    简化 Maven 生命周期
+    插件提供了 repackage 目标，绑定到 Maven 的 package 阶段，自动将普通 JAR 转换为可执行的 Spring Boot JAR。
+    -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,15 @@
+{
+  "files": [],
+  "compilerOptions": {
+    "types": ["node"],        // 必须包含 "node"
+    "moduleResolution": "node"  // 确保启用 Node 解析模式
+  },
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
+}
