@@ -1,0 +1,6 @@
+spring:
+  security:
+    user:
+      #设置默认用户名密码
+      name: admin
+      password: 123456

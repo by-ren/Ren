@@ -1,0 +1,26 @@
+#设置应用的根路径，如果不设置，访问路径为http://localhost:8080/，设置了之后，路径变为http://localhost:8080/demo/
+#server:
+#  servlet:
+#    context-path: /demo
+
+spring:
+  profiles:
+    # 当前项目启动激活的环境是dev(开发环境)
+    active: dev
+  config:
+    #	通过spring.config.import导入其他配置文件
+    import:
+      - "classpath:springSecurity.yml"  # 导入同目录下的 springSecurity.yml
+      - "classpath:jdbc.yml"  # 导入同目录下的 jdbc.yml
+      - "classpath:redis.yml"  # 导入同目录下的 redis.yml
+
+token:
+  secret: your-32-character-secret-for-access-token
+  refresh-secret: different-secret-for-refresh-token
+  expire-time: 1800      # 30分钟
+  refresh-expire-time: 604800  # 7天
+  refresh-time: 300       # 剩余5分钟时触发刷新
+
+jwt:
+  secret: mySecretKeyMustBeAtLeast32BytesLong!123
+  expiration: 86400  # 1天（秒）
