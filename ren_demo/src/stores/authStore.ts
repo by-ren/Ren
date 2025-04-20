@@ -4,7 +4,7 @@ import { service } from '@/utils/axios'
 import type { User } from '@/types/User'
 import type { LoginResponse } from '@/types/LoginResponse'
 import type { RefreshTokenResponse } from '@/types/RefreshTokenResponse'
-import { useRouter } from 'vue-router'
+import router from '@/router';
 
 
 export const useAuthStore = defineStore('auth', () => {
@@ -69,7 +69,6 @@ export const useAuthStore = defineStore('auth', () => {
         } catch (err: unknown) {
             clearAuth();
         }
-
     }
 
     //用户登出
@@ -84,9 +83,8 @@ export const useAuthStore = defineStore('auth', () => {
         accessToken.value = "";
         isAuthenticated.value = false;
         localStorage.removeItem('refreshToken');
-        const router = useRouter()
-
-        window.location.href = '/login';
+        router.replace('/login');
+        // window.location.href = '/login';
     }
 
     return {

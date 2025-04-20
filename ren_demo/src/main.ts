@@ -5,6 +5,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 // 引入路由组件
 import router from './router'
+import { service, setupInterceptors } from '@/utils/axios';
 
 // 创建app
 const app = createApp(App)
@@ -17,3 +18,6 @@ app.use(pinia)
 app.use(router)
 
 app.mount('#app')
+
+//在Pinia初始化完成之后创建axios拦截器
+setupInterceptors();

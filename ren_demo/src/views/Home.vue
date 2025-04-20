@@ -11,11 +11,10 @@
 <script setup lang="ts" name="home">
   import { onMounted } from 'vue'
   import { useAuthStore } from '@/stores/authStore'
-  import { useRouter } from 'vue-router'
+  import router from '@/router';
   import { storeToRefs } from 'pinia'
 
   const authStore = useAuthStore()
-  const router = useRouter()
 
   // 使用 storeToRefs 保持响应式
   const { isAuthenticated } = storeToRefs(authStore)
