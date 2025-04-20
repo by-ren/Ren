@@ -35,12 +35,11 @@
   
   <script setup lang="ts" name="login">
   import { ref } from 'vue'
-  import { useRouter } from 'vue-router'
+  import router from '@/router';
   import { useAuthStore } from '@/stores/authStore'
   import { isAxiosError } from 'axios'
   
   const authStore = useAuthStore()
-  const router = useRouter()
   
   const username = ref('')
   const password = ref('')

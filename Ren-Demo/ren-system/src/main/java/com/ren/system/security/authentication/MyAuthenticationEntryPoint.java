@@ -1,5 +1,6 @@
 package com.ren.system.security.authentication;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.ren.system.entity.BaseResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -7,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -25,14 +27,13 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
-        //获取错误信息
-        String localizedMessage = authException.getLocalizedMessage();
-        //设置状态码和返回信息
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        //设置状态码和返回信息（本来这里应该设置为401，表示凭证失效异常）
+        //但是如果这里设置了401，会被浏览器捕获到异常，并打印，不好看。所以这里我设置为200，并自定义一个返回信息，使用返回信息中的状态码来判断更好
+        response.setStatus(200);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        //统一返回401（未提供有效身份凭证（需认证））
-        BaseResponse errorResponse = new BaseResponse(401,localizedMessage);
+        //进入到这里之后，统一汇合为未提供有效身份验证，进行返回
+        BaseResponse errorResponse = new BaseResponse(401,"未提供有效身份凭证");
         response.getWriter().write(JSON.toJSONString(errorResponse));
     }
 }
