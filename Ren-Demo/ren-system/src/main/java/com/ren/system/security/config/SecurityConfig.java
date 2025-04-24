@@ -1,22 +1,21 @@
 package com.ren.system.security.config;
 
-import com.ren.system.security.authentication.MyAuthenticationEntryPoint;
 import com.ren.system.security.filter.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -60,13 +59,21 @@ public class SecurityConfig {
         // 配置具体的 CORS 规则
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
-        // 允许 OPTIONS 方法通过
+        // 配置会话管理为无状态，告诉 Spring Security 不要用 Session 存储用户状态，所有认证信息通过 Token 传递
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
         http.authorizeHttpRequests(auth -> auth
+                // 允许 OPTIONS 方法通过
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                // 请求授权配置（放行登录和刷新token接口）
+                .requestMatchers("/auth/login", "/auth/refreshToken").permitAll()
+                // 除上面外的所有请求全部需要鉴权认证
+                .anyRequest().authenticated()
         );
 
-        // 配置会话管理为无状态
-        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        // 添加JWT过滤器（这里使用的是Before，所以这个过滤器会在UsernamePasswordAuthenticationFilter之前执行）
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         // 彻底关闭表单登录（禁用默认接口）
         http.formLogin(form -> form.disable());
@@ -74,17 +81,16 @@ public class SecurityConfig {
         http.exceptionHandling(exception  -> {
             exception.authenticationEntryPoint(new MyAuthenticationEntryPoint());//请求未认证的接口
         });
-        // 请求授权配置（放行登录和刷新token接口）
-        http.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login", "/auth/refreshToken").permitAll().anyRequest().authenticated());
+
+        //禁用默认的 HTTP Basic 认证
+        http.httpBasic(basic -> basic.disable());
 
         //禁用默认登出接口（登出接口没必要直接放行，还是让他鉴权比较好）
         http.logout(logout -> logout.disable()); //禁用默认登出逻辑
 
-        // 添加JWT过滤器（这里使用的是Before，所以这个过滤器会在UsernamePasswordAuthenticationFilter之前执行）
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
+
 
     /*
      * 自定义 CORS 配置源
@@ -106,14 +112,25 @@ public class SecurityConfig {
     }
 
     /*
-     * 配置密码编码器
+     * 配置密码编码器（固定死使用BCryptPasswordEncoder密码格式，数据库密码不可以有前缀）
      * @return org.springframework.security.crypto.password.PasswordEncoder
      * @author admin
      * @date 2025/04/17 21:40
      */
-    @Bean
+    /*@Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }*/
+
+    /*
+     * 配置密码编码器（多编码器模式，数据库密码一定要有前缀）
+     * @return org.springframework.security.crypto.password.PasswordEncoder
+     * @author admin
+     * @date 2025/04/22 21:52
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
 }

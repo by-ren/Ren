@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
@@ -90,9 +91,9 @@ public class JwtUtils {
      * @date 2025/04/17 21:24
      */
     public String getAccessToken(HttpServletRequest request) {
-        //根据请求头中的Authorization字段来获取token
-        String header = request.getHeader(tokenProperties.getHeader());
-        //判断是否有Authorization字段，并且Authorization字段以Bearer开头，如果是，则截取掉Bearer ，之后返回token
+        //根据请求头中的X-Access-Token字段来获取token
+        String header = request.getHeader("X-Access-Token");
+        //判断是否有X-Access-Token字段，并且X-Access-Token字段以Bearer开头，如果是，则截取掉Bearer ，之后返回token
         if (StringUtils.hasText(header) && header.startsWith("Bearer ")) {
             return header.substring(7);
         }
@@ -159,7 +160,7 @@ public class JwtUtils {
             Long userId = claims.get("user_id", Long.class);
 
             // 检查黑名单中是否存在当前token，如果存在，则无效，反之则有效
-            if (redisTemplate.hasKey("blacklist:" + userId)) {
+            if (redisTemplate.hasKey("blacklist:" + token)) {
                 // 黑名单 → 返回 403
                 log.warn("当前Token处于黑名单，请确认");
                 return 403;
@@ -271,5 +272,15 @@ public class JwtUtils {
     public void deleteRefreshToken(Long userId) {
         //从redis中删除refreshToken
         redisTemplate.delete("refresh:" + userId);
+    }
+
+
+    public static void main(String[] args) {
+        // 生成 64 字节（512 位）的 HS512 密钥
+        SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+
+        // 转换为 Base64 字符串存储
+        String base64Key = java.util.Base64.getEncoder().encodeToString(key.getEncoded());
+        System.out.println("安全密钥: " + base64Key);
     }
 }

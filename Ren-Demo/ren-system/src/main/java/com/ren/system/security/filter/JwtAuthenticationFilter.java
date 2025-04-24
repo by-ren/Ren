@@ -14,12 +14,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -71,13 +72,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 将认证信息存储到线程绑定的SecurityContext中
             // Spring Security后续通过SecurityContextHolder获取当前用户身份，用于：鉴权（如@PreAuthorize("hasRole('ADMIN')")），获取用户信息（如@AuthenticationPrincipal User user）
             Authentication authentication = jwtUtils.getAuthentication(accessToken);
+            // 该方法在无状态模式或者多线程模式下会失效，需要使用下面的方法
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // 创建并保存 SecurityContext
+            // SecurityContext context = SecurityContextHolder.createEmptyContext();
+            // context.setAuthentication(authentication);
+            // SecurityContextHolder.setContext(context);
+            // 显式保存到 SecurityContextRepository
+            // securityContextRepository.saveContext(context, req, res);
 
             // 检查是否需要刷新Token
             if (jwtUtils.shouldRefreshToken(accessToken)) {
                 //生成新的AccessToken并设置到响应头中
                 String newToken = jwtUtils.createAccessToken((UserDetails) authentication.getPrincipal());
-                response.setHeader(tokenProperties.getHeader(), "Bearer " + newToken);
+                response.setHeader("X-Access-Token", "Bearer " + newToken);
             }
             //通过验证，并且token续期成功，放行请求
             chain.doFilter(request, response);
@@ -102,8 +111,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * @date 2025/04/18 17:08
      */
     private boolean isOpenEndpoint(String uri) {
-        List<String> openEndpoints = List.of("/auth/login", "/auth/refreshToken");
-        return openEndpoints.contains(uri);
+        AntPathMatcher matcher = new AntPathMatcher();
+        return matcher.match("/auth/login", uri) ||
+                matcher.match("/auth/refreshToken", uri);
     }
+
 
 }

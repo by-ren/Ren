@@ -1,4 +1,4 @@
-package com.ren.system.security.userdetails;
+package com.ren.system.security.config;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ren.system.entity.User;

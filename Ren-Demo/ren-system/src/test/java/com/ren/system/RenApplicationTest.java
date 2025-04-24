@@ -14,7 +14,6 @@ public class RenApplicationTest {
     @Test
     public void test() {
         System.out.println("expireTime = " + tokenProperties.getExpireTime());
-        System.out.println("header = " + tokenProperties.getHeader());
         System.out.println("secret = " + tokenProperties.getSecret());
         System.out.println("refreshTime = " + tokenProperties.getRefreshTime());
         System.out.println("refreshExpireTime = " + tokenProperties.getRefreshExpireTime());

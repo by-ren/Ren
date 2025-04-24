@@ -2,7 +2,7 @@ package com.ren.system.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ren.system.security.userdetails.DBUserDetailsManager;
+import com.ren.system.security.config.DBUserDetailsManager;
 import com.ren.system.entity.User;
 import com.ren.system.mapper.UserMapper;
 import com.ren.system.service.UserService;

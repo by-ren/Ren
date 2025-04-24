@@ -16,7 +16,7 @@ declare module 'axios' {
 // 创建唯一实例（无拦截器）
 export const service: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 5000
+  timeout: 100000
 });
 
 // 导出拦截器配置函数（需在应用启动后调用）
@@ -35,12 +35,11 @@ export const setupInterceptors = () => {
       }
 
       //请求头添加token进行请求
-      
       const { accessToken } = storeToRefs(authStore)
       // 安全处理 headers（类型兼容的关键）
       config.headers.set(
-        'Authorization',
-        accessToken ? `Bearer ${accessToken}` : "false accessToken",
+        'X-Access-Token',
+        accessToken ? `Bearer ${accessToken.value}` : "false accessToken",
         true // 允许覆盖已有值
       );
   
@@ -69,33 +68,11 @@ export const setupInterceptors = () => {
             await authStore.refreshToken(); // 刷新Token
             return service(originalRequest); // 重试请求
           } catch (refreshError) {
-            authStore.clearAuth(); // 刷新失败则清空登录态
-            return Promise.reject(refreshError);
+            return Promise.reject(refreshError);//将异常返回到上层处理
           }
         }
       }
       return response;
-    },
-
-    //请求错误
-    async (error: AxiosError) => {
-      const originalRequest = error.config;
-      if (
-        error.response?.status === 401 &&                   // 1. 响应状态码为 401（未授权）
-        originalRequest?.url &&                             // 2. 原始请求存在 URL
-        !UN_AUTH_PATHS.some(path => originalRequest.url?.includes(path)) && // 3. 请求不在排除列表中
-        !originalRequest._retry                             // 4. 未重试过
-      ) {
-        originalRequest._retry = true;//标记请求已重试
-        try {
-          await authStore.refreshToken();// 调用刷新 Token 的异步方法
-          return service(originalRequest);// 重新发送原始请求
-        } catch (refreshError) {
-          authStore.clearAuth();// 清除认证信息（如跳转登录页）
-          return Promise.reject(refreshError);
-        }
-      }
-      return Promise.reject(error);
     }
   );
 };

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "token")
 public class TokenProperties {
     // AccessToken配置
-    private String header = "Authorization";
     private String secret;
     private int expireTime = 30 * 60; // 30分钟
     private int refreshTime = 5 * 60; // 剩余5分钟时触发刷新

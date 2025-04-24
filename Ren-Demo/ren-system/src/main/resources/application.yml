@@ -15,12 +15,8 @@ spring:
       - "classpath:redis.yml"  # 导入同目录下的 redis.yml
 
 token:
-  secret: your-32-character-secret-for-access-token
-  refresh-secret: different-secret-for-refresh-token
-  expire-time: 1800      # 30分钟
-  refresh-expire-time: 604800  # 7天
-  refresh-time: 300       # 剩余5分钟时触发刷新
-
-jwt:
-  secret: mySecretKeyMustBeAtLeast32BytesLong!123
-  expiration: 86400  # 1天（秒）
+  secret: spyVAlmCKL7NMJW2frntYVJUyQeyFzVtdlDHEYSIqWHp4H/wKpqVz2SNPjaE2WS7XhMcY37/vVc0IGYvebKN+w==  #accessToken加密密钥
+  refresh-secret: MTCQ+jVSkyboQedcU5rWAnztQMOLPWAtLwZXmhVkfqnvQMQw69NDfNuP4Awx628Z4ET/idHdSnkTyMdJxD7Auw==   #refreshToken加密密钥
+  expire-time: 1800      # accessToken有效时长30分钟
+  refresh-expire-time: 7200  # refreshToken有效时长2小时
+  refresh-time: 300       # accessToken剩余5分钟时触发刷新
