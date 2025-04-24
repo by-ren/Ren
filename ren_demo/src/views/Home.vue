@@ -3,6 +3,9 @@
     <div class="content">
       <h2>Welcome to My App</h2>
       <p v-if="isAuthenticated">Hello, {{ authStore.user?.username }}!</p>
+      <button @click="loginOut" class="submit-btn" v-if="isAuthenticated">
+        login out
+      </button>
       <router-view></router-view>
     </div>
   </div>
@@ -24,11 +27,10 @@
       //获取用户信息，如果可以获取到，用户信息和AccessToken和User会存储在Pinia中，而refreshToken会存储在localStorage中
       await authStore.getUserInfo()
       
-      // 如果未认证，带当前路径跳转到登录页
+      // 如果未认证(其实也就是没有得到用户信息)，跳转到登录页
       if (!isAuthenticated) {
         router.replace({
-          path: '/login',
-          query: { redirect: router.currentRoute.value.fullPath }
+          path: '/login'
         })
       }
     } catch (error) {
@@ -36,6 +38,10 @@
       router.replace('/login')
     }
   })
+
+  function loginOut(){
+    authStore.logout();
+  }
 </script>
 
 <style scoped>
@@ -111,5 +117,20 @@
   h2 {
     color: #2c3e50;
     margin-bottom: 1.5rem;
+  }
+
+  .submit-btn {
+    background-color: #3498db;
+    color: white;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-btn:hover {
+    background-color: #2980b9;
   }
 </style>

@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { service } from '@/utils/axios'
 import type { User } from '@/types/User'
 import type { LoginResponse } from '@/types/LoginResponse'
-import type { RefreshTokenResponse } from '@/types/RefreshTokenResponse'
 import router from '@/router';
 
 
@@ -15,15 +14,13 @@ export const useAuthStore = defineStore('auth', () => {
     // 登录方法
     const login = async (username: string, password: string): Promise<LoginResponse> => {
         //向/login接口发送请求，要求返回体是LoginResponse类型
-        const response = await service.post<LoginResponse>('/login', { username, password });
+        const response = await service.post<LoginResponse>('/auth/login', { username, password });
         //如果请求成功
         if (response.data.code === 200) {
             //将accessToken存入Pinia
-            accessToken.value = response.data.token
+            accessToken.value = response.data.accessToken
             //如果refreshToken存在，将refreshToken存入localStorage
             response.data.refreshToken && localStorage.setItem('refreshToken', response.data.refreshToken);
-            //将user存入Pinia
-            user.value = response.data.user;
         }
         return response.data;
     }
@@ -33,18 +30,20 @@ export const useAuthStore = defineStore('auth', () => {
         //从localStorage中获取到refreshToken
         const refreshToken = localStorage.getItem('refreshToken');
         //如果没有获取到，则报错
-        if (!refreshToken) throw new Error('无有效 RefreshToken');
+        if (!refreshToken) {
+            clearAuth();
+            throw new Error('无有效 RefreshToken')
+        };
 
         try {
             //向refreshToken发送请求，要求返回值是RefreshTokenResponse类型
-            const response = await service.post<RefreshTokenResponse>(
-                '/refreshToken', 
+            const response = await service.post(
+                '/auth/refreshToken', 
                 {},
                 { headers: { 'X-Refresh-Token': refreshToken } }
             );
-
             //从响应头中获取到新的accessToken
-            const newAccessToken = response.headers.authorization?.split(' ')[1];
+            const newAccessToken = response.data.accessToken;
             //如果不存在，则抛错
             if (!newAccessToken) throw new Error('无效的令牌响应');
 
@@ -67,13 +66,12 @@ export const useAuthStore = defineStore('auth', () => {
             user.value = res.data.user;
             isAuthenticated.value = true;
         } catch (err: unknown) {
-            clearAuth();
         }
     }
 
     //用户登出
     const logout = async (): Promise<void> => {
-        await service.post('/logout');
+        await service.post('/auth/logout');
         clearAuth();
     }
 

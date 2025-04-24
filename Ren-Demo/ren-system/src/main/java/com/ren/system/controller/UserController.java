@@ -1,8 +1,7 @@
 package com.ren.system.controller;
 
-import com.ren.system.entity.LoginResponse;
+import com.ren.system.entity.AjaxResult;
 import com.ren.system.entity.User;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +20,11 @@ public class UserController {
      * @date 2025/04/17 19:42
      */
     @GetMapping("/info")
-    public ResponseEntity<?> getUserInfo(@AuthenticationPrincipal User user) {
+    public AjaxResult getUserInfo(@AuthenticationPrincipal User user) {
         //获取用户信息，并返回
-        LoginResponse response = new LoginResponse();
-        response.setCode(200);
-        response.setUser(user);
-        return ResponseEntity.ok(response);
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("user", user);
+        return ajax;
     }
 
 }

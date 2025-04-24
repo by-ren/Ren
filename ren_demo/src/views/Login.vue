@@ -50,12 +50,11 @@
     try {
       isLoading.value = true
       errorMessage.value = ''
-      
-      await authStore.login(username.value, password.value)
-      const redirectPath = router.currentRoute.value.query.redirect
-      router.replace(
-        typeof redirectPath === 'string' ? redirectPath : '/'
-      )
+      const response = await authStore.login(username.value, password.value)
+      if (response.code === 200) {
+        //重定向到首页（不允许回退）
+        router.replace('/')
+      }
     } catch (error) {
       // 处理不同错误类型
       if (isAxiosError(error)) {

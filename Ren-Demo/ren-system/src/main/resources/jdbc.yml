@@ -10,3 +10,9 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # mybatis-plus默认开启了下滑线转换驼峰 需要关闭（设置为false）
+    map-underscore-to-camel-case: false
+  global-config:
+    db-config:
+      # 可选：关闭表名自动驼峰转下划线（默认true）
+      table-underline: false

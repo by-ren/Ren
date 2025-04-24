@@ -1,14 +1,12 @@
-package com.ren.system.security.authentication;
+package com.ren.system.security.config;
 
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
-import com.ren.system.entity.BaseResponse;
+import com.ren.system.entity.AjaxResult;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -33,7 +31,6 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         //进入到这里之后，统一汇合为未提供有效身份验证，进行返回
-        BaseResponse errorResponse = new BaseResponse(401,"未提供有效身份凭证");
-        response.getWriter().write(JSON.toJSONString(errorResponse));
+        response.getWriter().write(JSON.toJSONString(AjaxResult.error(401, "未提供有效身份凭证")));
     }
 }
