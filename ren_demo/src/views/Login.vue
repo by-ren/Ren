@@ -1,150 +1,119 @@
 <template>
-    <div class="login-container">
-      <div class="login-box">
-        <h2>Welcome Back</h2>
-        <form @submit.prevent="handleLogin" class="login-form">
-          <div class="form-group">
-            <label>Username</label>
-            <input 
-              v-model="username"
-              type="text" 
-              required
-              placeholder="Enter your username"
-            >
-          </div>
+  <div class="loginContainer">
+
+    <el-form :model="loginForm" :rules="loginRules" class="loginForm">
+      <h3 class="title">{{title}}</h3>
+      <el-form-item prop="username">
+        <el-input
+          v-model="loginForm.username"
+          type="text"
+          auto-complete="off"
+          placeholder="账号"
+          >
+          <template #prefix>
+            <SvgIcon icon-class="user" class="input-icon" />
+          </template>
+        </el-input>
+      </el-form-item>
+      <el-form-item prop="password">
+        <el-input
+          v-model="loginForm.password"
+          type="password"
+          auto-complete="off"
+          placeholder="密码"
+          >
+          <template #prefix>
+            <SvgIcon icon-class="password" class="input-icon" />
+          </template>
+        </el-input>
+      </el-form-item>
+      <el-form-item style="width:100%;">
+        <el-button
+          :loading="isLoading"
+          size="default"
+          type="primary"
+          style="width:100%;"
+          @click.native.prevent="handleLogin"
+        >
+          <span v-if="!isLoading">登 录</span>
+          <span v-else>登 录 中...</span>
+        </el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+</template>
   
-          <div class="form-group">
-            <label>Password</label>
-            <input
-              v-model="password"
-              type="password"
-              required
-              placeholder="Enter your password"
-            >
-          </div>
-  
-          <button type="submit" class="submit-btn">
-            {{ isLoading ? 'Logging in...' : 'Sign In' }}
-          </button>
-  
-          <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-        </form>
-      </div>
-    </div>
-  </template>
-  
-  <script setup lang="ts" name="login">
-  import { ref } from 'vue'
+<script setup lang="ts" name="login">
+  import { ref,reactive } from 'vue'
   import router from '@/router';
   import { useAuthStore } from '@/stores/authStore'
-  import { isAxiosError } from 'axios'
   
   const authStore = useAuthStore()
-  
-  const username = ref('')
-  const password = ref('')
+  // 标题
+  let title = ref("任管理系统");
+  //表单
+  let loginForm = reactive({
+    //用户名
+    username:'',
+    //密码
+    password:'',
+  })
+  //表单验证规则
+  let loginRules = reactive({
+      username: [
+        { required: true, trigger: "blur", message: "请输入您的账号" }
+      ],
+      password: [
+        { required: true, trigger: "blur", message: "请输入您的密码" }
+      ],
+  })
+  //是否登陆中
   const isLoading = ref(false)
-  const errorMessage = ref('')
-  
+
+  //登录
   const handleLogin = async () => {
     try {
       isLoading.value = true
-      errorMessage.value = ''
-      const response = await authStore.login(username.value, password.value)
+      const response = await authStore.login(loginForm.username, loginForm.password)
       if (response.code === 200) {
         //重定向到首页（不允许回退）
         router.replace('/')
       }
-    } catch (error) {
-      // 处理不同错误类型
-      if (isAxiosError(error)) {
-        errorMessage.value = error.response?.data?.message 
-          || `网络错误：${error.message}`
-      } else if (error instanceof Error) {
-        errorMessage.value = error.message
-      } else {
-        errorMessage.value = '系统发生未知错误'
-      }
-    } finally {
+    }finally{
       isLoading.value = false
     }
-}
-  </script>
+  }
+</script>
   
-  <style scoped>
-  .login-container {
-    min-height: 100vh;
+<style scoped>
+  .loginContainer{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f8f9fa;
+    height: 100vh;
+    background-image: url("../assets/images/login_background.jpg");
+    background-size: cover;
   }
-  
-  .login-box {
-    background-color: white;
-    padding: 2rem 3rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  h2 {
+  .title {
+    margin: 0px auto 30px auto;
     text-align: center;
-    color: #2c3e50;
-    margin-bottom: 2rem;
+    color: #707070;
   }
-  
-  .login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  .loginForm {
+    border-radius: 6px;
+    background: #ffffff;
+    width: 400px;
+    padding: 25px 25px 5px 25px;
+    .el-input {
+      height: 38px;
+      input {
+        height: 38px;
+      }
+    }
+    .input-icon {
+      height: 39px;
+      width: 14px;
+      margin-left: 2px;
+    }
   }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  label {
-    font-weight: 500;
-    color: #34495e;
-  }
-  
-  input {
-    padding: 0.8rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    transition: border-color 0.3s;
-  }
-  
-  input:focus {
-    outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
-  }
-  
-  .submit-btn {
-    background-color: #3498db;
-    color: white;
-    padding: 0.8rem;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .submit-btn:hover {
-    background-color: #2980b9;
-  }
-  
-  .error-message {
-    color: #e74c3c;
-    text-align: center;
-    margin: 0;
-    font-size: 0.9rem;
-  }
-  </style>
+</style>
