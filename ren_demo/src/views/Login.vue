@@ -93,6 +93,7 @@
     height: 100vh;
     background-image: url("../assets/images/login_background.jpg");
     background-size: cover;
+    background-position: center
   }
   .title {
     margin: 0px auto 30px auto;
