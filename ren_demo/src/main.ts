@@ -6,6 +6,8 @@ import App from './App.vue'
 // 引入路由组件
 import router from './router'
 import { service, setupInterceptors } from '@/utils/axios';
+import SvgIcon from '@/components/SvgIcon/index.vue';
+import 'virtual:svg-icons-register'; // 自动注入SVG符号表[2,5](@ref)
 
 // 创建app
 const app = createApp(App)
@@ -16,6 +18,8 @@ const pinia = createPinia()
 app.use(pinia)
 // 引入router
 app.use(router)
+//引入SvgIcon
+app.component('SvgIcon', SvgIcon);
 
 app.mount('#app')
 
