@@ -72,15 +72,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 将认证信息存储到线程绑定的SecurityContext中
             // Spring Security后续通过SecurityContextHolder获取当前用户身份，用于：鉴权（如@PreAuthorize("hasRole('ADMIN')")），获取用户信息（如@AuthenticationPrincipal User user）
             Authentication authentication = jwtUtils.getAuthentication(accessToken);
-            // 该方法在无状态模式或者多线程模式下会失效，需要使用下面的方法
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            // 创建并保存 SecurityContext
-            // SecurityContext context = SecurityContextHolder.createEmptyContext();
-            // context.setAuthentication(authentication);
-            // SecurityContextHolder.setContext(context);
-            // 显式保存到 SecurityContextRepository
-            // securityContextRepository.saveContext(context, req, res);
 
             // 检查是否需要刷新Token
             if (jwtUtils.shouldRefreshToken(accessToken)) {
