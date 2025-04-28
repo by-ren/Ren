@@ -55,13 +55,13 @@ public class User implements UserDetails {
         return accountNonExpired != null ? accountNonExpired : true;
     }
 
-    // 将数据库查询出来的用户凭证是否未过期进行返回，SpringSecurity会自己调用这个方法，来判断账号是否启用，默认为未过期
+    // 将数据库查询出来的用户账户是否未锁定进行返回，SpringSecurity会自己调用这个方法，来判断账号是否锁定，默认为未锁定
     @Override
     public boolean isAccountNonLocked() {
         return accountNonLocked != null ? accountNonLocked : true;
     }
 
-    // 将数据库查询出来的用户是否未被锁定进行返回，SpringSecurity会自己调用这个方法，来判断账号是否启用，默认为未锁定
+    // 将数据库查询出来的用户证书是否未过期进行返回，SpringSecurity会自己调用这个方法，来判断账号是否启用，默认为未锁定
     @Override
     public boolean isCredentialsNonExpired() {
         return credentialsNonExpired != null ? credentialsNonExpired : true;

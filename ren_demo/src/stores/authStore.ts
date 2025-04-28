@@ -21,6 +21,7 @@ export const useAuthStore = defineStore('auth', () => {
             accessToken.value = response.data.accessToken
             //如果refreshToken存在，将refreshToken存入localStorage
             response.data.refreshToken && localStorage.setItem('refreshToken', response.data.refreshToken);
+            isAuthenticated.value = true;
         }
         return response.data;
     }
@@ -81,8 +82,8 @@ export const useAuthStore = defineStore('auth', () => {
         accessToken.value = "";
         isAuthenticated.value = false;
         localStorage.removeItem('refreshToken');
+        localStorage.removeItem('tagArr');
         router.replace('/login');
-        // window.location.href = '/login';
     }
 
     return {
