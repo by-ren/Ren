@@ -2,4 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ren.system.mapper.UserMapper">
 
+    <select id="listUserByParam" resultType="com.ren.system.entity.User">
+        select * from user
+    </select>
+
 </mapper>

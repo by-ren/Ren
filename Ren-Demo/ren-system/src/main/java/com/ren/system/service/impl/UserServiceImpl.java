@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 //ServiceImpl是Mybatis-Plus提供的一个针对IService的具体实现类
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
@@ -77,6 +79,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public User getUserById(Long id) {
         User user = userMapper.selectById(id);
         return user;
+    }
+
+    /*
+     * 获取用户列表
+     * @return java.util.List<com.ren.system.entity.User>
+     * @author admin
+     * @date 2025/04/26 15:52
+     */
+    @Override
+    public List<User> listUserByParam() {
+        List<User> userList = userMapper.listUserByParam();
+        return userList;
     }
 
 }
