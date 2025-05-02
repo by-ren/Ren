@@ -1,10 +1,9 @@
 package com.ren.system.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ren.system.security.config.DBUserDetailsManager;
 import com.ren.system.entity.User;
 import com.ren.system.mapper.UserMapper;
+import com.ren.system.security.config.DBUserDetailsManager;
 import com.ren.system.service.UserService;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 //ServiceImpl是Mybatis-Plus提供的一个针对IService的具体实现类
 @Service
@@ -49,26 +49,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /*
-     * 根据用户名查询User
-     * @param userName
-     * @return com.ren.entity.User
-     * @author admin
-     * @date 2025/04/17 14:53
-     */
-    @Override
-    public User getUserByUsername(String userName) {
-        /**
-         * QueryWrapper是MyBatis-Plus中的查询条件构造器，可以使用eq方法添加查询对象，eq表示使用等于号链接列和名
-         * 使用MyBatis-Plus的selectOne方法查询数据库，返回一个User对象
-         * **/
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", userName);
-        User user = userMapper.selectOne(queryWrapper);
-
-        return user;
-    }
-
-    /*
      * 根据ID查询User
      * @param id
      * @return com.ren.entity.User
@@ -88,8 +68,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @date 2025/04/26 15:52
      */
     @Override
-    public List<User> listUserByParam() {
-        List<User> userList = userMapper.listUserByParam();
+    public List<User> listUserByParam(Map<String,Object> paramMap) {
+        List<User> userList = userMapper.listUserByParam(paramMap);
         return userList;
     }
 

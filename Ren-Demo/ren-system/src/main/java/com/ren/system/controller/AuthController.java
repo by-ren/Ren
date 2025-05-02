@@ -90,7 +90,7 @@ public class AuthController {
         SecurityContextHolder.clearContext();
 
         // 删除Redis中的RefreshToken
-        jwtUtils.deleteRefreshToken(user.getId());
+        jwtUtils.deleteRefreshToken(user.getUserId());
 
         // 将现在的这个AccessToken加入黑名单，防止退出后还能登录
         String accessToken = jwtUtils.getAccessToken(request);

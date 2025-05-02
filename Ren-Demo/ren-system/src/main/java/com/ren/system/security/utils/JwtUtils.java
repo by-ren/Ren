@@ -50,7 +50,7 @@ public class JwtUtils {
     public String createAccessToken(UserDetails userDetails) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())  //设置JWT的主题为用户名的字符串
-                .claim("user_id", ((User) userDetails).getId())  //添加一个自定义声明user_id，值为用户的ID
+                .claim("user_id", ((User) userDetails).getUserId())  //添加一个自定义声明user_id，值为用户的ID
                 .claim("authorities", userDetails.getAuthorities())  //添加权限信息作为另一个自定义声明
                 .setIssuedAt(new Date())  //设置JWT的签发时间为当前时间
                 .setExpiration(new Date(System.currentTimeMillis() + tokenProperties.getExpireTime() * 1000L))  //设置过期时间，基于当前时间加上配置的过期时长
@@ -68,14 +68,14 @@ public class JwtUtils {
     public String createRefreshToken(UserDetails userDetails) {
         String refreshToken = Jwts.builder()
                 .setSubject(userDetails.getUsername())  //设置JWT的主题为用户名的字符串
-                .claim("user_id", ((User) userDetails).getId())  //添加一个自定义声明user_id，值为用户的ID
+                .claim("user_id", ((User) userDetails).getUserId())  //添加一个自定义声明user_id，值为用户的ID
                 .setExpiration(new Date(System.currentTimeMillis() + tokenProperties.getRefreshExpireTime() * 1000L))  //设置过期时间，基于当前时间加上配置的过期时长
                 .signWith(getRefreshKey(), SignatureAlgorithm.HS512)  //使用HS512算法和密钥进行签名
                 .compact();  //生成最终的JWT字符串
 
         // 存储到Redis，有效期比Token长一些，key为refresh:+用户id，value为refreshToken，有效期为配置的过期时长+60秒（为了防止早删除），时间单位为秒
         redisTemplate.opsForValue().set(
-                "refresh:" + ((User) userDetails).getId(),
+                "refresh:" + ((User) userDetails).getUserId(),
                 refreshToken,
                 tokenProperties.getRefreshExpireTime() + 60,
                 TimeUnit.SECONDS
@@ -248,7 +248,7 @@ public class JwtUtils {
 
             // 构建User对象（根据实际情况调整）
             User user = new User();
-            user.setId(userId);
+            user.setUserId(userId);
             user.setUsername(username);
             user.setRoles(authorities); // 假设roles字段存储权限列表
 

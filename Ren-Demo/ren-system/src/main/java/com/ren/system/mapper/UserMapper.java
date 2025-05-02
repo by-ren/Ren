@@ -5,6 +5,7 @@ import com.ren.system.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
@@ -15,5 +16,5 @@ public interface UserMapper extends BaseMapper<User> {
      * @author admin
      * @date 2025/04/26 15:53
      */
-    List<User> listUserByParam();
+    List<User> listUserByParam(Map<String,Object> paramMap);
 }
