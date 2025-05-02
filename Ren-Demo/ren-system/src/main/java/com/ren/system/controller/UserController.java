@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -39,8 +40,8 @@ public class UserController {
      * @date 2025/04/26 15:55
      */
     @PostMapping("/list")
-    public AjaxResult getUserList() {
-        List<User> userList = userService.listUserByParam();
+    public AjaxResult getUserList(@RequestBody(required = false) Map<String,Object> paramMap) {
+        List<User> userList = userService.listUserByParam(paramMap);
         return AjaxResult.success().put("userList",userList);
     }
 

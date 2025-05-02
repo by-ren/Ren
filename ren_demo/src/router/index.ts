@@ -28,9 +28,9 @@ const routes: RouteRecordRaw[] = [
         meta: { requiresAuth: true } // 需要认证
       },
       {
-        path: '/member',
-        name: 'Member',
-        component: () => import('@/views/member/Index.vue'),
+        path: '/user',
+        name: 'User',
+        component: () => import('@/views/user/Index.vue'),
         meta: { requiresAuth: true } // 需要认证
       }
     ]
