@@ -1,5 +1,6 @@
 package com.ren.system.controller;
 
+import cn.hutool.core.date.DateUtil;
 import com.ren.system.entity.AjaxResult;
 import com.ren.system.entity.LoginRequest;
 import com.ren.system.entity.User;
@@ -7,6 +8,7 @@ import com.ren.system.properties.TokenProperties;
 import com.ren.system.security.config.AuthenticationContextHolder;
 import com.ren.system.security.utils.JwtUtils;
 import com.ren.system.service.UserService;
+import com.ren.system.utils.IpUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpRequest;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -40,20 +43,20 @@ public class AuthController {
 
     /*
      * 自定义登录接口
-     * @param request
+     * @param loginRequest
      * @return com.ren.system.entity.AjaxResult
      * @author admin
      * @date 2025/04/24 10:28
      */
     @PostMapping("/login")
-    public AjaxResult login(@RequestBody LoginRequest request) {
+    public AjaxResult login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpRequest) {
         try {
             //验证用户名密码
             //参数：SpringSecurity的认证管理器
             //如果认证成功,发挥返回Authentication，供用户使用
             Authentication authentication = null;
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
             AuthenticationContextHolder.setContext(authenticationToken);
             // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
             authentication = authenticationManager.authenticate(authenticationToken);
@@ -64,6 +67,12 @@ public class AuthController {
             // 生成双Token
             String accessToken = jwtUtils.createAccessToken(userDetails);
             String refreshToken = jwtUtils.createRefreshToken(userDetails);
+
+            //更新用户最后登录时间
+            User loginIpUser = userService.getUserByUsername(userDetails.getUsername());
+            loginIpUser.setLoginIp(IpUtils.getIpAddr());
+            loginIpUser.setLoginDate(DateUtil.currentSeconds());
+            userService.modifyUser(loginIpUser,userDetails.getUsername());
 
             return AjaxResult.success("登陆成功").put("accessToken",accessToken).put("refreshToken",refreshToken);
         } catch (BadCredentialsException e) {
@@ -85,12 +94,12 @@ public class AuthController {
      * @date 2025/04/24 10:28
      */
     @PostMapping("/logout")
-    public AjaxResult logout(@AuthenticationPrincipal User user, HttpServletRequest request) {
+    public AjaxResult logout(@AuthenticationPrincipal User loginUser, HttpServletRequest request) {
         // 手动清理Security上下文
         SecurityContextHolder.clearContext();
 
         // 删除Redis中的RefreshToken
-        jwtUtils.deleteRefreshToken(user.getUserId());
+        jwtUtils.deleteRefreshToken(loginUser.getUserId());
 
         // 将现在的这个AccessToken加入黑名单，防止退出后还能登录
         String accessToken = jwtUtils.getAccessToken(request);
