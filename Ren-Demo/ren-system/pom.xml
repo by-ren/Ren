@@ -96,6 +96,12 @@
             <version>5.8.26</version>
         </dependency>
 
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-servlet-jakarta</artifactId>
+            <version>5.8.16</version>
+        </dependency>
+
         <!-- FastJSON2（推荐使用最新版） -->
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
@@ -144,6 +150,7 @@
             <artifactId>aspectjweaver</artifactId>
             <version>1.9.20.1</version>
         </dependency>
+
     </dependencies>
 
 </project>

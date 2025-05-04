@@ -11,7 +11,9 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description 本类是基于数据库的用户信息管理器
@@ -35,9 +37,9 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", username);
-        User user = userMapper.selectOne(queryWrapper);
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("username",username);
+        User user = userMapper.selectUserByParam(paramMap);
 
         // 返回的User对象必须实现UserDetails接口
         // 此处完成数据库用户到安全上下文的转换
@@ -59,11 +61,6 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
 
     @Override
     public void createUser(UserDetails userDetails) {
-        User user = new User();
-        user.setUsername(userDetails.getUsername());
-        user.setPassword(userDetails.getPassword());
-        user.setEnabled(true);
-        userMapper.insert(user);
     }
 
     @Override

@@ -33,19 +33,105 @@
         from sys_user u
     </sql>
 
+    <insert id="insertUser" parameterType="com.ren.system.entity.User" useGeneratedKeys="true" keyProperty="userId">
+        insert into sys_user(
+        <if test="userId != null and userId != 0">user_id,</if>
+        <if test="username != null and username != ''">username,</if>
+        <if test="nickname != null and nickname != ''">nickname,</if>
+        <if test="password != null and password != ''">password,</if>
+        <if test="isDel != null">is_del,</if>
+        <if test="deptId != null and deptId != 0">dept_id,</if>
+        <if test="email != null and email != ''">email,</if>
+        <if test="userType != null and userType != ''">user_type,</if>
+        <if test="phonenumber != null and phonenumber != ''">phonenumber,</if>
+        <if test="sex != null">sex,</if>
+        <if test="avatar != null and avatar != ''">avatar,</if>
+        <if test="remark != null and remark != ''">remark,</if>
+        create_by,
+        create_time
+        )values(
+        <if test="userId != null and userId != ''">#{userId},</if>
+        <if test="username != null and username != ''">#{username},</if>
+        <if test="nickname != null and nickname != ''">#{nickname},</if>
+        <if test="password != null and password != ''">#{password},</if>
+        <if test="isDel != null">#{isDel},</if>
+        <if test="deptId != null and deptId != 0">#{deptId},</if>
+        <if test="email != null and email != ''">#{email},</if>
+        <if test="userType != null and userType != ''">#{userType},</if>
+        <if test="phonenumber != null and phonenumber != ''">#{phonenumber},</if>
+        <if test="sex != null">#{sex},</if>
+        <if test="avatar != null and avatar != ''">#{avatar},</if>
+        <if test="remark != null and remark != ''">#{remark},</if>
+        #{createBy},
+        #{createTime}
+        )
+    </insert>
+
+    <update id="updateUserIsDelById">
+        update sys_user
+        <set>
+            is_del = #{isDel},
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <update id="resetPassword">
+        update sys_user
+        <set>
+            password = #{newPassword},
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <update id="updateUser" parameterType="com.ren.system.entity.User">
+        update sys_user
+        <set>
+            <if test="nickname != null and nickname != ''">nickname = #{nickname},</if>
+            <if test="deptId != null and deptId != 0">dept_id = #{deptId},</if>
+            <if test="email != null ">email = #{email},</if>
+            <if test="userType != null and userType != ''">user_type = #{userType},</if>
+            <if test="phonenumber != null ">phonenumber = #{phonenumber},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="avatar != null and avatar != ''">avatar = #{avatar},</if>
+            <if test="loginIp != null and loginIp != ''">login_ip = #{loginIp},</if>
+            <if test="loginDate != null">login_date = #{loginDate},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        </set>
+        where user_id = #{userId}
+    </update>
+
     <select id="listUserByParam" resultMap="SysUserResult">
         <include refid="selectUserVo"/>
         <where>
             <if test="deptId != null">
-                AND dept_id = #{deptId}
+                AND u.dept_id = #{deptId}
+            </if>
+            <if test="searchLike != null and searchLike != ''">
+                AND (u.nickname LIKE #{searchLike} OR u.email LIKE #{searchLike} OR u.phonenumber LIKE #{searchLike} OR u.username LIKE #{searchLike})
             </if>
             <if test="userType != null and userType != ''">
-                AND user_type = #{userType}
+                AND u.user_type = #{userType}
             </if>
             <if test="sex != null and sex != -1">
-                AND sex = #{sex}
+                AND u.sex = #{sex}
             </if>
         </where>
+    </select>
+
+    <select id="selectUserByParam" resultMap="SysUserResult">
+        <include refid="selectUserVo"/>
+        <where>
+            <if test="username != null and username != ''">
+                AND u.username = #{username}
+            </if>
+        </where>
+        LIMIT 1
     </select>
 
 </mapper>
