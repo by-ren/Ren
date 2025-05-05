@@ -1,4 +1,4 @@
-package com.ren.system.utils;
+package com.ren.system.common.utils;
 
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

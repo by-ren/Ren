@@ -1,4 +1,4 @@
-package com.ren.system.entity;
+package com.ren.system.common.dto;
 
 
 import cn.hutool.core.util.ObjUtil;
@@ -11,7 +11,7 @@ import java.util.Objects;
  * 操作消息提醒
  * 
  */
-public class AjaxResult extends HashMap<String, Object>
+public class AjaxResultDTO extends HashMap<String, Object>
 {
     private static final long serialVersionUID = 1L;
 
@@ -27,7 +27,7 @@ public class AjaxResult extends HashMap<String, Object>
     /**
      * 初始化一个新创建的 AjaxResult 对象，使其表示一个空消息。
      */
-    public AjaxResult()
+    public AjaxResultDTO()
     {
     }
 
@@ -37,7 +37,7 @@ public class AjaxResult extends HashMap<String, Object>
      * @param code 状态码
      * @param msg 返回内容
      */
-    public AjaxResult(int code, String msg)
+    public AjaxResultDTO(int code, String msg)
     {
         super.put(CODE_TAG, code);
         super.put(MSG_TAG, msg);
@@ -50,7 +50,7 @@ public class AjaxResult extends HashMap<String, Object>
      * @param msg 返回内容
      * @param data 数据对象
      */
-    public AjaxResult(int code, String msg, Object data)
+    public AjaxResultDTO(int code, String msg, Object data)
     {
         super.put(CODE_TAG, code);
         super.put(MSG_TAG, msg);
@@ -65,9 +65,9 @@ public class AjaxResult extends HashMap<String, Object>
      * 
      * @return 成功消息
      */
-    public static AjaxResult success()
+    public static AjaxResultDTO success()
     {
-        return AjaxResult.success("操作成功");
+        return AjaxResultDTO.success("操作成功");
     }
 
     /**
@@ -75,9 +75,9 @@ public class AjaxResult extends HashMap<String, Object>
      * 
      * @return 成功消息
      */
-    public static AjaxResult success(Object data)
+    public static AjaxResultDTO success(Object data)
     {
-        return AjaxResult.success("操作成功", data);
+        return AjaxResultDTO.success("操作成功", data);
     }
 
     /**
@@ -86,9 +86,9 @@ public class AjaxResult extends HashMap<String, Object>
      * @param msg 返回内容
      * @return 成功消息
      */
-    public static AjaxResult success(String msg)
+    public static AjaxResultDTO success(String msg)
     {
-        return AjaxResult.success(msg, null);
+        return AjaxResultDTO.success(msg, null);
     }
 
     /**
@@ -98,9 +98,9 @@ public class AjaxResult extends HashMap<String, Object>
      * @param data 数据对象
      * @return 成功消息
      */
-    public static AjaxResult success(String msg, Object data)
+    public static AjaxResultDTO success(String msg, Object data)
     {
-        return new AjaxResult(HttpStatus.SUCCESS, msg, data);
+        return new AjaxResultDTO(HttpStatus.SUCCESS, msg, data);
     }
 
     /**
@@ -109,9 +109,9 @@ public class AjaxResult extends HashMap<String, Object>
      * @param msg 返回内容
      * @return 警告消息
      */
-    public static AjaxResult warn(String msg)
+    public static AjaxResultDTO warn(String msg)
     {
-        return AjaxResult.warn(msg, null);
+        return AjaxResultDTO.warn(msg, null);
     }
 
     /**
@@ -121,9 +121,9 @@ public class AjaxResult extends HashMap<String, Object>
      * @param data 数据对象
      * @return 警告消息
      */
-    public static AjaxResult warn(String msg, Object data)
+    public static AjaxResultDTO warn(String msg, Object data)
     {
-        return new AjaxResult(HttpStatus.WARN, msg, data);
+        return new AjaxResultDTO(HttpStatus.WARN, msg, data);
     }
 
     /**
@@ -131,9 +131,9 @@ public class AjaxResult extends HashMap<String, Object>
      * 
      * @return 错误消息
      */
-    public static AjaxResult error()
+    public static AjaxResultDTO error()
     {
-        return AjaxResult.error("操作失败");
+        return AjaxResultDTO.error("操作失败");
     }
 
     /**
@@ -142,9 +142,9 @@ public class AjaxResult extends HashMap<String, Object>
      * @param msg 返回内容
      * @return 错误消息
      */
-    public static AjaxResult error(String msg)
+    public static AjaxResultDTO error(String msg)
     {
-        return AjaxResult.error(msg, null);
+        return AjaxResultDTO.error(msg, null);
     }
 
     /**
@@ -154,9 +154,9 @@ public class AjaxResult extends HashMap<String, Object>
      * @param data 数据对象
      * @return 错误消息
      */
-    public static AjaxResult error(String msg, Object data)
+    public static AjaxResultDTO error(String msg, Object data)
     {
-        return new AjaxResult(HttpStatus.ERROR, msg, data);
+        return new AjaxResultDTO(HttpStatus.ERROR, msg, data);
     }
 
     /**
@@ -166,9 +166,9 @@ public class AjaxResult extends HashMap<String, Object>
      * @param msg 返回内容
      * @return 错误消息
      */
-    public static AjaxResult error(int code, String msg)
+    public static AjaxResultDTO error(int code, String msg)
     {
-        return new AjaxResult(code, msg, null);
+        return new AjaxResultDTO(code, msg, null);
     }
 
     /**
@@ -209,7 +209,7 @@ public class AjaxResult extends HashMap<String, Object>
      * @return 数据对象
      */
     @Override
-    public AjaxResult put(String key, Object value)
+    public AjaxResultDTO put(String key, Object value)
     {
         super.put(key, value);
         return this;

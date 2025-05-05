@@ -1,7 +1,7 @@
 package com.ren.system.security.config;
 
 import com.alibaba.fastjson2.JSON;
-import com.ren.system.entity.AjaxResult;
+import com.ren.system.common.dto.AjaxResultDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
@@ -31,6 +31,6 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         //进入到这里之后，统一汇合为未提供有效身份验证，进行返回
-        response.getWriter().write(JSON.toJSONString(AjaxResult.error(401, "未提供有效身份凭证")));
+        response.getWriter().write(JSON.toJSONString(AjaxResultDTO.error(401, "未提供有效身份凭证")));
     }
 }

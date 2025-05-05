@@ -8,15 +8,11 @@ import com.ren.system.entity.User;
 import com.ren.system.mapper.UserMapper;
 import com.ren.system.security.config.DBUserDetailsManager;
 import com.ren.system.service.UserService;
-import com.ren.system.utils.SecurityUtils;
+import com.ren.system.common.utils.SecurityUtils;
 import jakarta.annotation.Resource;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.util.DateUtils;
 
 import java.util.List;
 import java.util.Map;

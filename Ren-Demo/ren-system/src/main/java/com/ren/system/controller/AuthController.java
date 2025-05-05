@@ -1,14 +1,14 @@
 package com.ren.system.controller;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
-import com.ren.system.entity.AjaxResult;
-import com.ren.system.entity.LoginRequest;
+import com.ren.system.common.dto.AjaxResultDTO;
 import com.ren.system.entity.User;
 import com.ren.system.properties.TokenProperties;
 import com.ren.system.security.config.AuthenticationContextHolder;
 import com.ren.system.security.utils.JwtUtils;
 import com.ren.system.service.UserService;
-import com.ren.system.utils.IpUtils;
+import com.ren.system.common.utils.IpUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpRequest;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -44,19 +44,19 @@ public class AuthController {
     /*
      * 自定义登录接口
      * @param loginRequest
-     * @return com.ren.system.entity.AjaxResult
+     * @return com.ren.system.common.dto.AjaxResult
      * @author admin
      * @date 2025/04/24 10:28
      */
     @PostMapping("/login")
-    public AjaxResult login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpRequest) {
+    public AjaxResultDTO login(@RequestBody Map<String,Object> paramMap, HttpServletRequest httpRequest) {
         try {
             //验证用户名密码
             //参数：SpringSecurity的认证管理器
             //如果认证成功,发挥返回Authentication，供用户使用
             Authentication authentication = null;
 
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(Convert.toStr(paramMap.get("username")), Convert.toStr(paramMap.get("password")));
             AuthenticationContextHolder.setContext(authenticationToken);
             // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
             authentication = authenticationManager.authenticate(authenticationToken);
@@ -74,13 +74,13 @@ public class AuthController {
             loginIpUser.setLoginDate(DateUtil.currentSeconds());
             userService.modifyUser(loginIpUser,userDetails.getUsername());
 
-            return AjaxResult.success("登陆成功").put("accessToken",accessToken).put("refreshToken",refreshToken);
+            return AjaxResultDTO.success("登陆成功").put("accessToken",accessToken).put("refreshToken",refreshToken);
         } catch (BadCredentialsException e) {
             // 密码错误
-            return AjaxResult.error(401, e.getMessage());
+            return AjaxResultDTO.error(401, e.getMessage());
         } catch (AuthenticationException e) {
             // 其他认证异常（如用户被锁定）
-            return AjaxResult.error(401, e.getMessage());
+            return AjaxResultDTO.error(401, e.getMessage());
         }finally{
             AuthenticationContextHolder.clearContext();
         }
@@ -89,12 +89,12 @@ public class AuthController {
     /*
      * 自定义登出接口
      * @param user
-     * @return com.ren.system.entity.AjaxResult
+     * @return com.ren.system.common.dto.AjaxResult
      * @author admin
      * @date 2025/04/24 10:28
      */
     @PostMapping("/logout")
-    public AjaxResult logout(@AuthenticationPrincipal User loginUser, HttpServletRequest request) {
+    public AjaxResultDTO logout(@AuthenticationPrincipal User loginUser, HttpServletRequest request) {
         // 手动清理Security上下文
         SecurityContextHolder.clearContext();
 
@@ -109,21 +109,21 @@ public class AuthController {
                 tokenProperties.getExpireTime(),//黑名单时长内也使用accesstoken的有效时长
                 TimeUnit.SECONDS);
 
-        return AjaxResult.success("退出成功");
+        return AjaxResultDTO.success("退出成功");
     }
 
     /*
      * 自定义刷新token接口
      * @param refreshToken
-     * @return com.ren.system.entity.AjaxResult
+     * @return com.ren.system.common.dto.AjaxResult
      * @author admin
      * @date 2025/04/24 10:28
      */
     @PostMapping("/refreshToken")
-    public AjaxResult refreshToken(@RequestHeader("X-Refresh-Token") String refreshToken) {
+    public AjaxResultDTO refreshToken(@RequestHeader("X-Refresh-Token") String refreshToken) {
         //从请求头中获取RefreshToken，只有RefreshToken有效才允许刷新Token，并验证refreshToken是否有效
         if (!jwtUtils.validateRefreshToken(refreshToken)) {
-            return AjaxResult.error(401, "用户名或密码错误");
+            return AjaxResultDTO.error(401, "用户名或密码错误");
         }
 
         //将refreshToken解析为Claims
@@ -136,7 +136,7 @@ public class AuthController {
         String newRefreshToken = jwtUtils.createRefreshToken(userDetails);
 
         // 返回双Token
-        return AjaxResult.success().put("accessToken",newAccessToken).put("refreshToken",newRefreshToken);
+        return AjaxResultDTO.success().put("accessToken",newAccessToken).put("refreshToken",newRefreshToken);
     }
 
 }
