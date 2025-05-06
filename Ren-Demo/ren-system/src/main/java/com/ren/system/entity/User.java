@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("sys_user")
-@Alias("User")
 public class User extends BaseEntity implements UserDetails{
 
     private static final long serialVersionUID = 1L;
