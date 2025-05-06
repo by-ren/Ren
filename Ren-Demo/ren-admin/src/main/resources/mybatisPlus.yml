@@ -1,0 +1,21 @@
+#SQL日志
+mybatis-plus:
+  configuration:
+    # 启用二级缓存（全局映射器缓存）[2,7](@ref)
+    cache-enabled: true
+    # 允许JDBC自动生成主键（如MySQL自增主键）[1](@ref)
+    use-generated-keys: true
+    # 配置默认的执行器.SIMPLE就是普通执行器;REUSE执行器会重用预处理语句(prepared statements);BATCH执行器将重用语句并执行批量更新
+    default-executor-type: simple
+    # 指定日志框架（如SLF4J）[2,15,16](@ref)
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    # mybatis-plus默认开启了下滑线转换驼峰 需要关闭（设置为false）
+    map-underscore-to-camel-case: false
+  global-config:
+    db-config:
+      # 可选：关闭表名自动驼峰转下划线（默认true）
+      table-underline: false
+  # 搜索指定包别名
+  type-aliases-package: com.ren.**.entity
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapper-locations: classpath*:mapper/**/*Mapper.xml

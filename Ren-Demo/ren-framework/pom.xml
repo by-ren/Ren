@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>ren-system</artifactId>
+    <artifactId>ren-framework</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -153,6 +153,12 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-    </dependencies>
+        <!-- 系统模块-->
+        <dependency>
+            <groupId>com.ren</groupId>
+            <artifactId>ren-system</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
+    </dependencies>
 </project>

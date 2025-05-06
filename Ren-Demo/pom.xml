@@ -19,6 +19,9 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>ren-admin</module>
+        <module>ren-common</module>
+        <module>ren-framework</module>
         <module>ren-system</module>
     </modules>
 

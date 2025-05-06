@@ -3,12 +3,11 @@ package com.ren.system.service.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ren.system.common.constant.AppConstants;
 import com.ren.system.entity.User;
 import com.ren.system.mapper.UserMapper;
-import com.ren.system.security.config.DBUserDetailsManager;
 import com.ren.system.service.UserService;
-import com.ren.system.common.utils.SecurityUtils;
+import com.ren.common.constant.AppConstants;
+import com.ren.common.utils.SecurityUtils;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,13 +20,10 @@ import java.util.Map;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
-    //自动注入数据库用户信息管理器
-    @Resource
-    private DBUserDetailsManager dbUserDetailsManager;
     //自动注入密码管理器
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Resource
+    @Autowired
     private UserMapper userMapper;
 
 
@@ -95,7 +91,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /*
      * 根据登陆账号获取username
      * @param username
-     * @return com.ren.system.entity.User
+     * @return com.ren.admin.entity.User
      * @author admin
      * @date 2025/05/04 17:27
      */
@@ -119,7 +115,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /*
      * 获取用户列表
-     * @return java.util.List<com.ren.system.entity.User>
+     * @return java.util.List<com.ren.admin.entity.User>
      * @author admin
      * @date 2025/04/26 15:52
      */
