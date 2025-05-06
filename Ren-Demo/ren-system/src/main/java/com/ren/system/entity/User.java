@@ -1,15 +1,15 @@
 package com.ren.system.entity;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.ren.common.base.BaseEntity;
 import lombok.*;
+import org.apache.ibatis.type.Alias;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +20,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("sys_user")
-public class User implements UserDetails {
+@Alias("User")
+public class User extends BaseEntity implements UserDetails{
+
+    private static final long serialVersionUID = 1L;
+
     //对应数据库中的名称为userId，并且是主键自增
     @TableId(value = "user_id", type = IdType.AUTO)
     private Long userId;
@@ -57,35 +61,11 @@ public class User implements UserDetails {
     /**最后登录时间 (秒时间戳)*/
     @TableField(value = "login_date")
     private Long loginDate;
-    /**创建者*/
-    @TableField(value = "create_by")
-    private String createBy;
-    /**创建时间 (秒时间戳)*/
-    @TableField(value = "create_time")
-    private Long createTime;
-    /**更新者*/
-    @TableField(value = "update_by")
-    private String updateBy;
-    /**更新时间 (秒时间戳)*/
-    @TableField(value = "update_time")
-    private Long updateTime;
-    /**备注*/
-    @TableField(value = "remark")
-    private String remark;
 
     /*==================================================以下为冗余字段===================================================*/
     /**权限列表*/
     @TableField(exist = false)
     private List<String> roles = new ArrayList<>();
-    /**最后登录时间Str*/
-    @TableField(exist = false)
-    private String loginDateStr;
-    /**创建时间Str*/
-    @TableField(exist = false)
-    private String createTimeStr;
-    /**更新时间Str*/
-    @TableField(exist = false)
-    private String updateTimeStr;
 
     /*====================================以下为SpringSecurity中UserDetail所需字段=======================================*/
 

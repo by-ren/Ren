@@ -9,56 +9,27 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>ren-system</artifactId>
+    <artifactId>ren-common</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <!--所需要的依赖-->
     <dependencies>
+
         <!--SpringSecurity依赖-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+
         <!--SpringBoot Web项目-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--模板引擎，用于加载前端页面，如果使用Vue，这里没必要引入-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <!--模板引擎相关依赖-->
-        <dependency>
-            <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
-        </dependency>
 
-        <!--SpringBoot单元测试依赖-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!--SpringSecurity测试依赖-->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!--Mysql的链接依赖-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.30</version>
-        </dependency>
         <!--Mybatis-Plus的依赖-->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -81,13 +52,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-        </dependency>
-
-        <!--swagger测试-->
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-            <version>4.1.0</version>
         </dependency>
 
         <!-- Hutool 核心 -->
@@ -146,13 +110,7 @@
             <version>1.9.20.1</version>
         </dependency>
 
-        <!-- 通用工具-->
-        <dependency>
-            <groupId>com.ren</groupId>
-            <artifactId>ren-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-
     </dependencies>
+
 
 </project>

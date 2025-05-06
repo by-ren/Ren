@@ -49,7 +49,7 @@ public interface UserService extends IService<User> {
     /*
      * 根据登陆账号获取用户
      * @param username
-     * @return com.ren.system.entity.User
+     * @return com.ren.admin.entity.User
      * @author admin
      * @date 2025/05/04 17:27
      */
@@ -66,7 +66,7 @@ public interface UserService extends IService<User> {
 
     /*
      * 获取用户列表
-     * @return java.util.List<com.ren.system.entity.User>
+     * @return java.util.List<com.ren.admin.entity.User>
      * @author admin
      * @date 2025/04/26 15:51
      */
