@@ -3,12 +3,11 @@ package com.ren.system.service.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ren.system.entity.User;
+import com.ren.common.core.entity.User;
 import com.ren.system.mapper.UserMapper;
 import com.ren.system.service.UserService;
 import com.ren.common.constant.AppConstants;
 import com.ren.common.utils.SecurityUtils;
-import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,7 +33,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @date 2025/04/16 16:24
      */
     @Override
-    public void addUser(User user,String createBy) {
+    public long addUser(User user,String createBy) {
         // 使用设定的密码管理器对密码进行编码(设置默认密码123456)
         String encodedPassword = SecurityUtils.encryptPassword("123456");
         user.setIsDel(AppConstants.COMMON_BYTE_NO);
@@ -43,6 +42,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setCreateTime(DateUtil.currentSeconds());
         user.setPassword(encodedPassword);
         userMapper.insertUser(user);
+        return user.getUserId();
     }
 
     /*
@@ -121,8 +121,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public List<User> listUserByParam(Map<String,Object> paramMap) {
-        if(paramMap.containsKey("searchLike")){
-            paramMap.put("searchLike",StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        if(paramMap != null && paramMap.containsKey("searchLike")){
+            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
         }
         List<User> userList = userMapper.listUserByParam(paramMap);
         return userList;

@@ -32,6 +32,24 @@ const routes: RouteRecordRaw[] = [
         name: 'User',
         component: () => import('@/views/user/Index.vue'),
         meta: { requiresAuth: true } // 需要认证
+      },
+      {
+        path: '/role',
+        name: 'Role',
+        component: () => import('@/views/role/Index.vue'),
+        meta: { requiresAuth: true } // 需要认证
+      },
+      {
+        path: '/menu',
+        name: 'Menu',
+        component: () => import('@/views/menu/Index.vue'),
+        meta: { requiresAuth: true } // 需要认证
+      },
+      {
+        path: '/dept',
+        name: 'Dept',
+        component: () => import('@/views/dept/Index.vue'),
+        meta: { requiresAuth: true } // 需要认证
       }
     ]
   }

@@ -1,8 +1,10 @@
 package com.ren.framework.security.utils;
 
-import com.ren.system.entity.User;
-import io.jsonwebtoken.*;
 import com.ren.framework.properties.TokenProperties;
+import com.ren.common.core.entity.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -154,28 +156,18 @@ public class JwtUtils {
      * @date 2025/04/17 21:25
      */
     public short validateAccessToken(String token) {
-        try {
-            // 从token中解析出user_id
-            Claims claims = parseAccessToken(token);
-            Long userId = claims.get("user_id", Long.class);
+        // 从token中解析出user_id
+        Claims claims = parseAccessToken(token);
+        Long userId = claims.get("user_id", Long.class);
 
-            // 检查黑名单中是否存在当前token，如果存在，则无效，反之则有效
-            if (redisTemplate.hasKey("blacklist:" + token)) {
-                // 黑名单 → 返回 403
-                log.warn("当前Token处于黑名单，请确认");
-                return 403;
-            }
-
-            return 200;
-        } catch (ExpiredJwtException ex) {
-            // Token 已过期 → 需返回 401
-            log.warn("Token 已过期: {}", ex.getMessage());
-            return 401; // 或抛出特定异常
-        } catch (JwtException | IllegalArgumentException ex) {
-            // 签名无效、格式错误 → 返回 422
-            log.error("AccessToken验证失败: {}", ex.getMessage());
-            return 422;
+        // 检查黑名单中是否存在当前token，如果存在，则无效，反之则有效
+        if (redisTemplate.hasKey("blacklist:" + token)) {
+            // 黑名单 → 返回 403
+            log.warn("当前Token处于黑名单，请确认");
+            return 403;
         }
+
+        return 200;
     }
 
     /*
@@ -187,18 +179,13 @@ public class JwtUtils {
      * @date 2025/04/17 21:25
      */
     public boolean validateRefreshToken(String refreshToken) {
-        try {
-            // 从token中解析出user_id
-            Claims claims = parseRefreshToken(refreshToken);
-            Long userId = claims.get("user_id", Long.class);
-            //从redis中获取对应的refreshToken
-            String storedToken = (String) redisTemplate.opsForValue().get("refresh:" + userId);
-            //如果redis中的refreshToken与传递过来的refreshToken一致，则有效，反之则无效
-            return refreshToken.equals(storedToken);
-        } catch (JwtException e) {
-            log.error("RefreshToken验证失败: {}", e.getMessage());
-        }
-        return false;
+        // 从token中解析出user_id
+        Claims claims = parseRefreshToken(refreshToken);
+        Long userId = claims.get("user_id", Long.class);
+        //从redis中获取对应的refreshToken
+        String storedToken = (String) redisTemplate.opsForValue().get("refresh:" + userId);
+        //如果redis中的refreshToken与传递过来的refreshToken一致，则有效，反之则无效
+        return refreshToken.equals(storedToken);
     }
 
     /*
@@ -210,17 +197,13 @@ public class JwtUtils {
      * @date 2025/04/17 21:26
      */
     public boolean shouldRefreshToken(String token) {
-        try {
-            // 从token中解析出过期时间
-            Claims claims = parseAccessToken(token);
-            Date expiration = claims.getExpiration();
-            // 剩余时间 = 过期时间-当前时间（单位：秒）
-            long remainTime = expiration.getTime() - System.currentTimeMillis();
-            // 如果剩余时间小于刷新时间，则需要刷新Token
-            return remainTime < tokenProperties.getRefreshTime() * 1000L;
-        } catch (JwtException e) {
-            return false;
-        }
+        // 从token中解析出过期时间
+        Claims claims = parseAccessToken(token);
+        Date expiration = claims.getExpiration();
+        // 剩余时间 = 过期时间-当前时间（单位：秒）
+        long remainTime = expiration.getTime() - System.currentTimeMillis();
+        // 如果剩余时间小于刷新时间，则需要刷新Token
+        return remainTime < tokenProperties.getRefreshTime() * 1000L;
     }
 
     /*
@@ -233,34 +216,29 @@ public class JwtUtils {
      * @date 2025/04/17 21:26
      */
     public Authentication getAuthentication(String token) {
-        try {
-            // 从token中解析出user_id和username
-            Claims claims = parseAccessToken(token);
-            Long userId = claims.get("user_id", Long.class);
-            String username = claims.getSubject();
+        // 从token中解析出user_id和username
+        Claims claims = parseAccessToken(token);
+        Long userId = claims.get("user_id", Long.class);
+        String username = claims.getSubject();
 
-            // 从claims中提取权限信息
-            List<String> authorities = claims.get("authorities", List.class);
-            // 将权限列表转换为SpringSecurity可以认识的权限列表（GrantedAuthority列表）
-            List<GrantedAuthority> grantedAuthorities = authorities.stream()
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
+        // 从claims中提取权限信息
+        List<String> authorities = claims.get("authorities", List.class);
+        // 将权限列表转换为SpringSecurity可以认识的权限列表（GrantedAuthority列表）
+        List<GrantedAuthority> grantedAuthorities = authorities.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
 
-            // 构建User对象（根据实际情况调整）
-            User user = new User();
-            user.setUserId(userId);
-            user.setUsername(username);
-            user.setRoles(authorities); // 假设roles字段存储权限列表
+        // 构建User对象（根据实际情况调整）
+        User user = new User();
+        user.setUserId(userId);
+        user.setUsername(username);
+        user.setRoles(authorities); // 假设roles字段存储权限列表
 
-            return new UsernamePasswordAuthenticationToken(
-                    user,
-                    null, // 凭证置空
-                    grantedAuthorities
-            );
-        } catch (JwtException e) {
-            log.error("解析认证信息失败: {}", e.getMessage());
-            return null;
-        }
+        return new UsernamePasswordAuthenticationToken(
+                user,
+                null, // 凭证置空
+                grantedAuthorities
+        );
     }
 
     /*

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ren.system.mapper.RoleMapper">
+
+	<resultMap type="role" id="RoleResult">
+		<id     property="roleId"       column="role_id"      />
+		<result property="roleName"     column="role_name"    />
+		<result property="isStop"     column="is_stop"    />
+		<result property="roleKey"     column="role_key"    />
+		<result property="roleSort"     column="role_sort"    />
+		<result property="isDel"     column="is_del"    />
+		<result property="dataScope"     column="data_scope"    />
+		<result property="createTime"   column="create_time"  />
+		<result property="createTimeStr"   column="create_time_str"  />
+		<result property="updateBy"     column="update_by"    />
+		<result property="updateTime"   column="update_time"  />
+		<result property="updateTimeStr"   column="update_time_str"  />
+		<result property="remark"       column="remark"       />
+	</resultMap>
+
+	<sql id="selectRoleVo">
+		select
+			role_id,role_name,is_stop,role_key,role_sort,is_del,data_scope,
+			create_time, create_by,FROM_UNIXTIME(create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, update_by, update_time, FROM_UNIXTIME(update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, remark
+		from sys_role
+	</sql>
+
+	<insert id="insertRole" parameterType="role" useGeneratedKeys="true" keyProperty="roleId" keyColumn="role_id">
+		insert into sys_role(
+		<if test="roleId != null and roleId != 0">role_id,</if>
+		<if test="roleName != null and roleName != ''">role_name,</if>
+		<if test="isStop != null">is_stop,</if>
+		<if test="roleKey != null and roleKey != ''">role_key,</if>
+		<if test="roleSort != null">role_sort,</if>
+		<if test="isDel != null">is_del,</if>
+		<if test="dataScope != null">data_scope,</if>
+		<if test="remark != null and remark != ''">remark,</if>
+		create_by,
+		create_time
+		)values(
+		<if test="roleId != null and roleId != ''">#{deptId},</if>
+		<if test="roleName != null and roleName != ''">#{roleName},</if>
+		<if test="isStop != null">#{isStop},</if>
+		<if test="roleKey != null and roleKey != ''">#{roleKey},</if>
+		<if test="roleSort != null">#{roleSort},</if>
+		<if test="isDel != null">#{isDel},</if>
+		<if test="dataScope != null">#{dataScope},</if>
+		<if test="remark != null and remark != ''">#{remark},</if>
+		#{createBy},
+		#{createTime}
+		)
+	</insert>
+
+	<update id="updateRoleIsDelById">
+		update sys_role
+		<set>
+			is_del = #{isDel},
+			update_by = #{updateBy},
+			update_time = #{updateTime}
+		</set>
+		where role_id = #{roleId}
+	</update>
+
+	<update id="updateRoleById" parameterType="user">
+		update sys_role
+		<set>
+			<if test="roleName != null and roleName != ''">role_name = #{roleName},</if>
+			<if test="isStop != null">is_stop = #{isStop},</if>
+			<if test="roleKey != null and roleKey != ''">role_key = #{roleKey},</if>
+			<if test="roleSort != null">role_sort = #{roleSort},</if>
+			<if test="isDel != null">is_del = #{isDel},</if>
+			<if test="dataScope != null">data_scope = #{dataScope},</if>
+			<if test="remark != null and remark != ''">remark = #{remark},</if>
+			update_by = #{updateBy},
+			update_time = #{updateTime}
+		</set>
+		where role_id = #{roleId}
+	</update>
+
+	<select id="listRoleByParam" resultMap="RoleResult">
+		<include refid="selectRoleVo"/>
+		<where>
+			is_del=0
+			<if test="searchLike != null and searchLike != ''">
+				AND (role_name LIKE #{searchLike} OR role_key LIKE #{searchLike})
+			</if>
+			<if test="isStop != null">
+				AND is_stop = #{isStop}
+			</if>
+		</where>
+		ORDER BY role_sort ASC
+	</select>
+
+</mapper>

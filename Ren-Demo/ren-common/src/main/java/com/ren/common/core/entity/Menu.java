@@ -1,10 +1,10 @@
-package com.ren.system.entity;
+package com.ren.common.core.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ren.common.base.BaseEntity;
+import com.ren.common.core.base.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -50,11 +50,11 @@ public class Menu extends BaseEntity {
 
     /** 是否为外链（0是 1否） */
     @TableField(value = "is_frame")
-    private String isFrame;
+    private Byte isFrame;
 
     /** 是否缓存（0缓存 1不缓存） */
     @TableField(value = "is_cache")
-    private String isCache;
+    private Byte isCache;
 
     /** 类型（M目录 C菜单 F按钮） */
     @TableField(value = "menu_type")
@@ -62,11 +62,11 @@ public class Menu extends BaseEntity {
 
     /** 是否隐藏（0：否 1：是） */
     @TableField(value = "is_visible")
-    private String isVisible;
+    private Byte isVisible;
 
     /** 是否停用（0：否 1：是） */
     @TableField(value = "is_stop")
-    private String isStop;
+    private Byte isStop;
 
     /** 权限字符串 */
     private String perms;

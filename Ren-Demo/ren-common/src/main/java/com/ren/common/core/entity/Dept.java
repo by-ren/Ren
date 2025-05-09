@@ -1,4 +1,4 @@
-package com.ren.system.entity;
+package com.ren.common.core.entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ren.common.base.BaseEntity;
+import com.ren.common.core.base.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,15 +49,11 @@ public class Dept extends BaseEntity {
 
     /** 是否停用（0：否 1：是） */
     @TableField(value = "is_stop")
-    private String isStop;
+    private Byte isStop;
 
     /** 是否删除（0：否 1：是） */
     @TableField(value = "is_del")
-    private String isDel;
-
-    /** 可查看数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限） */
-    @TableField(value = "data_scope")
-    private String dataScope;
+    private Byte isDel;
 
     /*==================================================以下为冗余字段===================================================*/
 

@@ -1,4 +1,4 @@
-package com.ren.common.dto;
+package com.ren.common.core.dto;
 
 
 import cn.hutool.core.util.ObjUtil;

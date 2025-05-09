@@ -1,12 +1,11 @@
-package com.ren.system.entity;
+package com.ren.common.core.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ren.common.base.BaseEntity;
+import com.ren.common.core.base.BaseEntity;
 import lombok.*;
-import org.apache.ibatis.type.Alias;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -62,6 +61,9 @@ public class User extends BaseEntity implements UserDetails{
     private Long loginDate;
 
     /*==================================================以下为冗余字段===================================================*/
+    /**最后登录时间Str*/
+    @TableField(exist = false)
+    private String loginDateStr;
     /**权限列表*/
     @TableField(exist = false)
     private List<String> roles = new ArrayList<>();

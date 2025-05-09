@@ -1,7 +1,7 @@
 package com.ren.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ren.system.entity.User;
+import com.ren.common.core.entity.User;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +15,7 @@ public interface UserService extends IService<User> {
      * @author admin
      * @date 2025/04/16 16:24
      */
-    void addUser(User user,String createBy);
+    long addUser(User user,String createBy);
 
     /*
      * 编辑用户是否删除

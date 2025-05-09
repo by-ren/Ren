@@ -47,6 +47,7 @@
   import { ref,reactive } from 'vue'
   import router from '@/router';
   import { useAuthStore } from '@/stores/authStore'
+  import { ElMessage } from 'element-plus'
   
   const authStore = useAuthStore()
   // 标题
@@ -74,10 +75,12 @@
   const handleLogin = async () => {
     try {
       isLoading.value = true
-      const response = await authStore.login(loginForm.username, loginForm.password)
-      if (response.code === 200) {
+      const result = await authStore.login(loginForm.username, loginForm.password)
+      if (result.code === 200) {
         //重定向到首页（不允许回退）
         router.replace('/')
+      }else{
+        ElMessage.error(result.msg);
       }
     }finally{
       isLoading.value = false

@@ -26,4 +26,28 @@ public class AppConstants {
     /**用户-用户类型-系统用户*/
     public static final String USER_USERTYPE_SYSTEM = "00";
     /*===================================================用户结束=======================================================*/
+
+
+    /*===================================================菜单开始=======================================================*/
+    /**菜单-菜单类型-目录*/
+    public static final String MENU_TYPE_DIR = "M";
+    /**菜单-菜单类型-菜单*/
+    public static final String MENU_TYPE_MENU = "c";
+    /**菜单-菜单类型-按钮*/
+    public static final String MENU_TYPE_BUTTON = "F";
+    /*===================================================菜单结束=======================================================*/
+
+    /*===================================================角色开始=======================================================*/
+    /**角色-可查看数据范围-全部数据权限*/
+    public static final byte DATA_SCOPE_ALL = 1;
+    /**角色-可查看数据范围-自定数据权限*/
+    public static final byte DATA_SCOPE_CUSTOMIZE = 2;
+    /**角色-可查看数据范围-本部门数据权限*/
+    public static final byte DATA_SCOPE_THIS_DEPARTMENT = 3;
+    /**角色-可查看数据范围-本部门及以下数据权限*/
+    public static final byte DATA_SCOPE_THIS_DEPARTMENT_AND_BELOW = 4;
+    /**角色-可查看数据范围-仅本人数据权限*/
+    public static final byte DATA_SCOPE_MYSELF = 5;
+    /*===================================================角色结束=======================================================*/
+
 }

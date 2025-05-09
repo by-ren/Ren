@@ -108,6 +108,9 @@
     { index: 'Index', name: '首页', icon: 'i-ep-house' },
     { index: 'System', name: '系统管理', icon: 'i-ep-setting', children: [
       { index: 'User', name: '用户管理' ,icon: 'i-ep-user'},
+      { index: 'Role', name: '角色管理' ,icon: 'i-ep-user'},
+      { index: 'Menu', name: '菜单管理' ,icon: 'i-ep-user'},
+      { index: 'Dept', name: '部门管理' ,icon: 'i-ep-user'},
     ]}
   ];
 
