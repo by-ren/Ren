@@ -77,7 +77,7 @@
             <el-form-item label="性别" :label-width="addUserFormLabelWidth" prop="sex">
                 <el-select
                     v-model="addUserForm.sex"
-                    placeholder="全部"
+                    placeholder="请选择"
                     :empty-values="[null,undefined,-1]"
                     :value-on-clear="-1"
                     clearable
@@ -114,7 +114,7 @@
             <el-form-item label="性别" :label-width="modifyUserFormLabelWidth" prop="sex">
                 <el-select
                     v-model="modifyUserForm.sex"
-                    placeholder="全部"
+                    placeholder="请选择"
                     :empty-values="[null,undefined,-1]"
                     :value-on-clear="-1"
                     clearable
@@ -251,6 +251,7 @@
             }
         ],
         sex:[
+            { pattern: /^(?!-1$|null$).*/, message: '请选择性别', trigger: 'blur' },
             { required: true, message: '请选择性别', trigger: 'blur' }
         ],
         remark:[
@@ -341,6 +342,7 @@
             }
         ],
         sex:[
+            { pattern: /^(?!-1$|null$).*/, message: '请选择性别', trigger: 'blur' },
             { required: true, message: '请选择性别', trigger: 'blur' }
         ],
         remark:[

@@ -1,4 +1,4 @@
-package com.ren.common.base;
+package com.ren.common.core.base;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
@@ -29,9 +29,6 @@ public class BaseEntity implements Serializable
     private String remark;
 
     /*==================================================以下为冗余字段===================================================*/
-    /**最后登录时间Str*/
-    @TableField(exist = false)
-    private String loginDateStr;
     /**创建时间Str*/
     @TableField(exist = false)
     private String createTimeStr;

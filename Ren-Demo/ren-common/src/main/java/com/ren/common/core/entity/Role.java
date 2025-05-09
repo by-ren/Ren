@@ -1,10 +1,10 @@
-package com.ren.system.entity;
+package com.ren.common.core.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ren.common.base.BaseEntity;
+import com.ren.common.core.base.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ public class Role extends BaseEntity {
     @TableField(value = "is_stop")
     private Byte isStop;
     /**角色权限字符串*/
-    @TableField(value = "role_sort")
+    @TableField(value = "role_key")
     private String roleKey;
     /**显示顺序*/
     @TableField(value = "role_sort")
@@ -33,4 +33,7 @@ public class Role extends BaseEntity {
     /**是否删除*/
     @TableField(value = "is_del")
     private Byte isDel;
+    /** 可查看数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限 5：仅本人数据权限） */
+    @TableField(value = "data_scope")
+    private Byte dataScope;
 }

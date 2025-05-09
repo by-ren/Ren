@@ -1,12 +1,13 @@
 package com.ren.framework.security.filter;
 
-import com.ren.framework.properties.TokenProperties;
 import com.ren.framework.security.utils.JwtUtils;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,11 +23,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;
-    @Autowired
-    private TokenProperties tokenProperties;
 
     /*
      * 过滤器，在请求到达Controller之前执行，用于验证Token是否有效，并设置认证信息到SecurityContext中
@@ -82,12 +82,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //通过验证，并且token续期成功，放行请求
             chain.doFilter(request, response);
         } catch (AuthenticationException ex) {
+            log.debug("登陆失败", ex);
             // 收集AuthenticationException及其子类的所有异常，统一抛出，触发AuthenticationEntryPoint，最终都会被MyAuthenticationEntryPoint处理
             throw ex;
         } catch (ExpiredJwtException ex) {
+            log.debug("Token 已过期", ex);
             // JWT过期异常转换，在这里也抛出BadCredentialsException，方便触发AuthenticationEntryPoint，最终都会被MyAuthenticationEntryPoint处理
             throw new BadCredentialsException("Token 已过期", ex);
+        } catch (JwtException | IllegalArgumentException ex) {
+            // 签名无效、格式错误 → 返回 422
+            log.debug("AccessToken验证失败: {}", ex.getMessage(), ex);
+            throw new BadCredentialsException("AccessToken验证失败", ex);
         } catch (Exception ex) {
+            log.debug("Token 解析失败", ex);
             // 其他异常转换为认证异常，在这里也抛出BadCredentialsException，方便触发AuthenticationEntryPoint，最终都会被MyAuthenticationEntryPoint处理
             throw new BadCredentialsException("Token 解析失败", ex);
         }

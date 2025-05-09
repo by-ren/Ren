@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ren.system.mapper.RoleDeptMapper">
+
+    <resultMap type="roleDept" id="RoleDeptResult">
+        <result property="roleId"     column="role_id"    />
+        <result property="deptId"   column="dept_id"  />
+    </resultMap>
+
+    <sql id="selectRoleDeptVo">
+        select role_id, dept_id
+        from sys_role_dept
+    </sql>
+
+    <insert id="insertRoleDept" parameterType="roleDept">
+        insert into sys_role_dept(
+            role_id,dept_id
+        )values(
+            #{roleId},#{deptId}
+        )
+    </insert>
+
+    <delete id="deleteRoleDeptByRoleId">
+        delete from sys_role_dept where role_id = #{roleId}
+    </delete>
+
+    <select id="listRoleDeptByRoleId" parameterType="long" resultMap="RoleDeptResult">
+        <include refid="selectRoleDeptVo"/>
+        where role_id = #{roleId}
+    </select>
+
+</mapper>

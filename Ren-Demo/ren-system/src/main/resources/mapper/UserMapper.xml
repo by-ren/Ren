@@ -33,7 +33,7 @@
         from sys_user u
     </sql>
 
-    <insert id="insertUser" parameterType="user" useGeneratedKeys="true" keyProperty="userId">
+    <insert id="insertUser" parameterType="user" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
         insert into sys_user(
         <if test="userId != null and userId != 0">user_id,</if>
         <if test="username != null and username != ''">username,</if>

@@ -2,8 +2,8 @@ package com.ren.admin.controller;
 
 import cn.hutool.core.convert.Convert;
 import com.ren.common.constant.AppConstants;
-import com.ren.common.dto.AjaxResultDTO;
-import com.ren.system.entity.User;
+import com.ren.common.core.dto.AjaxResultDTO;
+import com.ren.common.core.entity.User;
 import com.ren.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

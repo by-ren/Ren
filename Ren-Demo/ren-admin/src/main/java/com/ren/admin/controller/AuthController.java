@@ -2,15 +2,18 @@ package com.ren.admin.controller;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
+import com.ren.common.core.dto.AjaxResultDTO;
+import com.ren.common.utils.IpUtils;
 import com.ren.framework.properties.TokenProperties;
 import com.ren.framework.security.config.AuthenticationContextHolder;
 import com.ren.framework.security.utils.JwtUtils;
-import com.ren.common.utils.IpUtils;
-import com.ren.common.dto.AjaxResultDTO;
-import com.ren.system.entity.User;
+import com.ren.common.core.entity.User;
 import com.ren.system.service.UserService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +31,11 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/auth")
+@Slf4j
 public class AuthController {
+
+    // 静态Logger实例（推荐）
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -73,12 +80,13 @@ public class AuthController {
             loginIpUser.setLoginIp(IpUtils.getIpAddr());
             loginIpUser.setLoginDate(DateUtil.currentSeconds());
             userService.modifyUser(loginIpUser,userDetails.getUsername());
-
             return AjaxResultDTO.success("登陆成功").put("accessToken",accessToken).put("refreshToken",refreshToken);
         } catch (BadCredentialsException e) {
+            log.debug("登陆失败", e);
             // 密码错误
             return AjaxResultDTO.error(401, e.getMessage());
         } catch (AuthenticationException e) {
+            log.debug("登陆失败", e);
             // 其他认证异常（如用户被锁定）
             return AjaxResultDTO.error(401, e.getMessage());
         }finally{
