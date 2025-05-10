@@ -16,6 +16,7 @@
         <result property="menuType"     column="menu_type"    />
         <result property="isVisible"     column="is_visible"    />
         <result property="isStop"     column="is_stop"    />
+        <result property="isDel"     column="is_del"    />
         <result property="perms"     column="perms"    />
         <result property="icon"     column="icon"    />
         <result property="createBy"     column="create_by"    />
@@ -29,7 +30,7 @@
 
     <sql id="selectMenuVo">
         select
-            menu_id,menu_name,parent_id,order_num,route_name,path,component,query,is_frame,is_cache,menu_type,is_visible,is_stop,perms,icon,
+            menu_id,menu_name,parent_id,order_num,route_name,path,component,query,is_frame,is_cache,menu_type,is_visible,is_stop,is_del,perms,icon,
             create_time, create_by,FROM_UNIXTIME(create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, update_by, update_time, FROM_UNIXTIME(update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, remark
         from sys_menu
     </sql>
@@ -76,6 +77,16 @@
         )
     </insert>
 
+    <update id="updateMenuIsDelById">
+        update sys_menu
+        <set>
+            is_del = #{isDel},
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        </set>
+        where menu_id = #{menuId}
+    </update>
+
     <update id="updateMenuById" parameterType="menu">
         update sys_menu
         <set>
@@ -98,14 +109,18 @@
             update_by = #{updateBy},
             update_time = #{updateTime}
         </set>
-        where dept_id = #{deptId}
+        where menu_id = #{menuId}
     </update>
 
     <select id="listMenuByParam" resultMap="MenuResult">
         <include refid="selectMenuVo"/>
         <where>
+            is_del=0
             <if test="menuType != null and menuType != ''">
                 AND menu_type = #{menuType}
+            </if>
+            <if test="searchLike != null and searchLike != ''">
+                AND (menu_name LIKE #{searchLike} or route_name LIKE #{searchLike} or perms LIKE #{searchLike})
             </if>
         </where>
     </select>

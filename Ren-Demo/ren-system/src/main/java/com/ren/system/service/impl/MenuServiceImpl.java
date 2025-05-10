@@ -76,4 +76,17 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         List<Menu> menuList = menuMapper.listMenuByParam(paramMap);
         return menuList;
     }
+
+    /*
+     * 编辑菜单是否删除
+     * @param deptId
+     * @param isDel
+     * @param updateBy
+     * @author admin
+     * @date 2025/05/07 17:13
+     */
+    @Override
+    public void modifyMenuIsDelById(long menuId, byte isDel, String updateBy) {
+        menuMapper.updateMenuIsDelById(menuId,isDel,updateBy,DateUtil.currentSeconds());
+    }
 }

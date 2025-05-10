@@ -19,6 +19,7 @@
             <el-sub-menu v-if="item.children" :index="item.index">
               <template #title>
                 <el-icon>
+                  <!-- 动态绑定目标组件，此种方式依赖于main.ts中的全局注册，所以一定要先注册之后再使用动态绑定 -->
                   <component :is="item.icon" />
                 </el-icon>
                 <span>{{ item.name }}</span>
@@ -27,6 +28,7 @@
               <RouterLink :to="{name:child.index}" v-for="child in item.children" :key="child.index" >
                 <el-menu-item :index="child.index">
                   <el-icon>
+                    <!-- 动态绑定目标组件，此种方式依赖于main.ts中的全局注册，所以一定要先注册之后再使用动态绑定 -->
                     <component :is="child.icon" />
                   </el-icon>
                   <span>{{ child.name }}</span>
@@ -37,6 +39,7 @@
             <RouterLink v-else :to="{name:item.index}">
               <el-menu-item :index="item.index">
                 <el-icon>
+                  <!-- 动态绑定目标组件，此种方式依赖于main.ts中的全局注册，所以一定要先注册之后再使用动态绑定 -->
                   <component :is="item.icon" />
                 </el-icon>
                 <span>首页</span>
@@ -108,9 +111,9 @@
     { index: 'Index', name: '首页', icon: 'i-ep-house' },
     { index: 'System', name: '系统管理', icon: 'i-ep-setting', children: [
       { index: 'User', name: '用户管理' ,icon: 'i-ep-user'},
-      { index: 'Role', name: '角色管理' ,icon: 'i-ep-user'},
-      { index: 'Menu', name: '菜单管理' ,icon: 'i-ep-user'},
-      { index: 'Dept', name: '部门管理' ,icon: 'i-ep-user'},
+      { index: 'Role', name: '角色管理' ,icon: 'i-ep-avatar'},
+      { index: 'Menu', name: '菜单管理' ,icon: 'i-ep-menu'},
+      { index: 'Dept', name: '部门管理' ,icon: 'i-ep-grid'},
     ]}
   ];
 

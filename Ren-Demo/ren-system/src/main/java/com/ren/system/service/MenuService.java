@@ -44,4 +44,13 @@ public interface MenuService extends IService<Menu> {
      */
     List<Menu> listMenuByParam(Map<String,Object> paramMap);
 
+    /*
+     * 编辑菜单是否删除
+     * @param deptId
+     * @param isDel
+     * @param updateBy
+     * @author admin
+     * @date 2025/05/07 17:13
+     */
+    void modifyMenuIsDelById(long menuId,byte isDel,String updateBy);
 }

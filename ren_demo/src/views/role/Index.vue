@@ -8,7 +8,11 @@
             <el-button @click="resetForm(searchFormRef)">重置</el-button>
         </el-form-item>
     </el-form>
-    <el-button type="primary" @click="openAddRoleDialog">添加角色</el-button>
+    <el-row class="btns">
+        <el-col :span="24">
+            <el-button type="primary" @click="openAddRoleDialog">添加角色</el-button>
+        </el-col>
+    </el-row>
     <el-table :data="tableData" stripe>
         <el-table-column prop="roleName" label="角色名称" width="140" show-overflow-tooltip></el-table-column>
         <el-table-column prop="roleKey" label="权限字符" width="140" show-overflow-tooltip></el-table-column>
@@ -368,5 +372,9 @@
 
     .demo-form-inline .el-select {
         --el-select-width: 220px;
+    }
+
+    .btns{
+        margin-bottom: 10px;
     }
 </style>
