@@ -82,11 +82,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //通过验证，并且token续期成功，放行请求
             chain.doFilter(request, response);
         } catch (AuthenticationException ex) {
-            log.debug("登陆失败", ex);
+            log.debug("Token为空或无效", ex);
             // 收集AuthenticationException及其子类的所有异常，统一抛出，触发AuthenticationEntryPoint，最终都会被MyAuthenticationEntryPoint处理
             throw ex;
         } catch (ExpiredJwtException ex) {
-            log.debug("Token 已过期", ex);
+            log.debug("Token已过期", ex);
             // JWT过期异常转换，在这里也抛出BadCredentialsException，方便触发AuthenticationEntryPoint，最终都会被MyAuthenticationEntryPoint处理
             throw new BadCredentialsException("Token 已过期", ex);
         } catch (JwtException | IllegalArgumentException ex) {
@@ -94,7 +94,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.debug("AccessToken验证失败: {}", ex.getMessage(), ex);
             throw new BadCredentialsException("AccessToken验证失败", ex);
         } catch (Exception ex) {
-            log.debug("Token 解析失败", ex);
+            log.debug("Token解析失败", ex);
             // 其他异常转换为认证异常，在这里也抛出BadCredentialsException，方便触发AuthenticationEntryPoint，最终都会被MyAuthenticationEntryPoint处理
             throw new BadCredentialsException("Token 解析失败", ex);
         }

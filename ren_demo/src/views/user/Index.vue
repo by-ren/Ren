@@ -1,69 +1,85 @@
 <template>
-    <el-form ref="searchFormRef" :rules="rules" :inline="true" :model="tableParams" class="demo-form-inline">
-        <el-form-item label="查询" prop="searchLike">
-            <el-input v-model="tableParams.searchLike" placeholder="登陆账号/昵称/邮箱/手机号码" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="用户类型" prop="userType">
-            <el-select
-                v-model="tableParams.userType"
-                placeholder="全部"
-                value-on-clear=""
-                clearable
-            >
-                <el-option label="系统用户" value="00" />
-            </el-select>
-        </el-form-item>
-        <el-form-item label="性别" prop="sex">
-            <el-select
-                v-model="tableParams.sex"
-                placeholder="全部"
-                :empty-values="[null,undefined,-1]"
-                :value-on-clear="-1"
-                clearable
-            >
-                <el-option label="男" :value="0" />
-                <el-option label="女" :value="1" />
-                <el-option label="未知" :value="2" />
-            </el-select>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="search">搜索</el-button>
-            <el-button @click="resetForm(searchFormRef)">重置</el-button>
-        </el-form-item>
-    </el-form>
-    <el-row class="btns">
-        <el-col :span="24">
-            <el-button type="primary" @click="openAddUserDialog">添加用户</el-button>
-        </el-col>
-    </el-row>
-    <el-table :data="tableData" stripe>
-        <el-table-column prop="username" label="登陆账号" width="140" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="nickname" label="用户昵称" width="140" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="userType" label="用户类型" width="140" :align="'center'" show-overflow-tooltip>
-            <template #default="item">
-                <el-tag v-if="item.row.userType == '00'">系统用户</el-tag>
-            </template>
-        </el-table-column>
-        <el-table-column prop="email" label="邮箱" width="140" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="phonenumber" label="手机号码" width="150" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="sex" label="性别" width="120" :align="'center'" show-overflow-tooltip>
-            <template #default="item">
-                <el-tag v-if="item.row.sex == 0">男</el-tag>
-                <el-tag v-if="item.row.sex == 1">女</el-tag>
-                <el-tag v-if="item.row.sex == 2">未知</el-tag>
-            </template>
-        </el-table-column>
-        <el-table-column prop="loginDateStr" label="最后登录时间" width="180" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="loginIp" label="最后登录IP" width="140" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="remark" label="备注" width="200" show-overflow-tooltip></el-table-column>
-        <el-table-column fixed="right" label="操作" min-width="120">
-            <template #default="scope">
-                <el-button link type="primary" size="small" @click="openModifyUserDialog(scope.$index, scope.row)">修改</el-button>
-                <el-button link type="primary" size="small" @click="handleDeleteUser(scope.$index, scope.row)">删除</el-button>
-                <el-button link type="primary" size="small" @click="openResetPasswordDialog(scope.$index, scope.row)">重置密码</el-button>
-            </template>
-        </el-table-column>
-    </el-table>
+
+<el-container>
+    <el-aside width="200px">
+        <el-tree 
+            :data="deptList" 
+            @node-click="handleNodeClick" 
+            :default-expand-all="true" 
+            :expand-on-click-node="false" 
+            :props="{
+                label: 'label',
+                children: 'children',
+            }"
+        />
+    </el-aside>
+    <el-main>
+        <el-form ref="searchFormRef" :rules="rules" :inline="true" :model="tableParams" class="demo-form-inline">
+            <el-form-item label="查询" prop="searchLike">
+                <el-input v-model="tableParams.searchLike" placeholder="登陆账号/昵称/邮箱/手机号码" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="用户类型" prop="userType">
+                <el-select
+                    v-model="tableParams.userType"
+                    placeholder="全部"
+                    value-on-clear=""
+                    clearable
+                >
+                    <el-option label="系统用户" value="00" />
+                </el-select>
+            </el-form-item>
+            <el-form-item label="性别" prop="sex">
+                <el-select
+                    v-model="tableParams.sex"
+                    placeholder="全部"
+                    :empty-values="[null,undefined,-1]"
+                    :value-on-clear="-1"
+                    clearable
+                >
+                    <el-option label="男" :value="0" />
+                    <el-option label="女" :value="1" />
+                    <el-option label="未知" :value="2" />
+                </el-select>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="search">搜索</el-button>
+                <el-button @click="resetForm(searchFormRef)">重置</el-button>
+            </el-form-item>
+        </el-form>
+        <el-row class="btns">
+            <el-col :span="24">
+                <el-button type="primary" @click="openAddUserDialog">添加用户</el-button>
+            </el-col>
+        </el-row>
+        <el-table :data="tableData" stripe>
+            <el-table-column prop="username" label="登陆账号" width="140" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="nickname" label="用户昵称" width="140" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="userType" label="用户类型" width="140" :align="'center'" show-overflow-tooltip>
+                <template #default="item">
+                    <el-tag v-if="item.row.userType == '00'">系统用户</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column prop="email" label="邮箱" width="140" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="phonenumber" label="手机号码" width="150" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="sex" label="性别" width="120" :align="'center'" show-overflow-tooltip>
+                <template #default="item">
+                    <el-tag v-if="item.row.sex == 0">男</el-tag>
+                    <el-tag v-if="item.row.sex == 1">女</el-tag>
+                    <el-tag v-if="item.row.sex == 2">未知</el-tag>
+                </template>
+            </el-table-column>
+            <el-table-column prop="loginDateStr" label="最后登录时间" width="180" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="loginIp" label="最后登录IP" width="140" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="remark" label="备注" width="200" show-overflow-tooltip></el-table-column>
+            <el-table-column fixed="right" label="操作" min-width="120">
+                <template #default="scope">
+                    <el-button link type="primary" size="small" @click="openModifyUserDialog(scope.$index, scope.row)">修改</el-button>
+                    <el-button link type="primary" size="small" @click="handleDeleteUser(scope.$index, scope.row)">删除</el-button>
+                    <el-button link type="primary" size="small" @click="openResetPasswordDialog(scope.$index, scope.row)">重置密码</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </el-main>
     <el-dialog title="添加用户" v-model="dialogFormAddUser" width="500px">
         <el-form :model="addUserForm" :rules="addUserFormRules" ref="addUserFormRef">
             <el-form-item label="登陆账号" :label-width="addUserFormLabelWidth" prop="username">
@@ -156,23 +172,29 @@
             </span>
         </template>
     </el-dialog>
+</el-container>
+
+    
 </template>
   
 <script setup lang="ts" name="home">
     import { ref,onMounted } from 'vue'
     import type { FormInstance,FormRules } from 'element-plus'
     import { ElMessage } from 'element-plus'
-    import {getUserList,resetPassword,deleteUser,modifyUser,addUser} from '@/api/user/index'
+    import {getUserList,resetPassword,deleteUser,modifyUser,addUser,getDeptList} from '@/api/user/index'
     /*============================通用参数开始============================*/
     //表格数据
     let tableData = ref([]);
     interface TableParams {
+        deptId: number
         searchLike: string
         userType: string
         sex: number
     }
     //查询参数
     let tableParams = ref<TableParams>({
+        //部门id
+        deptId: -1,
         //查询参数
         searchLike: "",
         //用户类型
@@ -189,6 +211,20 @@
     
     
     /*============================页面方法开始============================*/
+
+    /*********部门树*********/
+    interface Tree {
+        id: number,
+        label: string,
+        children?: Tree[]
+    }
+    const deptList = ref<Tree[]>()
+    //点击回调
+    const handleNodeClick = (data: Tree) => {
+        tableParams.value.deptId = data.id;
+        search();
+    }
+
     //页面搜索方法
     const search = async () => {
         let result = await getUserList(tableParams.value);
@@ -473,6 +509,11 @@
     // 组件加载完成后执行
     // 初始化表格数据
     onMounted(async () => {
+        let resultV2 = await getDeptList();
+        if(resultV2.code == 200){
+            deptList.value = resultV2.deptList;
+        }
+
         let result = await getUserList(tableParams.value);
         if(result.code == 200){
             tableData.value = result.userList;

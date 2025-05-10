@@ -41,6 +41,21 @@ public class DeptController {
     }
 
     /*
+     * 部门树形列表
+     * @return com.ren.common.core.dto.AjaxResultDTO
+     * @author admin
+     * @date 2025/05/10 18:06
+     */
+    @GetMapping("/list")
+    public AjaxResultDTO listDept()
+    {
+        List<Dept> deptList = deptService.listDeptByParam(null);
+        //将列表转为树形结构
+        deptList = TreeUtils.formatTree(deptList, dept -> Convert.toInt(BeanUtil.getProperty(dept, "parentId")) == 0,"deptId",null,null,"orderNum");
+        return AjaxResultDTO.success().put("deptList",TreeUtils.convertTreeSelectForAll(deptList, "deptId", "deptName", "isStop", "children"));
+    }
+
+    /*
      * 获取排除本部门Id的部门列表（修改时使用）
      * @param deptId
      * @return com.ren.common.dto.AjaxResultDTO
