@@ -3,6 +3,7 @@ package com.ren.system.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ren.common.core.entity.Menu;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -36,4 +37,14 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @date 2025/05/07 17:15
      */
     List<Menu> listMenuByParam(Map<String, Object> paramMap);
+
+    /*
+     * 编辑菜单是否删除
+     * @param deptId
+     * @param isDel
+     * @param updateBy
+     * @author admin
+     * @date 2025/05/07 17:13
+     */
+	void updateMenuIsDelById(@Param("menuId") long menuId, @Param("isDel")byte isDel, @Param("updateBy")String updateBy, @Param("updateTime")long updateTime);
 }

@@ -8,7 +8,11 @@
             <el-button @click="resetForm(searchFormRef)">重置</el-button>
         </el-form-item>
     </el-form>
-    <el-button type="primary" @click="openAddDeptDialog">添加部门</el-button>
+    <el-row class="btns">
+        <el-col :span="24">
+            <el-button type="primary" @click="openAddDeptDialog">添加部门</el-button>
+        </el-col>
+    </el-row>
     <el-table
       :data="tableData"
       style="width: 100%; margin-bottom: 20px"
@@ -500,4 +504,9 @@
 </script>
 
 <style scoped>
+
+    .btns{
+        margin-bottom: 10px;
+    }
+
 </style>

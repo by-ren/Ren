@@ -74,6 +74,10 @@ public class Menu extends BaseEntity {
     /** 菜单图标 */
     private String icon;
 
+    /** 是否删除（0：否 1：是） */
+    @TableField(value = "is_del")
+    private Byte isDel;
+
     /*==================================================以下为冗余字段===================================================*/
 
     /** 子菜单 */

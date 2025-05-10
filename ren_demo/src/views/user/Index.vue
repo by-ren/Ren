@@ -31,7 +31,11 @@
             <el-button @click="resetForm(searchFormRef)">重置</el-button>
         </el-form-item>
     </el-form>
-    <el-button type="primary" @click="openAddUserDialog">添加用户</el-button>
+    <el-row class="btns">
+        <el-col :span="24">
+            <el-button type="primary" @click="openAddUserDialog">添加用户</el-button>
+        </el-col>
+    </el-row>
     <el-table :data="tableData" stripe>
         <el-table-column prop="username" label="登陆账号" width="140" show-overflow-tooltip></el-table-column>
         <el-table-column prop="nickname" label="用户昵称" width="140" show-overflow-tooltip></el-table-column>
@@ -484,5 +488,9 @@
 
     .demo-form-inline .el-select {
         --el-select-width: 220px;
+    }
+
+    .btns{
+        margin-bottom: 10px;
     }
 </style>

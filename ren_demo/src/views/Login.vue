@@ -11,6 +11,7 @@
           placeholder="账号"
           >
           <template #prefix>
+            <!-- 也可以写成<svg-icon icon-class="user" class="input-icon" />，支持两种方式 -->
             <SvgIcon icon-class="user" class="input-icon" />
           </template>
         </el-input>
