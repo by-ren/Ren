@@ -27,7 +27,7 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException){
-        log.debug("进入SpringSecurity认证失败统一处理程序",authException);
+        log.info("进入SpringSecurity认证失败统一处理程序");
 		try {
             //设置状态码和返回信息（本来这里应该设置为401，表示凭证失效异常）
             //但是如果这里设置了401，会被浏览器捕获到异常，并打印，不好看。所以这里我设置为200，并自定义一个返回信息，使用返回信息中的状态码来判断更好

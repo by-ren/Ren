@@ -44,3 +44,11 @@ export const resetPassword = (params? : Record<string, any>) => {
     data: params || {} // 无参数时传空对象
   }).then(response => response.data)
 }
+
+//获取上级部门列表
+export const getDeptList = () => {
+  return service({
+    method: 'get',
+    url: `/dept/list`,
+  }).then(response => response.data)
+}
