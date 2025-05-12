@@ -4,13 +4,16 @@ import com.ren.common.constant.AppConstants;
 import com.ren.common.core.dto.AjaxResultDTO;
 import com.ren.common.core.entity.Role;
 import com.ren.common.core.entity.User;
+import com.ren.system.entity.UserRole;
 import com.ren.system.service.RoleService;
+import com.ren.system.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/role")
@@ -18,6 +21,8 @@ public class RoleController {
 
     @Autowired
     RoleService roleService;
+    @Autowired
+    UserRoleService userRoleService;
 
     /*
      * 角色列表
@@ -27,8 +32,21 @@ public class RoleController {
      * @date 2025/05/08 15:01
      */
     @PostMapping("/list")
-    public AjaxResultDTO getRoleList(@RequestBody(required = false) Map<String,Object> paramMap) {
+    public AjaxResultDTO listRoleByPage(@RequestBody(required = false) Map<String,Object> paramMap) {
         List<Role> roleList = roleService.listRoleByParam(paramMap);
+        return AjaxResultDTO.success().put("roleList",roleList);
+    }
+
+    /*
+     * 角色列表
+     * @return com.ren.common.core.dto.AjaxResultDTO
+     * @author admin
+     * @date 2025/05/12 19:28
+     */
+    @GetMapping("/list")
+    public AjaxResultDTO listRole() {
+        List<Role> roleList = roleService.listRoleByParam(null);
+        roleList = roleList.stream().filter(role -> !role.getRoleName().equals(AppConstants.ROLE_SUPER_NAME)).collect(Collectors.toList());
         return AjaxResultDTO.success().put("roleList",roleList);
     }
 

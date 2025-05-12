@@ -9,10 +9,8 @@ import com.ren.common.core.entity.User;
 import com.ren.common.core.vo.TreeSelectVO;
 import com.ren.common.utils.TreeUtils;
 import com.ren.system.entity.RoleMenu;
-import com.ren.system.entity.UserRole;
 import com.ren.system.service.MenuService;
 import com.ren.system.service.RoleMenuService;
-import com.ren.system.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +36,7 @@ public class MenuController {
      * @date 2025/05/08 17:14
      */
     @PostMapping("/list")
-    public AjaxResultDTO list(@RequestBody(required = false) Map<String,Object> paramMap)
+    public AjaxResultDTO listMenuByPage(@RequestBody(required = false) Map<String,Object> paramMap)
     {
         List<Menu> menuList = menuService.listMenuByParam(paramMap);
         //将列表转为树形结构

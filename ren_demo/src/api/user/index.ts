@@ -45,10 +45,18 @@ export const resetPassword = (params? : Record<string, any>) => {
   }).then(response => response.data)
 }
 
-//获取上级部门列表
+//获取部门列表
 export const getDeptList = () => {
   return service({
     method: 'get',
     url: `/dept/list`,
+  }).then(response => response.data)
+}
+
+//获取角色列表
+export const getRoleList = () => {
+  return service({
+    method: 'get',
+    url: `/role/list`,
   }).then(response => response.data)
 }

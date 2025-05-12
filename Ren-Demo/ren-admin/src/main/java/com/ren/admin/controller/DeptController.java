@@ -37,7 +37,7 @@ public class DeptController {
      * @date 2025/05/08 17:14
      */
     @PostMapping("/list")
-    public AjaxResultDTO list(@RequestBody(required = false) Map<String,Object> paramMap)
+    public AjaxResultDTO listDeptByPage(@RequestBody(required = false) Map<String,Object> paramMap)
     {
         List<Dept> deptList = deptService.listDeptByParam(paramMap);
         //将列表转为树形结构

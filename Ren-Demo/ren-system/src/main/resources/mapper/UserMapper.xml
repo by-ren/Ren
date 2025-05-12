@@ -24,6 +24,27 @@
         <result property="updateTime"   column="update_time"  />
         <result property="updateTimeStr"   column="update_time_str"  />
         <result property="remark"       column="remark"       />
+        <association property="dept"    javaType="dept"         resultMap="deptResult" />
+        <collection  property="roleList"   javaType="java.util.List"  resultMap="RoleResult" />
+    </resultMap>
+
+    <resultMap id="deptResult" type="dept">
+        <id     property="deptId"    column="dept_id"     />
+        <result property="parentId"  column="parent_id"   />
+        <result property="deptName"  column="dept_name"   />
+        <result property="ancestors" column="ancestors"   />
+        <result property="orderNum"  column="order_num"   />
+        <result property="leader"    column="leader"      />
+        <result property="isStop"    column="dept_is_stop" />
+    </resultMap>
+
+    <resultMap id="RoleResult" type="role">
+        <id     property="roleId"       column="role_id"        />
+        <result property="roleName"     column="role_name"      />
+        <result property="roleKey"      column="role_key"       />
+        <result property="roleSort"     column="role_sort"      />
+        <result property="dataScope"    column="data_scope"     />
+        <result property="isStop"       column="role_is_stop"    />
     </resultMap>
 
     <sql id="selectUserVo">
@@ -36,9 +57,13 @@
     <sql id="selectUserVo2">
         select u.user_id, u.username, u.nickname, u.password, u.is_del,u.dept_id, u.user_type, u.email, u.phonenumber, u.sex, u.avatar, u.login_ip,
                u.login_date, FROM_UNIXTIME(u.login_date, '%Y-%m-%d %H:%i:%s') AS login_date_str,u.create_time, u.create_by,
-               FROM_UNIXTIME(u.create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, u.update_by, u.update_time, FROM_UNIXTIME(u.update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, u.remark
+               FROM_UNIXTIME(u.create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, u.update_by, u.update_time, FROM_UNIXTIME(u.update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, u.remark,
+               d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.is_stop as dept_is_stop,
+               r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.is_stop as role_is_stop
         from sys_user u
         left join sys_dept d on u.dept_id = d. dept_id
+        left join sys_user_role ur on u.user_id = ur.user_id
+        left join sys_role r on r.role_id = ur.role_id
     </sql>
 
     <insert id="insertUser" parameterType="user" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
@@ -117,6 +142,7 @@
     <select id="listUserByParam" resultMap="SysUserResult">
         <include refid="selectUserVo2"/>
         <where>
+            u.is_del = 0
             <if test="deptId != null and deptId != -1">
                 AND (u.dept_id = #{deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE find_in_set(#{deptId}, ancestors) ))
             </if>
