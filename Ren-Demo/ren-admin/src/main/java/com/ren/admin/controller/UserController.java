@@ -42,7 +42,7 @@ public class UserController {
      * @date 2025/04/26 15:55
      */
     @PostMapping("/list")
-    public AjaxResultDTO getUserList(@RequestBody(required = false) Map<String,Object> paramMap) {
+    public AjaxResultDTO listUserByPage(@RequestBody(required = false) Map<String,Object> paramMap) {
         List<User> userList = userService.listUserByParam(paramMap);
         return AjaxResultDTO.success().put("userList",userList);
     }

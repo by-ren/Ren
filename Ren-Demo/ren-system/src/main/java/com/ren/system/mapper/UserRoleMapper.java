@@ -19,6 +19,14 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
 	void insertUserRole(UserRole userRole);
 
 	/*
+	 * 批量添加用户角色
+	 * @param userRoleList
+	 * @author admin
+	 * @date 2025/05/12 19:40
+	 */
+	void insertUserRoleBatch(List<UserRole> userRoleList);
+
+	/*
 	 * 删除用户角色
 	 * @param userId
 	 * @author admin
@@ -34,4 +42,5 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
 	 * @date 2025/05/07 17:19
 	 */
 	List<UserRole> listUserRoleByUserId(long userId);
+
 }

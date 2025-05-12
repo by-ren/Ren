@@ -61,6 +61,15 @@ public class User extends BaseEntity implements UserDetails{
     private Long loginDate;
 
     /*==================================================以下为冗余字段===================================================*/
+    /**部门*/
+    @TableField(exist = false)
+    private Dept dept;
+    /**角色列表*/
+    @TableField(exist = false)
+    private List<Role> roleList = new ArrayList<>();
+    /**角色Id*/
+    @TableField(exist = false)
+    private Long[] roleIdArr;
     /**最后登录时间Str*/
     @TableField(exist = false)
     private String loginDateStr;
