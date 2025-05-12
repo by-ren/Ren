@@ -147,9 +147,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
         }
         List<User> userList = userMapper.listUserByParam(paramMap);
-        for(User user : userList){
-            user.setRoleIdArr(user.getRoleList().stream().map(role -> role.getRoleId()).toArray(Long[]::new));
-        }
         return userList;
     }
 

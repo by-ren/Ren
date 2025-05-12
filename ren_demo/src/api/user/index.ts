@@ -60,3 +60,12 @@ export const getRoleList = () => {
     url: `/role/list`,
   }).then(response => response.data)
 }
+
+//获取角色信息
+export const getUserInfo = (userId:number) => {
+  return service({
+    method: 'get',
+    url: `/user/info/v2`,
+    params: { userId },
+  }).then(response => response.data)
+}

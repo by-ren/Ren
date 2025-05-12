@@ -179,7 +179,7 @@
     import { ref,onMounted } from 'vue'
     import type { FormInstance,FormRules } from 'element-plus'
     import { ElMessage } from 'element-plus'
-    import {getUserList,resetPassword,deleteUser,modifyUser,addUser,getDeptList,getRoleList} from '@/api/user/index'
+    import {getUserList,resetPassword,deleteUser,modifyUser,addUser,getDeptList,getRoleList,getUserInfo} from '@/api/user/index'
     /*============================通用参数开始============================*/
     //表格数据
     let tableData = ref([]);
@@ -357,7 +357,14 @@
             let result = await getRoleList();
             if(result.code == 200){
                 addOrModifyRoleList.value = result.roleList;
-                addOrModifyUserForm.value.roleIdArr = row.roleIdArr;
+            }
+        } catch (error) {
+            ElMessage.error('获取角色列表失败');
+        }
+        try {
+            let result = await getUserInfo(row.userId);
+            if(result.code == 200){
+                addOrModifyUserForm.value.roleIdArr = result.roleIdArr;
             }
         } catch (error) {
             ElMessage.error('获取角色列表失败');
