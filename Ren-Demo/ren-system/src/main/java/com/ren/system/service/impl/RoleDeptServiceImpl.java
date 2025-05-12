@@ -28,6 +28,17 @@ public class RoleDeptServiceImpl extends ServiceImpl<RoleDeptMapper, RoleDept> i
     }
 
     /*
+     * 批量添加数据部门
+     * @param roleDeptList
+     * @author admin
+     * @date 2025/05/12 16:11
+     */
+    @Override
+    public void addRoleDeptBatch(List<RoleDept> roleDeptList) {
+        roleDeptMapper.insertRoleDeptBatch(roleDeptList);
+    }
+
+    /*
      * 删除可查看数据部门
      * @param roleId
      * @author admin

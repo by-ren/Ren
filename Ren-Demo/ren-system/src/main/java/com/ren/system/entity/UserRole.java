@@ -15,7 +15,7 @@ public class UserRole {
 
     /**用户ID*/
     @TableField(value = "user_id")
-    private String userId;
+    private Long userId;
     /**角色ID*/
     @TableField(value = "role_id")
     private Long roleId;

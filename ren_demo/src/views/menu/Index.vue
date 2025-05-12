@@ -49,7 +49,7 @@
             </template>
         </el-table-column>
     </el-table>
-    <el-dialog :title="addOrModifyTag == 1 ? '添加' : '编辑'" v-model="dialogFormAddOrModifyMenu" width="700px">
+    <el-dialog :title="addOrModifyTag == 1 ? '添加菜单' : '修改菜单'" v-model="dialogFormAddOrModifyMenu" width="700px">
         <el-form :model="addOrModifyMenuForm" :rules="addOrModifyMenuFormRules" ref="addOrModifyMenuFormRef" :inline="true">
             <el-form-item label="上级菜单" :label-width="addOrModifyMenuFormLabelWidth" prop="parentId" class="bigLine">
                 <el-tree-select
@@ -161,9 +161,9 @@
     //表单验证规则（即使用不到，为了重置方法，也需要写）
     const rules = reactive<FormRules<TableParams>>({
     })
-    //添加编辑菜单下拉框树形列表
+    //添加修改菜单下拉框树形列表
     let parentMenuList = ref()
-    //添加或编辑(1添加，2编辑)
+    //添加或修改(1添加，2修改)
     let addOrModifyTag = ref(1)
     /*============================通用参数结束============================*/
 
@@ -181,7 +181,7 @@
         if (!formEl) return
         formEl.resetFields()
     }
-    /*********添加或编辑菜单*********/
+    /*********添加或修改菜单*********/
     //弹出框是否显示
     let dialogFormAddOrModifyMenu = ref(false);
     //表单元素宽度
@@ -262,7 +262,7 @@
         addOrModifyTag.value = 1;
         dialogFormAddOrModifyMenu.value = true;
     }
-    //打开编辑弹框
+    //打开修改弹框
     const openModifyMenuDialog = async(index: number, row: any) => {
         //表单值恢复为初始值
         addOrModifyMenuForm.value = { ...initialAddOrModifyMenuForm };
@@ -326,7 +326,7 @@
         if (!formEl) return
         await formEl.validate(async (valid, fields) => {
             if (valid) {
-                //调用添加或编辑方法
+                //调用添加或修改方法
                 if(addOrModifyTag.value == 1){
                     let result = await addMenu(addOrModifyMenuForm.value);
                     if(result.code == 200){
@@ -345,7 +345,7 @@
                     let result = await modifyMenu(addOrModifyMenuForm.value);
                     if(result.code == 200){
                         ElMessage({
-                            message: '编辑成功',
+                            message: '修改成功',
                             type: 'success',
                         })
                         //关闭弹框

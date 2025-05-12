@@ -36,4 +36,13 @@ public class Role extends BaseEntity {
     /** 可查看数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限 5：仅本人数据权限） */
     @TableField(value = "data_scope")
     private Byte dataScope;
+
+
+    /*================================================以下为冗余字段=====================================================*/
+    // 菜单ID数组
+    @TableField(exist = false)
+    private Long[] menuIds;
+    // 部门ID数组
+    @TableField(exist = false)
+    private Long[] deptIds;
 }

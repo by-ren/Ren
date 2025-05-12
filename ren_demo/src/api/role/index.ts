@@ -18,7 +18,7 @@ export const addRole = (params? : Record<string, any>) => {
   }).then(response => response.data)
 };
 
-//编辑角色
+//修改角色
 export const modifyRole = (params? : Record<string, any>) => {
   return service({
     method: 'post',
@@ -35,3 +35,21 @@ export const deleteRole = (roleId:number) => {
     params: { roleId } // 通过 URL 参数传递（如 /role/delete?roleId=1）
   }).then(response => response.data);
 };
+
+//获取角色菜单列表
+export const getMenuList = (roleId?:number) => {
+  return service({
+    method: 'get',
+    url: `/menu/list/role`,
+    params: { roleId }
+  }).then(response => response.data)
+}
+
+//获取角色部门列表
+export const getDeptList = (roleId?:number) => {
+  return service({
+    method: 'get',
+    url: `/dept/list/role`,
+    params: { roleId }
+  }).then(response => response.data)
+}

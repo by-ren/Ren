@@ -18,7 +18,7 @@ export const addUser = (params? : Record<string, any>) => {
   }).then(response => response.data)
 };
 
-//编辑用户
+//修改用户
 export const modifyUser = (params? : Record<string, any>) => {
   return service({
     method: 'post',

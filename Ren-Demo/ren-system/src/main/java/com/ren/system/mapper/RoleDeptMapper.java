@@ -33,4 +33,12 @@ public interface RoleDeptMapper extends BaseMapper<RoleDept> {
      * @date 2025/05/07 17:19
      */
     List<RoleDept> listRoleDeptByRoleId(long roleId);
+
+    /*
+     * 批量添加数据部门
+     * @param roleDeptList
+     * @author admin
+     * @date 2025/05/12 16:12
+     */
+	void insertRoleDeptBatch(List<RoleDept> roleDeptList);
 }
