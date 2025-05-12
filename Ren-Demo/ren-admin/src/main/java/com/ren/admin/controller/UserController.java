@@ -4,6 +4,8 @@ import cn.hutool.core.convert.Convert;
 import com.ren.common.constant.AppConstants;
 import com.ren.common.core.dto.AjaxResultDTO;
 import com.ren.common.core.entity.User;
+import com.ren.system.entity.UserRole;
+import com.ren.system.service.UserRoleService;
 import com.ren.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +20,8 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    UserRoleService userRoleService;
 
     /*
      * 用户信息
@@ -33,6 +37,21 @@ public class UserController {
         AjaxResultDTO ajax = AjaxResultDTO.success();
         ajax.put("user", loginUser);
         return ajax;
+    }
+
+    /*
+     * 用户信息
+     * @param userId
+     * @return com.ren.common.core.dto.AjaxResultDTO
+     * @author admin
+     * @date 2025/05/12 21:02
+     */
+    @GetMapping("/info/v2")
+    public AjaxResultDTO getUserInfoV2(Long userId) {
+        User user = userService.getUserById(userId);
+        List<UserRole> userRoleList = userRoleService.listUserRoleByUserId(userId);
+        Long[] roleIdArr = userRoleList.stream().map(UserRole::getRoleId).toArray(Long[]::new);
+        return AjaxResultDTO.success().put("userInfo",user).put("roleIdArr",roleIdArr);
     }
 
     /*
