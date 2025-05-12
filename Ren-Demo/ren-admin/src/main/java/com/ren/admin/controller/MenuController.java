@@ -8,7 +8,11 @@ import com.ren.common.core.entity.Menu;
 import com.ren.common.core.entity.User;
 import com.ren.common.core.vo.TreeSelectVO;
 import com.ren.common.utils.TreeUtils;
+import com.ren.system.entity.RoleMenu;
+import com.ren.system.entity.UserRole;
 import com.ren.system.service.MenuService;
+import com.ren.system.service.RoleMenuService;
+import com.ren.system.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,8 @@ public class MenuController {
 
     @Autowired
     MenuService menuService;
+    @Autowired
+    RoleMenuService roleMenuService;
 
     /*
      * 获取菜单树形列表
@@ -60,6 +66,33 @@ public class MenuController {
         List<TreeSelectVO> mianTree = new ArrayList<>();
         mianTree.add(mianSelect);
         return AjaxResultDTO.success().put("parentMenuList",mianTree);
+    }
+
+    /*
+     * 获取权限列表
+     * @return com.ren.common.core.dto.AjaxResultDTO
+     * @author admin
+     * @date 2025/05/12 14:53
+     */
+    @GetMapping("/list/role")
+    public AjaxResultDTO listRoleMenu(Integer roleId)
+    {
+        List<Menu> menuList = menuService.listMenuByParam(null);
+        //将列表转为树形结构
+        menuList = TreeUtils.formatTree(menuList,menu -> Convert.toInt(BeanUtil.getProperty(menu, "parentId")) == 0,"menuId","parentId","children","orderNum");
+        //将菜单列表转换为下拉框树形结构后传输到前台
+        List<TreeSelectVO> treeSelectVOList =  TreeUtils.convertTreeSelectForAll(menuList, "menuId", "menuName", "isStop", "children");
+
+        Long[] menuIdArr = null;
+        if(roleId != null){
+            //获取角色菜单列表
+            List<RoleMenu> roleMenuList = roleMenuService.listRoleMenuByRoleId(roleId);
+            if(roleMenuList != null && !roleMenuList.isEmpty()){
+                menuIdArr = roleMenuList.stream().map(roleMenu -> roleMenu.getMenuId()).toArray(Long[] :: new);
+            }
+        }
+
+        return AjaxResultDTO.success().put("menuList",treeSelectVOList).put("menuIdArr",menuIdArr);
     }
 
     /*

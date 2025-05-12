@@ -17,6 +17,14 @@ public interface RoleMenuService extends IService<RoleMenu> {
     void addRoleMenu(RoleMenu roleMenu);
 
     /*
+     * 添加权限菜单
+     * @param roleMenuList
+     * @author admin
+     * @date 2025/05/12 15:44
+     */
+    void addRoleMenuBatch(List<RoleMenu> roleMenuList);
+
+    /*
      * 删除角色菜单
      * @param roleId
      * @author admin

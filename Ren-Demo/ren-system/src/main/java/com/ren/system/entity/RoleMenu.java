@@ -18,5 +18,6 @@ public class RoleMenu {
     private Long roleId;
     /**菜单ID*/
     @TableField(value = "menu_id")
-    private String menuId;
+    private Long menuId;
+
 }

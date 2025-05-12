@@ -120,7 +120,7 @@
             </span>
         </template>
     </el-dialog>
-    <el-dialog title="编辑用户" v-model="dialogFormModifyUser" width="500px">
+    <el-dialog title="修改用户" v-model="dialogFormModifyUser" width="500px">
         <el-form :model="modifyUserForm" :rules="modifyUserFormRules" ref="modifyUserFormRef">
             <el-form-item label="昵称" :label-width="modifyUserFormLabelWidth" prop="nickname">
                 <el-input v-model="modifyUserForm.nickname" autocomplete="off"></el-input>
@@ -331,12 +331,12 @@
         //表单值恢复为初始值
         addUserForm.value = { ...initialAddUserForm };
     };
-    /*********编辑用户*********/
+    /*********修改用户*********/
     //弹出框是否显示
     let dialogFormModifyUser = ref(false);
     //表单元素宽度
     let modifyUserFormLabelWidth = ref("80px");
-    //编辑用户表单初始值
+    //修改用户表单初始值
     const initialModifyUserForm = {
         //用户标识
         userId: 0,
@@ -351,11 +351,11 @@
         //备注
         remark: "",
     };
-    //编辑用户表单对象
+    //修改用户表单对象
     const modifyUserForm = ref({ ...initialModifyUserForm });
-    //编辑用户表单对象
+    //修改用户表单对象
     const modifyUserFormRef = ref<FormInstance>()
-    //编辑用户表单验证规则
+    //修改用户表单验证规则
     const modifyUserFormRules = reactive<FormRules>({
         nickname:[
             { required: true, message: '请填写昵称', trigger: 'blur' }

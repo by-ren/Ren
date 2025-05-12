@@ -16,6 +16,14 @@ public interface RoleDeptService extends IService<RoleDept> {
     void addRoleDept(RoleDept roleDept);
 
     /*
+     * 批量添加数据部门
+     * @param roleDeptList
+     * @author admin
+     * @date 2025/05/12 16:11
+     */
+    void addRoleDeptBatch(List<RoleDept> roleDeptList);
+
+    /*
      * 删除可查看数据部门
      * @param roleId
      * @author admin

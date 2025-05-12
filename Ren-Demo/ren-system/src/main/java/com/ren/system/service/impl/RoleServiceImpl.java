@@ -6,20 +6,33 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ren.common.constant.AppConstants;
+import com.ren.common.core.entity.Dept;
 import com.ren.common.core.entity.Role;
+import com.ren.system.entity.RoleDept;
+import com.ren.system.entity.RoleMenu;
+import com.ren.system.entity.UserRole;
 import com.ren.system.mapper.RoleMapper;
-import com.ren.system.service.RoleService;
+import com.ren.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private RoleMenuService roleMenuService;
+    @Autowired
+    private RoleDeptService roleDeptService;
+    @Autowired
+    private DeptService deptService;
 
     /*
      * 添加角色
@@ -29,11 +42,24 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      * @date 2025/05/07 17:12
      */
     @Override
+    @Transactional(readOnly = false)
     public long addRole(Role role, String createBy) {
         role.setIsDel(AppConstants.COMMON_BYTE_NO);
         role.setCreateBy(createBy);
         role.setCreateTime(DateUtil.currentSeconds());
         roleMapper.insertRole(role);
+        if(role.getMenuIds() != null && role.getMenuIds().length > 0){
+            //添加权限菜单
+            List<RoleMenu> roleMenuList = Arrays.stream(role.getMenuIds()).map(menuId -> new RoleMenu(role.getRoleId(),menuId)).collect(Collectors.toList());
+            roleMenuService.addRoleMenuBatch(roleMenuList);
+        }
+        if(role.getDataScope() == AppConstants.DATA_SCOPE_CUSTOMIZE) {
+            if (role.getDeptIds() != null && role.getDeptIds().length > 0) {
+                //添加权限部门
+                List<RoleDept> roleDeptList = Arrays.stream(role.getDeptIds()).map(deptId -> new RoleDept(role.getRoleId(), deptId)).collect(Collectors.toList());
+                roleDeptService.addRoleDeptBatch(roleDeptList);
+            }
+        }
         return role.getRoleId();
     }
 
@@ -62,6 +88,22 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         role.setUpdateBy(updateBy);
         role.setUpdateTime(DateUtil.currentSeconds());
         roleMapper.updateRoleById(role);
+        //删除角色权限菜单
+        roleMenuService.removeRoleMenuByRoleId(role.getRoleId());
+        if(role.getMenuIds() != null && role.getMenuIds().length > 0){
+            //重新添加权限菜单
+            List<RoleMenu> roleMenuList = Arrays.stream(role.getMenuIds()).map(menuId -> new RoleMenu(role.getRoleId(),menuId)).collect(Collectors.toList());
+            roleMenuService.addRoleMenuBatch(roleMenuList);
+        }
+        if(role.getDataScope() == AppConstants.DATA_SCOPE_CUSTOMIZE){
+            //删除角色权限部门
+            roleDeptService.removeRoleDeptByRoleId(role.getRoleId());
+            if(role.getDeptIds() != null && role.getDeptIds().length > 0){
+                //添加权限部门
+                List<RoleDept> roleDeptList = Arrays.stream(role.getDeptIds()).map(deptId -> new RoleDept(role.getRoleId(),deptId)).collect(Collectors.toList());
+                roleDeptService.addRoleDeptBatch(roleDeptList);
+            }
+        }
     }
 
     /*

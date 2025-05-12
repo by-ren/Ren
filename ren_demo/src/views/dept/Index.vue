@@ -93,7 +93,7 @@
             </span>
         </template>
     </el-dialog>
-    <el-dialog title="编辑部门" v-model="dialogFormModifyDept" width="500px">
+    <el-dialog title="修改部门" v-model="dialogFormModifyDept" width="500px">
         <el-form :model="modifyDeptForm" :rules="modifyDeptFormRules" ref="modifyDeptFormRef">
             <el-form-item label="上级部门" :label-width="modifyDeptFormLabelWidth" prop="parentId">
                 <el-tree-select
@@ -186,7 +186,7 @@
     //表单验证规则（即使用不到，为了重置方法，也需要写）
     const rules = reactive<FormRules<TableParams>>({
     })
-    //添加编辑部门下拉框树形列表
+    //添加修改部门下拉框树形列表
     let parentDeptList = ref()
     /*============================通用参数结束============================*/
 
@@ -339,12 +339,12 @@
         dialogFormAddDept.value = true;
     }
 
-    /*********编辑部门*********/
+    /*********修改部门*********/
     //弹出框是否显示
     let dialogFormModifyDept = ref(false);
     //表单元素宽度
     let modifyDeptFormLabelWidth = ref("80px");
-    //编辑部门表单初始值
+    //修改部门表单初始值
     const initialModifyDeptForm = {
         //上级部门标识
         parentId: -1,
@@ -365,11 +365,11 @@
         //备注
         remark: "",
     };
-    //编辑部门表单对象
+    //修改部门表单对象
     const modifyDeptForm = ref({ ...initialModifyDeptForm });
-    //编辑部门表单对象
+    //修改部门表单对象
     const modifyDeptFormRef = ref<FormInstance>()
-    //编辑部门表单验证规则
+    //修改部门表单验证规则
     const modifyDeptFormRules = reactive<FormRules>({
         parentId:[
             { pattern: /^(?!-1$|null$).*/, message: '请选择上级部门', trigger: 'blur' },

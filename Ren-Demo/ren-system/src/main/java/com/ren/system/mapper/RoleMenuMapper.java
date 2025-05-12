@@ -34,4 +34,12 @@ public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
      * @date 2025/05/07 17:19
      */
     List<RoleMenu> listRoleMenuByRoleId(long roleId);
+
+    /*
+     * 添加权限菜单
+     * @param roleMenuList
+     * @author admin
+     * @date 2025/05/12 15:45
+     */
+	void insertRoleMenuBatch(List<RoleMenu> roleMenuList);
 }

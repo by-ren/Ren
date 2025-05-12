@@ -28,6 +28,17 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> i
     }
 
     /*
+     * 添加权限菜单
+     * @param roleMenuList
+     * @author admin
+     * @date 2025/05/12 15:44
+     */
+    @Override
+    public void addRoleMenuBatch(List<RoleMenu> roleMenuList) {
+        roleMenuMapper.insertRoleMenuBatch(roleMenuList);
+    }
+
+    /*
      * 删除角色菜单
      * @param roleId
      * @author admin
@@ -50,4 +61,5 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> i
         List<RoleMenu> roleMenuList = roleMenuMapper.listRoleMenuByRoleId(roleId);
         return roleMenuList;
     }
+
 }

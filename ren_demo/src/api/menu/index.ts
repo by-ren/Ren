@@ -18,7 +18,7 @@ export const addMenu = (params? : Record<string, any>) => {
   }).then(response => response.data)
 };
 
-//编辑菜单
+//修改菜单
 export const modifyMenu = (params? : Record<string, any>) => {
   return service({
     method: 'post',

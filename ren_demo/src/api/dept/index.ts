@@ -18,7 +18,7 @@ export const addDept = (params? : Record<string, any>) => {
   }).then(response => response.data)
 };
 
-//编辑部门
+//修改部门
 export const modifyDept = (params? : Record<string, any>) => {
   return service({
     method: 'post',

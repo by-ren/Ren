@@ -9,7 +9,10 @@ import com.ren.common.core.dto.AjaxResultDTO;
 import com.ren.common.core.entity.Dept;
 import com.ren.common.core.entity.User;
 import com.ren.common.utils.TreeUtils;
+import com.ren.system.entity.RoleDept;
+import com.ren.system.entity.RoleMenu;
 import com.ren.system.service.DeptService;
+import com.ren.system.service.RoleDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,8 @@ public class DeptController {
 
     @Autowired
     DeptService deptService;
+    @Autowired
+    RoleDeptService roleDeptService;
 
     /*
      * 获取部门树形列表
@@ -74,6 +79,32 @@ public class DeptController {
         deptList = TreeUtils.formatTree(deptList,dept -> Convert.toInt(BeanUtil.getProperty(dept, "parentId")) == 0,"deptId","parentId","children","orderNum");
         //将部门列表转换为下拉框树形结构后传输到前台
         return AjaxResultDTO.success().put("parentDeptList",TreeUtils.convertTreeSelectForAll(deptList, "deptId", "deptName", "isStop", "children"));
+    }
+
+    /*
+     * 角色部门权限列表
+     * @param roleId
+     * @return com.ren.common.core.dto.AjaxResultDTO
+     * @author admin
+     * @date 2025/05/12 16:18
+     */
+    @GetMapping("/list/role")
+    public AjaxResultDTO listRoleDept(Integer roleId)
+    {
+        List<Dept> deptList = deptService.listDeptByParam(null);
+        //将列表转为树形结构
+        deptList = TreeUtils.formatTree(deptList, dept -> Convert.toInt(BeanUtil.getProperty(dept, "parentId")) == 0,"deptId",null,null,"orderNum");
+
+        Long[] deptIdArr = null;
+        if(roleId != null){
+            //获取角色菜单列表
+            List<RoleDept> roleDeptList = roleDeptService.listRoleDeptByRoleId(roleId);
+            if(roleDeptList != null && !roleDeptList.isEmpty()){
+                deptIdArr = roleDeptList.stream().map(roleDept -> roleDept.getDeptId()).toArray(Long[] :: new);
+            }
+        }
+
+        return AjaxResultDTO.success().put("deptList",TreeUtils.convertTreeSelectForAll(deptList, "deptId", "deptName", "isStop", "children")).put("deptIdArr",deptIdArr);
     }
 
     /*
