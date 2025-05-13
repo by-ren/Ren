@@ -3,9 +3,9 @@ import { service } from '@/utils/axios'
 //获取部门列表
 export const getDeptList = (params? : Record<string, any>) => {
   return service({
-    method: 'post',
-    url: '/dept/list',
-    data: params || {} // 无参数时传空对象
+    method: 'get',
+    url: '/dept/list/tree',
+    params: params || {} // 无参数时传空对象
   }).then(response => response.data)
 }
 

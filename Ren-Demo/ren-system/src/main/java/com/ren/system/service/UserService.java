@@ -1,7 +1,8 @@
 package com.ren.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ren.common.core.entity.User;
+import com.ren.common.domain.entity.User;
 
 import java.util.List;
 import java.util.Map;
@@ -70,7 +71,7 @@ public interface UserService extends IService<User> {
      * @author admin
      * @date 2025/04/26 15:51
      */
-    List<User> listUserByParam(Map<String,Object> paramMap);
+    IPage<User> listUserByParam(Map<String,Object> paramMap);
 
     /*
      * 获取用户列表

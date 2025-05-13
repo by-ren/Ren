@@ -147,17 +147,17 @@
         left join sys_dept d on u.dept_id = d. dept_id
         <where>
             u.is_del = 0
-            <if test="deptId != null and deptId != -1">
-                AND (u.dept_id = #{deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE find_in_set(#{deptId}, ancestors) ))
+            <if test="paramMap.deptId != null and paramMap.deptId != -1">
+                AND (u.dept_id = #{paramMap.deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE find_in_set(#{paramMap.deptId}, ancestors) ))
             </if>
-            <if test="searchLike != null and searchLike != ''">
-                AND (u.nickname LIKE #{searchLike} OR u.email LIKE #{searchLike} OR u.phonenumber LIKE #{searchLike} OR u.username LIKE #{searchLike})
+            <if test="paramMap.searchLike != null and paramMap.searchLike != ''">
+                AND (u.nickname LIKE #{paramMap.searchLike} OR u.email LIKE #{paramMap.searchLike} OR u.phonenumber LIKE #{paramMap.searchLike} OR u.username LIKE #{paramMap.searchLike})
             </if>
-            <if test="userType != null and userType != ''">
-                AND u.user_type = #{userType}
+            <if test="paramMap.userType != null and paramMap.userType != ''">
+                AND u.user_type = #{paramMap.userType}
             </if>
-            <if test="sex != null and sex != -1">
-                AND u.sex = #{sex}
+            <if test="paramMap.sex != null and paramMap.sex != -1">
+                AND u.sex = #{paramMap.sex}
             </if>
         </where>
     </select>

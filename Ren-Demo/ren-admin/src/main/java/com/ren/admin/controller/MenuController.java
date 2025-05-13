@@ -3,10 +3,10 @@ package com.ren.admin.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
 import com.ren.common.constant.AppConstants;
-import com.ren.common.core.dto.AjaxResultDTO;
-import com.ren.common.core.entity.Menu;
-import com.ren.common.core.entity.User;
-import com.ren.common.core.vo.TreeSelectVO;
+import com.ren.common.domain.dto.AjaxResultDTO;
+import com.ren.common.domain.entity.Menu;
+import com.ren.common.domain.entity.User;
+import com.ren.common.domain.vo.TreeSelectVO;
 import com.ren.common.utils.TreeUtils;
 import com.ren.system.entity.RoleMenu;
 import com.ren.system.service.MenuService;
@@ -36,8 +36,8 @@ public class MenuController {
      * @author admin
      * @date 2025/05/08 17:14
      */
-    @PostMapping("/list")
-    public AjaxResultDTO listMenuTree(@RequestBody(required = false) Map<String,Object> paramMap)
+    @GetMapping("/list/tree")
+    public AjaxResultDTO listMenuTree(@RequestParam Map<String,Object> paramMap)
     {
         List<Menu> menuList = menuService.listMenuByParam(paramMap);
         //将列表转为树形结构

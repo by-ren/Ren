@@ -1,11 +1,14 @@
 package com.ren.admin.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ren.common.constant.AppConstants;
-import com.ren.common.core.dto.AjaxResultDTO;
-import com.ren.common.core.entity.Role;
-import com.ren.common.core.entity.User;
+import com.ren.common.controller.BaseController;
+import com.ren.common.domain.dto.AjaxResultDTO;
+import com.ren.common.domain.entity.Role;
+import com.ren.common.domain.entity.User;
+import com.ren.common.domain.page.TableDataInfo;
+import com.ren.common.interfaces.Pageable;
 import com.ren.system.service.RoleService;
-import com.ren.system.service.UserRoleService;
 import com.ren.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/role")
-public class RoleController {
+public class RoleController extends BaseController {
 
     @Autowired
     RoleService roleService;
@@ -31,10 +34,11 @@ public class RoleController {
      * @author admin
      * @date 2025/05/08 15:01
      */
-    @PostMapping("/list")
-    public AjaxResultDTO listRoleByPage(@RequestBody(required = false) Map<String,Object> paramMap) {
-        List<Role> roleList = roleService.listRoleByParam(paramMap);
-        return AjaxResultDTO.success().put("roleList",roleList);
+    @GetMapping("/list/page")
+    @Pageable  //注意，如果要开启分页，请添加该注解
+    public TableDataInfo listRoleByPage(@RequestParam Map<String,Object> paramMap) {
+        IPage<Role> roleList = roleService.listRoleByPage(paramMap);
+        return getDataTable(roleList);
     }
 
     /*

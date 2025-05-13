@@ -77,6 +77,19 @@
 		where role_id = #{roleId}
 	</update>
 
+	<select id="listRoleByPage" resultMap="RoleResult">
+		<include refid="selectRoleVo"/>
+		<where>
+			is_del=0
+			<if test="paramMap.searchLike != null and paramMap.searchLike != ''">
+				AND (role_name LIKE #{paramMap.searchLike} OR role_key LIKE #{paramMap.searchLike})
+			</if>
+			<if test="paramMap.isStop != null">
+				AND is_stop = #{paramMap.isStop}
+			</if>
+		</where>
+	</select>
+
 	<select id="listRoleByParam" resultMap="RoleResult">
 		<include refid="selectRoleVo"/>
 		<where>

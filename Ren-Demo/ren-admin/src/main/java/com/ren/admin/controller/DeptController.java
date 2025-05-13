@@ -5,10 +5,9 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.ren.common.constant.AppConstants;
-import com.ren.common.core.dto.AjaxResultDTO;
-import com.ren.common.core.entity.Dept;
-import com.ren.common.core.entity.Menu;
-import com.ren.common.core.entity.User;
+import com.ren.common.domain.dto.AjaxResultDTO;
+import com.ren.common.domain.entity.Dept;
+import com.ren.common.domain.entity.User;
 import com.ren.common.utils.TreeUtils;
 import com.ren.system.entity.RoleDept;
 import com.ren.system.service.DeptService;
@@ -40,8 +39,8 @@ public class DeptController {
      * @author admin
      * @date 2025/05/08 17:14
      */
-    @PostMapping("/list")
-    public AjaxResultDTO listDeptTree(@RequestBody(required = false) Map<String,Object> paramMap)
+    @GetMapping("/list/tree")
+    public AjaxResultDTO listDeptTree(@RequestParam Map<String,Object> paramMap)
     {
         List<Dept> deptList = deptService.listDeptByParam(paramMap);
         //将列表转为树形结构

@@ -1,7 +1,7 @@
 package com.ren.framework.security.config;
 
 import com.alibaba.fastjson2.JSON;
-import com.ren.common.core.dto.AjaxResultDTO;
+import com.ren.common.domain.dto.AjaxResultDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

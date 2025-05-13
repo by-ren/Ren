@@ -79,6 +79,20 @@
                 </template>
             </el-table-column>
         </el-table>
+        <div class="pager">
+            <el-pagination
+                :current-page="tableParams.pageNum"
+                :page-size="tableParams.pageSize"
+                :total="total"
+                :page-sizes="[10, 20, 30, 40, 50, 100]"
+                :pager-count="11"
+                :small="false"
+                background
+                layout="sizes, prev, pager, next"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+            />
+        </div>
     </el-main>
     <el-dialog :title="addOrModifyTag == 1 ? '添加用户' : '修改用户'" v-model="dialogFormAddOrModifyUser" width="500px">
         <el-form :model="addOrModifyUserForm" :rules="addOrModifyUserFormRules" ref="addOrModifyUserFormRef">
@@ -188,6 +202,8 @@
         searchLike: string
         userType: string
         sex: number
+        pageNum: number
+        pageSize: number
     }
     //查询参数
     let tableParams = ref<TableParams>({
@@ -199,6 +215,10 @@
         userType: "",
         //性别(设置-1为默认值，表示全选)
         sex:-1,
+        //当前页
+        pageNum:1,
+        //每页显示多少条
+        pageSize:10,
     });
     //查询表单
     const searchFormRef = ref<FormInstance>()
@@ -207,6 +227,10 @@
     })
     //添加或修改(1添加，2修改)
     let addOrModifyTag = ref(1)
+    //总数据数量
+    const total = ref(0)
+    //总页数
+    const totalPage = ref(1)
     /*============================通用参数结束============================*/
     
     
@@ -230,7 +254,11 @@
     const search = async () => {
         let result = await getUserList(tableParams.value);
         if(result.code == 200){
-            tableData.value = result.userList;
+            tableData.value = result.rows;
+            tableParams.value.pageNum = result.pageNum;
+            tableParams.value.pageSize = result.pageSize;
+            total.value = result.total;
+            totalPage.value = result.totalPage;
         }else{
             ElMessage.error(result.msg);
         }
@@ -516,6 +544,17 @@
         //表单值恢复为初始值
         resetPasswordForm.value = { ...initialResetPasswordForm };
     };
+    /*********分页相关*********/
+    //修改每页显示数量回调
+    const handleSizeChange = (val: number) => {
+        tableParams.value.pageSize = val;
+        search();
+    }
+    //当前页改变回调
+    const handleCurrentChange = (val: number) => {
+        tableParams.value.pageNum = val;
+        search();
+    }
     /*============================页面方法结束============================*/
 
 
@@ -528,12 +567,7 @@
             deptList.value = resultV2.deptList;
         }
 
-        let result = await getUserList(tableParams.value);
-        if(result.code == 200){
-            tableData.value = result.userList;
-        }else{
-            ElMessage.error(result.msg);
-        }
+        search();
     })
     /*============================生命周期钩子结束============================*/
 </script>
@@ -549,5 +583,13 @@
 
     .btns{
         margin-bottom: 10px;
+    }
+
+    .pager{
+        display: flex;
+        justify-self: flex-end;
+        align-items: center;
+        align-content: center;
+        margin-top: 20px;
     }
 </style>

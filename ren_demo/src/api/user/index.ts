@@ -3,9 +3,9 @@ import { service } from '@/utils/axios'
 //获取用户列表
 export const getUserList = (params? : Record<string, any>) => {
   return service({
-    method: 'post',
-    url: '/user/list',
-    data: params || {} // 无参数时传空对象
+    method: 'get',
+    url: '/user/list/page',
+    params: params || {} // 无参数时传空对象
   }).then(response => response.data)
 }
 

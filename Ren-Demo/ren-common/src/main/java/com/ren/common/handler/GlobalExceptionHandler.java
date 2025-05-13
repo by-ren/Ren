@@ -1,8 +1,8 @@
 package com.ren.common.handler;
 
-import com.ren.common.core.dto.AjaxResultDTO;
+import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.constant.HttpStatus;
-import com.ren.common.core.dto.BusinessException;
+import com.ren.common.domain.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;

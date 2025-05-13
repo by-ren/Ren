@@ -1,7 +1,9 @@
 package com.ren.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ren.common.core.entity.User;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ren.common.domain.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -52,11 +54,13 @@ public interface UserMapper extends BaseMapper<User> {
 
     /*
      * 获取用户列表
-     * @return java.util.List<com.ren.admin.entity.User>
+     * @param page
+     * @param paramMap
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.common.domain.entity.User>
      * @author admin
-     * @date 2025/04/26 15:53
+     * @date 2025/05/13 15:43
      */
-    List<User> listUserByParam(Map<String,Object> paramMap);
+    IPage<User> listUserByParam(Page<User> page, @Param("paramMap") Map<String,Object> paramMap);
 
     /*
      * 根据查询参数获取用户列表

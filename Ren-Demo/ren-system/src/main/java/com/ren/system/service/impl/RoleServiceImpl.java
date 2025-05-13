@@ -4,13 +4,14 @@ package com.ren.system.service.impl;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ren.common.constant.AppConstants;
-import com.ren.common.core.entity.Dept;
-import com.ren.common.core.entity.Role;
+import com.ren.common.domain.entity.Role;
+import com.ren.common.domain.entity.User;
+import com.ren.common.utils.PageUtils;
 import com.ren.system.entity.RoleDept;
 import com.ren.system.entity.RoleMenu;
-import com.ren.system.entity.UserRole;
 import com.ren.system.mapper.RoleMapper;
 import com.ren.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,11 +128,26 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      * @date 2025/05/07 17:15
      */
     @Override
+    public IPage<Role> listRoleByPage(Map<String, Object> paramMap) {
+        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        }
+        IPage<Role> roleList = roleMapper.listRoleByPage(PageUtils.createPage(Role.class),paramMap);
+        return roleList;
+    }
+
+    /*
+     * 根据参数获取角色列表
+     * @param paramMap
+     * @return java.util.List<com.ren.common.domain.entity.Role>
+     * @author admin
+     * @date 2025/05/13 20:05
+     */
+    @Override
     public List<Role> listRoleByParam(Map<String, Object> paramMap) {
         if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
             paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
         }
-        List<Role> roleList = roleMapper.listRoleByParam(paramMap);
-        return roleList;
+        return roleMapper.listRoleByParam(paramMap);
     }
 }

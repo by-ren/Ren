@@ -404,12 +404,7 @@
     // 组件加载完成后执行
     // 初始化表格数据
     onMounted(async () => {
-        let result = await getMenuList(tableParams.value);
-        if(result.code == 200){
-            tableData.value = result.menuList;
-        }else{
-            ElMessage.error(result.msg);
-        }
+        search();
     })
     /*============================生命周期钩子结束============================*/
 </script>
