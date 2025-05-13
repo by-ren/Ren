@@ -72,4 +72,21 @@ public interface UserService extends IService<User> {
      */
     List<User> listUserByParam(Map<String,Object> paramMap);
 
+    /*
+     * 获取用户列表
+     * @param roleId
+     * @return java.util.List<com.ren.common.core.entity.User>
+     * @author admin
+     * @date 2025/05/13 10:10
+     */
+    List<User> listUserByRoleId(long roleId);
+
+    /*
+     * 获取用户列表
+     * @param deptId
+     * @return java.util.List<com.ren.common.core.entity.User>
+     * @author admin
+     * @date 2025/05/13 10:10
+     */
+    List<User> listUserByDeptId(long deptId);
 }

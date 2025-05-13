@@ -172,4 +172,19 @@
         LIMIT 1
     </select>
 
+    <select id="listUserByRoleId" resultMap="SysUserResult">
+        select u.user_id, u.username, u.nickname, u.password, u.is_del,u.dept_id, u.user_type, u.email, u.phonenumber, u.sex, u.avatar, u.login_ip,
+        u.login_date, FROM_UNIXTIME(u.login_date, '%Y-%m-%d %H:%i:%s') AS login_date_str,u.create_time, u.create_by,
+        FROM_UNIXTIME(u.create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, u.update_by, u.update_time, FROM_UNIXTIME(u.update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, u.remark
+        from sys_user u
+        left join sys_user_role ur on u.user_id = ur.user_id
+        left join sys_role r on r.role_id = ur.role_id
+        where u.is_del = 0 AND r.role_id = #{roleId}
+    </select>
+
+    <select id="listUserByDeptId" resultMap="SysUserResult">
+        <include refid="selectUserVo"/>
+        where u.is_del = 0 AND u.dept_id = #{deptId}
+    </select>
+
 </mapper>

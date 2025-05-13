@@ -150,4 +150,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userList;
     }
 
+    /*
+     * 获取用户列表
+     * @param roleId
+     * @return java.util.List<com.ren.common.core.entity.User>
+     * @author admin
+     * @date 2025/05/13 10:10
+     */
+    @Override
+    public List<User> listUserByRoleId(long roleId) {
+        List<User> userList = userMapper.listUserByRoleId(roleId);
+        return userList;
+    }
+
+    /*
+     * 获取用户列表
+     * @param deptId
+     * @return java.util.List<com.ren.common.core.entity.User>
+     * @author admin
+     * @date 2025/05/13 10:10
+     */
+    @Override
+    public List<User> listUserByDeptId(long deptId) {
+        List<User> userList = userMapper.listUserByDeptId(deptId);
+        return userList;
+    }
+
 }
