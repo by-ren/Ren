@@ -174,6 +174,8 @@
         let result = await getMenuList(tableParams.value);
         if(result.code == 200){
             tableData.value = result.menuList;
+        }else{
+            ElMessage.error(result.msg);
         }
     }
     //重置
@@ -255,6 +257,8 @@
             let result = await getParentMenuList();
             if(result.code == 200){
                 parentMenuList.value = result.parentMenuList;
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('获取上级菜单列表失败');
@@ -277,6 +281,8 @@
                 
                 // 设置默认选中值
                 addOrModifyMenuForm.value.parentId = row.parentId;
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('获取上级菜单列表失败');
@@ -314,6 +320,8 @@
                 await nextTick();
                 // 设置默认选中值
                 addOrModifyMenuForm.value.parentId = row.menuId;
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('获取上级菜单列表失败');
@@ -340,6 +348,8 @@
                         addOrModifyMenuForm.value = { ...initialAddOrModifyMenuForm };
                         //重新加载表单
                         search();
+                    }else{
+                        ElMessage.error(result.msg);
                     }
                 }else {
                     let result = await modifyMenu(addOrModifyMenuForm.value);
@@ -354,6 +364,8 @@
                         addOrModifyMenuForm.value = { ...initialAddOrModifyMenuForm };
                         //重新加载表单
                         search();
+                    }else{
+                        ElMessage.error(result.msg);
                     }
                 }
             }
@@ -378,6 +390,8 @@
                 })
                 //重新加载表单
                 search();
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('删除失败');
@@ -393,6 +407,8 @@
         let result = await getMenuList(tableParams.value);
         if(result.code == 200){
             tableData.value = result.menuList;
+        }else{
+            ElMessage.error(result.msg);
         }
     })
     /*============================生命周期钩子结束============================*/

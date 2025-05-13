@@ -16,6 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,14 +30,14 @@ public class MenuController {
     RoleMenuService roleMenuService;
 
     /*
-     * 获取菜单树形列表
+     * 菜单树形列表
      * @param paramMap
      * @return com.ren.common.dto.AjaxResultDTO
      * @author admin
      * @date 2025/05/08 17:14
      */
     @PostMapping("/list")
-    public AjaxResultDTO listMenuByPage(@RequestBody(required = false) Map<String,Object> paramMap)
+    public AjaxResultDTO listMenuTree(@RequestBody(required = false) Map<String,Object> paramMap)
     {
         List<Menu> menuList = menuService.listMenuByParam(paramMap);
         //将列表转为树形结构
@@ -45,14 +46,14 @@ public class MenuController {
     }
 
     /*
-     * 获取排除本菜单Id的菜单列表（修改时使用）
+     * 排除本菜单Id的菜单列表（菜单本身修改时下拉列表使用）
      * @param menuId
      * @return com.ren.common.dto.AjaxResultDTO
      * @author admin
      * @date 2025/05/08 17:14
      */
     @GetMapping("/list/parent/{menuId}")
-    public AjaxResultDTO listParentMenu(@PathVariable(value = "menuId", required = false) Long menuId)
+    public AjaxResultDTO listParentMenuTree(@PathVariable(value = "menuId", required = false) Long menuId)
     {
         List<Menu> menuList = menuService.listMenuByParam(null);
         menuList.removeIf(d -> d.getMenuId().intValue() == menuId);
@@ -67,13 +68,13 @@ public class MenuController {
     }
 
     /*
-     * 获取权限列表
+     * 角色菜单列表（其他模块下拉列表使用）
      * @return com.ren.common.core.dto.AjaxResultDTO
      * @author admin
      * @date 2025/05/12 14:53
      */
     @GetMapping("/list/role")
-    public AjaxResultDTO listRoleMenu(Integer roleId)
+    public AjaxResultDTO listRoleMenuTree(Integer roleId)
     {
         List<Menu> menuList = menuService.listMenuByParam(null);
         //将列表转为树形结构
@@ -131,6 +132,14 @@ public class MenuController {
      */
     @DeleteMapping("/delete")
     public AjaxResultDTO menuDelete(@AuthenticationPrincipal User loginUser, long menuId) {
+        //查询是否有子级菜单
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("parentId",menuId);
+        List<Menu> menuList = menuService.listMenuByParam(paramMap);
+        if(menuList != null && !menuList.isEmpty()){
+            return AjaxResultDTO.warn("请先删除子级菜单");
+        }
+        //删除菜单
         menuService.modifyMenuIsDelById(menuId, AppConstants.COMMON_BYTE_YES,loginUser.getUsername());
         return AjaxResultDTO.success();
     }

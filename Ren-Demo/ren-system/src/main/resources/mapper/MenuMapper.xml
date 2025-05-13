@@ -119,6 +119,9 @@
             <if test="menuType != null and menuType != ''">
                 AND menu_type = #{menuType}
             </if>
+            <if test="parentId != null and parentId != ''">
+                AND parent_id = #{parentId}
+            </if>
             <if test="searchLike != null and searchLike != ''">
                 AND (menu_name LIKE #{searchLike} or route_name LIKE #{searchLike} or perms LIKE #{searchLike})
             </if>

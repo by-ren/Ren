@@ -4,9 +4,9 @@ import com.ren.common.constant.AppConstants;
 import com.ren.common.core.dto.AjaxResultDTO;
 import com.ren.common.core.entity.Role;
 import com.ren.common.core.entity.User;
-import com.ren.system.entity.UserRole;
 import com.ren.system.service.RoleService;
 import com.ren.system.service.UserRoleService;
+import com.ren.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +22,10 @@ public class RoleController {
     @Autowired
     RoleService roleService;
     @Autowired
-    UserRoleService userRoleService;
+    UserService userService;
 
     /*
-     * 角色列表
+     * 角色分页列表
      * @param paramMap
      * @return com.ren.common.dto.AjaxResultDTO
      * @author admin
@@ -88,6 +88,11 @@ public class RoleController {
      */
     @DeleteMapping("/delete")
     public AjaxResultDTO roleDelete(@AuthenticationPrincipal User loginUser, long roleId) {
+        //查询当前角色下是否有用户还在使用
+        List<User> userList = userService.listUserByRoleId(roleId);
+        if(userList != null && !userList.isEmpty()){
+            return AjaxResultDTO.error("当前角色下还有用户在使用，不能删除");
+        }
         roleService.modifyRoleIsDelById(roleId, AppConstants.COMMON_BYTE_YES,loginUser.getUsername());
         return AjaxResultDTO.success();
     }

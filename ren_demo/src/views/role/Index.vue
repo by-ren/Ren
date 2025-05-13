@@ -152,6 +152,8 @@
         let result = await getRoleList(tableParams.value);
         if(result.code == 200){
             tableData.value = result.roleList;
+        }else{
+            ElMessage.error(result.msg);
         }
     }
     //重置
@@ -159,7 +161,7 @@
         if (!formEl) return
         formEl.resetFields()
     }
-    /*********添加角色*********/
+    /*********添加修改角色*********/
     //弹出框是否显示
     let dialogFormAddOrModifyRole = ref(false);
     //表单元素宽度
@@ -297,6 +299,8 @@
                 // 等待树形组件渲染完成
                 await nextTick();
                 menuPermissionsRef.value!.setCheckedKeys([], false)
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('获取菜单权限列表失败');
@@ -309,6 +313,8 @@
                 // 等待树形组件渲染完成
                 await nextTick();
                 deptPermissionsRef.value!.setCheckedKeys([], false)
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('获取部门权限列表失败');
@@ -339,6 +345,8 @@
                 }else{
                     menuPermissionsRef.value!.setCheckedKeys([], false)
                 }
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('获取菜单权限列表失败');
@@ -355,6 +363,8 @@
                 }else{
                     deptPermissionsRef.value!.setCheckedKeys([], false)
                 }
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('获取部门权限列表失败');
@@ -389,6 +399,8 @@
                         addOrModifyRoleForm.value = { ...initialAddOrModifyRoleForm };
                         //重新加载表单
                         search();
+                    }else{
+                        ElMessage.error(result.msg);
                     }
                 }else{
                     let result = await modifyRole(addOrModifyRoleForm.value);
@@ -403,6 +415,8 @@
                         addOrModifyRoleForm.value = { ...initialAddOrModifyRoleForm };
                         //重新加载表单
                         search();
+                    }else{
+                        ElMessage.error(result.msg);
                     }
                 }
             }
@@ -427,6 +441,8 @@
                 })
                 //重新加载表单
                 search();
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('删除失败');
@@ -442,6 +458,8 @@
         let result = await getRoleList(tableParams.value);
         if(result.code == 200){
             tableData.value = result.roleList;
+        }else{
+            ElMessage.error(result.msg);
         }
     })
     /*============================生命周期钩子结束============================*/

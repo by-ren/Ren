@@ -24,7 +24,7 @@ public class UserController {
     UserRoleService userRoleService;
 
     /*
-     * 用户信息
+     * 用户信息（登录使用）
      * @AuthenticationPrincipal User loginUser可以直接从SpringSecurity中获取到当前的用户信息
      * @param user
      * @return org.springframework.http.ResponseEntity<?>
@@ -40,7 +40,7 @@ public class UserController {
     }
 
     /*
-     * 用户信息
+     * 用户信息（其他模块获取用户信息使用）
      * @param userId
      * @return com.ren.common.core.dto.AjaxResultDTO
      * @author admin
@@ -103,7 +103,7 @@ public class UserController {
      * @date 2025/05/04 15:27
      */
     @DeleteMapping("/delete")
-    public AjaxResultDTO userDelete(@AuthenticationPrincipal User loginUser, long userId) {
+    public AjaxResultDTO deleteUser(@AuthenticationPrincipal User loginUser, long userId) {
         userService.modifyUserIsDelById(userId, AppConstants.COMMON_BYTE_YES,loginUser.getUsername());
         return AjaxResultDTO.success();
     }

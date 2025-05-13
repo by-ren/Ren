@@ -7,16 +7,18 @@ import cn.hutool.core.util.StrUtil;
 import com.ren.common.constant.AppConstants;
 import com.ren.common.core.dto.AjaxResultDTO;
 import com.ren.common.core.entity.Dept;
+import com.ren.common.core.entity.Menu;
 import com.ren.common.core.entity.User;
 import com.ren.common.utils.TreeUtils;
 import com.ren.system.entity.RoleDept;
-import com.ren.system.entity.RoleMenu;
 import com.ren.system.service.DeptService;
 import com.ren.system.service.RoleDeptService;
+import com.ren.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,16 +30,18 @@ public class DeptController {
     DeptService deptService;
     @Autowired
     RoleDeptService roleDeptService;
+    @Autowired
+    UserService userService;
 
     /*
-     * 获取部门树形列表
+     * 部门树形列表（页面显示用）
      * @param paramMap
      * @return com.ren.common.dto.AjaxResultDTO
      * @author admin
      * @date 2025/05/08 17:14
      */
     @PostMapping("/list")
-    public AjaxResultDTO listDeptByPage(@RequestBody(required = false) Map<String,Object> paramMap)
+    public AjaxResultDTO listDeptTree(@RequestBody(required = false) Map<String,Object> paramMap)
     {
         List<Dept> deptList = deptService.listDeptByParam(paramMap);
         //将列表转为树形结构
@@ -46,13 +50,13 @@ public class DeptController {
     }
 
     /*
-     * 部门树形列表
+     * 部门树形列表（其他模块下拉列表用）
      * @return com.ren.common.core.dto.AjaxResultDTO
      * @author admin
      * @date 2025/05/10 18:06
      */
     @GetMapping("/list")
-    public AjaxResultDTO listDept()
+    public AjaxResultDTO listDeptTree()
     {
         List<Dept> deptList = deptService.listDeptByParam(null);
         //将列表转为树形结构
@@ -61,7 +65,7 @@ public class DeptController {
     }
 
     /*
-     * 获取排除本部门Id的部门列表（修改时使用）
+     * 排除本部门Id的部门列表（部门本身修改时下拉列表使用）
      * @param deptId
      * @return com.ren.common.dto.AjaxResultDTO
      * @author admin
@@ -145,6 +149,18 @@ public class DeptController {
      */
     @DeleteMapping("/delete")
     public AjaxResultDTO deptDelete(@AuthenticationPrincipal User loginUser, long deptId) {
+        //查询是否有子级部门
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("parentId",deptId);
+        List<Dept> deptList = deptService.listDeptByParam(paramMap);
+        if(deptList != null && !deptList.isEmpty()){
+            return AjaxResultDTO.warn("请先删除子级部门");
+        }
+        //查询部门下是否有用户
+        List<User> userList = userService.listUserByDeptId(deptId);
+        if(userList != null && !userList.isEmpty()){
+            return AjaxResultDTO.warn("该部门下还有正在使用的用户，请先删除");
+        }
         deptService.modifyDeptIsDelById(deptId, AppConstants.COMMON_BYTE_YES,loginUser.getUsername());
         return AjaxResultDTO.success();
     }

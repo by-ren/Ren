@@ -231,6 +231,8 @@
         let result = await getUserList(tableParams.value);
         if(result.code == 200){
             tableData.value = result.userList;
+        }else{
+            ElMessage.error(result.msg);
         }
     }
     //重置
@@ -238,7 +240,7 @@
         if (!formEl) return
         formEl.resetFields()
     }
-    /*********添加用户*********/
+    /*********添加修改用户*********/
     //弹出框是否显示
     let dialogFormAddOrModifyUser = ref(false);
     //表单元素宽度
@@ -323,6 +325,8 @@
             let result = await getDeptList();
             if(result.code == 200){
                 addOrModifyDeptList.value = result.deptList;
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('获取部门列表失败');
@@ -331,6 +335,8 @@
             let result = await getRoleList();
             if(result.code == 200){
                 addOrModifyRoleList.value = result.roleList;
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('获取角色列表失败');
@@ -349,6 +355,8 @@
                 await nextTick();
                 // 设置默认选中值
                 addOrModifyUserForm.value.deptId = row.deptId;
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('获取部门列表失败');
@@ -357,6 +365,8 @@
             let result = await getRoleList();
             if(result.code == 200){
                 addOrModifyRoleList.value = result.roleList;
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('获取角色列表失败');
@@ -365,6 +375,8 @@
             let result = await getUserInfo(row.userId);
             if(result.code == 200){
                 addOrModifyUserForm.value.roleIdArr = result.roleIdArr;
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('获取角色列表失败');
@@ -396,6 +408,8 @@
                         addOrModifyUserForm.value = { ...initialAddOrModifyUserForm };
                         //重新加载表单
                         search();
+                    }else{
+                        ElMessage.error(result.msg);
                     }
                 }else {
                     let result = await modifyUser(addOrModifyUserForm.value);
@@ -410,6 +424,8 @@
                         addOrModifyUserForm.value = { ...initialAddOrModifyUserForm };
                         //重新加载表单
                         search();
+                    }else{
+                        ElMessage.error(result.msg);
                     }
                 }
             }
@@ -434,6 +450,8 @@
                 })
                 //重新加载表单
                 search();
+            }else{
+                ElMessage.error(result.msg);
             }
         } catch (error) {
             ElMessage.error('删除失败');
@@ -485,6 +503,8 @@
                     resetPasswordForm.value = { ...initialResetPasswordForm };
                     //重新加载表单
                     search();
+                }else{
+                    ElMessage.error(result.msg);
                 }
             }
         })
@@ -511,6 +531,8 @@
         let result = await getUserList(tableParams.value);
         if(result.code == 200){
             tableData.value = result.userList;
+        }else{
+            ElMessage.error(result.msg);
         }
     })
     /*============================生命周期钩子结束============================*/
