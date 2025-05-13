@@ -1,4 +1,4 @@
-package com.ren.common.core.base;
+package com.ren.common.domain.base;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;

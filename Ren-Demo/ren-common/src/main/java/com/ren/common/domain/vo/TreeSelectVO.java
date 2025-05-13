@@ -1,4 +1,4 @@
-package com.ren.common.core.vo;
+package com.ren.common.domain.vo;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;

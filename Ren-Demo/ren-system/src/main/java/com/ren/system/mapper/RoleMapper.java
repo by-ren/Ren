@@ -2,7 +2,10 @@
 package com.ren.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ren.common.core.entity.Role;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ren.common.domain.entity.Role;
+import com.ren.common.domain.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -46,6 +49,15 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @return java.util.List<com.ren.common.core.entity.Role>
      * @author admin
      * @date 2025/05/07 17:15
+     */
+    IPage<Role> listRoleByPage(Page<Role> page, @Param("paramMap")Map<String, Object> paramMap);
+
+    /*
+     * 根据参数获取角色列表
+     * @param paramMap
+     * @return java.util.List<com.ren.common.domain.entity.Role>
+     * @author admin
+     * @date 2025/05/13 20:05
      */
     List<Role> listRoleByParam(Map<String, Object> paramMap);
 }

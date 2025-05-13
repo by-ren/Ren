@@ -5,7 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ren.common.constant.AppConstants;
-import com.ren.common.core.entity.Dept;
+import com.ren.common.domain.entity.Dept;
 import com.ren.system.mapper.DeptMapper;
 import com.ren.system.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;

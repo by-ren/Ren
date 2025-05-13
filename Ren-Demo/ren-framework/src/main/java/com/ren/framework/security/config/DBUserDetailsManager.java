@@ -1,6 +1,6 @@
 package com.ren.framework.security.config;
 
-import com.ren.common.core.entity.User;
+import com.ren.common.domain.entity.User;
 import com.ren.system.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

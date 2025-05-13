@@ -5,7 +5,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ren.common.core.entity.Menu;
+import com.ren.common.domain.entity.Menu;
 import com.ren.system.mapper.MenuMapper;
 import com.ren.system.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;

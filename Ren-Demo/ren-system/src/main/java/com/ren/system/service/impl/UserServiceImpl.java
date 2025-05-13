@@ -2,10 +2,11 @@ package com.ren.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ren.common.core.entity.User;
+import com.ren.common.domain.entity.User;
+import com.ren.common.utils.PageUtils;
 import com.ren.system.entity.UserRole;
 import com.ren.system.mapper.UserMapper;
 import com.ren.system.mapper.UserRoleMapper;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 //ServiceImpl是Mybatis-Plus提供的一个针对IService的具体实现类
 @Service
@@ -142,12 +142,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @date 2025/04/26 15:52
      */
     @Override
-    public List<User> listUserByParam(Map<String,Object> paramMap) {
+    public IPage<User> listUserByParam(Map<String,Object> paramMap) {
         if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
             paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
         }
-        List<User> userList = userMapper.listUserByParam(paramMap);
-        return userList;
+        return userMapper.listUserByParam(PageUtils.createPage(User.class),paramMap);
     }
 
     /*

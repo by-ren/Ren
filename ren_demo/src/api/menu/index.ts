@@ -3,9 +3,9 @@ import { service } from '@/utils/axios'
 //获取菜单列表
 export const getMenuList = (params? : Record<string, any>) => {
   return service({
-    method: 'post',
-    url: '/menu/list',
-    data: params || {} // 无参数时传空对象
+    method: 'get',
+    url: '/menu/list/tree',
+    params: params || {} // 无参数时传空对象
   }).then(response => response.data)
 }
 

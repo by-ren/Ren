@@ -1,7 +1,7 @@
 package com.ren.framework.security.utils;
 
 import com.ren.framework.properties.TokenProperties;
-import com.ren.common.core.entity.User;
+import com.ren.common.domain.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -1,4 +1,4 @@
-package com.ren.common.core.dto;
+package com.ren.common.domain.exception;
 
 /*
  * 自定义异常类

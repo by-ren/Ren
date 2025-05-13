@@ -34,6 +34,20 @@
             </template>
         </el-table-column>
     </el-table>
+    <div class="pager">
+        <el-pagination
+            :current-page="tableParams.pageNum"
+            :page-size="tableParams.pageSize"
+            :total="total"
+            :page-sizes="[10, 20, 30, 40, 50, 100]"
+            :pager-count="11"
+            :small="false"
+            background
+            layout="sizes, prev, pager, next"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+        />
+    </div>
     <el-dialog :title="addOrModifyTag == 1 ? '添加角色' : '修改角色'" v-model="dialogFormAddOrModifyRole" width="500px">
         <el-form :model="addOrModifyRoleForm" :rules="addOrModifyRoleFormRules" ref="addOrModifyRoleFormRef">
             <el-form-item label="角色名称" :label-width="addOrModifyRoleFormLabelWidth" prop="roleName">
@@ -130,11 +144,17 @@
     let tableData = ref([]);
     interface TableParams {
         searchLike: string
+        pageNum: number
+        pageSize: number
     }
     //查询参数
     let tableParams = ref<TableParams>({
         //查询参数
         searchLike: "",
+        //当前页
+        pageNum:1,
+        //每页显示多少条
+        pageSize:10,
     });
     //查询表单
     const searchFormRef = ref<FormInstance>()
@@ -143,6 +163,10 @@
     })
     //添加或修改(1添加，2修改)
     let addOrModifyTag = ref(1)
+    //总数据数量
+    const total = ref(0)
+    //总页数
+    const totalPage = ref(1)
     /*============================通用参数结束============================*/
     
     
@@ -151,7 +175,11 @@
     const search = async () => {
         let result = await getRoleList(tableParams.value);
         if(result.code == 200){
-            tableData.value = result.roleList;
+            tableData.value = result.rows;
+            tableParams.value.pageNum = result.pageNum;
+            tableParams.value.pageSize = result.pageSize;
+            total.value = result.total;
+            totalPage.value = result.totalPage;
         }else{
             ElMessage.error(result.msg);
         }
@@ -448,6 +476,17 @@
             ElMessage.error('删除失败');
         }
     }
+    /*********分页相关*********/
+    //修改每页显示数量回调
+    const handleSizeChange = (val: number) => {
+        tableParams.value.pageSize = val;
+        search();
+    }
+    //当前页改变回调
+    const handleCurrentChange = (val: number) => {
+        tableParams.value.pageNum = val;
+        search();
+    }
     /*============================页面方法结束============================*/
 
 
@@ -455,12 +494,7 @@
     // 组件加载完成后执行
     // 初始化表格数据
     onMounted(async () => {
-        let result = await getRoleList(tableParams.value);
-        if(result.code == 200){
-            tableData.value = result.roleList;
-        }else{
-            ElMessage.error(result.msg);
-        }
+        search();
     })
     /*============================生命周期钩子结束============================*/
 </script>
@@ -476,5 +510,13 @@
 
     .btns{
         margin-bottom: 10px;
+    }
+
+    .pager{
+        display: flex;
+        justify-self: flex-end;
+        align-items: center;
+        align-content: center;
+        margin-top: 20px;
     }
 </style>

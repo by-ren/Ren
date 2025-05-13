@@ -1,7 +1,8 @@
 package com.ren.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ren.common.core.entity.Role;
+import com.ren.common.domain.entity.Role;
 
 import java.util.List;
 import java.util.Map;
@@ -52,6 +53,14 @@ public interface RoleService extends IService<Role> {
      * @author admin
      * @date 2025/05/07 17:15
      */
-    List<Role> listRoleByParam(Map<String,Object> paramMap);
+    IPage<Role> listRoleByPage(Map<String,Object> paramMap);
 
+    /*
+     * 根据参数获取角色列表
+     * @param paramMap
+     * @return java.util.List<com.ren.common.domain.entity.Role>
+     * @author admin
+     * @date 2025/05/13 20:05
+     */
+    List<Role> listRoleByParam(Map<String,Object> paramMap);
 }

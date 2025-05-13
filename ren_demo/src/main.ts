@@ -17,6 +17,10 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // 引入全局 CSS
 import '@/styles/global.css' // 或 import './styles/global.css'
 
+//ElementPlus全局中文配置
+import ElementPlus from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+
 // 创建app
 const app = createApp(App)
 // 创建pinia
@@ -26,6 +30,11 @@ const pinia = createPinia()
 app.use(pinia)
 // 引入router
 app.use(router)
+
+// ElementPlus全局中文配置
+app.use(ElementPlus, {
+  locale: zhCn 
+})
 
 // 注册自定义 SVG 组件
 // ​第一个参数 'SvgIcon'，表示 ​组件在模板中使用的标签名​（字符串类型），在模板中通过 <svg-icon> 或 <SvgIcon> 调用（Vue 支持两种写法，但需注意命名规范），推荐使用 kebab-case（短横线分隔）如 svg-icon，但 PascalCase（大驼峰）如 SvgIcon 也兼容

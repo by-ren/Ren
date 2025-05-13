@@ -2,12 +2,12 @@ package com.ren.admin.controller;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
-import com.ren.common.core.dto.AjaxResultDTO;
+import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.utils.IpUtils;
 import com.ren.framework.properties.TokenProperties;
 import com.ren.framework.security.config.AuthenticationContextHolder;
 import com.ren.framework.security.utils.JwtUtils;
-import com.ren.common.core.entity.User;
+import com.ren.common.domain.entity.User;
 import com.ren.system.service.UserService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;

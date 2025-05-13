@@ -3,9 +3,9 @@ import { service } from '@/utils/axios'
 //获取角色列表
 export const getRoleList = (params? : Record<string, any>) => {
   return service({
-    method: 'post',
-    url: '/role/list',
-    data: params || {} // 无参数时传空对象
+    method: 'get',
+    url: '/role/list/page',
+    params: params || {} // 无参数时传空对象
   }).then(response => response.data)
 }
 

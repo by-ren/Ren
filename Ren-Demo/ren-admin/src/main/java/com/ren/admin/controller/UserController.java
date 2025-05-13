@@ -1,9 +1,13 @@
 package com.ren.admin.controller;
 
 import cn.hutool.core.convert.Convert;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ren.common.constant.AppConstants;
-import com.ren.common.core.dto.AjaxResultDTO;
-import com.ren.common.core.entity.User;
+import com.ren.common.controller.BaseController;
+import com.ren.common.domain.dto.AjaxResultDTO;
+import com.ren.common.domain.entity.User;
+import com.ren.common.domain.page.TableDataInfo;
+import com.ren.common.interfaces.Pageable;
 import com.ren.system.entity.UserRole;
 import com.ren.system.service.UserRoleService;
 import com.ren.system.service.UserService;
@@ -16,7 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController extends BaseController {
 
     @Autowired
     UserService userService;
@@ -60,10 +64,11 @@ public class UserController {
      * @author admin
      * @date 2025/04/26 15:55
      */
-    @PostMapping("/list")
-    public AjaxResultDTO listUserByPage(@RequestBody(required = false) Map<String,Object> paramMap) {
-        List<User> userList = userService.listUserByParam(paramMap);
-        return AjaxResultDTO.success().put("userList",userList);
+    @GetMapping("/list/page")
+    @Pageable  //注意，如果要开启分页，请添加该注解
+    public TableDataInfo listUserByPage(@RequestParam Map<String,Object> paramMap) {
+        IPage<User> userList = userService.listUserByParam(paramMap);
+        return getDataTable(userList);
     }
 
     /*

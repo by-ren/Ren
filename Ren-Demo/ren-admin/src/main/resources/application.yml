@@ -11,9 +11,9 @@ spring:
     #	通过spring.config.import导入其他配置文件
     import:
       - "classpath:/security/spring-security.yml"  # 导入/security目录下的 spring-security.yml
-      - "classpath:/jdbc/jdbc.yml"  # 导入/jdbc目录下的 jdbc.yml
+      - "classpath:/database/jdbc.yml"  # 导入/jdbc目录下的 jdbc.yml
       - "classpath:/redis/redis.yml"  # 导入/redis目录下的 redis.yml
-      - "classpath:/mybatis/mybatis-plus.yml"  # 导入/mybatis目录下的 mybatis-plus.yml
+      - "classpath:/database/mybatis-plus.yml"  # 导入/mybatis目录下的 mybatis-plus.yml
       - "classpath:/project/project.yml"  # 导入/project目录下的 project.yml
 
 #配置日志级别，根目录为INFO，com.ren目录为DEBUG
