@@ -34,20 +34,12 @@
             </template>
         </el-table-column>
     </el-table>
-    <div class="pager">
-        <el-pagination
-            :current-page="tableParams.pageNum"
-            :page-size="tableParams.pageSize"
-            :total="total"
-            :page-sizes="[10, 20, 30, 40, 50, 100]"
-            :pager-count="11"
-            :small="false"
-            background
-            layout="sizes, prev, pager, next"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-        />
-    </div>
+    <Pagination
+        :total="total"
+        v-model:page="tableParams.pageNum"
+        v-model:limit="tableParams.pageSize"
+        @pagination="getList"
+    />
     <el-dialog :title="addOrModifyTag == 1 ? '添加角色' : '修改角色'" v-model="dialogFormAddOrModifyRole" width="500px">
         <el-form :model="addOrModifyRoleForm" :rules="addOrModifyRoleFormRules" ref="addOrModifyRoleFormRef">
             <el-form-item label="角色名称" :label-width="addOrModifyRoleFormLabelWidth" prop="roleName">
@@ -177,8 +169,8 @@
     
     
     /*============================页面方法开始============================*/
-    //页面搜索方法
-    const search = async () => {
+    //获取列表
+    const getList = async () => {
         let result = await getRoleList(tableParams.value);
         if(result.code == 200){
             tableData.value = result.rows;
@@ -189,6 +181,11 @@
         }else{
             ElMessage.error(result.msg);
         }
+    }
+    //页面搜索方法
+    const search = async () => {
+        tableParams.value.pageNum = 1;
+        getList();
     }
     //重置
     const resetForm = (formEl: FormInstance | undefined) => {
@@ -488,17 +485,6 @@
             ElMessage.error('删除失败');
         }
     }
-    /*********分页相关*********/
-    //修改每页显示数量回调
-    const handleSizeChange = (val: number) => {
-        tableParams.value.pageSize = val;
-        search();
-    }
-    //当前页改变回调
-    const handleCurrentChange = (val: number) => {
-        tableParams.value.pageNum = val;
-        search();
-    }
     /*********排序相关*********/
     // 定义前端字段名到数据库字段名的映射
     // 注意，这里只需要定义前端页面与数据库字段名不相同的场景，如数据库名为login_date,而前端页面字段名为loginDateStr
@@ -553,11 +539,4 @@
         margin-bottom: 10px;
     }
 
-    .pager{
-        display: flex;
-        justify-self: flex-end;
-        align-items: center;
-        align-content: center;
-        margin-top: 20px;
-    }
 </style>

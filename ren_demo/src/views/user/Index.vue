@@ -79,20 +79,12 @@
                 </template>
             </el-table-column>
         </el-table>
-        <div class="pager">
-            <el-pagination
-                :current-page="tableParams.pageNum"
-                :page-size="tableParams.pageSize"
-                :total="total"
-                :page-sizes="[10, 20, 30, 40, 50, 100]"
-                :pager-count="11"
-                :small="false"
-                background
-                layout="sizes, prev, pager, next"
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-            />
-        </div>
+        <Pagination
+            :total="total"
+            v-model:page="tableParams.pageNum"
+            v-model:limit="tableParams.pageSize"
+            @pagination="getList"
+        />
     </el-main>
     <el-dialog :title="addOrModifyTag == 1 ? '添加用户' : '修改用户'" v-model="dialogFormAddOrModifyUser" width="500px">
         <el-form :model="addOrModifyUserForm" :rules="addOrModifyUserFormRules" ref="addOrModifyUserFormRef">
@@ -255,9 +247,10 @@
         tableParams.value.deptId = data.id;
         search();
     }
-
-    //页面搜索方法
-    const search = async () => {
+    //页面获取列表方法
+    const getList = async () => {
+        console.info(tableParams.value.pageNum)
+        console.info(tableParams.value.pageSize)
         let result = await getUserList(tableParams.value);
         if(result.code == 200){
             tableData.value = result.rows;
@@ -268,6 +261,11 @@
         }else{
             ElMessage.error(result.msg);
         }
+    }
+    //页面搜索方法
+    const search = async () => {
+        tableParams.value.pageNum = 1;
+        getList();
     }
     //重置
     const resetForm = (formEl: FormInstance | undefined) => {
@@ -525,7 +523,7 @@
         dialogFormResetPassword.value = true;
         resetPasswordForm.value.userId = row.userId;
     }
-    //实现修改
+    //重置密码
     const resetPasswordConfirm = async (formEl: FormInstance | undefined) => {
         if (!formEl) return
         await formEl.validate(async (valid, fields) => {
@@ -556,17 +554,6 @@
         //表单值恢复为初始值
         resetPasswordForm.value = { ...initialResetPasswordForm };
     };
-    /*********分页相关*********/
-    //修改每页显示数量回调
-    const handleSizeChange = (val: number) => {
-        tableParams.value.pageSize = val;
-        search();
-    }
-    //当前页改变回调
-    const handleCurrentChange = (val: number) => {
-        tableParams.value.pageNum = val;
-        search();
-    }
     /*********排序相关*********/
     // 定义前端字段名到数据库字段名的映射
     // 注意，这里只需要定义前端页面与数据库字段名不相同的场景，如数据库名为login_date,而前端页面字段名为loginDateStr
@@ -608,7 +595,6 @@
         if(resultV2.code == 200){
             deptList.value = resultV2.deptList;
         }
-
         search();
     })
     /*============================生命周期钩子结束============================*/
@@ -625,13 +611,5 @@
 
     .btns{
         margin-bottom: 10px;
-    }
-
-    .pager{
-        display: flex;
-        justify-self: flex-end;
-        align-items: center;
-        align-content: center;
-        margin-top: 20px;
     }
 </style>
