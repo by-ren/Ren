@@ -13,10 +13,10 @@
             <el-button type="primary" @click="openAddRoleDialog">添加角色</el-button>
         </el-col>
     </el-row>
-    <el-table :data="tableData" stripe>
+    <el-table :data="tableData" stripe @sort-change="tableSortHandle">
         <el-table-column prop="roleName" label="角色名称" width="140" show-overflow-tooltip></el-table-column>
         <el-table-column prop="roleKey" label="权限字符" width="140" show-overflow-tooltip></el-table-column>
-        <el-table-column prop="roleSort" label="显示顺序" width="140" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="roleSort" label="显示顺序" width="140" show-overflow-tooltip sortable="custom"></el-table-column>
         <el-table-column prop="dataScope" label="数据权限" width="120" :align="'center'" show-overflow-tooltip>
             <template #default="item">
                 <el-tag v-if="item.row.dataScope == 1">全部数据</el-tag>
@@ -146,6 +146,8 @@
         searchLike: string
         pageNum: number
         pageSize: number
+        orderByColumn:string
+        orderByWay:string
     }
     //查询参数
     let tableParams = ref<TableParams>({
@@ -155,6 +157,10 @@
         pageNum:1,
         //每页显示多少条
         pageSize:10,
+        //排序字段
+        orderByColumn:"",
+        //排序方式
+        orderByWay:""
     });
     //查询表单
     const searchFormRef = ref<FormInstance>()
@@ -308,6 +314,8 @@
         addOrModifyTag.value = 1;
         //表单值恢复为初始值
         addOrModifyRoleForm.value = { ...initialAddOrModifyRoleForm };
+        //清除验证状态
+        addOrModifyRoleFormRef.value?.clearValidate();
         //添加表单的主键设置为0
         addOrModifyRoleForm.value.roleId = 0;
         //显示弹出框
@@ -352,6 +360,10 @@
     const openModifyRoleDialog = async (index: number, row: any) => {
         //弹出框设置为修改弹框
         addOrModifyTag.value = 2;
+        //表单值恢复为初始值
+        addOrModifyRoleForm.value = { ...initialAddOrModifyRoleForm };
+        //清除验证状态
+        addOrModifyRoleFormRef.value?.clearValidate();
         //显示弹出框
         dialogFormAddOrModifyRole.value = true;
         //树形列表相关设置为默认值
@@ -485,6 +497,35 @@
     //当前页改变回调
     const handleCurrentChange = (val: number) => {
         tableParams.value.pageNum = val;
+        search();
+    }
+    /*********排序相关*********/
+    // 定义前端字段名到数据库字段名的映射
+    // 注意，这里只需要定义前端页面与数据库字段名不相同的场景，如数据库名为login_date,而前端页面字段名为loginDateStr
+    // 但是，如果仅仅是驼峰与下划线命名不同，可以不定义，如数据库为login_date，而前端页面字段名为loginDate
+    // 如果不同且未定义，可能会导致查询失败
+    const sortFieldMap = {
+    };
+    const tableSortHandle = (params: {
+        column: any
+        prop: keyof typeof sortFieldMap // 告诉ts，从prop中取出来的值，一定是sortFieldMap的键
+        order: string
+    }) => {
+        // 参数说明：
+        // - column: 当前列的配置对象
+        // - prop: 排序的字段名（对应列的 prop）
+        // - order: 排序方式（'ascending' 升序 / 'descending' 降序 / null 默认）
+
+        let orderByColumn = sortFieldMap[params.prop] || params.prop;
+        let orderByWay = params.order == null ? "" : params.order == "ascending" ? "asc" : "desc";
+
+        if(orderByColumn != undefined && orderByWay != ""){
+            tableParams.value.orderByColumn = orderByColumn;
+            tableParams.value.orderByWay = orderByWay;
+        }else{
+            tableParams.value.orderByColumn = "";
+            tableParams.value.orderByWay = "";
+        }
         search();
     }
     /*============================页面方法结束============================*/

@@ -21,6 +21,7 @@
       row-key="menuId"
       :border="true"
       default-expand-all
+      :default-sort="{ prop: 'orderNum', order: 'ascending' }"
       :tree-props="{ children: 'children'}"
     >
       <el-table-column prop="menuName" label="菜单名称" sortable />
@@ -252,6 +253,8 @@
     const openAddMenuDialog = async() => {
         //表单值恢复为初始值
         addOrModifyMenuForm.value = { ...initialAddOrModifyMenuForm };
+        //清除验证状态
+        addOrModifyMenuFormRef.value?.clearValidate();
         //获取上级菜单列表
         try {
             let result = await getParentMenuList();
@@ -270,6 +273,8 @@
     const openModifyMenuDialog = async(index: number, row: any) => {
         //表单值恢复为初始值
         addOrModifyMenuForm.value = { ...initialAddOrModifyMenuForm };
+        //清除验证状态
+        addOrModifyMenuFormRef.value?.clearValidate();
         //获取上级菜单列表
         try {
             let result = await getParentMenuList(row.menuId);
@@ -311,6 +316,8 @@
     const openSubAddOrModifyMenuDialog = async (index: number, row: any) => {
         //表单值恢复为初始值
         addOrModifyMenuForm.value = { ...initialAddOrModifyMenuForm };
+        //清除验证状态
+        addOrModifyMenuFormRef.value?.clearValidate();
         //获取上级菜单列表
         try {
             let result = await getParentMenuList();

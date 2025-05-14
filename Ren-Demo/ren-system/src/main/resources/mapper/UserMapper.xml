@@ -160,6 +160,9 @@
                 AND u.sex = #{paramMap.sex}
             </if>
         </where>
+        <if test="page.orders.isEmpty()">
+            ORDER BY u.create_time ASC
+        </if>
     </select>
 
     <select id="selectUserByParam" resultMap="SysUserResult">

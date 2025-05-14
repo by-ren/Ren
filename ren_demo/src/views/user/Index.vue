@@ -51,7 +51,7 @@
                 <el-button type="primary" @click="openAddUserDialog">添加用户</el-button>
             </el-col>
         </el-row>
-        <el-table :data="tableData" stripe>
+        <el-table :data="tableData" stripe @sort-change="tableSortHandle">
             <el-table-column prop="username" label="登陆账号" width="140" show-overflow-tooltip></el-table-column>
             <el-table-column prop="nickname" label="用户昵称" width="140" show-overflow-tooltip></el-table-column>
             <el-table-column prop="userType" label="用户类型" width="140" :align="'center'" show-overflow-tooltip>
@@ -68,7 +68,7 @@
                     <el-tag v-if="item.row.sex == 2">未知</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="loginDateStr" label="最后登录时间" width="180" show-overflow-tooltip></el-table-column>
+            <el-table-column prop="loginDateStr" label="最后登录时间" width="180" show-overflow-tooltip sortable="custom" ></el-table-column>
             <el-table-column prop="loginIp" label="最后登录IP" width="140" show-overflow-tooltip></el-table-column>
             <el-table-column prop="remark" label="备注" width="200" show-overflow-tooltip></el-table-column>
             <el-table-column fixed="right" label="操作" min-width="120">
@@ -204,6 +204,8 @@
         sex: number
         pageNum: number
         pageSize: number
+        orderByColumn:string
+        orderByWay:string
     }
     //查询参数
     let tableParams = ref<TableParams>({
@@ -219,6 +221,10 @@
         pageNum:1,
         //每页显示多少条
         pageSize:10,
+        //排序字段
+        orderByColumn:"",
+        //排序方式
+        orderByWay:""
     });
     //查询表单
     const searchFormRef = ref<FormInstance>()
@@ -347,6 +353,8 @@
     const openAddUserDialog = async () => {
         //表单值恢复为初始值
         addOrModifyUserForm.value = { ...initialAddOrModifyUserForm };
+        //清除验证状态
+        addOrModifyUserFormRef.value?.clearValidate();
         addOrModifyTag.value = 1;
         dialogFormAddOrModifyUser.value = true;
         try {
@@ -373,6 +381,10 @@
     }
     //打开修改弹框
     const openModifyUserDialog = async (index: number, row: any) => {
+        //表单值恢复为初始值
+        addOrModifyUserForm.value = { ...initialAddOrModifyUserForm };
+        //清除验证状态
+        addOrModifyUserFormRef.value?.clearValidate();
         addOrModifyTag.value = 2;
         dialogFormAddOrModifyUser.value = true;
         try {
@@ -553,6 +565,36 @@
     //当前页改变回调
     const handleCurrentChange = (val: number) => {
         tableParams.value.pageNum = val;
+        search();
+    }
+    /*********排序相关*********/
+    // 定义前端字段名到数据库字段名的映射
+    // 注意，这里只需要定义前端页面与数据库字段名不相同的场景，如数据库名为login_date,而前端页面字段名为loginDateStr
+    // 但是，如果仅仅是驼峰与下划线命名不同，可以不定义，如数据库为login_date，而前端页面字段名为loginDate
+    // 如果不同且未定义，可能会导致查询失败
+    const sortFieldMap = {
+        loginDateStr: 'login_date',
+    };
+    const tableSortHandle = (params: {
+        column: any
+        prop: keyof typeof sortFieldMap // 告诉ts，从prop中取出来的值，一定是sortFieldMap的键
+        order: string
+    }) => {
+        // 参数说明：
+        // - column: 当前列的配置对象
+        // - prop: 排序的字段名（对应列的 prop）
+        // - order: 排序方式（'ascending' 升序 / 'descending' 降序 / null 默认）
+
+        let orderByColumn = sortFieldMap[params.prop] || params.prop;
+        let orderByWay = params.order == null ? "" : params.order == "ascending" ? "asc" : "desc";
+
+        if(orderByColumn != undefined && orderByWay != ""){
+            tableParams.value.orderByColumn = orderByColumn;
+            tableParams.value.orderByWay = orderByWay;
+        }else{
+            tableParams.value.orderByColumn = "";
+            tableParams.value.orderByWay = "";
+        }
         search();
     }
     /*============================页面方法结束============================*/

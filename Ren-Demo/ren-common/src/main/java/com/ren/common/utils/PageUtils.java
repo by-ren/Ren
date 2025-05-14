@@ -41,8 +41,17 @@ public class PageUtils
     {
         PageDomain.PAGE_NUM.set(Convert.toInt(ServletUtils.getParameter(PAGE_NUM), 1));
         PageDomain.PAGE_SIZE.set(Convert.toInt(ServletUtils.getParameter(PAGE_SIZE), 10));
-        PageDomain.ORDER_BY_COLUMN.set(ServletUtils.getParameter(ORDER_BY_COLUMN));
-        PageDomain.ORDER_BY_WAY.set(ServletUtils.getParameter(ORDER_BY_WAY));
+        String orderByColumn = Convert.toStr(ServletUtils.getParameter(ORDER_BY_COLUMN),"");
+        if(StrUtil.isNotBlank(orderByColumn)){
+            //将小驼峰转为下划线
+            orderByColumn = StrUtil.toUnderlineCase(orderByColumn);
+            /*if(StrUtil.contains(orderByColumn,"_str")){
+                //截取第一个_str之前的部分，false表示不包含_str（匹配日期类型的字段）
+                orderByColumn = StrUtil.subBefore(orderByColumn, "_str", false);
+            }*/
+        }
+        PageDomain.ORDER_BY_COLUMN.set(orderByColumn);
+        PageDomain.ORDER_BY_WAY.set(Convert.toStr(ServletUtils.getParameter(ORDER_BY_WAY),""));
     }
 
     /**
