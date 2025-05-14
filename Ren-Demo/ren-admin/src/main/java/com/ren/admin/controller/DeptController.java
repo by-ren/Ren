@@ -44,7 +44,7 @@ public class DeptController {
     {
         List<Dept> deptList = deptService.listDeptByParam(paramMap);
         //将列表转为树形结构
-        deptList = TreeUtils.formatTree(deptList, dept -> Convert.toInt(BeanUtil.getProperty(dept, "parentId")) == 0,"deptId",null,null,"orderNum");
+        deptList = TreeUtils.formatTree(deptList, dept -> Convert.toInt(BeanUtil.getProperty(dept, "parentId")) == 0,"deptId",null,null,null);
         return AjaxResultDTO.success().put("deptList",deptList);
     }
 
@@ -59,7 +59,7 @@ public class DeptController {
     {
         List<Dept> deptList = deptService.listDeptByParam(null);
         //将列表转为树形结构
-        deptList = TreeUtils.formatTree(deptList, dept -> Convert.toInt(BeanUtil.getProperty(dept, "parentId")) == 0,"deptId",null,null,"orderNum");
+        deptList = TreeUtils.formatTree(deptList, dept -> Convert.toInt(BeanUtil.getProperty(dept, "parentId")) == 0,"deptId",null,null,null);
         return AjaxResultDTO.success().put("deptList",TreeUtils.convertTreeSelectForAll(deptList, "deptId", "deptName", "isStop", "children"));
     }
 
@@ -79,7 +79,7 @@ public class DeptController {
                 String.valueOf(deptId)
         ));
         //将列表转为树形结构
-        deptList = TreeUtils.formatTree(deptList,dept -> Convert.toInt(BeanUtil.getProperty(dept, "parentId")) == 0,"deptId","parentId","children","orderNum");
+        deptList = TreeUtils.formatTree(deptList,dept -> Convert.toInt(BeanUtil.getProperty(dept, "parentId")) == 0,"deptId","parentId","children",null);
         //将部门列表转换为下拉框树形结构后传输到前台
         return AjaxResultDTO.success().put("parentDeptList",TreeUtils.convertTreeSelectForAll(deptList, "deptId", "deptName", "isStop", "children"));
     }

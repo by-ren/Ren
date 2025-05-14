@@ -88,6 +88,9 @@
 				AND is_stop = #{paramMap.isStop}
 			</if>
 		</where>
+		<if test="page.orders.isEmpty()">
+			ORDER BY role_sort ASC
+		</if>
 	</select>
 
 	<select id="listRoleByParam" resultMap="RoleResult">

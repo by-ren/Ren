@@ -19,6 +19,7 @@
       row-key="deptId"
       :border="true"
       default-expand-all
+      :default-sort="{ prop: 'orderNum', order: 'ascending' }"
       :tree-props="{ children: 'children'}"
     >
       <el-table-column prop="deptName" label="部门名称" sortable />
@@ -232,6 +233,8 @@
     const openAddDeptDialog = async() => {
         //添加编辑部门初始值
         addOrModifyDeptForm.value = { ...initialAddOrModifyDeptForm };
+        //清除验证状态
+        addOrModifyDeptFormRef.value?.clearValidate();
         //弹框为添加弹框
         addOrModifyTag.value = 1;
         //打开弹框
@@ -250,6 +253,10 @@
     }
     //打开添加子级弹框
     const openSubAddDeptDialog = async (index: number, row: any) => {
+        //添加编辑部门初始值
+        addOrModifyDeptForm.value = { ...initialAddOrModifyDeptForm };
+        //清除验证状态
+        addOrModifyDeptFormRef.value?.clearValidate();
         //弹框为添加弹框
         addOrModifyTag.value = 1;
         //打开弹框
@@ -272,6 +279,10 @@
     }
     //打开修改弹框
     const openModifyDeptDialog = async (index: number, row: any) => {
+        //添加编辑部门初始值
+        addOrModifyDeptForm.value = { ...initialAddOrModifyDeptForm };
+        //清除验证状态
+        addOrModifyDeptFormRef.value?.clearValidate();
         //弹框为修改弹框
         addOrModifyTag.value = 2;
         //打开弹框

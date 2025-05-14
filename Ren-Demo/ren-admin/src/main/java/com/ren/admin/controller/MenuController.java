@@ -30,7 +30,7 @@ public class MenuController {
     RoleMenuService roleMenuService;
 
     /*
-     * 菜单树形列表
+     * 菜单树形列表（页面显示用）
      * @param paramMap
      * @return com.ren.common.dto.AjaxResultDTO
      * @author admin
@@ -41,7 +41,7 @@ public class MenuController {
     {
         List<Menu> menuList = menuService.listMenuByParam(paramMap);
         //将列表转为树形结构
-        menuList = TreeUtils.formatTree(menuList, menu -> Convert.toInt(BeanUtil.getProperty(menu, "parentId")) == 0,"menuId",null,null,"orderNum");
+        menuList = TreeUtils.formatTree(menuList, menu -> Convert.toInt(BeanUtil.getProperty(menu, "parentId")) == 0,"menuId",null,null,null);
         return AjaxResultDTO.success().put("menuList",menuList);
     }
 
@@ -58,7 +58,7 @@ public class MenuController {
         List<Menu> menuList = menuService.listMenuByParam(null);
         menuList.removeIf(d -> d.getMenuId().intValue() == menuId);
         //将列表转为树形结构
-        menuList = TreeUtils.formatTree(menuList,menu -> Convert.toInt(BeanUtil.getProperty(menu, "parentId")) == 0,"menuId","parentId","children","orderNum");
+        menuList = TreeUtils.formatTree(menuList,menu -> Convert.toInt(BeanUtil.getProperty(menu, "parentId")) == 0,"menuId","parentId","children",null);
         //将菜单列表转换为下拉框树形结构后传输到前台
         List<TreeSelectVO> treeSelectVOList =  TreeUtils.convertTreeSelectForAll(menuList, "menuId", "menuName", "isStop", "children");
         TreeSelectVO mianSelect = new TreeSelectVO(0L,"主目录",false,treeSelectVOList);
@@ -78,7 +78,7 @@ public class MenuController {
     {
         List<Menu> menuList = menuService.listMenuByParam(null);
         //将列表转为树形结构
-        menuList = TreeUtils.formatTree(menuList,menu -> Convert.toInt(BeanUtil.getProperty(menu, "parentId")) == 0,"menuId","parentId","children","orderNum");
+        menuList = TreeUtils.formatTree(menuList,menu -> Convert.toInt(BeanUtil.getProperty(menu, "parentId")) == 0,"menuId","parentId","children",null);
         //将菜单列表转换为下拉框树形结构后传输到前台
         List<TreeSelectVO> treeSelectVOList =  TreeUtils.convertTreeSelectForAll(menuList, "menuId", "menuName", "isStop", "children");
 
