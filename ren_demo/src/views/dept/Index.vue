@@ -140,14 +140,18 @@
 
 
     /*============================页面方法开始============================*/
-    //页面搜索方法
-    const search = async () => {
+    //获取列表方法
+    const getList = async () => {
         let result = await getDeptList(tableParams.value);
         if(result.code == 200){
             tableData.value = result.deptList;
         }else{
             ElMessage.error(result.msg);
         }
+    }
+    //页面搜索方法
+    const search = async () => {
+        getList();
     }
     //重置
     const resetForm = (formEl: FormInstance | undefined) => {

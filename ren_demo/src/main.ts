@@ -15,7 +15,7 @@ import 'virtual:svg-icons-register';
 // el-icon
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // 引入全局 CSS
-import '@/styles/global.css' // 或 import './styles/global.css'
+import '@/styles/global.scss' // 或 import './styles/global.scss'
 
 //ElementPlus全局中文配置
 import ElementPlus from 'element-plus'
