@@ -56,7 +56,7 @@
   </el-popover>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="IconPicker">
 // 获取图标原始名称集合
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 

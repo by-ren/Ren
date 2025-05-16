@@ -1,4 +1,4 @@
-import { service } from '@/utils/axios'
+import { service } from '@/axios/axios'
 
 //获取菜单列表
 export const getMenuList = (params? : Record<string, any>) => {

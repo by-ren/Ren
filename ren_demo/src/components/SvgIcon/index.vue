@@ -7,7 +7,7 @@
   </svg>
 </template>
 
-<script setup>
+<script setup name="SvgIcon">
 import { computed } from 'vue';
 import { isExternal as checkExternal } from '@/utils/validate';
 

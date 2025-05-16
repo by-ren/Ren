@@ -139,6 +139,17 @@
         where user_id = #{userId}
     </update>
 
+    <update id="updateUserByLogin">
+        update sys_user
+        <set>
+            <if test="loginIp != null and loginIp != ''">login_ip = #{loginIp},</if>
+            <if test="loginDate != null">login_date = #{loginDate},</if>
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        </set>
+        where user_id = #{userId}
+    </update>
+
     <select id="listUserByParam" resultMap="SysUserResult">
         select u.user_id, u.username, u.nickname, u.password, u.is_del,u.dept_id, u.user_type, u.email, u.phonenumber, u.sex, u.avatar, u.login_ip,
         u.login_date, FROM_UNIXTIME(u.login_date, '%Y-%m-%d %H:%i:%s') AS login_date_str,u.create_time, u.create_by,

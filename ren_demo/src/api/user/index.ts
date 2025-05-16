@@ -1,4 +1,4 @@
-import { service } from '@/utils/axios'
+import { service } from '@/axios/axios'
 
 //获取用户列表
 export const getUserList = (params? : Record<string, any>) => {

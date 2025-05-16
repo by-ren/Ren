@@ -48,6 +48,17 @@ public interface UserService extends IService<User> {
     void modifyUser(User user,String updateBy);
 
     /*
+     * 编辑用户（登录用）
+     * @param userId
+     * @param loginIp
+     * @param loginDate
+     * @param updateBy
+     * @author admin
+     * @date 2025/05/16 16:08
+     */
+    void modifyUserByLogin(long userId, String loginIp, long loginDate, String updateBy);
+
+    /*
      * 根据登陆账号获取用户
      * @param username
      * @return com.ren.admin.entity.User

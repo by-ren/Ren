@@ -249,8 +249,6 @@
     }
     //页面获取列表方法
     const getList = async () => {
-        console.info(tableParams.value.pageNum)
-        console.info(tableParams.value.pageSize)
         let result = await getUserList(tableParams.value);
         if(result.code == 200){
             tableData.value = result.rows;

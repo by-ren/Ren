@@ -63,4 +63,13 @@ public interface RoleService extends IService<Role> {
      * @date 2025/05/13 20:05
      */
     List<Role> listRoleByParam(Map<String,Object> paramMap);
+
+    /*
+     * 根据用户Id获取角色列表
+     * @param userId
+     * @return java.util.List<com.ren.common.domain.entity.Role>
+     * @author admin
+     * @date 2025/05/16 14:36
+     */
+    List<Role> listRoleByUserId(Long userId);
 }

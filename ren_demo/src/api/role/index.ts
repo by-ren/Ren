@@ -1,4 +1,4 @@
-import { service } from '@/utils/axios'
+import { service } from '@/axios/axios'
 
 //获取角色列表
 export const getRoleList = (params? : Record<string, any>) => {

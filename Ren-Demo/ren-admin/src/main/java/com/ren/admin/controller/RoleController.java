@@ -50,7 +50,7 @@ public class RoleController extends BaseController {
     @GetMapping("/list")
     public AjaxResultDTO listRole() {
         List<Role> roleList = roleService.listRoleByParam(null);
-        roleList = roleList.stream().filter(role -> !role.getRoleName().equals(AppConstants.ROLE_SUPER_NAME)).collect(Collectors.toList());
+        roleList = roleList.stream().filter(role -> !role.getRoleKey().equals(AppConstants.ROLE_SUPER_KEY)).collect(Collectors.toList());
         return AjaxResultDTO.success().put("roleList",roleList);
     }
 

@@ -56,11 +56,22 @@ export default defineConfig({
         // 可以直接在模板中使用 <el-icon><i-ep-house /></el-icon>（注意应为i- + 连字符图标名）
         IconsResolver({
           prefix: 'i', // 图标组件前缀（对应菜单中的 `i-ep-house`）
-          enabledCollections: ['ep'] // 启用 Element Plus 图标集
+          enabledCollections: ['ep'], // 启用 Element Plus 图标集
+          // 图标名称转换规则
+          alias: {
+            'ep': 'element-plus' // 将 'ep' 映射到 @element-plus/icons-vue
+          }
         })
       ],
+
       // 自动导入自定义组件（src/components 下的组件）
-      dirs: ['src/components'],
+      dirs: [
+        'src/components',
+        'src/components/**' // 递归扫描子目录
+      ],
+      // 启用深度扫描
+      deep: true, 
+
       // 使用默认配置，自动生成 components.d.ts 类型声明文件
       dts: true,
       // 指定声明文件的生成目录，即生成到 src/auto-imports.d.ts

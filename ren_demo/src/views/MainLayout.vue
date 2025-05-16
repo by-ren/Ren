@@ -4,6 +4,7 @@
       <el-aside class="aside" :width="isCollapse ? '64px' : '200px'">
 
         <el-menu 
+          :router="true"
           active-text-color="#ffd04b"
           background-color="#545c64"
           text-color="#fff"
@@ -14,38 +15,7 @@
           ref="menuRef"
         >
           <!-- 遍历菜单项 -->
-          <template v-for="item in menuItems" :key="item.index">
-            <!-- 有子菜单的情况 -->
-            <el-sub-menu v-if="item.children" :index="item.index">
-              <template #title>
-                <el-icon>
-                  <!-- 动态绑定目标组件，此种方式依赖于main.ts中的全局注册，所以一定要先注册之后再使用动态绑定 -->
-                  <component :is="item.icon" />
-                </el-icon>
-                <span>{{ item.name }}</span>
-              </template>
-              <!-- 渲染子菜单项 -->
-              <RouterLink :to="{name:child.index}" v-for="child in item.children" :key="child.index" >
-                <el-menu-item :index="child.index">
-                  <el-icon>
-                    <!-- 动态绑定目标组件，此种方式依赖于main.ts中的全局注册，所以一定要先注册之后再使用动态绑定 -->
-                    <component :is="child.icon" />
-                  </el-icon>
-                  <span>{{ child.name }}</span>
-                </el-menu-item>
-              </RouterLink>
-            </el-sub-menu>
-            <!-- 无子菜单的情况 -->
-            <RouterLink v-else :to="{name:item.index}">
-              <el-menu-item :index="item.index">
-                <el-icon>
-                  <!-- 动态绑定目标组件，此种方式依赖于main.ts中的全局注册，所以一定要先注册之后再使用动态绑定 -->
-                  <component :is="item.icon" />
-                </el-icon>
-                <span>首页</span>
-              </el-menu-item>
-            </RouterLink>
-          </template>
+          <SidebarItem v-for="item in menuItems" :key="item.index" :item="item"></SidebarItem>
         </el-menu>
       </el-aside>
       
@@ -91,6 +61,10 @@
   import { useAuthStore } from '@/stores/authStore'
   import { useRoute } from 'vue-router';
   import router from '@/router';
+  import type { Menu } from '@/types/Menu';
+  import { storeToRefs } from 'pinia'
+  // 该组件是递归组件，所以无法自动导入，需要手动导入
+  import SidebarItem from '@/components/SidebarItem/Index.vue'
   /*============================通用参数开始============================*/
   // auth相关pinia
   const authStore = useAuthStore()
@@ -107,15 +81,7 @@
   const collapseFun = () => {
     isCollapse.value = !(isCollapse.value)
   }
-  const menuItems = [
-    { index: 'Index', name: '首页', icon: 'i-ep-house' },
-    { index: 'System', name: '系统管理', icon: 'i-ep-setting', children: [
-      { index: 'User', name: '用户管理' ,icon: 'i-ep-user'},
-      { index: 'Role', name: '角色管理' ,icon: 'i-ep-avatar'},
-      { index: 'Menu', name: '菜单管理' ,icon: 'i-ep-menu'},
-      { index: 'Dept', name: '部门管理' ,icon: 'i-ep-grid'},
-    ]}
-  ];
+  const menuItems = ref<Menu[]>([]);
 
   /*============================菜单栏相关结束============================*/
 
@@ -189,7 +155,7 @@
       }
     };
     //当前选中的菜单项
-    const currentItem = findMenuItem(menuItems) || { index, name: '未知菜单' };
+    const currentItem = findMenuItem(menuItems.value) || { index, name: '未知菜单' };
     // 判断是否已存在相同标签
     const existingTag = tagArr.find(t => t.tagId === currentItem.index);
     if (!existingTag) {
@@ -220,6 +186,13 @@
 
   /*============================生命周期钩子开始============================*/
   onMounted(async () => {
+    // 先等待路由加载完成
+    await router.isReady();
+    // router.getRoutes()获取当前路由表信息
+    console.info(router.getRoutes());
+    const { menus } = storeToRefs(authStore);
+    menuItems.value = [{ index: 'Index', name: '首页', icon: 'i-ep-house' }];
+    menuItems.value.push(...menus.value);
     // 从 localStorage 加载标签页数据
     const savedTags = localStorage.getItem('tagArr');
     if (savedTags) {
