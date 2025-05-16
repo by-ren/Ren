@@ -77,9 +77,7 @@ public class AuthController {
 
             //更新用户最后登录时间
             User loginIpUser = userService.getUserByUsername(userDetails.getUsername());
-            loginIpUser.setLoginIp(IpUtils.getIpAddr());
-            loginIpUser.setLoginDate(DateUtil.currentSeconds());
-            userService.modifyUser(loginIpUser,userDetails.getUsername());
+            userService.modifyUserByLogin(loginIpUser.getUserId(),IpUtils.getIpAddr(),DateUtil.currentSeconds(),userDetails.getUsername());
             return AjaxResultDTO.success("登陆成功").put("accessToken",accessToken).put("refreshToken",refreshToken);
         } catch (BadCredentialsException e) {
             log.debug("登陆失败", e);
@@ -92,6 +90,19 @@ public class AuthController {
         }finally{
             AuthenticationContextHolder.clearContext();
         }
+    }
+
+    /*
+     * 自动登录功能（没有什么其他操作，前台调用该接口实现自动登录，修改是否登录字段使用）
+     * @param paramMap
+     * @param httpRequest
+     * @return com.ren.common.domain.dto.AjaxResultDTO
+     * @author admin
+     * @date 2025/05/16 17:21
+     */
+    @PostMapping("/auto/login")
+    public AjaxResultDTO autoLogin() {
+        return AjaxResultDTO.success();
     }
 
     /*

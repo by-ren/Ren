@@ -90,4 +90,17 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     public void modifyMenuIsDelById(long menuId, byte isDel, String updateBy) {
         menuMapper.updateMenuIsDelById(menuId,isDel,updateBy,DateUtil.currentSeconds());
     }
+
+    /*
+     * 根据角色ID获取菜单列表
+     * @param roleId
+     * @return java.util.List<com.ren.common.core.entity.Menu>
+     * @author admin
+     * @date 2025/05/07 17:16
+     */
+    @Override
+    public List<Menu> listMenuByRoleIds(Long... roleIds) {
+        List<Menu> menuList = menuMapper.listMenuByRoleIds(roleIds);
+        return menuList;
+    }
 }

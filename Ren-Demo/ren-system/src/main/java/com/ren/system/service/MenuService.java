@@ -53,4 +53,13 @@ public interface MenuService extends IService<Menu> {
      * @date 2025/05/07 17:13
      */
     void modifyMenuIsDelById(long menuId,byte isDel,String updateBy);
+
+    /*
+     * 根据橘色标识获取菜单列表
+     * @param roleId
+     * @return java.util.List<com.ren.common.domain.entity.Menu>
+     * @author admin
+     * @date 2025/05/16 14:48
+     */
+	List<Menu> listMenuByRoleIds(Long... roleIds);
 }

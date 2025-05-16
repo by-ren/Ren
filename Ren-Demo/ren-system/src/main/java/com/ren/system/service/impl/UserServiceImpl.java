@@ -111,6 +111,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /*
+     * 编辑用户（登录用）
+     * @param userId
+     * @param loginIp
+     * @param loginDate
+     * @param updateBy
+     * @author admin
+     * @date 2025/05/16 16:08
+     */
+    @Override
+    public void modifyUserByLogin(long userId, String loginIp, long loginDate, String updateBy) {
+        userMapper.updateUserByLogin(userId,loginIp,loginDate,updateBy,DateUtil.currentSeconds());
+    }
+
+    /*
      * 根据登陆账号获取username
      * @param username
      * @return com.ren.admin.entity.User

@@ -5,7 +5,7 @@ import App from './App.vue'
 // 引入路由组件
 import router from './router'
 //引入axios过滤器
-import { service, setupInterceptors } from '@/utils/axios';
+import { service, setupInterceptors } from '@/axios/axios';
 
 //引入SvgIcon字体图标
 //import SvgIcon from '@/components/SvgIcon/index.vue';

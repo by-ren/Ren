@@ -53,6 +53,17 @@ public interface UserMapper extends BaseMapper<User> {
     void updateUser(User user);
 
     /*
+     * 编辑用户（登录用）
+     * @param userId
+     * @param loginIp
+     * @param loginDate
+     * @param updateBy
+     * @author admin
+     * @date 2025/05/16 16:08
+     */
+    void updateUserByLogin(@Param("userId") long userId, @Param("loginIp")String loginIp, @Param("loginDate")long loginDate, @Param("updateBy")String updateBy, @Param("updateTime")long updateTime);
+
+    /*
      * 获取用户列表
      * @param page
      * @param paramMap
@@ -88,4 +99,5 @@ public interface UserMapper extends BaseMapper<User> {
      * @date 2025/05/13 10:10
      */
     List<User> listUserByDeptId(long deptId);
+
 }

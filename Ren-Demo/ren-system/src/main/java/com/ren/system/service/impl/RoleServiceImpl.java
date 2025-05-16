@@ -150,4 +150,16 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         }
         return roleMapper.listRoleByParam(paramMap);
     }
+
+    /*
+     * 根据用户Id获取角色列表
+     * @param userId
+     * @return java.util.List<com.ren.common.domain.entity.Role>
+     * @author admin
+     * @date 2025/05/16 14:36
+     */
+    @Override
+    public List<Role> listRoleByUserId(Long userId) {
+        return roleMapper.listRoleByUserId(userId);
+    }
 }

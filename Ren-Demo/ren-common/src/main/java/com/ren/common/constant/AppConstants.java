@@ -32,14 +32,14 @@ public class AppConstants {
     /**菜单-菜单类型-目录*/
     public static final String MENU_TYPE_DIR = "M";
     /**菜单-菜单类型-菜单*/
-    public static final String MENU_TYPE_MENU = "c";
+    public static final String MENU_TYPE_MENU = "C";
     /**菜单-菜单类型-按钮*/
     public static final String MENU_TYPE_BUTTON = "F";
     /*===================================================菜单结束=======================================================*/
 
     /*===================================================角色开始=======================================================*/
     /**角色-超级管理员角色名称*/
-    public static final String ROLE_SUPER_NAME = "超级管理员";
+    public static final String ROLE_SUPER_KEY = "admin";
 
     /**角色-可查看数据范围-全部数据权限*/
     public static final byte DATA_SCOPE_ALL = 1;
