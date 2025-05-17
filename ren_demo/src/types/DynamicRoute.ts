@@ -6,4 +6,5 @@ export interface DynamicRoute {
     requiresAuth?: boolean
     roles?: string[]
   }
+  children?: DynamicRoute[]
 }

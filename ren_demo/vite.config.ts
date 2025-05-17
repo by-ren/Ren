@@ -22,6 +22,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    //Vue开发工具辅助（注意，一旦开启这个，浏览器插件将失效，因为会打架，但是没关系，这个更好）（同时注意，这个插件只能在Vite+Vue3.3+以上版本才可以用，低版本的还是只能用浏览器自带插件）
     vueDevTools(),
     VueSetupExtend(),
 

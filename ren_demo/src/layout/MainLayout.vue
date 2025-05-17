@@ -61,7 +61,7 @@
   import { useAuthStore } from '@/stores/authStore'
   import { useRoute } from 'vue-router';
   import router from '@/router';
-  import type { Menu } from '@/types/Menu';
+  import type { MenuVO } from '@/types/MenuVo';
   import { storeToRefs } from 'pinia'
   // 该组件是递归组件，所以无法自动导入，需要手动导入
   import SidebarItem from '@/components/SidebarItem/Index.vue'
@@ -81,7 +81,7 @@
   const collapseFun = () => {
     isCollapse.value = !(isCollapse.value)
   }
-  const menuItems = ref<Menu[]>([]);
+  const menuItems = ref<MenuVO[]>([]);
 
   /*============================菜单栏相关结束============================*/
 
@@ -107,18 +107,18 @@
     closable: boolean
   }
   let tagArr = reactive<TagItem[]>([
-    {tagId:"Index",tagName:"首页",type:'primary',closable:false},
+    {tagId:"/index",tagName:"首页",type:'primary',closable:false},
   ]);
   // 统一状态更新方法
   const updateTagStates = (activeTagId: string) => {
     tagArr.forEach(tag => {
       tag.type = tag.tagId === activeTagId ? 'primary' : 'info';
-      tag.closable = tag.tagId !== "Index"; // 首页始终不可关闭
+      tag.closable = tag.tagId !== "/index"; // 首页始终不可关闭
     });
   };
   //标签页点击方法
   let tagClick = async (index:number) => {
-    await router.push({ name: tagArr[index].tagId });
+    await router.push({ path: tagArr[index].tagId });
     // 动态选中菜单
     menuRef.value.updateActiveIndex(tagArr[index].tagId); 
     updateTagStates(tagArr[index].tagId);
@@ -135,7 +135,7 @@
       const targetTagId = tagArr[newIndex].tagId;
 
       // 路由跳转到激活标签对应页面
-      await router.push({ name: targetTagId });
+      await router.push({ path: targetTagId });
       // 动态选中菜单
       menuRef.value.updateActiveIndex(targetTagId);
       updateTagStates(targetTagId);
@@ -188,10 +188,9 @@
   onMounted(async () => {
     // 先等待路由加载完成
     await router.isReady();
-    // router.getRoutes()获取当前路由表信息
-    console.info(router.getRoutes());
+    console.info("获取当前路由表信息",router.getRoutes());
     const { menus } = storeToRefs(authStore);
-    menuItems.value = [{ index: 'Index', name: '首页', icon: 'i-ep-house' }];
+    menuItems.value = [{ index: '/index', name: '首页', icon: 'i-ep-house' }];
     menuItems.value.push(...menus.value);
     // 从 localStorage 加载标签页数据
     const savedTags = localStorage.getItem('tagArr');
@@ -199,7 +198,7 @@
       Object.assign(tagArr, JSON.parse(savedTags));
     }
     //动态选中菜单
-    menuRef.value.updateActiveIndex(route.name?.toString() || '');
+    menuRef.value.updateActiveIndex(route.path?.toString() || '');
   })
   /*============================生命周期钩子结束============================*/
 </script>
