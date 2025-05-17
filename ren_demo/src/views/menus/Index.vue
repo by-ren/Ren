@@ -142,7 +142,7 @@
 
 </template>
 
-<script setup lang="ts" name="menu">
+<script setup lang="ts" name="menus">
     import type { FormInstance,FormRules } from 'element-plus'
     import {getMenuList,addMenu,modifyMenu, deleteMenu, getParentMenuList} from '@/api/menu/index'
     import { ElMessage } from 'element-plus'

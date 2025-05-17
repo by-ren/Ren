@@ -43,7 +43,7 @@ public class Menu extends BaseEntity {
     private String path;
 
     /** 组件路径 */
-    private String component;
+    private String component = "";
 
     /** 路由参数 */
     private String query;

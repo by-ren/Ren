@@ -72,16 +72,27 @@ public class UserController extends BaseController {
             menuList = menuService.listMenuByRoleIds(roleIds);
         }
         ajax.put("permissions", menuList.stream().filter(menu -> menu.getMenuType().equals(AppConstants.MENU_TYPE_BUTTON)).map(Menu::getPerms).toArray(String[]::new));
+        List<Menu> routerMenuList = menuList.stream().filter(menu -> menu.getMenuType().equals(AppConstants.MENU_TYPE_DIR) || menu.getMenuType().equals(AppConstants.MENU_TYPE_MENU)).toList();
+        List<Menu> routerMenuTree = TreeUtils.formatTree(routerMenuList, menu -> Convert.toInt(BeanUtil.getProperty(menu, "parentId")) == 0,"menuId",null,null,null);
         //获取用户所能看到的菜单（包含目录），格式化后返回（前端用于侧边栏目录显示）
-        List<Menu> sidebarMenu = menuList.stream().filter(menu -> menu.getMenuType().equals(AppConstants.MENU_TYPE_DIR) || menu.getMenuType().equals(AppConstants.MENU_TYPE_MENU)).toList();
-        List<Menu> sidebarMenuTree = TreeUtils.formatTree(sidebarMenu, menu -> Convert.toInt(BeanUtil.getProperty(menu, "parentId")) == 0,"menuId",null,null,null);
-        List<MenuVO> menuVOList = sidebarMenuTree.stream().map(menu -> new MenuVO(menu, "path", "menuName", "icon", "children")).toList();
+        List<MenuVO> menuVOList = routerMenuTree.stream().map(menu -> new MenuVO(menu, "path", "menuName", "icon", "children")).toList();
+        //递归修改每一级菜单路径
+        menuVOList = modifyMenuVOIndex("",menuVOList);
         ajax.put("menus", menuVOList);
         //获取用户所能看到的菜单（不包含目录），格式化后返回（前端用于动态路由配置）
-        List<Menu> routerrMenu = menuList.stream().filter(menu -> menu.getMenuType().equals(AppConstants.MENU_TYPE_MENU)).toList();
-        List<DynamicRouteVO> dynamicRouteVOList = routerrMenu.stream().map(menu -> new DynamicRouteVO(menu.getPath(), menu.getRouteName(), menu.getComponent(), new DynamicRouteVO().new Meta(true, new String[]{}))).toList();
+        List<DynamicRouteVO> dynamicRouteVOList = routerMenuTree.stream().map(menu -> new DynamicRouteVO(menu,"path", "routeName", "component", new DynamicRouteVO().new Meta(true, new String[]{}),"children")).toList();
         ajax.put("dynamicRoutes", dynamicRouteVOList);
         return ajax;
+    }
+
+    protected List<MenuVO> modifyMenuVOIndex(String parentIndex,List<MenuVO> menuVOList) {
+        for(MenuVO menuVO : menuVOList){
+            menuVO.setIndex(parentIndex + "/" + menuVO.getIndex());
+            if(menuVO.getChildren() != null && !menuVO.getChildren().isEmpty()){
+                menuVO.setChildren(modifyMenuVOIndex(menuVO.getIndex(),menuVO.getChildren()));
+            }
+        }
+        return menuVOList;
     }
 
     /*

@@ -4,7 +4,7 @@ import { service } from '@/axios/axios'
 import type { User } from '@/types/User'
 import type { LoginResponse } from '@/types/LoginResponse'
 import type { DynamicRoute } from '@/types/DynamicRoute'
-import type { Menu } from '@/types/Menu'
+import type { MenuVO } from '@/types/MenuVo'
 import router from '@/router';
 
 
@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth', () => {
     // 用户角色Id
     const roleIds = ref<number[]>([])
     // 侧边栏菜单
-    const menus = ref<Menu[]>([])
+    const menus = ref<MenuVO[]>([])
     // 路由配置
     const dynamicRoutes = ref<DynamicRoute[]>([])
 
