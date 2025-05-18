@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ren.system.mapper.ConfigMapper">
+<mapper namespace="com.ren.system.mapper.DictTypeMapper">
 
-    <resultMap type="config" id="ConfigResult">
-        <id     property="configId"       column="config_id"      />
-        <result property="configName"     column="config_name"    />
-        <result property="configKey"     column="config_key"    />
-        <result property="configValue"     column="config_value"    />
-        <result property="isSystem"     column="is_system"    />
+    <resultMap type="dictType" id="DictTypeResult">
+        <id     property="dictTypeId"       column="dictType_id"      />
+        <result property="dictName"     column="dict_name"    />
+        <result property="dictCode"     column="dict_code"    />
+        <result property="isStop"     column="is_stop"    />
         <result property="createBy"     column="create_by"    />
         <result property="createTime"   column="create_time"  />
         <result property="createTimeStr"   column="create_time_str"  />
@@ -17,56 +16,52 @@
         <result property="remark"       column="remark"       />
     </resultMap>
 
-    <sql id="selectConfigVo">
+    <sql id="selectDictTypeVo">
         select
-            config_id,config_name,config_key,config_value,is_system,
+            dictType_id,dict_name,dict_code,is_stop,
             create_time, create_by,FROM_UNIXTIME(create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, update_by, update_time, FROM_UNIXTIME(update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, remark
-        from sys_config
+        from sys_dictType
     </sql>
 
-    <insert id="insertConfig" parameterType="config" useGeneratedKeys="true" keyProperty="configId" keyColumn="config_id">
-        insert into sys_config(
-        <if test="configId != null and configId != 0">config_id,</if>
-        <if test="configName != null">config_name,</if>
-        <if test="configKey != null">config_key,</if>
-        <if test="configValue != null">config_value,</if>
-        <if test="isSystem != null">is_system,</if>
+    <insert id="insertDictType" parameterType="dictType" useGeneratedKeys="true" keyProperty="dictTypeId" keyColumn="dictType_id">
+        insert into sys_dictType(
+        <if test="dictTypeId != null and dictTypeId != 0">dictType_id,</if>
+        <if test="dictName != null">dict_name,</if>
+        <if test="dictCode != null">dict_code,</if>
+        <if test="isStop != null">is_stop,</if>
         create_by,
         create_time
         )values(
-        <if test="configId != null and configId != ''">#{configId},</if>
-        <if test="configName != null">#{configName},</if>
-        <if test="configKey != null">#{configKey},</if>
-        <if test="configValue != null">#{configValue},</if>
-        <if test="isSystem != null">#{isSystem},</if>
+        <if test="dictTypeId != null and dictTypeId != ''">#{dictTypeId},</if>
+        <if test="dictName != null">#{dictName},</if>
+        <if test="dictCode != null">#{dictCode},</if>
+        <if test="isStop != null">#{isStop},</if>
         #{createBy},
         #{createTime}
         )
     </insert>
 
-    <delete id="deleteConfig">
-        delete from sys_config where config_id = #{configId}
+    <delete id="deleteDictType">
+        delete from sys_dictType where dictType_id = #{dictTypeId}
     </delete>
 
-    <update id="updateConfig" parameterType="config">
-        update sys_config
+    <update id="updateDictType" parameterType="dictType">
+        update sys_dictType
         <set>
-            <if test="configId != null">config_id = #{configId},</if>
-            <if test="configName != null and configName != ''">config_name = #{configName},</if>
-            <if test="configKey != null and configKey != ''">config_key = #{configKey},</if>
-            <if test="configValue != null and configValue != ''">config_value = #{configValue},</if>
-            <if test="isSystem != null">is_system = #{isSystem},</if>
+            <if test="dictName != null and dictName != ''">dict_name = #{dictName},</if>
+            <if test="dictCode != null and dictCode != ''">dict_code = #{dictCode},</if>
+            <if test="isStop != null">is_stop = #{isStop},</if>
             update_by = #{updateBy},
             update_time = #{updateTime}
         </set>
-        where config_id = #{configId}
+        where dictType_id = #{dictTypeId}
     </update>
 
-    <select id="listConfigByPage" resultMap="ConfigResult">
-        <include refid="selectConfigVo"/>
+    <select id="listDictTypeByPage" resultMap="DictTypeResult">
+        <include refid="selectDictTypeVo"/>
         <where>
             <if test="searchLike != null and searchLike != ''">
-                AND (config_name LIKE #{searchLike})
+                AND (dict_name LIKE #{searchLike} or dict_code LIKE #{searchLike})
             </if>
         </where>
     </select>

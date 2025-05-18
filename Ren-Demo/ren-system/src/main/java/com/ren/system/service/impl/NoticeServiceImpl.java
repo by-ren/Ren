@@ -6,83 +6,85 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ren.common.utils.PageUtils;
-import com.ren.system.entity.DictType;
-import com.ren.system.mapper.DictTypeMapper;
-import com.ren.system.service.DictTypeService;
+import com.ren.system.entity.Notice;
+import com.ren.system.mapper.NoticeMapper;
+import com.ren.system.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
-public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> implements DictTypeService {
+public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> implements NoticeService {
 
     @Autowired
-    private DictTypeMapper dictTypeMapper;
+    private NoticeMapper noticeMapper;
 
     /*
-     * 添加字典类型
-     * @param dictType
+     * 添加通知公告
+     * @param notice
      * @return int
      * @author admin
      * @date 2025/05/18 13:49
      */
     @Override
-    public long addDictType(DictType dictType,String createBy) {
-        dictType.setCreateBy(createBy);
-        dictType.setCreateTime(DateUtil.currentSeconds());
-        dictTypeMapper.insertDictType(dictType);
-        return dictType.getDictTypeId();
+    public long addNotice(Notice notice,String createBy) {
+        notice.setCreateBy(createBy);
+        notice.setCreateTime(DateUtil.currentSeconds());
+        noticeMapper.insertNotice(notice);
+        return notice.getNoticeId();
     }
 
     /*
-     * 删除字典类型
-     * @param dictTypeId
+     * 删除通知公告
+     * @param noticeId
      * @author admin
      * @date 2025/05/18 13:49
      */
     @Override
-    public void removeDictType(long dictTypeId) {
-        dictTypeMapper.deleteDictType(dictTypeId);
+    public void removeNotice(long noticeId) {
+        noticeMapper.deleteNotice(noticeId);
     }
 
     /*
-     * 编辑字典类型
-     * @param dictType
+     * 编辑通知公告
+     * @param notice
      * @author admin
      * @date 2025/05/18 13:49
      */
     @Override
-    public void modifyDictType(DictType dictType) {
-        dictTypeMapper.updateDictType(dictType);
+    public void modifyNotice(Notice notice,String updateBy) {
+        notice.setUpdateBy(updateBy);
+        notice.setUpdateTime(DateUtil.currentSeconds());
+        noticeMapper.updateNotice(notice);
     }
 
     /*
-     * 分页获取字典类型列表
+     * 分页获取通知公告列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.DictType>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Notice>
      * @author admin
      * @date 2025/05/18 13:50
      */
     @Override
-    public IPage<DictType> listDictTypeByPage(Map<String, Object> paramMap) {
+    public IPage<Notice> listNoticeByPage(Map<String, Object> paramMap) {
         if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
             paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
         }
-        IPage<DictType> dictTypeList = dictTypeMapper.listDictTypeByPage(PageUtils.createPage(DictType.class),paramMap);
-        return dictTypeList;
+        IPage<Notice> noticeList = noticeMapper.listNoticeByPage(PageUtils.createPage(Notice.class),paramMap);
+        return noticeList;
     }
 
     /*
-     * 获取字典类型详情
-     * @param dictTypeId
-     * @return com.ren.system.entity.DictType
+     * 获取通知公告详情
+     * @param noticeId
+     * @return com.ren.system.entity.Notice
      * @author admin
      * @date 2025/05/18 13:50
      */
     @Override
-    public DictType getDictTypeById(long dictTypeId) {
-        DictType dictType = dictTypeMapper.selectById(dictTypeId);
-        return dictType;
+    public Notice getNoticeById(long noticeId) {
+        Notice notice = noticeMapper.selectById(noticeId);
+        return notice;
     }
 }

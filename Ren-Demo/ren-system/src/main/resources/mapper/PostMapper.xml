@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ren.system.mapper.DictTypeMapper">
+<mapper namespace="com.ren.system.mapper.PostMapper">
 
-    <resultMap type="dictType" id="DictTypeResult">
-        <id     property="dictTypeId"       column="dictType_id"      />
-        <result property="dictName"     column="dict_name"    />
-        <result property="dictCode"     column="dict_code"    />
+    <resultMap type="post" id="PostResult">
+        <id     property="postId"       column="post_id"      />
+        <result property="postCode"     column="post_code"    />
+        <result property="postName"     column="post_name"    />
+        <result property="postSort"     column="post_sort"    />
         <result property="isStop"     column="is_stop"    />
         <result property="createBy"     column="create_by"    />
         <result property="createTime"   column="create_time"  />
@@ -16,52 +17,55 @@
         <result property="remark"       column="remark"       />
     </resultMap>
 
-    <sql id="selectDictTypeVo">
+    <sql id="selectPostVo">
         select
-            dictType_id,dict_name,dict_code,is_stop,
+            post_id,post_code,post_name,post_sort,is_stop,
             create_time, create_by,FROM_UNIXTIME(create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, update_by, update_time, FROM_UNIXTIME(update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, remark
-        from sys_dictType
+        from sys_post
     </sql>
 
-    <insert id="insertDictType" parameterType="dictType" useGeneratedKeys="true" keyProperty="dictTypeId" keyColumn="dictType_id">
-        insert into sys_dictType(
-        <if test="dictTypeId != null and dictTypeId != 0">dictType_id,</if>
-        <if test="dictName != null">dict_name,</if>
-        <if test="dictCode != null">dict_code,</if>
+    <insert id="insertPost" parameterType="post" useGeneratedKeys="true" keyProperty="postId" keyColumn="post_id">
+        insert into sys_post(
+        <if test="postId != null and postId != 0">post_id,</if>
+        <if test="postCode != null">post_code,</if>
+        <if test="postName != null">post_name,</if>
+        <if test="postSort != null">post_sort,</if>
         <if test="isStop != null">is_stop,</if>
         create_by,
         create_time
         )values(
-        <if test="dictTypeId != null and dictTypeId != ''">#{dictTypeId},</if>
-        <if test="dictName != null">#{dictName},</if>
-        <if test="dictCode != null">#{dictCode},</if>
+        <if test="postId != null and postId != ''">#{postId},</if>
+        <if test="postCode != null">#{postCode},</if>
+        <if test="postName != null">#{postName},</if>
+        <if test="postSort != null">#{postSort},</if>
         <if test="isStop != null">#{isStop},</if>
         #{createBy},
         #{createTime}
         )
     </insert>
 
-    <delete id="deleteDictType">
-        delete from sys_dictType where dictType_id = #{dictTypeId}
+    <delete id="deletePost">
+        delete from sys_post where post_id = #{postId}
     </delete>
 
-    <update id="updateDictType" parameterType="dictType">
-        update sys_dictType
+    <update id="updatePost" parameterType="post">
+        update sys_post
         <set>
-            <if test="dictName != null and dictName != ''">dict_name = #{dictName},</if>
-            <if test="dictCode != null and dictCode != ''">dict_code = #{dictCode},</if>
+            <if test="postCode != null and postCode != ''">post_code = #{postCode},</if>
+            <if test="postName != null and postName != ''">post_name = #{postName},</if>
+            <if test="postSort != null">post_sort = #{postSort},</if>
             <if test="isStop != null">is_stop = #{isStop},</if>
             update_by = #{updateBy},
             update_time = #{updateTime}
         </set>
-        where dictType_id = #{dictTypeId}
+        where post_id = #{postId}
     </update>
 
-    <select id="listDictTypeByPage" resultMap="DictTypeResult">
-        <include refid="selectDictTypeVo"/>
+    <select id="listPostByPage" resultMap="PostResult">
+        <include refid="selectPostVo"/>
         <where>
             <if test="searchLike != null and searchLike != ''">
-                AND (dict_name LIKE #{searchLike})
+                AND (post_code LIKE #{searchLike} OR post_name LIKE #{searchLike})
             </if>
         </where>
     </select>

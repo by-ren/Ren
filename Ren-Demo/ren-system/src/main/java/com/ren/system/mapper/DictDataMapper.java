@@ -4,47 +4,47 @@ package com.ren.system.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ren.system.entity.DictType;
+import com.ren.system.entity.DictData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Map;
 
 @Mapper
-public interface DictTypeMapper extends BaseMapper<DictType> {
+public interface DictDataMapper extends BaseMapper<DictData> {
 
     /*
-     * 添加字典类型
-     * @param dictType
+     * 添加字典数据
+     * @param dictData
      * @return int
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void insertDictType(DictType dictType);
+    void insertDictData(DictData dictData);
 
     /*
-     * 删除字典类型
-     * @param dictTypeId
+     * 删除字典数据
+     * @param dictDataId
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void deleteDictType(long dictTypeId);
+    void deleteDictData(long dictDataId);
 
     /*
-     * 编辑字典类型
-     * @param dictType
+     * 编辑字典数据
+     * @param dictData
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void updateDictType(DictType dictType);
+    void updateDictData(DictData dictData);
 
     /*
-     * 分页获取字典类型列表
+     * 分页获取字典数据列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.DictType>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.DictData>
      * @author admin
      * @date 2025/05/18 13:50
      */
-    IPage<DictType> listDictTypeByPage(Page<DictType> page, @Param("paramMap")Map<String, Object> paramMap);
+    IPage<DictData> listDictDataByPage(Page<DictData> page, @Param("paramMap")Map<String, Object> paramMap);
 
 }

@@ -6,8 +6,8 @@ import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.User;
 import com.ren.common.domain.page.TableDataInfo;
 import com.ren.common.interfaces.Pageable;
-import com.ren.system.entity.Config;
-import com.ren.system.service.ConfigService;
+import com.ren.system.entity.DictType;
+import com.ren.system.service.DictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -15,65 +15,65 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/config")
-public class ConfigController extends BaseController {
+@RequestMapping("/dictType")
+public class DictTypeController extends BaseController {
 
     @Autowired
-    ConfigService configService;
+    DictTypeService dictTypeService;
 
     /*
-     * 配置分页列表
+     * 字典类型字典类型列表
      * @param paramMap
      * @return com.ren.common.domain.page.TableDataInfo
      * @author admin
      * @date 2025/05/18 15:28
      */
     @GetMapping("/list/page")
-    @Pageable  //注意，如果要开启分页，请添加该注解
-    public TableDataInfo listConfigByPage(@RequestParam Map<String,Object> paramMap) {
-        IPage<Config> configList = configService.listConfigByPage(paramMap);
-        return getDataTable(configList);
+    @Pageable  //注意，如果要开启字典类型，请添加该注解
+    public TableDataInfo listDictTypeByPage(@RequestParam Map<String,Object> paramMap) {
+        IPage<DictType> dictTypeList = dictTypeService.listDictTypeByPage(paramMap);
+        return getDataTable(dictTypeList);
     }
 
     /*
-     * 添加配置
+     * 添加字典类型
      * @param loginUser
-     * @param addConfig
+     * @param addDictType
      * @return com.ren.common.domain.dto.AjaxResultDTO
      * @author admin
      * @date 2025/05/18 15:28
      */
     @PostMapping("/add")
-    public AjaxResultDTO addConfig(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Config addConfig) {
-        configService.addConfig(addConfig,loginUser.getUsername());
+    public AjaxResultDTO addDictType(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) DictType addDictType) {
+        dictTypeService.addDictType(addDictType,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
 
     /*
-     * 编辑配置
+     * 编辑字典类型
      * @param loginUser
-     * @param modifyConfig
+     * @param modifyDictType
      * @return com.ren.common.domain.dto.AjaxResultDTO
      * @author admin
      * @date 2025/05/18 15:28
      */
     @PostMapping("/modify")
-    public AjaxResultDTO modifyConfig(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Config modifyConfig) {
-        configService.modifyConfig(modifyConfig,loginUser.getUsername());
+    public AjaxResultDTO modifyDictType(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) DictType modifyDictType) {
+        dictTypeService.modifyDictType(modifyDictType,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
 
     /*
-     * 删除配置
+     * 删除字典类型
      * @param loginUser
-     * @param configId
+     * @param dictTypeId
      * @return com.ren.common.domain.dto.AjaxResultDTO
      * @author admin
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")
-    public AjaxResultDTO configDelete(@AuthenticationPrincipal User loginUser, long configId) {
-        configService.removeConfig(configId);
+    public AjaxResultDTO dictTypeDelete(@AuthenticationPrincipal User loginUser, long dictTypeId) {
+        dictTypeService.removeDictType(dictTypeId);
         return AjaxResultDTO.success();
     }
 

@@ -10,6 +10,7 @@
 		<result property="roleSort"     column="role_sort"    />
 		<result property="isDel"     column="is_del"    />
 		<result property="dataScope"     column="data_scope"    />
+		<result property="createBy"     column="create_by"    />
 		<result property="createTime"   column="create_time"  />
 		<result property="createTimeStr"   column="create_time_str"  />
 		<result property="updateBy"     column="update_by"    />

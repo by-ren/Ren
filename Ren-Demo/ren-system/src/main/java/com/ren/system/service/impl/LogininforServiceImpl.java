@@ -5,90 +5,71 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ren.common.constant.AppConstants;
-import com.ren.common.domain.entity.Dept;
-import com.ren.common.domain.entity.Role;
 import com.ren.common.utils.PageUtils;
-import com.ren.system.entity.Config;
-import com.ren.system.mapper.ConfigMapper;
-import com.ren.system.mapper.DeptMapper;
-import com.ren.system.service.ConfigService;
-import com.ren.system.service.DeptService;
+import com.ren.system.entity.Logininfor;
+import com.ren.system.mapper.LogininforMapper;
+import com.ren.system.service.LogininforService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
-public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> implements ConfigService {
+public class LogininforServiceImpl extends ServiceImpl<LogininforMapper, Logininfor> implements LogininforService {
 
     @Autowired
-    private ConfigMapper configMapper;
+    private LogininforMapper logininforMapper;
 
     /*
-     * 添加配置
-     * @param config
+     * 添加登录日志
+     * @param logininfor
      * @return int
      * @author admin
      * @date 2025/05/18 13:49
      */
     @Override
-    public long addConfig(Config config,String createBy) {
-        config.setCreateBy(createBy);
-        config.setCreateTime(DateUtil.currentSeconds());
-        configMapper.insertConfig(config);
-        return config.getConfigId();
+    public long addLogininfor(Logininfor logininfor) {
+        logininforMapper.insertLogininfor(logininfor);
+        return logininfor.getInfoId();
     }
 
     /*
-     * 删除配置
-     * @param configId
+     * 删除登录日志
+     * @param infoId
      * @author admin
      * @date 2025/05/18 13:49
      */
     @Override
-    public void removeConfig(long configId) {
-        configMapper.deleteConfig(configId);
+    public void removeLogininfor(long infoId) {
+        logininforMapper.deleteLogininfor(infoId);
     }
 
     /*
-     * 编辑配置
-     * @param config
-     * @author admin
-     * @date 2025/05/18 13:49
-     */
-    @Override
-    public void modifyConfig(Config config) {
-        configMapper.updateConfig(config);
-    }
-
-    /*
-     * 分页获取配置列表
+     * 分页获取登录日志列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Config>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Logininfor>
      * @author admin
      * @date 2025/05/18 13:50
      */
     @Override
-    public IPage<Config> listConfigByPage(Map<String, Object> paramMap) {
+    public IPage<Logininfor> listLogininforByPage(Map<String, Object> paramMap) {
         if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
             paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
         }
-        IPage<Config> configList = configMapper.listConfigByPage(PageUtils.createPage(Config.class),paramMap);
-        return configList;
+        IPage<Logininfor> logininforList = logininforMapper.listLogininforByPage(PageUtils.createPage(Logininfor.class),paramMap);
+        return logininforList;
     }
 
     /*
-     * 获取配置详情
-     * @param configId
-     * @return com.ren.system.entity.Config
+     * 获取登录日志详情
+     * @param infoId
+     * @return com.ren.system.entity.Logininfor
      * @author admin
      * @date 2025/05/18 13:50
      */
     @Override
-    public Config getConfigById(long configId) {
-        Config config = configMapper.selectById(configId);
-        return config;
+    public Logininfor getLogininforById(long infoId) {
+        Logininfor logininfor = logininforMapper.selectById(infoId);
+        return logininfor;
     }
 }

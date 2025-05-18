@@ -3,52 +3,52 @@ package com.ren.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ren.system.entity.DictType;
+import com.ren.system.entity.Notice;
 
 import java.util.Map;
 
-public interface DictTypeService extends IService<DictType> {
+public interface NoticeService extends IService<Notice> {
 
     /*
-     * 添加字典类型
-     * @param dictType
+     * 添加通知公告
+     * @param notice
      * @return int
      * @author admin
      * @date 2025/05/18 13:49
      */
-    long addDictType(DictType dictType,String createBy);
+    long addNotice(Notice notice,String createBy);
 
     /*
-     * 删除字典类型
-     * @param dictTypeId
+     * 删除通知公告
+     * @param noticeId
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void removeDictType(long dictTypeId);
+    void removeNotice(long noticeId);
 
     /*
-     * 编辑字典类型
-     * @param dictType
+     * 编辑通知公告
+     * @param notice
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void modifyDictType(DictType dictType);
+    void modifyNotice(Notice notice,String updateBy);
 
     /*
-     * 分页获取字典类型列表
+     * 分页获取通知公告列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.DictType>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Notice>
      * @author admin
      * @date 2025/05/18 13:50
      */
-    IPage<DictType> listDictTypeByPage(Map<String,Object> paramMap);
+    IPage<Notice> listNoticeByPage(Map<String,Object> paramMap);
 
     /*
-     * 获取字典类型详情
-     * @param dictTypeId
-     * @return com.ren.system.entity.DictType
+     * 获取通知公告详情
+     * @param noticeId
+     * @return com.ren.system.entity.Notice
      * @author admin
      * @date 2025/05/18 13:50
      */
-    DictType getDictTypeById(long dictTypeId);
+    Notice getNoticeById(long noticeId);
 }

@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ren.system.mapper.DictTypeMapper">
+<mapper namespace="com.ren.system.mapper.DictDataMapper">
 
-    <resultMap type="dictType" id="DictTypeResult">
-        <id     property="dictTypeId"       column="dictType_id"      />
-        <result property="dictName"     column="dict_name"    />
-        <result property="dictCode"     column="dict_code"    />
+    <resultMap type="dictData" id="DictDataResult">
+        <id     property="dictDataId"       column="dictData_id"      />
+        <result property="dictSort"     column="dict_sort"    />
+        <result property="dictLabel"     column="dict_label"    />
+        <result property="dictValue"     column="dict_value"    />
+        <result property="dictType"     column="dict_type"    />
+        <result property="cssClass"     column="css_class"    />
+        <result property="listClass"     column="list_class"    />
+        <result property="isDefault"     column="is_default"    />
         <result property="isStop"     column="is_stop"    />
         <result property="createBy"     column="create_by"    />
         <result property="createTime"   column="create_time"  />
@@ -16,53 +21,66 @@
         <result property="remark"       column="remark"       />
     </resultMap>
 
-    <sql id="selectDictTypeVo">
+    <sql id="selectDictDataVo">
         select
-            dictType_id,dict_name,dict_code,is_stop,
+            dict_sort,dict_label,dict_value,dict_type,css_class,list_class,is_default,
             create_time, create_by,FROM_UNIXTIME(create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, update_by, update_time, FROM_UNIXTIME(update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, remark
-        from sys_dictType
+        from sys_dictData
     </sql>
 
-    <insert id="insertDictType" parameterType="dictType" useGeneratedKeys="true" keyProperty="dictTypeId" keyColumn="dictType_id">
-        insert into sys_dictType(
-        <if test="dictTypeId != null and dictTypeId != 0">dictType_id,</if>
-        <if test="dictName != null">dict_name,</if>
-        <if test="dictCode != null">dict_code,</if>
+    <insert id="insertDictData" parameterType="dictData" useGeneratedKeys="true" keyProperty="dictDataId" keyColumn="dictData_id">
+        insert into sys_dictData(
+        <if test="dictDataId != null and dictDataId != 0">dict_data_id,</if>
+        <if test="dictSort != null">dict_sort,</if>
+        <if test="dictLabel != null">dict_label,</if>
+        <if test="dictValue != null">dict_value,</if>
+        <if test="dictType != null">dict_type,</if>
+        <if test="cssClass != null">css_class,</if>
+        <if test="listClass != null">list_class,</if>
+        <if test="isDefault != null">is_default,</if>
         <if test="isStop != null">is_stop,</if>
         create_by,
         create_time
         )values(
-        <if test="dictTypeId != null and dictTypeId != ''">#{dictTypeId},</if>
-        <if test="dictName != null">#{dictName},</if>
-        <if test="dictCode != null">#{dictCode},</if>
+        <if test="dictDataId != null and dictDataId != ''">#{dictDataId},</if>
+        <if test="dictSort != null">#{dictSort},</if>
+        <if test="dictLabel != null">#{dictLabel},</if>
+        <if test="dictValue != null">#{dictValue},</if>
+        <if test="dictType != null">#{dictType},</if>
+        <if test="cssClass != null">#{cssClass},</if>
+        <if test="listClass != null">#{listClass},</if>
+        <if test="isDefault != null">#{isDefault},</if>
         <if test="isStop != null">#{isStop},</if>
         #{createBy},
         #{createTime}
         )
     </insert>
 
-    <delete id="deleteDictType">
-        delete from sys_dictType where dictType_id = #{dictTypeId}
+    <delete id="deleteDictData">
+        delete from sys_dictData where dictData_id = #{dictDataId}
     </delete>
 
-    <update id="updateDictType" parameterType="dictType">
-        update sys_dictType
+    <update id="updateDictData" parameterType="dictData">
+        update sys_dictData
         <set>
-            <if test="dictTypeId != null">dictType_id = #{dictTypeId},</if>
-            <if test="dictName != null and dictName != ''">dict_name = #{dictName},</if>
-            <if test="dictCode != null and dictCode != ''">dict_code = #{dictCode},</if>
-            <if test="isStop != null">is_stop = #{isStop},</if>
+            <if test="dictSort != null">dict_sort = #{dictSort},</if>
+            <if test="dictLabel != null and dictLabel != ''">dict_label = #{dictLabel},</if>
+            <if test="dictValue != null and dictValue != ''">dict_value = #{dictValue},</if>
+            <if test="dictType != null">dict_type = #{dictType},</if>
+            <if test="cssClass != null and cssClass != ''">css_class = #{cssClass},</if>
+            <if test="listClass != null and listClass != ''">list_class = #{listClass},</if>
+            <if test="isDefault != null">is_default = #{isDefault},</if>
             update_by = #{updateBy},
             update_time = #{updateTime}
         </set>
-        where dictType_id = #{dictTypeId}
+        where dictData_id = #{dictDataId}
     </update>
 
-    <select id="listDictTypeByPage" resultMap="DictTypeResult">
-        <include refid="selectDictTypeVo"/>
+    <select id="listDictDataByPage" resultMap="DictDataResult">
+        <include refid="selectDictDataVo"/>
         <where>
             <if test="searchLike != null and searchLike != ''">
-                AND (dict_name LIKE #{searchLike})
+                AND (dict_label LIKE #{searchLike} or css_class LIKE #{searchLike} or list_class LIKE #{searchLike})
             </if>
         </where>
     </select>

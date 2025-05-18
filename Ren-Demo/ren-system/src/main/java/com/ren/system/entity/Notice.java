@@ -12,23 +12,23 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("sys_config")
-public class Config extends BaseEntity {
+@TableName("sys_notice")
+public class Notice extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "config_id", type = IdType.AUTO)
-    private Long configId;
-    /**参数名称*/
-    @TableField(value = "config_name")
-    private String configName;
-    /**参数键名*/
-    @TableField(value = "config_key")
-    private String configKey;
-    /**参数键值*/
-    @TableField(value = "config_value")
-    private String configValue;
-    /**是否系统内置（1：是，0：否）*/
-    @TableField(value = "is_system")
-    private Byte isSystem;
+    @TableId(value = "notice_id", type = IdType.AUTO)
+    private Long noticeId;
+    /**公告标题*/
+    @TableField(value = "notice_title")
+    private String noticeTitle;
+    /**公告类型（1：通知 2：公告）*/
+    @TableField(value = "notice_type")
+    private String noticeType;
+    /**公告内容*/
+    @TableField(value = "notice_content")
+    private String noticeContent;
+    /**是否关闭（1：是 0：否）*/
+    @TableField(value = "is_close")
+    private Byte isClose;
 
 }

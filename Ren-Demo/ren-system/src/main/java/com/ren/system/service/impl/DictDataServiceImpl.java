@@ -6,83 +6,85 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ren.common.utils.PageUtils;
-import com.ren.system.entity.DictType;
-import com.ren.system.mapper.DictTypeMapper;
-import com.ren.system.service.DictTypeService;
+import com.ren.system.entity.DictData;
+import com.ren.system.mapper.DictDataMapper;
+import com.ren.system.service.DictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
-public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> implements DictTypeService {
+public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> implements DictDataService {
 
     @Autowired
-    private DictTypeMapper dictTypeMapper;
+    private DictDataMapper dictDataMapper;
 
     /*
-     * 添加字典类型
-     * @param dictType
+     * 添加字典数据
+     * @param dictData
      * @return int
      * @author admin
      * @date 2025/05/18 13:49
      */
     @Override
-    public long addDictType(DictType dictType,String createBy) {
-        dictType.setCreateBy(createBy);
-        dictType.setCreateTime(DateUtil.currentSeconds());
-        dictTypeMapper.insertDictType(dictType);
-        return dictType.getDictTypeId();
+    public long addDictData(DictData dictData,String createBy) {
+        dictData.setCreateBy(createBy);
+        dictData.setCreateTime(DateUtil.currentSeconds());
+        dictDataMapper.insertDictData(dictData);
+        return dictData.getDictDataId();
     }
 
     /*
-     * 删除字典类型
-     * @param dictTypeId
+     * 删除字典数据
+     * @param dictDataId
      * @author admin
      * @date 2025/05/18 13:49
      */
     @Override
-    public void removeDictType(long dictTypeId) {
-        dictTypeMapper.deleteDictType(dictTypeId);
+    public void removeDictData(long dictDataId) {
+        dictDataMapper.deleteDictData(dictDataId);
     }
 
     /*
-     * 编辑字典类型
-     * @param dictType
+     * 编辑字典数据
+     * @param dictData
      * @author admin
      * @date 2025/05/18 13:49
      */
     @Override
-    public void modifyDictType(DictType dictType) {
-        dictTypeMapper.updateDictType(dictType);
+    public void modifyDictData(DictData dictData, String updateBy) {
+        dictData.setUpdateBy(updateBy);
+        dictData.setUpdateTime(DateUtil.currentSeconds());
+        dictDataMapper.updateDictData(dictData);
     }
 
     /*
-     * 分页获取字典类型列表
+     * 分页获取字典数据列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.DictType>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.DictData>
      * @author admin
      * @date 2025/05/18 13:50
      */
     @Override
-    public IPage<DictType> listDictTypeByPage(Map<String, Object> paramMap) {
+    public IPage<DictData> listDictDataByPage(Map<String, Object> paramMap) {
         if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
             paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
         }
-        IPage<DictType> dictTypeList = dictTypeMapper.listDictTypeByPage(PageUtils.createPage(DictType.class),paramMap);
-        return dictTypeList;
+        IPage<DictData> dictDataList = dictDataMapper.listDictDataByPage(PageUtils.createPage(DictData.class),paramMap);
+        return dictDataList;
     }
 
     /*
-     * 获取字典类型详情
-     * @param dictTypeId
-     * @return com.ren.system.entity.DictType
+     * 获取字典数据详情
+     * @param dictDataId
+     * @return com.ren.system.entity.DictData
      * @author admin
      * @date 2025/05/18 13:50
      */
     @Override
-    public DictType getDictTypeById(long dictTypeId) {
-        DictType dictType = dictTypeMapper.selectById(dictTypeId);
-        return dictType;
+    public DictData getDictDataById(long dictDataId) {
+        DictData dictData = dictDataMapper.selectById(dictDataId);
+        return dictData;
     }
 }

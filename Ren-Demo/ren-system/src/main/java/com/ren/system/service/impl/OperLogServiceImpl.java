@@ -1,75 +1,74 @@
 package com.ren.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ren.common.utils.PageUtils;
-import com.ren.system.entity.Logininfor;
-import com.ren.system.mapper.LogininforMapper;
-import com.ren.system.service.LogininforService;
+import com.ren.system.entity.OperLog;
+import com.ren.system.mapper.OperLogMapper;
+import com.ren.system.service.OperLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
-public class LogininforServiceImpl extends ServiceImpl<LogininforMapper, Logininfor> implements LogininforService {
+public class OperLogServiceImpl extends ServiceImpl<OperLogMapper, OperLog> implements OperLogService {
 
     @Autowired
-    private LogininforMapper logininforMapper;
+    private OperLogMapper operLogMapper;
 
     /*
-     * 添加登录日志
-     * @param logininfor
+     * 添加操作日志
+     * @param operLog
      * @return int
      * @author admin
      * @date 2025/05/18 13:49
      */
     @Override
-    public long addLogininfor(Logininfor logininfor) {
-        logininforMapper.insertLogininfor(logininfor);
-        return logininfor.getInfoId();
+    public long addOperLog(OperLog operLog) {
+        operLogMapper.insertOperLog(operLog);
+        return operLog.getOperId();
     }
 
     /*
-     * 删除登录日志
-     * @param infoId
+     * 删除操作日志
+     * @param operId
      * @author admin
      * @date 2025/05/18 13:49
      */
     @Override
-    public void removeLogininfor(long infoId) {
-        logininforMapper.deleteLogininfor(infoId);
+    public void removeOperLog(long operId) {
+        operLogMapper.deleteOperLog(operId);
     }
 
     /*
-     * 分页获取登录日志列表
+     * 分页获取操作日志列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Logininfor>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.OperLog>
      * @author admin
      * @date 2025/05/18 13:50
      */
     @Override
-    public IPage<Logininfor> listLogininforByPage(Map<String, Object> paramMap) {
+    public IPage<OperLog> listOperLogByPage(Map<String, Object> paramMap) {
         if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
             paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
         }
-        IPage<Logininfor> logininforList = logininforMapper.listLogininforByPage(PageUtils.createPage(Logininfor.class),paramMap);
-        return logininforList;
+        IPage<OperLog> operLogList = operLogMapper.listOperLogByPage(PageUtils.createPage(OperLog.class),paramMap);
+        return operLogList;
     }
 
     /*
-     * 获取登录日志详情
-     * @param infoId
-     * @return com.ren.system.entity.Logininfor
+     * 获取操作日志详情
+     * @param operId
+     * @return com.ren.system.entity.OperLog
      * @author admin
      * @date 2025/05/18 13:50
      */
     @Override
-    public Logininfor getLogininforById(long infoId) {
-        Logininfor logininfor = logininforMapper.selectById(infoId);
-        return logininfor;
+    public OperLog getOperLogById(long operId) {
+        OperLog operLog = operLogMapper.selectById(operId);
+        return operLog;
     }
 }

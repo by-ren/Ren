@@ -3,52 +3,52 @@ package com.ren.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ren.system.entity.DictType;
+import com.ren.system.entity.Post;
 
 import java.util.Map;
 
-public interface DictTypeService extends IService<DictType> {
+public interface PostService extends IService<Post> {
 
     /*
-     * 添加字典类型
-     * @param dictType
+     * 添加岗位
+     * @param post
      * @return int
      * @author admin
      * @date 2025/05/18 13:49
      */
-    long addDictType(DictType dictType,String createBy);
+    long addPost(Post post,String createBy);
 
     /*
-     * 删除字典类型
-     * @param dictTypeId
+     * 删除岗位
+     * @param postId
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void removeDictType(long dictTypeId);
+    void removePost(long postId);
 
     /*
-     * 编辑字典类型
-     * @param dictType
+     * 编辑岗位
+     * @param post
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void modifyDictType(DictType dictType);
+    void modifyPost(Post post,String updateBy);
 
     /*
-     * 分页获取字典类型列表
+     * 分页获取岗位列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.DictType>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Post>
      * @author admin
      * @date 2025/05/18 13:50
      */
-    IPage<DictType> listDictTypeByPage(Map<String,Object> paramMap);
+    IPage<Post> listPostByPage(Map<String,Object> paramMap);
 
     /*
-     * 获取字典类型详情
-     * @param dictTypeId
-     * @return com.ren.system.entity.DictType
+     * 获取岗位详情
+     * @param postId
+     * @return com.ren.system.entity.Post
      * @author admin
      * @date 2025/05/18 13:50
      */
-    DictType getDictTypeById(long dictTypeId);
+    Post getPostById(long postId);
 }
