@@ -3,40 +3,39 @@ package com.ren.system.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ren.system.entity.Logininfor;
-import com.ren.system.entity.Logininfor;
+import com.ren.system.entity.OperLog;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Map;
 
 @Mapper
-public interface LogininforMapper extends BaseMapper<Logininfor> {
+public interface OperLogMapper extends BaseMapper<OperLog> {
 
     /*
-     * 添加登录日志
-     * @param logininfor
+     * 添加操作日志
+     * @param operLog
      * @return int
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void insertLogininfor(Logininfor logininfor);
+    void insertOperLog(OperLog operLog);
 
     /*
-     * 删除登录日志
-     * @param infoId
+     * 删除操作日志
+     * @param operId
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void deleteLogininfor(long infoId);
+    void deleteOperLog(long operId);
 
     /*
-     * 分页获取登录日志列表
+     * 分页获取操作日志列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Logininfor>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.OperLog>
      * @author admin
      * @date 2025/05/18 13:50
      */
-    IPage<Logininfor> listLogininforByPage(Page<Logininfor> page, @Param("paramMap")Map<String, Object> paramMap);
+    IPage<OperLog> listOperLogByPage(Page<OperLog> page, @Param("paramMap")Map<String, Object> paramMap);
 
 }

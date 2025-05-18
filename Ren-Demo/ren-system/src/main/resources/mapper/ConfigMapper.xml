@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ren.system.mapper.DeptMapper">
+<mapper namespace="com.ren.system.mapper.ConfigMapper">
 
-    <resultMap type="dept" id="DeptResult">
-        <id     property="deptId"       column="dept_id"      />
-        <result property="parentId"     column="parent_id"    />
-        <result property="ancestors"     column="ancestors"    />
-        <result property="deptName"     column="dept_name"    />
-        <result property="orderNum"     column="order_num"    />
-        <result property="leader"     column="leader"    />
-        <result property="phone"     column="phone"    />
-        <result property="email"     column="email"    />
-        <result property="isStop"     column="is_stop"    />
-        <result property="isDel"     column="is_del"    />
+    <resultMap type="config" id="ConfigResult">
+        <id     property="configId"       column="config_id"      />
+        <result property="configName"     column="config_name"    />
+        <result property="configKey"     column="config_key"    />
+        <result property="configValue"     column="config_value"    />
+        <result property="isSystem"     column="is_system"    />
         <result property="createBy"     column="create_by"    />
         <result property="createTime"   column="create_time"  />
         <result property="createTimeStr"   column="create_time_str"  />
@@ -22,89 +17,58 @@
         <result property="remark"       column="remark"       />
     </resultMap>
 
-    <sql id="selectDeptVo">
+    <sql id="selectConfigVo">
         select
-            dept_id,parent_id,ancestors,dept_name,order_num,leader,phone,email,is_stop,is_del
+            config_id,config_name,config_key,config_value,is_system,
             create_time, create_by,FROM_UNIXTIME(create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, update_by, update_time, FROM_UNIXTIME(update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, remark
-        from sys_dept
+        from sys_config
     </sql>
 
-    <insert id="insertDept" parameterType="dept" useGeneratedKeys="true" keyProperty="deptId" keyColumn="dept_id">
-        insert into sys_dept(
-        <if test="deptId != null and deptId != 0">dept_id,</if>
-        <if test="parentId != null">parent_id,</if>
-        <if test="ancestors != null and ancestors != ''">ancestors,</if>
-        <if test="deptName != null and deptName != ''">dept_name,</if>
-        <if test="orderNum != null">order_num,</if>
-        <if test="leader != null">leader,</if>
-        <if test="phone != null and phone != ''">phone,</if>
-        <if test="email != null and email != ''">email,</if>
-        <if test="isStop != null">is_stop,</if>
-        <if test="isDel != null">is_del,</if>
-        <if test="remark != null and remark != ''">remark,</if>
+    <insert id="insertConfig" parameterType="config" useGeneratedKeys="true" keyProperty="configId" keyColumn="config_id">
+        insert into sys_config(
+        <if test="configId != null and configId != 0">config_id,</if>
+        <if test="configName != null">config_name,</if>
+        <if test="configKey != null">config_key,</if>
+        <if test="configValue != null">config_value,</if>
+        <if test="isSystem != null">is_system,</if>
         create_by,
         create_time
         )values(
-        <if test="deptId != null and deptId != ''">#{deptId},</if>
-        <if test="parentId != null">#{parentId},</if>
-        <if test="ancestors != null and ancestors != ''">#{ancestors},</if>
-        <if test="deptName != null and deptName != ''">#{deptName},</if>
-        <if test="orderNum != null">#{orderNum},</if>
-        <if test="leader != null">#{leader},</if>
-        <if test="phone != null and phone != ''">#{phone},</if>
-        <if test="email != null and email != ''">#{email},</if>
-        <if test="isStop != null">#{isStop},</if>
-        <if test="isDel != null">#{isDel},</if>
-        <if test="remark != null and remark != ''">#{remark},</if>
+        <if test="configId != null and configId != ''">#{configId},</if>
+        <if test="configName != null">#{configName},</if>
+        <if test="configKey != null">#{configKey},</if>
+        <if test="configValue != null">#{configValue},</if>
+        <if test="isSystem != null">#{isSystem},</if>
         #{createBy},
         #{createTime}
         )
     </insert>
 
-    <update id="updateDeptIsDelById">
-        update sys_dept
+    <delete id="deleteConfig">
+        delete from sys_config where config_id = #{configId}
+    </delete>
+
+    <update id="updateConfig" parameterType="config">
+        update sys_config
         <set>
-            is_del = #{isDel},
+            <if test="configId != null">config_id = #{configId},</if>
+            <if test="configName != null and configName != ''">config_name = #{configName},</if>
+            <if test="configKey != null and configKey != ''">config_key = #{configKey},</if>
+            <if test="configValue != null and configValue != ''">config_value = #{configValue},</if>
+            <if test="isSystem != null">is_system = #{isSystem},</if>
             update_by = #{updateBy},
             update_time = #{updateTime}
         </set>
-        where dept_id = #{deptId}
+        where config_id = #{configId}
     </update>
 
-    <update id="updateDeptById" parameterType="user">
-        update sys_dept
-        <set>
-            <if test="parentId != null">parent_id = #{parentId},</if>
-            <if test="ancestors != null and ancestors != ''">ancestors = #{ancestors},</if>
-            <if test="deptName != null and deptName != ''">dept_name = #{deptName},</if>
-            <if test="orderNum != null">order_num = #{orderNum},</if>
-            <if test="leader != null">leader = #{leader},</if>
-            <if test="phone != null">phone = #{phone},</if>
-            <if test="email != null">email = #{email},</if>
-            <if test="isStop != null">is_stop = #{isStop},</if>
-            <if test="isDel != null">is_del = #{isDel},</if>
-            <if test="remark != null and remark != ''">remark = #{remark},</if>
-            update_by = #{updateBy},
-            update_time = #{updateTime}
-        </set>
-        where dept_id = #{deptId}
-    </update>
-
-    <select id="listDeptByParam" resultMap="DeptResult">
-        <include refid="selectDeptVo"/>
+    <select id="listConfigByPage" resultMap="ConfigResult">
+        <include refid="selectConfigVo"/>
         <where>
-            is_del=0
             <if test="searchLike != null and searchLike != ''">
-                AND (dept_name LIKE #{searchLike})
-            </if>
-            <if test="parentId != null">
-                AND parent_id = #{parentId}
-            </if>
-            <if test="isStop != null">
-                AND is_stop = #{isStop}
+                AND (config_name LIKE #{searchLike} or config_key LIKE #{searchLike} or config_value LIKE #{searchLike})
             </if>
         </where>
-        ORDER BY order_num ASC
     </select>
 
 </mapper>

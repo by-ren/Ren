@@ -1,7 +1,10 @@
 package com.ren.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ren.common.domain.entity.Dept;
+import com.ren.system.entity.Config;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -9,42 +12,40 @@ import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface DeptMapper extends BaseMapper<Dept> {
+public interface ConfigMapper extends BaseMapper<Config> {
 
     /*
-     * 添加部门
-     * @param dept
+     * 添加配置
+     * @param config
+     * @return int
      * @author admin
-     * @date 2025/05/07 17:38
+     * @date 2025/05/18 13:49
      */
-    void insertDept(Dept dept);
+    void insertConfig(Config config);
 
     /*
-     * 编辑部门是否删除
-     * @param deptId
-     * @param isDel
-     * @param updateBy
-     * @param updateTime
+     * 删除配置
+     * @param configId
      * @author admin
-     * @date 2025/05/07 17:30
+     * @date 2025/05/18 13:49
      */
-    void updateDeptIsDelById(@Param("deptId")long deptId, @Param("isDel")byte isDel, @Param("updateBy")String updateBy, @Param("updateTime")long updateTime);
+    void deleteConfig(long configId);
 
     /*
-     * 编辑部门
-     * @param dept
+     * 编辑配置
+     * @param config
      * @author admin
-     * @date 2025/05/07 17:31
+     * @date 2025/05/18 13:49
      */
-    void updateDeptById(Dept dept);
+    void updateConfig(Config config);
 
     /*
-     * 根据参数获取部门列表
+     * 分页获取配置列表
      * @param paramMap
-     * @return java.util.List<com.ren.common.core.entity.Dept>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Config>
      * @author admin
-     * @date 2025/05/07 17:31
+     * @date 2025/05/18 13:50
      */
-    List<Dept> listDeptByParam(Map<String, Object> paramMap);
+    IPage<Config> listConfigByPage(Page<Config> page, @Param("paramMap")Map<String, Object> paramMap);
 
 }

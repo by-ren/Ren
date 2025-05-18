@@ -3,10 +3,16 @@ package com.ren.system.service.impl;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ren.common.constant.AppConstants;
 import com.ren.common.domain.entity.Dept;
+import com.ren.common.domain.entity.Role;
+import com.ren.common.utils.PageUtils;
+import com.ren.system.entity.Config;
+import com.ren.system.mapper.ConfigMapper;
 import com.ren.system.mapper.DeptMapper;
+import com.ren.system.service.ConfigService;
 import com.ren.system.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,80 +21,76 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements DeptService {
+public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> implements ConfigService {
 
     @Autowired
-    private DeptMapper deptMapper;
+    private ConfigMapper configMapper;
 
     /*
-     * 添加部门
-     * @param createBy
-     * @return long
+     * 添加配置
+     * @param config
+     * @return int
      * @author admin
-     * @date 2025/05/07 17:12
+     * @date 2025/05/18 13:49
      */
     @Override
-    public long addDept(Dept dept, String createBy) {
-        dept.setIsDel(AppConstants.COMMON_BYTE_NO);
-        dept.setCreateBy(createBy);
-        dept.setCreateTime(DateUtil.currentSeconds());
-        deptMapper.insertDept(dept);
-        return dept.getDeptId();
+    public long addConfig(Config config,String createBy) {
+        config.setCreateBy(createBy);
+        config.setCreateTime(DateUtil.currentSeconds());
+        configMapper.insertConfig(config);
+        return config.getConfigId();
     }
 
     /*
-     * 编辑部门是否删除
-     * @param deptId
-     * @param isDel
-     * @param updateBy
+     * 删除配置
+     * @param configId
      * @author admin
-     * @date 2025/05/07 17:13
+     * @date 2025/05/18 13:49
      */
     @Override
-    public void modifyDeptIsDelById(long deptId, byte isDel, String updateBy) {
-        deptMapper.updateDeptIsDelById(deptId,isDel,updateBy,DateUtil.currentSeconds());
+    public void removeConfig(long configId) {
+        configMapper.deleteConfig(configId);
     }
 
     /*
-     * 编辑部门
-     * @param dept
-     * @param updateBy
+     * 编辑配置
+     * @param config
      * @author admin
-     * @date 2025/05/07 17:13
+     * @date 2025/05/18 13:49
      */
     @Override
-    public void modifyDeptById(Dept dept, String updateBy) {
-        dept.setUpdateBy(updateBy);
-        dept.setUpdateTime(DateUtil.currentSeconds());
-        deptMapper.updateDeptById(dept);
+    public void modifyConfig(Config config,String updateBy) {
+        config.setUpdateBy(updateBy);
+        config.setUpdateTime(DateUtil.currentSeconds());
+        configMapper.updateConfig(config);
     }
 
     /*
-     * 获取部门详情
-     * @param deptId
-     * @return com.ren.common.core.entity.Dept
-     * @author admin
-     * @date 2025/05/07 17:14
-     */
-    @Override
-    public Dept getDeptById(long deptId) {
-        Dept dept = deptMapper.selectById(deptId);
-        return dept;
-    }
-
-    /*
-     * 根据参数获取部门列表
+     * 分页获取配置列表
      * @param paramMap
-     * @return java.util.List<com.ren.common.core.entity.Dept>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Config>
      * @author admin
-     * @date 2025/05/07 17:15
+     * @date 2025/05/18 13:50
      */
     @Override
-    public List<Dept> listDeptByParam(Map<String, Object> paramMap) {
+    public IPage<Config> listConfigByPage(Map<String, Object> paramMap) {
         if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
             paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
         }
-        List<Dept> deptList = deptMapper.listDeptByParam(paramMap);
-        return deptList;
+        IPage<Config> configList = configMapper.listConfigByPage(PageUtils.createPage(Config.class),paramMap);
+        return configList;
+    }
+
+    /*
+     * 获取配置详情
+     * @param configId
+     * @return com.ren.system.entity.Config
+     * @author admin
+     * @date 2025/05/18 13:50
+     */
+    @Override
+    public Config getConfigById(long configId) {
+        Config config = configMapper.selectById(configId);
+        return config;
     }
 }

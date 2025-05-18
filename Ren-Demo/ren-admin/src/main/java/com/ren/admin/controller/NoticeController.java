@@ -6,8 +6,8 @@ import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.User;
 import com.ren.common.domain.page.TableDataInfo;
 import com.ren.common.interfaces.Pageable;
-import com.ren.system.entity.DictType;
-import com.ren.system.service.DictTypeService;
+import com.ren.system.entity.Notice;
+import com.ren.system.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/dictType")
-public class DictTypeController extends BaseController {
+@RequestMapping("/notice")
+public class NoticeController extends BaseController {
 
     @Autowired
-    DictTypeService dictTypeService;
+    NoticeService noticeService;
 
     /*
-     * 配置字典类型列表
+     * 通知公告字典类型列表
      * @param paramMap
      * @return com.ren.common.domain.page.TableDataInfo
      * @author admin
@@ -30,50 +30,50 @@ public class DictTypeController extends BaseController {
      */
     @GetMapping("/list/page")
     @Pageable  //注意，如果要开启字典类型，请添加该注解
-    public TableDataInfo listDictTypeByPage(@RequestParam Map<String,Object> paramMap) {
-        IPage<DictType> dictTypeList = dictTypeService.listDictTypeByPage(paramMap);
-        return getDataTable(dictTypeList);
+    public TableDataInfo listNoticeByPage(@RequestParam Map<String,Object> paramMap) {
+        IPage<Notice> noticeList = noticeService.listNoticeByPage(paramMap);
+        return getDataTable(noticeList);
     }
 
     /*
-     * 添加配置
+     * 添加通知公告
      * @param loginUser
-     * @param addDictType
+     * @param addNotice
      * @return com.ren.common.domain.dto.AjaxResultDTO
      * @author admin
      * @date 2025/05/18 15:28
      */
     @PostMapping("/add")
-    public AjaxResultDTO addDictType(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) DictType addDictType) {
-        dictTypeService.addDictType(addDictType,loginUser.getUsername());
+    public AjaxResultDTO addNotice(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Notice addNotice) {
+        noticeService.addNotice(addNotice,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
 
     /*
-     * 编辑配置
+     * 编辑通知公告
      * @param loginUser
-     * @param modifyDictType
+     * @param modifyNotice
      * @return com.ren.common.domain.dto.AjaxResultDTO
      * @author admin
      * @date 2025/05/18 15:28
      */
     @PostMapping("/modify")
-    public AjaxResultDTO modifyDictType(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) DictType modifyDictType) {
-        dictTypeService.modifyDictType(modifyDictType,loginUser.getUsername());
+    public AjaxResultDTO modifyNotice(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Notice modifyNotice) {
+        noticeService.modifyNotice(modifyNotice,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
 
     /*
-     * 删除配置
+     * 删除通知公告
      * @param loginUser
-     * @param dictTypeId
+     * @param noticeId
      * @return com.ren.common.domain.dto.AjaxResultDTO
      * @author admin
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")
-    public AjaxResultDTO dictTypeDelete(@AuthenticationPrincipal User loginUser, long dictTypeId) {
-        dictTypeService.removeDictType(dictTypeId);
+    public AjaxResultDTO noticeDelete(@AuthenticationPrincipal User loginUser, long noticeId) {
+        noticeService.removeNotice(noticeId);
         return AjaxResultDTO.success();
     }
 

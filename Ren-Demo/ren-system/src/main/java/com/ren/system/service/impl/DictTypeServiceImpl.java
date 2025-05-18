@@ -5,87 +5,86 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ren.common.constant.AppConstants;
-import com.ren.common.domain.entity.Dept;
-import com.ren.common.domain.entity.Role;
 import com.ren.common.utils.PageUtils;
-import com.ren.system.entity.Config;
-import com.ren.system.mapper.ConfigMapper;
-import com.ren.system.mapper.DeptMapper;
-import com.ren.system.service.ConfigService;
-import com.ren.system.service.DeptService;
+import com.ren.system.entity.DictType;
+import com.ren.system.mapper.DictTypeMapper;
+import com.ren.system.service.DictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
-public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> implements ConfigService {
+public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> implements DictTypeService {
 
     @Autowired
-    private ConfigMapper configMapper;
+    private DictTypeMapper dictTypeMapper;
 
     /*
-     * 添加配置
-     * @param config
+     * 添加字典类型
+     * @param dictType
      * @return int
      * @author admin
      * @date 2025/05/18 13:49
      */
     @Override
-    public long addConfig(Config config,String createBy) {
-        config.setCreateBy(createBy);
-        config.setCreateTime(DateUtil.currentSeconds());
-        configMapper.insertConfig(config);
-        return config.getConfigId();
+    public long addDictType(DictType dictType,String createBy) {
+        dictType.setCreateBy(createBy);
+        dictType.setCreateTime(DateUtil.currentSeconds());
+        dictTypeMapper.insertDictType(dictType);
+        return dictType.getDictTypeId();
     }
 
     /*
-     * 删除配置
-     * @param configId
+     * 删除字典类型
+     * @param dictTypeId
      * @author admin
      * @date 2025/05/18 13:49
      */
     @Override
-    public void removeConfig(long configId) {
-        configMapper.deleteConfig(configId);
+    public void removeDictType(long dictTypeId) {
+        dictTypeMapper.deleteDictType(dictTypeId);
     }
 
     /*
-     * 编辑配置
-     * @param config
+     * 编辑字典类型
+     * @param dictType
      * @author admin
      * @date 2025/05/18 13:49
      */
     @Override
-    public void modifyConfig(Config config) {
-        configMapper.updateConfig(config);
+    public void modifyDictType(DictType dictType,String updateBy) {
+        dictType.setUpdateBy(updateBy);
+        dictType.setUpdateTime(DateUtil.currentSeconds());
+        dictTypeMapper.updateDictType(dictType);
     }
 
     /*
-     * 分页获取配置列表
+     * 分页获取字典类型列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Config>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.DictType>
      * @author admin
      * @date 2025/05/18 13:50
      */
     @Override
-    public IPage<Config> listConfigByPage(Map<String, Object> paramMap) {
-        IPage<Config> configList = configMapper.listConfigByPage(PageUtils.createPage(Config.class),paramMap);
-        return configList;
+    public IPage<DictType> listDictTypeByPage(Map<String, Object> paramMap) {
+        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        }
+        IPage<DictType> dictTypeList = dictTypeMapper.listDictTypeByPage(PageUtils.createPage(DictType.class),paramMap);
+        return dictTypeList;
     }
 
     /*
-     * 获取配置详情
-     * @param configId
-     * @return com.ren.system.entity.Config
+     * 获取字典类型详情
+     * @param dictTypeId
+     * @return com.ren.system.entity.DictType
      * @author admin
      * @date 2025/05/18 13:50
      */
     @Override
-    public Config getConfigById(long configId) {
-        Config config = configMapper.selectConfigById(configId);
-        return config;
+    public DictType getDictTypeById(long dictTypeId) {
+        DictType dictType = dictTypeMapper.selectById(dictTypeId);
+        return dictType;
     }
 }

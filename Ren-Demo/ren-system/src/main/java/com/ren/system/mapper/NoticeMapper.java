@@ -4,47 +4,47 @@ package com.ren.system.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ren.system.entity.DictType;
+import com.ren.system.entity.Notice;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Map;
 
 @Mapper
-public interface DictTypeMapper extends BaseMapper<DictType> {
+public interface NoticeMapper extends BaseMapper<Notice> {
 
     /*
-     * 添加字典类型
-     * @param dictType
+     * 添加通知公告
+     * @param notice
      * @return int
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void insertDictType(DictType dictType);
+    void insertNotice(Notice notice);
 
     /*
-     * 删除字典类型
-     * @param dictTypeId
+     * 删除通知公告
+     * @param noticeId
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void deleteDictType(long dictTypeId);
+    void deleteNotice(long noticeId);
 
     /*
-     * 编辑字典类型
-     * @param dictType
+     * 编辑通知公告
+     * @param notice
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void updateDictType(DictType dictType);
+    void updateNotice(Notice notice);
 
     /*
-     * 分页获取字典类型列表
+     * 分页获取通知公告列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.DictType>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Notice>
      * @author admin
      * @date 2025/05/18 13:50
      */
-    IPage<DictType> listDictTypeByPage(Page<DictType> page, @Param("paramMap")Map<String, Object> paramMap);
+    IPage<Notice> listNoticeByPage(Page<Notice> page, @Param("paramMap")Map<String, Object> paramMap);
 
 }

@@ -1,57 +1,53 @@
 package com.ren.system.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ren.common.domain.entity.Dept;
+import com.ren.system.entity.Config;
 
-import java.util.List;
 import java.util.Map;
 
-public interface DeptService extends IService<Dept> {
+public interface ConfigService extends IService<Config> {
 
     /*
-     * 添加部门
-     * @param createBy
-     * @return long
+     * 添加配置
+     * @param config
+     * @return int
      * @author admin
-     * @date 2025/05/07 17:12
+     * @date 2025/05/18 13:49
      */
-    long addDept(Dept dept,String createBy);
+    long addConfig(Config config,String createBy);
 
     /*
-     * 编辑部门是否删除
-     * @param deptId
-     * @param isDel
-     * @param updateBy
+     * 删除配置
+     * @param configId
      * @author admin
-     * @date 2025/05/07 17:13
+     * @date 2025/05/18 13:49
      */
-    void modifyDeptIsDelById(long deptId,byte isDel,String updateBy);
+    void removeConfig(long configId);
 
     /*
-     * 编辑部门
-     * @param dept
-     * @param updateBy
+     * 编辑配置
+     * @param config
      * @author admin
-     * @date 2025/05/07 17:13
+     * @date 2025/05/18 13:49
      */
-    void modifyDeptById(Dept dept,String updateBy);
+    void modifyConfig(Config config,String updateBy);
 
     /*
-     * 获取部门详情
-     * @param deptId
-     * @return com.ren.common.core.entity.Dept
-     * @author admin
-     * @date 2025/05/07 17:14
-     */
-    Dept getDeptById(long deptId);
-
-    /*
-     * 根据参数获取部门列表
+     * 分页获取配置列表
      * @param paramMap
-     * @return java.util.List<com.ren.common.core.entity.Dept>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Config>
      * @author admin
-     * @date 2025/05/07 17:15
+     * @date 2025/05/18 13:50
      */
-    List<Dept> listDeptByParam(Map<String,Object> paramMap);
+    IPage<Config> listConfigByPage(Map<String,Object> paramMap);
 
+    /*
+     * 获取配置详情
+     * @param configId
+     * @return com.ren.system.entity.Config
+     * @author admin
+     * @date 2025/05/18 13:50
+     */
+    Config getConfigById(long configId);
 }

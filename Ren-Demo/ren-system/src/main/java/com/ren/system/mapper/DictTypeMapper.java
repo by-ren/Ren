@@ -1,59 +1,50 @@
+
 package com.ren.system.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ren.common.domain.entity.Dept;
-import com.ren.system.entity.Config;
+import com.ren.system.entity.DictType;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface ConfigMapper extends BaseMapper<Config> {
+public interface DictTypeMapper extends BaseMapper<DictType> {
 
     /*
-     * 添加配置
-     * @param config
+     * 添加字典类型
+     * @param dictType
      * @return int
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void insertConfig(Config config);
+    void insertDictType(DictType dictType);
 
     /*
-     * 删除配置
-     * @param configId
+     * 删除字典类型
+     * @param dictTypeId
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void deleteConfig(long configId);
+    void deleteDictType(long dictTypeId);
 
     /*
-     * 编辑配置
-     * @param config
+     * 编辑字典类型
+     * @param dictType
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void updateConfig(Config config);
+    void updateDictType(DictType dictType);
 
     /*
-     * 分页获取配置列表
+     * 分页获取字典类型列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Config>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.DictType>
      * @author admin
      * @date 2025/05/18 13:50
      */
-    IPage<Config> listConfigByPage(Page<Config> page, @Param("paramMap")Map<String, Object> paramMap);
+    IPage<DictType> listDictTypeByPage(Page<DictType> page, @Param("paramMap")Map<String, Object> paramMap);
 
-    /*
-     * 获取配置详情
-     * @param configId
-     * @return com.ren.system.entity.Config
-     * @author admin
-     * @date 2025/05/18 13:50
-     */
-    Config selectConfigById(long configId);
 }

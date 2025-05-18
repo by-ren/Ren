@@ -12,18 +12,33 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("sys_dict_type")
-public class DictType extends BaseEntity {
+@TableName("sys_dict_data")
+public class DictData extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "dict_id", type = IdType.AUTO)
-    private Long dictId;
-    /**字典名称*/
-    @TableField(value = "dict_name")
-    private String dictName;
-    /**字典编码*/
-    @TableField(value = "dict_code")
-    private String dictCode;
+    @TableId(value = "dict_data_id", type = IdType.AUTO)
+    private Long dictDataId;
+    /**字典排序*/
+    @TableField(value = "dict_sort")
+    private Integer dictSort;
+    /**字典标签*/
+    @TableField(value = "dict_label")
+    private String dictLabel;
+    /**字典键值*/
+    @TableField(value = "dict_value")
+    private String dictValue;
+    /**字典类型*/
+    @TableField(value = "dict_type")
+    private String dictType;
+    /**样式属性（其他样式扩展）*/
+    @TableField(value = "css_class")
+    private String cssClass;
+    /**表格回显样式*/
+    @TableField(value = "list_class")
+    private String listClass;
+    /**是否默认（1：是，0：否）*/
+    @TableField(value = "is_default")
+    private Byte isDefault;
     /**是否停用（1：是，0：否）*/
     @TableField(value = "is_stop")
     private Byte isStop;

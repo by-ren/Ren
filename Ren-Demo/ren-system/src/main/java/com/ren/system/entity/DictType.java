@@ -12,22 +12,19 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName("sys_post")
-public class Post extends BaseEntity {
+@TableName("sys_dict_type")
+public class DictType extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "post_id", type = IdType.AUTO)
-    private Long postId;
-    /**岗位编码*/
-    @TableField(value = "post_code")
-    private String postCode;
-    /**岗位名称*/
-    @TableField(value = "post_name")
-    private String postName;
-    /**显示顺序*/
-    @TableField(value = "post_sort")
-    private Integer postSort;
-    /**是否停用*/
+    @TableId(value = "dict_type_id", type = IdType.AUTO)
+    private Long dictTypeId;
+    /**字典名称*/
+    @TableField(value = "dict_name")
+    private String dictName;
+    /**字典编码*/
+    @TableField(value = "dict_code")
+    private String dictCode;
+    /**是否停用（1：是，0：否）*/
     @TableField(value = "is_stop")
     private Byte isStop;
 

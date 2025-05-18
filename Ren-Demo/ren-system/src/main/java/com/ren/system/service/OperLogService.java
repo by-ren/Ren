@@ -2,44 +2,44 @@ package com.ren.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ren.system.entity.Logininfor;
+import com.ren.system.entity.OperLog;
 
 import java.util.Map;
 
-public interface LogininforService extends IService<Logininfor> {
+public interface OperLogService extends IService<OperLog> {
 
     /*
-     * 添加登录日志
-     * @param logininfor
+     * 添加操作日志
+     * @param operLog
      * @return int
      * @author admin
      * @date 2025/05/18 13:49
      */
-    long addLogininfor(Logininfor logininfor);
+    long addOperLog(OperLog operLog);
 
     /*
-     * 删除登录日志
-     * @param logininforId
+     * 删除操作日志
+     * @param operId
      * @author admin
      * @date 2025/05/18 13:49
      */
-    void removeLogininfor(long logininforId);
+    void removeOperLog(long operId);
 
     /*
-     * 分页获取登录日志列表
+     * 分页获取操作日志列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Logininfor>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.OperLog>
      * @author admin
      * @date 2025/05/18 13:50
      */
-    IPage<Logininfor> listLogininforByPage(Map<String,Object> paramMap);
+    IPage<OperLog> listOperLogByPage(Map<String,Object> paramMap);
 
     /*
-     * 获取登录日志详情
-     * @param logininforId
-     * @return com.ren.system.entity.Logininfor
+     * 获取操作日志详情
+     * @param operId
+     * @return com.ren.system.entity.OperLog
      * @author admin
      * @date 2025/05/18 13:50
      */
-    Logininfor getLogininforById(long logininforId);
+    OperLog getOperLogById(long operId);
 }

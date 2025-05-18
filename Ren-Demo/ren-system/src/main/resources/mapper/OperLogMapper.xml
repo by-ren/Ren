@@ -1,58 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ren.system.mapper.LogininforMapper">
+<mapper namespace="com.ren.system.mapper.OperLogMapper">
 
-    <resultMap type="logininfor" id="LogininforResult">
-        <id     property="infoId"       column="info_id"      />
-        <result property="userName"     column="user_name"    />
-        <result property="ipaddr"     column="ipaddr"    />
-        <result property="loginLocation"     column="login_location"    />
-        <result property="browser"     column="browser"    />
-        <result property="os"     column="os"    />
-        <result property="isSuccess"     column="is_success"    />
-        <result property="msg"     column="msg"    />
-        <result property="loginTime"     column="login_time"    />
+    <resultMap type="operLog" id="OperLogResult">
+        <id     property="operId"       column="oper_id"      />
+        <result property="title"     column="title"    />
+        <result property="businessType"     column="business_type"    />
+        <result property="method"     column="method"    />
+        <result property="requestMethod"     column="request_method"    />
+        <result property="operatorType"     column="operator_type"    />
+        <result property="operName"     column="oper_name"    />
+        <result property="deptName"     column="dept_name"    />
+        <result property="operUrl"     column="oper_url"    />
+        <result property="operIp"     column="oper_ip"    />
+        <result property="operLocation"     column="oper_location"    />
+        <result property="operParam"     column="oper_param"    />
+        <result property="jsonResult"     column="json_result"    />
+        <result property="isNormal"     column="is_normal"    />
+        <result property="errorMsg"     column="error_msg"    />
+        <result property="operTime"     column="oper_time"    />
+        <result property="costTime"     column="cost_time"    />
+        <result property="costTimeStr"     column="cost_time_str"    />
     </resultMap>
 
-    <sql id="selectLogininforVo">
+    <sql id="selectOperLogVo">
         select
-            info_id,user_name,ipaddr,login_location,browser,os,is_success,msg,
-        from sys_logininfor
+            oper_id,title,business_type,method,request_method,operator_type,oper_name,dept_name,oper_url,oper_ip,oper_location,oper_param,json_result,is_normal,error_msg,oper_time,cost_time, FROM_UNIXTIME(cost_time, '%Y-%m-%d %H:%i:%s') AS cost_time_str
+        from sys_operLog
     </sql>
 
-    <insert id="insertLogininfor" parameterType="logininfor" useGeneratedKeys="true" keyProperty="infoId" keyColumn="info_id">
-        insert into sys_logininfor(
-        <if test="infoId != null and infoId != 0">info_id,</if>
-        <if test="userName != null">user_name,</if>
-        <if test="ipaddr != null">ipaddr,</if>
-        <if test="loginLocation != null">login_location,</if>
-        <if test="browser != null">browser,</if>
-        <if test="os != null">os,</if>
-        <if test="isSuccess != null">is_success,</if>
-        <if test="msg != null">msg,</if>
-        <if test="loginTime != null">login_time,</if>
+    <insert id="insertOperLog" parameterType="operLog" useGeneratedKeys="true" keyProperty="operId" keyColumn="oper_id">
+        insert into sys_operLog(
+        <if test="operId != null and operId != 0">oper_id,</if>
+        <if test="title != null">title,</if>
+        <if test="businessType != null">business_type,</if>
+        <if test="method != null">method,</if>
+        <if test="requestMethod != null">request_method,</if>
+        <if test="operatorType != null">operator_type,</if>
+        <if test="operName != null">oper_name,</if>
+        <if test="deptName != null">dept_name,</if>
+        <if test="operUrl != null">oper_url,</if>
+        <if test="operIp != null">oper_ip,</if>
+        <if test="operLocation != null">oper_location,</if>
+        <if test="operParam != null">oper_param,</if>
+        <if test="jsonResult != null">json_result,</if>
+        <if test="isNormal != null">is_normal,</if>
+        <if test="errorMsg != null">error_msg,</if>
+        <if test="operTime != null">oper_time,</if>
+        <if test="costTime != null">cost_time,</if>
         )values(
-        <if test="infoId != null and infoId != ''">#{infoId},</if>
-        <if test="userName != null">#{userName},</if>
-        <if test="ipaddr != null">#{ipaddr},</if>
-        <if test="loginLocation != null">#{loginLocation},</if>
-        <if test="browser != null">#{browser},</if>
-        <if test="os != null">#{os},</if>
-        <if test="isSuccess != null">#{isSuccess},</if>
-        <if test="msg != null">#{msg},</if>
-        <if test="loginTime != null">#{loginTime},</if>
+        <if test="operId != null and operId != ''">#{operId},</if>
+        <if test="title != null">#{title},</if>
+        <if test="businessType != null">#{businessType},</if>
+        <if test="method != null">#{method},</if>
+        <if test="requestMethod != null">#{requestMethod},</if>
+        <if test="operatorType != null">#{operatorType},</if>
+        <if test="operName != null">#{operName},</if>
+        <if test="deptName != null">#{deptName},</if>
+        <if test="operUrl != null">#{operUrl},</if>
+        <if test="operIp != null">#{operIp},</if>
+        <if test="operLocation != null">#{operLocation},</if>
+        <if test="operParam != null">#{operParam},</if>
+        <if test="jsonResult != null">#{jsonResult},</if>
+        <if test="isNormal != null">#{isNormal},</if>
+        <if test="errorMsg != null">#{errorMsg},</if>
+        <if test="operTime != null">#{operTime},</if>
+        <if test="costTime != null">#{costTime},</if>
         )
     </insert>
 
-    <delete id="deleteLogininfor">
-        delete from sys_logininfor where info_id = #{infoId}
+    <delete id="deleteOperLog">
+        delete from sys_operLog where oper_id = #{operId}
     </delete>
 
-    <select id="listLogininforByPage" resultMap="LogininforResult">
-        <include refid="selectLogininforVo"/>
+    <select id="listOperLogByPage" resultMap="OperLogResult">
+        <include refid="selectOperLogVo"/>
         <where>
             <if test="searchLike != null and searchLike != ''">
-                AND (user_name LIKE #{searchLike})
+                AND (title LIKE #{searchLike})
             </if>
         </where>
     </select>
