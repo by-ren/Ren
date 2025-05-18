@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ren.system.mapper.ConfigMapper">
+
+    <resultMap type="config" id="ConfigResult">
+        <id     property="configId"       column="config_id"      />
+        <result property="configName"     column="config_name"    />
+        <result property="configKey"     column="config_key"    />
+        <result property="configValue"     column="config_value"    />
+        <result property="isSystem"     column="is_system"    />
+        <result property="createBy"     column="create_by"    />
+        <result property="createTime"   column="create_time"  />
+        <result property="createTimeStr"   column="create_time_str"  />
+        <result property="updateBy"     column="update_by"    />
+        <result property="updateTime"   column="update_time"  />
+        <result property="updateTimeStr"   column="update_time_str"  />
+        <result property="remark"       column="remark"       />
+    </resultMap>
+
+    <sql id="selectConfigVo">
+        select
+            config_id,config_name,config_key,config_value,is_system,
+            create_time, create_by,FROM_UNIXTIME(create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, update_by, update_time, FROM_UNIXTIME(update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, remark
+        from sys_config
+    </sql>
+
+    <insert id="insertConfig" parameterType="config" useGeneratedKeys="true" keyProperty="configId" keyColumn="config_id">
+        insert into sys_config(
+        <if test="configId != null and configId != 0">config_id,</if>
+        <if test="configName != null">config_name,</if>
+        <if test="configKey != null">config_key,</if>
+        <if test="configValue != null">config_value,</if>
+        <if test="isSystem != null">is_system,</if>
+        create_by,
+        create_time
+        )values(
+        <if test="configId != null and configId != ''">#{configId},</if>
+        <if test="configName != null">#{configName},</if>
+        <if test="configKey != null">#{configKey},</if>
+        <if test="configValue != null">#{configValue},</if>
+        <if test="isSystem != null">#{isSystem},</if>
+        #{createBy},
+        #{createTime}
+        )
+    </insert>
+
+    <delete id="deleteConfig">
+        delete from sys_config where config_id = #{configId}
+    </delete>
+
+    <update id="updateConfig" parameterType="config">
+        update sys_config
+        <set>
+            <if test="configId != null">config_id = #{configId},</if>
+            <if test="configName != null and configName != ''">config_name = #{configName},</if>
+            <if test="configKey != null and configKey != ''">config_key = #{configKey},</if>
+            <if test="configValue != null and configValue != ''">config_value = #{configValue},</if>
+            <if test="isSystem != null">is_system = #{isSystem},</if>
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        </set>
+        where config_id = #{configId}
+    </update>
+
+    <select id="listConfigByPage" resultMap="ConfigResult">
+        <include refid="selectConfigVo"/>
+        <where>
+            <if test="searchLike != null and searchLike != ''">
+                AND (config_name LIKE #{searchLike})
+            </if>
+        </where>
+    </select>
+
+</mapper>

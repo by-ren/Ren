@@ -1,0 +1,80 @@
+package com.ren.admin.controller;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.ren.common.controller.BaseController;
+import com.ren.common.domain.dto.AjaxResultDTO;
+import com.ren.common.domain.entity.User;
+import com.ren.common.domain.page.TableDataInfo;
+import com.ren.common.interfaces.Pageable;
+import com.ren.system.entity.DictType;
+import com.ren.system.service.DictTypeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+@RestController
+@RequestMapping("/dictType")
+public class DictTypeController extends BaseController {
+
+    @Autowired
+    DictTypeService dictTypeService;
+
+    /*
+     * 配置字典类型列表
+     * @param paramMap
+     * @return com.ren.common.domain.page.TableDataInfo
+     * @author admin
+     * @date 2025/05/18 15:28
+     */
+    @GetMapping("/list/page")
+    @Pageable  //注意，如果要开启字典类型，请添加该注解
+    public TableDataInfo listDictTypeByPage(@RequestParam Map<String,Object> paramMap) {
+        IPage<DictType> dictTypeList = dictTypeService.listDictTypeByPage(paramMap);
+        return getDataTable(dictTypeList);
+    }
+
+    /*
+     * 添加配置
+     * @param loginUser
+     * @param addDictType
+     * @return com.ren.common.domain.dto.AjaxResultDTO
+     * @author admin
+     * @date 2025/05/18 15:28
+     */
+    @PostMapping("/add")
+    public AjaxResultDTO addDictType(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) DictType addDictType) {
+        dictTypeService.addDictType(addDictType,loginUser.getUsername());
+        return AjaxResultDTO.success();
+    }
+
+    /*
+     * 编辑配置
+     * @param loginUser
+     * @param modifyDictType
+     * @return com.ren.common.domain.dto.AjaxResultDTO
+     * @author admin
+     * @date 2025/05/18 15:28
+     */
+    @PostMapping("/modify")
+    public AjaxResultDTO modifyDictType(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) DictType modifyDictType) {
+        dictTypeService.modifyDictType(modifyDictType,loginUser.getUsername());
+        return AjaxResultDTO.success();
+    }
+
+    /*
+     * 删除配置
+     * @param loginUser
+     * @param dictTypeId
+     * @return com.ren.common.domain.dto.AjaxResultDTO
+     * @author admin
+     * @date 2025/05/18 15:28
+     */
+    @DeleteMapping("/delete")
+    public AjaxResultDTO dictTypeDelete(@AuthenticationPrincipal User loginUser, long dictTypeId) {
+        dictTypeService.removeDictType(dictTypeId);
+        return AjaxResultDTO.success();
+    }
+
+}

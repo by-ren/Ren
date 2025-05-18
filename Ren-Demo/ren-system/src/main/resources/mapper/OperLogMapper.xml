@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ren.system.mapper.LogininforMapper">
+
+    <resultMap type="logininfor" id="LogininforResult">
+        <id     property="infoId"       column="info_id"      />
+        <result property="userName"     column="user_name"    />
+        <result property="ipaddr"     column="ipaddr"    />
+        <result property="loginLocation"     column="login_location"    />
+        <result property="browser"     column="browser"    />
+        <result property="os"     column="os"    />
+        <result property="isSuccess"     column="is_success"    />
+        <result property="msg"     column="msg"    />
+        <result property="loginTime"     column="login_time"    />
+    </resultMap>
+
+    <sql id="selectLogininforVo">
+        select
+            info_id,user_name,ipaddr,login_location,browser,os,is_success,msg,
+        from sys_logininfor
+    </sql>
+
+    <insert id="insertLogininfor" parameterType="logininfor" useGeneratedKeys="true" keyProperty="infoId" keyColumn="info_id">
+        insert into sys_logininfor(
+        <if test="infoId != null and infoId != 0">info_id,</if>
+        <if test="userName != null">user_name,</if>
+        <if test="ipaddr != null">ipaddr,</if>
+        <if test="loginLocation != null">login_location,</if>
+        <if test="browser != null">browser,</if>
+        <if test="os != null">os,</if>
+        <if test="isSuccess != null">is_success,</if>
+        <if test="msg != null">msg,</if>
+        <if test="loginTime != null">login_time,</if>
+        )values(
+        <if test="infoId != null and infoId != ''">#{infoId},</if>
+        <if test="userName != null">#{userName},</if>
+        <if test="ipaddr != null">#{ipaddr},</if>
+        <if test="loginLocation != null">#{loginLocation},</if>
+        <if test="browser != null">#{browser},</if>
+        <if test="os != null">#{os},</if>
+        <if test="isSuccess != null">#{isSuccess},</if>
+        <if test="msg != null">#{msg},</if>
+        <if test="loginTime != null">#{loginTime},</if>
+        )
+    </insert>
+
+    <delete id="deleteLogininfor">
+        delete from sys_logininfor where info_id = #{infoId}
+    </delete>
+
+    <select id="listLogininforByPage" resultMap="LogininforResult">
+        <include refid="selectLogininforVo"/>
+        <where>
+            <if test="searchLike != null and searchLike != ''">
+                AND (user_name LIKE #{searchLike})
+            </if>
+        </where>
+    </select>
+
+</mapper>

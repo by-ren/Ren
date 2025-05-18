@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ren.system.mapper.DictTypeMapper">
+
+    <resultMap type="dictType" id="DictTypeResult">
+        <id     property="dictTypeId"       column="dictType_id"      />
+        <result property="dictName"     column="dict_name"    />
+        <result property="dictCode"     column="dict_code"    />
+        <result property="isStop"     column="is_stop"    />
+        <result property="createBy"     column="create_by"    />
+        <result property="createTime"   column="create_time"  />
+        <result property="createTimeStr"   column="create_time_str"  />
+        <result property="updateBy"     column="update_by"    />
+        <result property="updateTime"   column="update_time"  />
+        <result property="updateTimeStr"   column="update_time_str"  />
+        <result property="remark"       column="remark"       />
+    </resultMap>
+
+    <sql id="selectDictTypeVo">
+        select
+            dictType_id,dict_name,dict_code,is_stop,
+            create_time, create_by,FROM_UNIXTIME(create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, update_by, update_time, FROM_UNIXTIME(update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, remark
+        from sys_dictType
+    </sql>
+
+    <insert id="insertDictType" parameterType="dictType" useGeneratedKeys="true" keyProperty="dictTypeId" keyColumn="dictType_id">
+        insert into sys_dictType(
+        <if test="dictTypeId != null and dictTypeId != 0">dictType_id,</if>
+        <if test="dictName != null">dict_name,</if>
+        <if test="dictCode != null">dict_code,</if>
+        <if test="isStop != null">is_stop,</if>
+        create_by,
+        create_time
+        )values(
+        <if test="dictTypeId != null and dictTypeId != ''">#{dictTypeId},</if>
+        <if test="dictName != null">#{dictName},</if>
+        <if test="dictCode != null">#{dictCode},</if>
+        <if test="isStop != null">#{isStop},</if>
+        #{createBy},
+        #{createTime}
+        )
+    </insert>
+
+    <delete id="deleteDictType">
+        delete from sys_dictType where dictType_id = #{dictTypeId}
+    </delete>
+
+    <update id="updateDictType" parameterType="dictType">
+        update sys_dictType
+        <set>
+            <if test="dictName != null and dictName != ''">dict_name = #{dictName},</if>
+            <if test="dictCode != null and dictCode != ''">dict_code = #{dictCode},</if>
+            <if test="isStop != null">is_stop = #{isStop},</if>
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        </set>
+        where dictType_id = #{dictTypeId}
+    </update>
+
+    <select id="listDictTypeByPage" resultMap="DictTypeResult">
+        <include refid="selectDictTypeVo"/>
+        <where>
+            <if test="searchLike != null and searchLike != ''">
+                AND (dict_name LIKE #{searchLike})
+            </if>
+        </where>
+    </select>
+
+</mapper>
