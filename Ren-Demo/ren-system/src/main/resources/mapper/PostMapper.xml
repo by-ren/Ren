@@ -31,6 +31,7 @@
         <if test="postName != null">post_name,</if>
         <if test="postSort != null">post_sort,</if>
         <if test="isStop != null">is_stop,</if>
+        <if test="remark != null">remark,</if>
         create_by,
         create_time
         )values(
@@ -39,6 +40,7 @@
         <if test="postName != null">#{postName},</if>
         <if test="postSort != null">#{postSort},</if>
         <if test="isStop != null">#{isStop},</if>
+        <if test="remark != null">#{remark},</if>
         #{createBy},
         #{createTime}
         )
@@ -55,6 +57,7 @@
             <if test="postName != null and postName != ''">post_name = #{postName},</if>
             <if test="postSort != null">post_sort = #{postSort},</if>
             <if test="isStop != null">is_stop = #{isStop},</if>
+            <if test="remark != null">remark = #{remark},</if>
             update_by = #{updateBy},
             update_time = #{updateTime}
         </set>
@@ -64,8 +67,8 @@
     <select id="listPostByPage" resultMap="PostResult">
         <include refid="selectPostVo"/>
         <where>
-            <if test="searchLike != null and searchLike != ''">
-                AND (post_code LIKE #{searchLike} OR post_name LIKE #{searchLike})
+            <if test="paramMap.searchLike != null and paramMap.searchLike != ''">
+                AND (post_code LIKE #{paramMap.searchLike} OR post_name LIKE #{paramMap.searchLike})
             </if>
         </where>
     </select>

@@ -23,7 +23,7 @@ public class Notice extends BaseEntity {
     private String noticeTitle;
     /**公告类型（1：通知 2：公告）*/
     @TableField(value = "notice_type")
-    private String noticeType;
+    private Byte noticeType;
     /**公告内容*/
     @TableField(value = "notice_content")
     private String noticeContent;

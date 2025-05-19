@@ -100,7 +100,7 @@
     import { ref,onMounted,nextTick } from 'vue'
     import type { FormInstance,FormRules } from 'element-plus'
     import { ElMessage } from 'element-plus'
-    import {getDeptList,addDept,modifyDept, deleteDept, getParentDeptList} from '@/api/dept/index'
+    import {getDeptList,addDept,modifyDept, deleteDept, getParentDeptList} from '@/api/system/dept/index'
     /*============================通用参数开始============================*/
     interface Dept {
         deptId: number

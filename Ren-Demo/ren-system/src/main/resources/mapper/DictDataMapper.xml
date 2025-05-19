@@ -3,7 +3,7 @@
 <mapper namespace="com.ren.system.mapper.DictDataMapper">
 
     <resultMap type="dictData" id="DictDataResult">
-        <id     property="dictDataId"       column="dictData_id"      />
+        <id     property="dictDataId"       column="dict_data_id"      />
         <result property="dictSort"     column="dict_sort"    />
         <result property="dictLabel"     column="dict_label"    />
         <result property="dictValue"     column="dict_value"    />
@@ -23,13 +23,13 @@
 
     <sql id="selectDictDataVo">
         select
-            dict_sort,dict_label,dict_value,dict_type,css_class,list_class,is_default,
+            dict_data_id,dict_sort,dict_label,dict_value,dict_type,css_class,list_class,is_default,
             create_time, create_by,FROM_UNIXTIME(create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, update_by, update_time, FROM_UNIXTIME(update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, remark
-        from sys_dictData
+        from sys_dict_data
     </sql>
 
-    <insert id="insertDictData" parameterType="dictData" useGeneratedKeys="true" keyProperty="dictDataId" keyColumn="dictData_id">
-        insert into sys_dictData(
+    <insert id="insertDictData" parameterType="dictData" useGeneratedKeys="true" keyProperty="dictDataId" keyColumn="dict_data_id">
+        insert into sys_dict_data(
         <if test="dictDataId != null and dictDataId != 0">dict_data_id,</if>
         <if test="dictSort != null">dict_sort,</if>
         <if test="dictLabel != null">dict_label,</if>
@@ -39,6 +39,7 @@
         <if test="listClass != null">list_class,</if>
         <if test="isDefault != null">is_default,</if>
         <if test="isStop != null">is_stop,</if>
+        <if test="remark != null">remark,</if>
         create_by,
         create_time
         )values(
@@ -51,17 +52,18 @@
         <if test="listClass != null">#{listClass},</if>
         <if test="isDefault != null">#{isDefault},</if>
         <if test="isStop != null">#{isStop},</if>
+        <if test="remark != null">#{remark},</if>
         #{createBy},
         #{createTime}
         )
     </insert>
 
     <delete id="deleteDictData">
-        delete from sys_dictData where dictData_id = #{dictDataId}
+        delete from sys_dict_data where dict_data_id = #{dictDataId}
     </delete>
 
     <update id="updateDictData" parameterType="dictData">
-        update sys_dictData
+        update sys_dict_data
         <set>
             <if test="dictSort != null">dict_sort = #{dictSort},</if>
             <if test="dictLabel != null and dictLabel != ''">dict_label = #{dictLabel},</if>
@@ -70,17 +72,18 @@
             <if test="cssClass != null and cssClass != ''">css_class = #{cssClass},</if>
             <if test="listClass != null and listClass != ''">list_class = #{listClass},</if>
             <if test="isDefault != null">is_default = #{isDefault},</if>
+            <if test="remark != null">remark = #{remark},</if>
             update_by = #{updateBy},
             update_time = #{updateTime}
         </set>
-        where dictData_id = #{dictDataId}
+        where dict_data_id = #{dictDataId}
     </update>
 
     <select id="listDictDataByPage" resultMap="DictDataResult">
         <include refid="selectDictDataVo"/>
         <where>
-            <if test="searchLike != null and searchLike != ''">
-                AND (dict_label LIKE #{searchLike} or css_class LIKE #{searchLike} or list_class LIKE #{searchLike})
+            <if test="paramMap.searchLike != null and paramMap.searchLike != ''">
+                AND (dict_label LIKE #{paramMap.searchLike} or css_class LIKE #{paramMap.searchLike} or list_class LIKE #{paramMap.searchLike})
             </if>
         </where>
     </select>

@@ -52,8 +52,8 @@
     <select id="listLogininforByPage" resultMap="LogininforResult">
         <include refid="selectLogininforVo"/>
         <where>
-            <if test="searchLike != null and searchLike != ''">
-                AND (user_name LIKE #{searchLike})
+            <if test="paramMap.searchLike != null and paramMap.searchLike != ''">
+                AND (user_name LIKE #{paramMap.searchLike})
             </if>
         </where>
     </select>

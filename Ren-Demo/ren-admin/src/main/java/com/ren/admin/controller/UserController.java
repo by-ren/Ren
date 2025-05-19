@@ -80,11 +80,20 @@ public class UserController extends BaseController {
         menuVOList = modifyMenuVOIndex("",menuVOList);
         ajax.put("menus", menuVOList);
         //获取用户所能看到的菜单（不包含目录），格式化后返回（前端用于动态路由配置）
-        List<DynamicRouteVO> dynamicRouteVOList = routerMenuTree.stream().map(menu -> new DynamicRouteVO(menu,"path", "routeName", "component", new DynamicRouteVO().new Meta(true, new String[]{}),"children")).toList();
+        List<DynamicRouteVO> dynamicRouteVOList = routerMenuTree.stream().map(menu -> new DynamicRouteVO(menu,"path", "routeName", "component", new DynamicRouteVO().new Meta(true, new String[]{},""),"children")).toList();
+        dynamicRouteVOList = modifyDynamicRouteVOMenuShow("",dynamicRouteVOList);
         ajax.put("dynamicRoutes", dynamicRouteVOList);
         return ajax;
     }
 
+    /*
+     * 递归修改每级菜单Index值
+     * @param parentIndex
+     * @param menuVOList
+     * @return java.util.List<com.ren.common.domain.vo.MenuVO>
+     * @author admin
+     * @date 2025/05/19 17:36
+     */
     protected List<MenuVO> modifyMenuVOIndex(String parentIndex,List<MenuVO> menuVOList) {
         for(MenuVO menuVO : menuVOList){
             menuVO.setIndex(parentIndex + "/" + menuVO.getIndex());
@@ -93,6 +102,24 @@ public class UserController extends BaseController {
             }
         }
         return menuVOList;
+    }
+
+    /*
+     * 递归修改每级菜单Show值
+     * @param parentMenuShow
+     * @param dynamicRouteVOList
+     * @return java.util.List<com.ren.common.domain.vo.DynamicRouteVO>
+     * @author admin
+     * @date 2025/05/19 17:36
+     */
+    protected List<DynamicRouteVO> modifyDynamicRouteVOMenuShow(String parentMenuShow,List<DynamicRouteVO> dynamicRouteVOList) {
+        for(DynamicRouteVO dynamicRouteVO : dynamicRouteVOList){
+            dynamicRouteVO.getMeta().setMenuShow(parentMenuShow + "/" + dynamicRouteVO.getPath());
+            if(dynamicRouteVO.getChildren() != null && !dynamicRouteVO.getChildren().isEmpty()){
+                dynamicRouteVO.setChildren(modifyDynamicRouteVOMenuShow(dynamicRouteVO.getMeta().getMenuShow(),dynamicRouteVO.getChildren()));
+            }
+        }
+        return dynamicRouteVOList;
     }
 
     /*

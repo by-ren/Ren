@@ -152,10 +152,11 @@ public class AuthController {
 
         // 生成新的双Token
         String newAccessToken = jwtUtils.createAccessToken(userDetails);
-        String newRefreshToken = jwtUtils.createRefreshToken(userDetails);
+        //refreshToken不重新生成，只要refreshToken过期，强制重新登陆一次
+        //String newRefreshToken = jwtUtils.createRefreshToken(userDetails);
 
         // 返回双Token
-        return AjaxResultDTO.success().put("accessToken",newAccessToken).put("refreshToken",newRefreshToken);
+        return AjaxResultDTO.success().put("accessToken",newAccessToken).put("refreshToken",refreshToken);
     }
 
 }

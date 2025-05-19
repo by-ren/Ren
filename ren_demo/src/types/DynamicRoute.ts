@@ -5,6 +5,7 @@ export interface DynamicRoute {
   meta?: {
     requiresAuth?: boolean
     roles?: string[]
+    menuShow?: string
   }
   children?: DynamicRoute[]
 }

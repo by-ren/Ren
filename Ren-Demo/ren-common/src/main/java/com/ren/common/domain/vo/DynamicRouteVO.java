@@ -39,6 +39,13 @@ public class DynamicRouteVO implements Serializable
     public class Meta{
         private Boolean requiresAuth;
         private String[] roles;
+        private String menuShow;
+
+        public Meta(Meta meta) {
+            this.requiresAuth = meta.getRequiresAuth();
+            this.roles = meta.getRoles();
+            this.menuShow = meta.getMenuShow();
+        }
     }
 
     public <T> DynamicRouteVO(
@@ -86,7 +93,8 @@ public class DynamicRouteVO implements Serializable
         }
         this.component = Convert.toStr(componentInline);
 
-        this.meta = meta;
+        //实现深拷贝，防止所有对象使用同一个Meta元素
+        this.meta = new Meta(meta);
 
         // 通过 BeanUtil 动态根据属性名获取属性值（获取子列表值）
         Object rawChildList = BeanUtil.getProperty(t, childrenFieldName);

@@ -130,7 +130,7 @@
     import type { FormInstance,FormRules } from 'element-plus'
     import { ElMessage,ElTree } from 'element-plus'
     import type Node from 'element-plus/es/components/tree/src/model/node'
-    import {getRoleList,addRole,modifyRole,deleteRole,getMenuList,getDeptList} from '@/api/role/index'
+    import {getRoleList,addRole,modifyRole,deleteRole,getMenuList,getDeptList} from '@/api/system/role/index'
     /*============================通用参数开始============================*/
     //表格数据
     let tableData = ref([]);
