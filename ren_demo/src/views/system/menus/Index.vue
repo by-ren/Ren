@@ -144,7 +144,7 @@
 
 <script setup lang="ts" name="menus">
     import type { FormInstance,FormRules } from 'element-plus'
-    import {getMenuList,addMenu,modifyMenu, deleteMenu, getParentMenuList} from '@/api/menu/index'
+    import {getMenuList,addMenu,modifyMenu, deleteMenu, getParentMenuList} from '@/api/system/menu/index'
     import { ElMessage } from 'element-plus'
     /*============================通用参数开始============================*/
     //表格数据

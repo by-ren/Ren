@@ -198,7 +198,7 @@
       Object.assign(tagArr, JSON.parse(savedTags));
     }
     //动态选中菜单
-    menuRef.value.updateActiveIndex(route.path?.toString() || '');
+    menuRef.value.updateActiveIndex(route.meta.menuShow?.toString() || '');
   })
   /*============================生命周期钩子结束============================*/
 </script>

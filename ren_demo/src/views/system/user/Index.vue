@@ -185,7 +185,7 @@
     import { ref,onMounted } from 'vue'
     import type { FormInstance,FormRules } from 'element-plus'
     import { ElMessage } from 'element-plus'
-    import {getUserList,resetPassword,deleteUser,modifyUser,addUser,getDeptList,getRoleList,getUserInfo} from '@/api/user/index'
+    import {getUserList,resetPassword,deleteUser,modifyUser,addUser,getDeptList,getRoleList,getUserInfo} from '@/api/system/user/index'
     /*============================通用参数开始============================*/
     //表格数据
     let tableData = ref([]);

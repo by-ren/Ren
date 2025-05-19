@@ -20,17 +20,17 @@
         <result property="errorMsg"     column="error_msg"    />
         <result property="operTime"     column="oper_time"    />
         <result property="costTime"     column="cost_time"    />
-        <result property="costTimeStr"     column="cost_time_str"    />
+        <result property="operTimeStr"     column="oper_time_str"    />
     </resultMap>
 
     <sql id="selectOperLogVo">
         select
-            oper_id,title,business_type,method,request_method,operator_type,oper_name,dept_name,oper_url,oper_ip,oper_location,oper_param,json_result,is_normal,error_msg,oper_time,cost_time, FROM_UNIXTIME(cost_time, '%Y-%m-%d %H:%i:%s') AS cost_time_str
-        from sys_operLog
+            oper_id,title,business_type,method,request_method,operator_type,oper_name,dept_name,oper_url,oper_ip,oper_location,oper_param,json_result,is_normal,error_msg,oper_time,cost_time, FROM_UNIXTIME(oper_time, '%Y-%m-%d %H:%i:%s') AS oper_time_str
+        from sys_oper_log
     </sql>
 
     <insert id="insertOperLog" parameterType="operLog" useGeneratedKeys="true" keyProperty="operId" keyColumn="oper_id">
-        insert into sys_operLog(
+        insert into sys_oper_log(
         <if test="operId != null and operId != 0">oper_id,</if>
         <if test="title != null">title,</if>
         <if test="businessType != null">business_type,</if>
@@ -70,14 +70,14 @@
     </insert>
 
     <delete id="deleteOperLog">
-        delete from sys_operLog where oper_id = #{operId}
+        delete from sys_oper_log where oper_id = #{operId}
     </delete>
 
     <select id="listOperLogByPage" resultMap="OperLogResult">
         <include refid="selectOperLogVo"/>
         <where>
-            <if test="searchLike != null and searchLike != ''">
-                AND (title LIKE #{searchLike})
+            <if test="paramMap.searchLike != null and paramMap.searchLike != ''">
+                AND (title LIKE #{paramMap.searchLike})
             </if>
         </where>
     </select>

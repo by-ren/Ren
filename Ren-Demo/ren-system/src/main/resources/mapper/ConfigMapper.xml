@@ -31,6 +31,7 @@
         <if test="configKey != null">config_key,</if>
         <if test="configValue != null">config_value,</if>
         <if test="isSystem != null">is_system,</if>
+        <if test="remark != null">remark,</if>
         create_by,
         create_time
         )values(
@@ -39,6 +40,7 @@
         <if test="configKey != null">#{configKey},</if>
         <if test="configValue != null">#{configValue},</if>
         <if test="isSystem != null">#{isSystem},</if>
+        <if test="remark != null">#{remark},</if>
         #{createBy},
         #{createTime}
         )
@@ -56,6 +58,7 @@
             <if test="configKey != null and configKey != ''">config_key = #{configKey},</if>
             <if test="configValue != null and configValue != ''">config_value = #{configValue},</if>
             <if test="isSystem != null">is_system = #{isSystem},</if>
+            <if test="remark != null">remark = #{remark},</if>
             update_by = #{updateBy},
             update_time = #{updateTime}
         </set>
@@ -65,8 +68,8 @@
     <select id="listConfigByPage" resultMap="ConfigResult">
         <include refid="selectConfigVo"/>
         <where>
-            <if test="searchLike != null and searchLike != ''">
-                AND (config_name LIKE #{searchLike} or config_key LIKE #{searchLike} or config_value LIKE #{searchLike})
+            <if test="paramMap.searchLike != null and paramMap.searchLike != ''">
+                AND (config_name LIKE #{paramMap.searchLike} or config_key LIKE #{paramMap.searchLike} or config_value LIKE #{paramMap.searchLike})
             </if>
         </where>
     </select>

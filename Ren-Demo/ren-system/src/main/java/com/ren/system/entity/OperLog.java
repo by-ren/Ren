@@ -70,8 +70,8 @@ public class OperLog {
 
 
     /*==================================================以下为冗余字段===================================================*/
-    /**消耗时间字符串*/
+    /**操作时间字符串*/
     @TableField(exist = false)
-    private String costTimeStr;
+    private String operTimeStr;
 
 }

@@ -29,7 +29,32 @@ const routes: RouteRecordRaw[] = [
         path: 'index',
         name: 'index',
         component: () => import('@/views/Index.vue'),
-        meta: { requiresAuth: true } // 需要认证
+        meta: { requiresAuth: true,roles: [],menuShow: '/index' } // 需要认证
+      },
+      {
+        path: '/system/dict',
+        name: 'dict',
+        component: () => import('@/views/system/dict/Index.vue'),
+        children: [
+          {
+            path: '', // 空路径作为默认
+            name: 'dictDefault', // 添加显式名称
+            redirect: { name: 'dictType' } // 重定向到字典类型
+          },
+          {
+            path: '/system/dict/dictType',
+            name: 'dictType',
+            component: () => import('@/views/system/dict/DictType.vue'),
+            meta: { requiresAuth: true,roles: [],menuShow: '/system/dict' } // 需要认证
+          },
+          {
+            path: '/system/dict/dictData',
+            name: 'dictData',
+            component: () => import('@/views/system/dict/DictData.vue'),
+            meta: { requiresAuth: true,roles: [],menuShow: '/system/dict' } // 需要认证
+          },
+        ],
+        meta: { requiresAuth: true,roles: [],menuShow: '/system/dict' } // 需要认证
       }
     ]
   },
@@ -128,7 +153,8 @@ const addDynamicRoutes = (parentRouter : string,dynamicRoutes : DynamicRoute[]) 
           component: modules['/src/layout/EmptyRouterView.vue'],
           meta: {
             requiresAuth: true,
-            roles: dynamicRoute.meta?.roles || []
+            roles: dynamicRoute.meta?.roles || [],
+            menuShow: dynamicRoute.meta?.menuShow
           }
         });
         addDynamicRoutes(dynamicRoute.name,dynamicRoute.children)
@@ -139,7 +165,8 @@ const addDynamicRoutes = (parentRouter : string,dynamicRoutes : DynamicRoute[]) 
           component: modules[`/src/views/${dynamicRoute.component}.vue`], // 直接匹配预加载的组件
           meta: {
             requiresAuth: true,
-            roles: dynamicRoute.meta?.roles || []
+            roles: dynamicRoute.meta?.roles || [],
+            menuShow: dynamicRoute.meta?.menuShow
           }
         });
       }
