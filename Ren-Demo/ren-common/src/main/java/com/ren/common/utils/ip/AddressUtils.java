@@ -1,18 +1,17 @@
-package com.ruoyi.common.utils.ip;
+package com.ren.common.utils.ip;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.ruoyi.common.config.RuoYiConfig;
-import com.ruoyi.common.constant.Constants;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.http.HttpUtils;
+import com.ren.common.constant.Constants;
+import com.ren.common.utils.http.HttpUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 获取地址类
  * 
- * @author ruoyi
+ * @author admin
  */
 public class AddressUtils
 {
@@ -31,25 +30,22 @@ public class AddressUtils
         {
             return "内网IP";
         }
-        if (RuoYiConfig.isAddressEnabled())
+        try
         {
-            try
-            {
-                String rspStr = HttpUtils.sendGet(IP_URL, "ip=" + ip + "&json=true", Constants.GBK);
-                if (StringUtils.isEmpty(rspStr))
-                {
-                    log.error("获取地理位置异常 {}", ip);
-                    return UNKNOWN;
-                }
-                JSONObject obj = JSON.parseObject(rspStr);
-                String region = obj.getString("pro");
-                String city = obj.getString("city");
-                return String.format("%s %s", region, city);
-            }
-            catch (Exception e)
+            String rspStr = HttpUtils.sendGet(IP_URL, "ip=" + ip + "&json=true", Constants.GBK);
+            if (StrUtil.isEmpty(rspStr))
             {
                 log.error("获取地理位置异常 {}", ip);
+                return UNKNOWN;
             }
+            JSONObject obj = JSON.parseObject(rspStr);
+            String region = obj.getString("pro");
+            String city = obj.getString("city");
+            return String.format("%s %s", region, city);
+        }
+        catch (Exception e)
+        {
+            log.error("获取地理位置异常 {}", ip);
         }
         return UNKNOWN;
     }

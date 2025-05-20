@@ -2,7 +2,7 @@ package com.ren.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ren.system.entity.OperLog;
+import com.ren.common.domain.entity.OperLog;
 
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public interface OperLogService extends IService<OperLog> {
     /*
      * 分页获取操作日志列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.OperLog>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.common.domain.entity.OperLog>
      * @author admin
      * @date 2025/05/18 13:50
      */
@@ -37,7 +37,7 @@ public interface OperLogService extends IService<OperLog> {
     /*
      * 获取操作日志详情
      * @param operId
-     * @return com.ren.system.entity.OperLog
+     * @return com.ren.common.domain.entity.OperLog
      * @author admin
      * @date 2025/05/18 13:50
      */

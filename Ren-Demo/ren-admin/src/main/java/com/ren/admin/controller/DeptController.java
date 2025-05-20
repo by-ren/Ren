@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.ren.common.constant.AppConstants;
+import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.Dept;
 import com.ren.common.domain.entity.User;
@@ -119,7 +120,7 @@ public class DeptController {
      * @date 2025/05/09 17:01
      */
     @PostMapping("/add")
-    public AjaxResultDTO addDept(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Dept addDept) {
+    public AjaxResultDTO addDept(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Dept addDept) {
         deptService.addDept(addDept,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
@@ -133,7 +134,7 @@ public class DeptController {
      * @date 2025/05/09 17:01
      */
     @PostMapping("/modify")
-    public AjaxResultDTO modifyDept(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Dept modifyDept) {
+    public AjaxResultDTO modifyDept(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Dept modifyDept) {
         deptService.modifyDeptById(modifyDept,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
@@ -147,7 +148,7 @@ public class DeptController {
      * @date 2025/05/09 17:01
      */
     @DeleteMapping("/delete")
-    public AjaxResultDTO deptDelete(@AuthenticationPrincipal User loginUser, long deptId) {
+    public AjaxResultDTO deptDelete(@AuthenticationPrincipal LoginUser loginUser, long deptId) {
         //查询是否有子级部门
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("parentId",deptId);

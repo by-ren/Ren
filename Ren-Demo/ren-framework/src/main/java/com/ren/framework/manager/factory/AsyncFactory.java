@@ -1,4 +1,4 @@
-package com.ren.framework.factory;
+package com.ren.framework.manager.factory;
 
 import com.ren.common.domain.entity.OperLog;
 import com.ren.common.utils.SpringUtils;
@@ -12,7 +12,7 @@ import java.util.TimerTask;
 /**
  * 异步工厂（产生任务用）
  * 
- * @author ruoyi
+ * @author admin
  */
 public class AsyncFactory
 {

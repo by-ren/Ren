@@ -1,4 +1,4 @@
-package com.ren.common.utils;
+package com.ren.common.utils.ip;
 
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;

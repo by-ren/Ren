@@ -3,6 +3,7 @@ package com.ren.admin.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ren.common.constant.AppConstants;
 import com.ren.common.controller.BaseController;
+import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.Role;
 import com.ren.common.domain.entity.User;
@@ -63,7 +64,7 @@ public class RoleController extends BaseController {
      * @date 2025/05/08 15:01
      */
     @PostMapping("/add")
-    public AjaxResultDTO addRole(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Role addRole) {
+    public AjaxResultDTO addRole(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Role addRole) {
         roleService.addRole(addRole,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
@@ -77,7 +78,7 @@ public class RoleController extends BaseController {
      * @date 2025/05/08 15:32
      */
     @PostMapping("/modify")
-    public AjaxResultDTO modifyRole(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Role modifyRole) {
+    public AjaxResultDTO modifyRole(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Role modifyRole) {
         roleService.modifyRoleById(modifyRole,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
@@ -91,7 +92,7 @@ public class RoleController extends BaseController {
      * @date 2025/05/08 15:32
      */
     @DeleteMapping("/delete")
-    public AjaxResultDTO roleDelete(@AuthenticationPrincipal User loginUser, long roleId) {
+    public AjaxResultDTO roleDelete(@AuthenticationPrincipal LoginUser loginUser, long roleId) {
         //查询当前角色下是否有用户还在使用
         List<User> userList = userService.listUserByRoleId(roleId);
         if(userList != null && !userList.isEmpty()){

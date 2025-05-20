@@ -3,6 +3,7 @@ package com.ren.admin.controller;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
 import com.ren.common.constant.AppConstants;
+import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.Menu;
 import com.ren.common.domain.entity.User;
@@ -103,7 +104,7 @@ public class MenuController {
      * @date 2025/05/09 17:01
      */
     @PostMapping("/add")
-    public AjaxResultDTO addMenu(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Menu addMenu) {
+    public AjaxResultDTO addMenu(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Menu addMenu) {
         menuService.addMenu(addMenu,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
@@ -117,7 +118,7 @@ public class MenuController {
      * @date 2025/05/09 17:01
      */
     @PostMapping("/modify")
-    public AjaxResultDTO modifyMenu(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Menu modifyMenu) {
+    public AjaxResultDTO modifyMenu(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Menu modifyMenu) {
         menuService.modifyMenuById(modifyMenu,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
@@ -131,7 +132,7 @@ public class MenuController {
      * @date 2025/05/09 17:01
      */
     @DeleteMapping("/delete")
-    public AjaxResultDTO menuDelete(@AuthenticationPrincipal User loginUser, long menuId) {
+    public AjaxResultDTO menuDelete(@AuthenticationPrincipal LoginUser loginUser, long menuId) {
         //查询是否有子级菜单
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("parentId",menuId);

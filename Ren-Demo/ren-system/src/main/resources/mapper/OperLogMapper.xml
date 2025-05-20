@@ -47,7 +47,7 @@
         <if test="isNormal != null">is_normal,</if>
         <if test="errorMsg != null">error_msg,</if>
         <if test="operTime != null">oper_time,</if>
-        <if test="costTime != null">cost_time,</if>
+        <if test="costTime != null">cost_time</if>
         )values(
         <if test="operId != null and operId != ''">#{operId},</if>
         <if test="title != null">#{title},</if>
@@ -65,7 +65,7 @@
         <if test="isNormal != null">#{isNormal},</if>
         <if test="errorMsg != null">#{errorMsg},</if>
         <if test="operTime != null">#{operTime},</if>
-        <if test="costTime != null">#{costTime},</if>
+        <if test="costTime != null">#{costTime}</if>
         )
     </insert>
 

@@ -2,6 +2,7 @@ package com.ren.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ren.common.controller.BaseController;
+import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.User;
 import com.ren.common.domain.page.TableDataInfo;
@@ -44,7 +45,7 @@ public class DictTypeController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/add")
-    public AjaxResultDTO addDictType(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) DictType addDictType) {
+    public AjaxResultDTO addDictType(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) DictType addDictType) {
         dictTypeService.addDictType(addDictType,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
@@ -58,7 +59,7 @@ public class DictTypeController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/modify")
-    public AjaxResultDTO modifyDictType(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) DictType modifyDictType) {
+    public AjaxResultDTO modifyDictType(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) DictType modifyDictType) {
         dictTypeService.modifyDictType(modifyDictType,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
@@ -72,7 +73,7 @@ public class DictTypeController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")
-    public AjaxResultDTO dictTypeDelete(@AuthenticationPrincipal User loginUser, long dictTypeId) {
+    public AjaxResultDTO dictTypeDelete(@AuthenticationPrincipal LoginUser loginUser, long dictTypeId) {
         dictTypeService.removeDictType(dictTypeId);
         return AjaxResultDTO.success();
     }

@@ -1,6 +1,9 @@
 package com.ren.framework.security.config;
 
+import com.ren.common.domain.bo.LoginUser;
+import com.ren.common.domain.entity.Role;
 import com.ren.common.domain.entity.User;
+import com.ren.system.mapper.RoleMapper;
 import com.ren.system.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,10 +12,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @description 本类是基于数据库的用户信息管理器
@@ -24,6 +27,8 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private RoleMapper roleMapper;
 
     /*
      * Spring Security的核心方法：根据用户名加载用户
@@ -46,10 +51,9 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
             // 用户不存在
             throw new UsernameNotFoundException(username);
         } else {
-            //权限列表暂时先传空
-            List<String> roles = new ArrayList<>();
-            user.setRoles(roles);
-            return user;
+            List<Role> roleList = roleMapper.listRoleByUserId(user.getUserId());
+            user.setRoleList(roleList);
+			return new LoginUser(user.getUserId(), user, roleList.stream().map(Role::getRoleKey).collect(Collectors.toSet()));
         }
     }
 

@@ -2,11 +2,12 @@ package com.ren.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ren.common.controller.BaseController;
+import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.User;
 import com.ren.common.domain.page.TableDataInfo;
 import com.ren.common.interfaces.Pageable;
-import com.ren.system.entity.OperLog;
+import com.ren.common.domain.entity.OperLog;
 import com.ren.system.service.OperLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -44,7 +45,7 @@ public class OperLogController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")
-    public AjaxResultDTO operLogDelete(@AuthenticationPrincipal User loginUser, long operLogId) {
+    public AjaxResultDTO operLogDelete(@AuthenticationPrincipal LoginUser loginUser, long operLogId) {
         operLogService.removeOperLog(operLogId);
         return AjaxResultDTO.success();
     }
