@@ -108,7 +108,7 @@ public class LogAspect {
 			// 设置消耗时间
 			operLog.setCostTime(System.currentTimeMillis() - TIME_THREADLOCAL.get());
 			// 异步添加操作日志
-			AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
+			AsyncManager.me().execute(AsyncFactory.addOperLog(operLog));
 		}
 		catch (Exception exp)
 		{

@@ -3,12 +3,15 @@ package com.ren.admin.controller;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson2.JSON;
+import com.ren.common.constant.AppConstants;
 import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.User;
 import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.interfaces.OperLogAnn;
 import com.ren.common.utils.ip.IpUtils;
+import com.ren.framework.manager.AsyncManager;
+import com.ren.framework.manager.factory.AsyncFactory;
 import com.ren.framework.properties.TokenProperties;
 import com.ren.framework.security.config.AuthenticationContextHolder;
 import com.ren.framework.security.utils.JwtUtils;
@@ -80,14 +83,19 @@ public class AuthController {
             //更新用户最后登录时间
             User loginIpUser = userService.getUserByUsername(loginUser.getUsername());
             userService.modifyUserByLogin(loginIpUser.getUserId(),IpUtils.getIpAddr(),DateUtil.currentSeconds(),loginUser.getUsername());
+
+            // 异步登录操作日志
+            AsyncManager.me().execute(AsyncFactory.addLogininfor(loginUser.getUsername(), AppConstants.COMMON_BYTE_YES, "登录成功"));
             return AjaxResultDTO.success("登陆成功").put("accessToken",accessToken).put("refreshToken",refreshToken);
         } catch (BadCredentialsException e) {
             log.debug("登陆失败", e);
             // 密码错误
+            AsyncManager.me().execute(AsyncFactory.addLogininfor(Convert.toStr(paramMap.get("username")), AppConstants.COMMON_BYTE_NO, "登录失败"));
             return AjaxResultDTO.error(401, e.getMessage());
         } catch (AuthenticationException e) {
             log.debug("登陆失败", e);
             // 其他认证异常（如用户被锁定）
+            AsyncManager.me().execute(AsyncFactory.addLogininfor(Convert.toStr(paramMap.get("username")), AppConstants.COMMON_BYTE_NO, "登录失败"));
             return AjaxResultDTO.error(401, e.getMessage());
         }finally{
             AuthenticationContextHolder.clearContext();
