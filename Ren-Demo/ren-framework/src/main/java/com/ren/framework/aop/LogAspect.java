@@ -1,4 +1,4 @@
-package com.ren.common.aop;
+package com.ren.framework.aop;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.thread.threadlocal.NamedThreadLocal;
@@ -13,6 +13,8 @@ import com.ren.common.utils.FastJSON2Utils;
 import com.ren.common.utils.ip.IpUtils;
 import com.ren.common.utils.SecurityUtils;
 import com.ren.common.utils.ServletUtils;
+import com.ren.framework.manager.AsyncManager;
+import com.ren.framework.manager.factory.AsyncFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Collection;
 import java.util.Map;
 
+//该切面用于添加加了OperLogAnn注解的方法，主要用于添加操作日志
 @Aspect
 @Component
 @Slf4j
@@ -104,8 +107,8 @@ public class LogAspect {
 			getControllerMethodDescription(joinPoint, controllerLog, operLog, jsonResult);
 			// 设置消耗时间
 			operLog.setCostTime(System.currentTimeMillis() - TIME_THREADLOCAL.get());
-			// 保存数据库
-			//AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
+			// 异步添加操作日志
+			AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
 		}
 		catch (Exception exp)
 		{

@@ -1,5 +1,6 @@
 package com.ren.framework.security.filter;
 
+import com.ren.common.domain.bo.LoginUser;
 import com.ren.framework.security.utils.JwtUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -14,7 +15,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
@@ -69,14 +69,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 从accessToken中解析出Authentication
             // Authentication：SpringSecurity的认证信息对象
             // 将认证信息存储到线程绑定的SecurityContext中
-            // Spring Security后续通过SecurityContextHolder获取当前用户身份，用于：鉴权（如@PreAuthorize("hasRole('ADMIN')")），获取用户信息（如@AuthenticationPrincipal User user）
+            // Spring Security后续通过SecurityContextHolder获取当前用户身份，用于：鉴权（如@PreAuthorize("hasRole('ADMIN')")），获取用户信息（如@AuthenticationPrincipal LoginUser loginUser）
             Authentication authentication = jwtUtils.getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             // 检查是否需要刷新Token
             if (jwtUtils.shouldRefreshToken(accessToken)) {
                 //生成新的AccessToken并设置到响应头中
-                String newToken = jwtUtils.createAccessToken((UserDetails) authentication.getPrincipal());
+                String newToken = jwtUtils.createAccessToken((LoginUser) authentication.getPrincipal());
                 response.setHeader("X-Access-Token", "Bearer " + newToken);
             }
             //通过验证，并且token续期成功，放行请求

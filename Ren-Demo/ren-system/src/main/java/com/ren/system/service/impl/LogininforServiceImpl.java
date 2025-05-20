@@ -1,12 +1,11 @@
 package com.ren.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ren.common.utils.PageUtils;
-import com.ren.system.entity.Logininfor;
+import com.ren.common.domain.entity.Logininfor;
 import com.ren.system.mapper.LogininforMapper;
 import com.ren.system.service.LogininforService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,7 @@ public class LogininforServiceImpl extends ServiceImpl<LogininforMapper, Loginin
     /*
      * 分页获取登录日志列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Logininfor>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.common.domain.entity.Logininfor>
      * @author admin
      * @date 2025/05/18 13:50
      */
@@ -63,7 +62,7 @@ public class LogininforServiceImpl extends ServiceImpl<LogininforMapper, Loginin
     /*
      * 获取登录日志详情
      * @param infoId
-     * @return com.ren.system.entity.Logininfor
+     * @return com.ren.common.domain.entity.Logininfor
      * @author admin
      * @date 2025/05/18 13:50
      */

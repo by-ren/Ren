@@ -1,16 +1,21 @@
-package com.ruoyi.common.core.domain.model;
+package com.ren.common.domain.bo;
 
 import com.alibaba.fastjson2.annotation.JSONField;
-import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ren.common.domain.entity.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 登录用户身份权限
  * 
- * @author ruoyi
+ * @author admin
  */
 public class LoginUser implements UserDetails
 {
@@ -20,11 +25,6 @@ public class LoginUser implements UserDetails
      * 用户ID
      */
     private Long userId;
-
-    /**
-     * 部门ID
-     */
-    private Long deptId;
 
     /**
      * 用户唯一标识
@@ -69,22 +69,21 @@ public class LoginUser implements UserDetails
     /**
      * 用户信息
      */
-    private SysUser user;
+    private User user;
 
     public LoginUser()
     {
     }
 
-    public LoginUser(SysUser user, Set<String> permissions)
+    public LoginUser(User user, Set<String> permissions)
     {
         this.user = user;
         this.permissions = permissions;
     }
 
-    public LoginUser(Long userId, Long deptId, SysUser user, Set<String> permissions)
+    public LoginUser(Long userId, User user, Set<String> permissions)
     {
         this.userId = userId;
-        this.deptId = deptId;
         this.user = user;
         this.permissions = permissions;
     }
@@ -99,16 +98,6 @@ public class LoginUser implements UserDetails
         this.userId = userId;
     }
 
-    public Long getDeptId()
-    {
-        return deptId;
-    }
-
-    public void setDeptId(Long deptId)
-    {
-        this.deptId = deptId;
-    }
-
     public String getToken()
     {
         return token;
@@ -117,65 +106,6 @@ public class LoginUser implements UserDetails
     public void setToken(String token)
     {
         this.token = token;
-    }
-
-    @JSONField(serialize = false)
-    @Override
-    public String getPassword()
-    {
-        return user.getPassword();
-    }
-
-    @Override
-    public String getUsername()
-    {
-        return user.getUserName();
-    }
-
-    /**
-     * 账户是否未过期,过期无法验证
-     */
-    @JSONField(serialize = false)
-    @Override
-    public boolean isAccountNonExpired()
-    {
-        return true;
-    }
-
-    /**
-     * 指定用户是否解锁,锁定的用户无法进行身份验证
-     * 
-     * @return
-     */
-    @JSONField(serialize = false)
-    @Override
-    public boolean isAccountNonLocked()
-    {
-        return true;
-    }
-
-    /**
-     * 指示是否已过期的用户的凭据(密码),过期的凭据防止认证
-     * 
-     * @return
-     */
-    @JSONField(serialize = false)
-    @Override
-    public boolean isCredentialsNonExpired()
-    {
-        return true;
-    }
-
-    /**
-     * 是否可用 ,禁用的用户不能身份验证
-     * 
-     * @return
-     */
-    @JSONField(serialize = false)
-    @Override
-    public boolean isEnabled()
-    {
-        return true;
     }
 
     public Long getLoginTime()
@@ -248,19 +178,91 @@ public class LoginUser implements UserDetails
         this.permissions = permissions;
     }
 
-    public SysUser getUser()
+    public User getUser()
     {
         return user;
     }
 
-    public void setUser(SysUser user)
+    public void setUser(User user)
     {
         this.user = user;
     }
 
+    /*============================================以下为SpringSecurity相关字段===========================================*/
+
+    @JSONField(serialize = false)
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities()
+    public String getPassword()
     {
-        return null;
+        return user.getPassword();
+    }
+
+    @Override
+    public String getUsername()
+    {
+        return user.getUsername();
+    }
+
+    /**
+     * 账户是否未过期,过期无法验证
+     */
+    @JSONField(serialize = false)
+    @Override
+    public boolean isAccountNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     * 指定用户是否解锁,锁定的用户无法进行身份验证
+     *
+     * @return
+     */
+    @JSONField(serialize = false)
+    @Override
+    public boolean isAccountNonLocked()
+    {
+        return true;
+    }
+
+    /**
+     * 指示是否已过期的用户的凭据(密码),过期的凭据防止认证
+     *
+     * @return
+     */
+    @JSONField(serialize = false)
+    @Override
+    public boolean isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     * 是否可用 ,禁用的用户不能身份验证
+     *
+     * @return
+     */
+    @JSONField(serialize = false)
+    @Override
+    public boolean isEnabled()
+    {
+        return true;
+    }
+
+    /*
+     * 将数据库中查询出来的角色转换为SpringSecurity可以认识的权限对象，SpringSecurity会自己调用这个方法，来获取权限
+     * @return java.util.Collection<? extends org.springframework.security.core.GrantedAuthority>
+     * @author admin
+     * @date 2025/04/29 21:01
+     */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.user != null && this.user.getRoleList() != null && !this.user.getRoleList().isEmpty()){
+            return this.user.getRoleList().stream()
+                    .map((role) -> new SimpleGrantedAuthority(role.getRoleKey())) // 将字符串角色转换为权限对象
+                    .collect(Collectors.toList());
+        }else{
+            return null;
+        }
     }
 }

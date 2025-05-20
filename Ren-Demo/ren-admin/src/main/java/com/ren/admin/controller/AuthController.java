@@ -2,18 +2,18 @@ package com.ren.admin.controller;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson2.JSON;
+import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
-import com.ren.common.utils.IpUtils;
+import com.ren.common.domain.entity.User;
+import com.ren.common.utils.ip.IpUtils;
 import com.ren.framework.properties.TokenProperties;
 import com.ren.framework.security.config.AuthenticationContextHolder;
 import com.ren.framework.security.utils.JwtUtils;
-import com.ren.common.domain.entity.User;
 import com.ren.system.service.UserService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,7 +23,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -33,9 +32,6 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/auth")
 @Slf4j
 public class AuthController {
-
-    // 静态Logger实例（推荐）
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -64,20 +60,24 @@ public class AuthController {
             Authentication authentication = null;
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(Convert.toStr(paramMap.get("username")), Convert.toStr(paramMap.get("password")));
+            // 将用户名密码封装成一个springSecurity能够认识的对象，用于后面的认证流程
             AuthenticationContextHolder.setContext(authenticationToken);
             // 该方法会去调用UserDetailsServiceImpl.loadUserByUsername
             authentication = authenticationManager.authenticate(authenticationToken);
 
+            // 存储到 SecurityContext,方便后面流程从SpringSecurity中直接获取用户信息
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
             //获取用户身份信息
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            LoginUser loginUser = (LoginUser) authentication.getPrincipal();
 
             // 生成双Token
-            String accessToken = jwtUtils.createAccessToken(userDetails);
-            String refreshToken = jwtUtils.createRefreshToken(userDetails);
+            String accessToken = jwtUtils.createAccessToken(loginUser);
+            String refreshToken = jwtUtils.createRefreshToken(loginUser);
 
             //更新用户最后登录时间
-            User loginIpUser = userService.getUserByUsername(userDetails.getUsername());
-            userService.modifyUserByLogin(loginIpUser.getUserId(),IpUtils.getIpAddr(),DateUtil.currentSeconds(),userDetails.getUsername());
+            User loginIpUser = userService.getUserByUsername(loginUser.getUsername());
+            userService.modifyUserByLogin(loginIpUser.getUserId(),IpUtils.getIpAddr(),DateUtil.currentSeconds(),loginUser.getUsername());
             return AjaxResultDTO.success("登陆成功").put("accessToken",accessToken).put("refreshToken",refreshToken);
         } catch (BadCredentialsException e) {
             log.debug("登陆失败", e);
@@ -113,7 +113,7 @@ public class AuthController {
      * @date 2025/04/24 10:28
      */
     @PostMapping("/logout")
-    public AjaxResultDTO logout(@AuthenticationPrincipal User loginUser, HttpServletRequest request) {
+    public AjaxResultDTO logout(@AuthenticationPrincipal LoginUser loginUser, HttpServletRequest request) {
         // 手动清理Security上下文
         SecurityContextHolder.clearContext();
 
@@ -142,21 +142,27 @@ public class AuthController {
     public AjaxResultDTO refreshToken(@RequestHeader("X-Refresh-Token") String refreshToken) {
         //从请求头中获取RefreshToken，只有RefreshToken有效才允许刷新Token，并验证refreshToken是否有效
         if (!jwtUtils.validateRefreshToken(refreshToken)) {
-            return AjaxResultDTO.error(401, "用户名或密码错误");
+            log.debug("refreshToken失效，请重新登录");
+            return AjaxResultDTO.error(401, "refreshToken失效，请重新登录");
         }
 
-        //将refreshToken解析为Claims
-        Claims claims = jwtUtils.parseRefreshToken(refreshToken);
-        //从Claims中获取UserDetails
-        UserDetails userDetails = userService.getUserById(claims.get("user_id", Long.class));
+        try {
+            //将refreshToken解析为Claims
+            Claims claims = jwtUtils.parseRefreshToken(refreshToken);
+            String loginUserJson = claims.get("login_user", String.class);
+            LoginUser loginUser = JSON.parseObject(loginUserJson, LoginUser.class);
 
-        // 生成新的双Token
-        String newAccessToken = jwtUtils.createAccessToken(userDetails);
-        //refreshToken不重新生成，只要refreshToken过期，强制重新登陆一次
-        //String newRefreshToken = jwtUtils.createRefreshToken(userDetails);
+            // 生成新的双Token
+            String newAccessToken = jwtUtils.createAccessToken(loginUser);
+            //refreshToken不重新生成，只要refreshToken过期，强制重新登陆一次
+            //String newRefreshToken = jwtUtils.createRefreshToken(userDetails);
 
-        // 返回双Token
-        return AjaxResultDTO.success().put("accessToken",newAccessToken).put("refreshToken",refreshToken);
+            // 返回双Token
+            return AjaxResultDTO.success().put("accessToken",newAccessToken).put("refreshToken",refreshToken);
+        }catch (Exception e){
+            log.debug("refreshToken失效，请重新登录",e);
+            return AjaxResultDTO.error(401, "refreshToken失效，请重新登录");
+        }
     }
 
 }

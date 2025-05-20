@@ -1,7 +1,8 @@
-package com.ren.framework.manager.factory;
+package com.ren.framework.manager;
 
-import com.ruoyi.common.utils.Threads;
-import com.ruoyi.common.utils.spring.SpringUtils;
+
+import com.ren.common.utils.SpringUtils;
+import com.ren.common.utils.Threads;
 
 import java.util.TimerTask;
 import java.util.concurrent.ScheduledExecutorService;
@@ -10,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 异步任务管理器
  * 
- * @author ruoyi
+ * @author admin
  */
 public class AsyncManager
 {

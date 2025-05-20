@@ -3,8 +3,7 @@ package com.ren.system.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ren.system.entity.Logininfor;
-import com.ren.system.entity.Logininfor;
+import com.ren.common.domain.entity.Logininfor;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -33,7 +32,7 @@ public interface LogininforMapper extends BaseMapper<Logininfor> {
     /*
      * 分页获取登录日志列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Logininfor>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.common.domain.entity.Logininfor>
      * @author admin
      * @date 2025/05/18 13:50
      */

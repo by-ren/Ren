@@ -3,7 +3,7 @@ package com.ren.system.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ren.system.entity.OperLog;
+import com.ren.common.domain.entity.OperLog;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -32,7 +32,7 @@ public interface OperLogMapper extends BaseMapper<OperLog> {
     /*
      * 分页获取操作日志列表
      * @param paramMap
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.OperLog>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.common.domain.entity.OperLog>
      * @author admin
      * @date 2025/05/18 13:50
      */

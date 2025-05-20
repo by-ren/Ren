@@ -31,7 +31,7 @@
         <if test="os != null">os,</if>
         <if test="isSuccess != null">is_success,</if>
         <if test="msg != null">msg,</if>
-        <if test="loginTime != null">login_time,</if>
+        <if test="loginTime != null">login_time</if>
         )values(
         <if test="infoId != null and infoId != ''">#{infoId},</if>
         <if test="userName != null">#{userName},</if>
@@ -41,7 +41,7 @@
         <if test="os != null">#{os},</if>
         <if test="isSuccess != null">#{isSuccess},</if>
         <if test="msg != null">#{msg},</if>
-        <if test="loginTime != null">#{loginTime},</if>
+        <if test="loginTime != null">#{loginTime}</if>
         )
     </insert>
 

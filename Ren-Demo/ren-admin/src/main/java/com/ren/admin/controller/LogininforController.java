@@ -2,11 +2,12 @@ package com.ren.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ren.common.controller.BaseController;
+import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.User;
 import com.ren.common.domain.page.TableDataInfo;
 import com.ren.common.interfaces.Pageable;
-import com.ren.system.entity.Logininfor;
+import com.ren.common.domain.entity.Logininfor;
 import com.ren.system.service.LogininforService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -44,7 +45,7 @@ public class LogininforController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")
-    public AjaxResultDTO logininforDelete(@AuthenticationPrincipal User loginUser, long logininforId) {
+    public AjaxResultDTO logininforDelete(@AuthenticationPrincipal LoginUser loginUser, long logininforId) {
         logininforService.removeLogininfor(logininforId);
         return AjaxResultDTO.success();
     }

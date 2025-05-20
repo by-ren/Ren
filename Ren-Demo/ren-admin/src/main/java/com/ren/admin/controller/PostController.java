@@ -2,6 +2,7 @@ package com.ren.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ren.common.controller.BaseController;
+import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.User;
 import com.ren.common.domain.page.TableDataInfo;
@@ -44,7 +45,7 @@ public class PostController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/add")
-    public AjaxResultDTO addPost(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Post addPost) {
+    public AjaxResultDTO addPost(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Post addPost) {
         postService.addPost(addPost,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
@@ -58,7 +59,7 @@ public class PostController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/modify")
-    public AjaxResultDTO modifyPost(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Post modifyPost) {
+    public AjaxResultDTO modifyPost(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Post modifyPost) {
         postService.modifyPost(modifyPost,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
@@ -72,7 +73,7 @@ public class PostController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")
-    public AjaxResultDTO postDelete(@AuthenticationPrincipal User loginUser, long postId) {
+    public AjaxResultDTO postDelete(@AuthenticationPrincipal LoginUser loginUser, long postId) {
         postService.removePost(postId);
         return AjaxResultDTO.success();
     }

@@ -1,7 +1,8 @@
 package com.ren.framework.security.utils;
 
+import com.alibaba.fastjson2.JSON;
+import com.ren.common.domain.bo.LoginUser;
 import com.ren.framework.properties.TokenProperties;
-import com.ren.common.domain.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,18 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -44,16 +40,16 @@ public class JwtUtils {
 
     /*
      * 生成AccessToken
-     * @param userDetails
+     * @param loginUser
      * @return java.lang.String
      * @author admin
      * @date 2025/04/17 21:24
      */
-    public String createAccessToken(UserDetails userDetails) {
+    public String createAccessToken(LoginUser loginUser) {
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())  //设置JWT的主题为用户名的字符串
-                .claim("user_id", ((User) userDetails).getUserId())  //添加一个自定义声明user_id，值为用户的ID
-                .claim("authorities", userDetails.getAuthorities())  //添加权限信息作为另一个自定义声明
+                .setSubject(loginUser.getUsername())  //设置JWT的主题为用户名的字符串
+                .claim("user_id", loginUser.getUserId())  //添加一个自定义声明user_id，值为用户的ID
+                .claim("login_user", JSON.toJSONString(loginUser))  //将login_user整个对象序列化后放入自定义声明，方便后面使用
                 .setIssuedAt(new Date())  //设置JWT的签发时间为当前时间
                 .setExpiration(new Date(System.currentTimeMillis() + tokenProperties.getExpireTime() * 1000L))  //设置过期时间，基于当前时间加上配置的过期时长
                 .signWith(getAccessKey(), SignatureAlgorithm.HS512)  //使用HS512算法和密钥进行签名
@@ -62,22 +58,23 @@ public class JwtUtils {
 
     /*
      * 生成RefreshToken（只包含用户ID和用户名）
-     * @param userDetails
+     * @param user
      * @return java.lang.String
      * @author admin
      * @date 2025/04/17 21:24
      */
-    public String createRefreshToken(UserDetails userDetails) {
+    public String createRefreshToken(LoginUser loginUser) {
         String refreshToken = Jwts.builder()
-                .setSubject(userDetails.getUsername())  //设置JWT的主题为用户名的字符串
-                .claim("user_id", ((User) userDetails).getUserId())  //添加一个自定义声明user_id，值为用户的ID
+                .setSubject(loginUser.getUsername())  //设置JWT的主题为用户名的字符串
+                .claim("user_id", loginUser.getUserId())  //添加一个自定义声明user_id，值为用户的ID
+                .claim("login_user", JSON.toJSONString(loginUser))  //将login_user整个对象序列化后放入自定义声明，方便后面使用
                 .setExpiration(new Date(System.currentTimeMillis() + tokenProperties.getRefreshExpireTime() * 1000L))  //设置过期时间，基于当前时间加上配置的过期时长
                 .signWith(getRefreshKey(), SignatureAlgorithm.HS512)  //使用HS512算法和密钥进行签名
                 .compact();  //生成最终的JWT字符串
 
         // 存储到Redis，有效期比Token长一些，key为refresh:+用户id，value为refreshToken，有效期为配置的过期时长+60秒（为了防止早删除），时间单位为秒
         redisTemplate.opsForValue().set(
-                "refresh:" + ((User) userDetails).getUserId(),
+                "refresh:" + ((LoginUser) loginUser).getUserId(),
                 refreshToken,
                 tokenProperties.getRefreshExpireTime() + 60,
                 TimeUnit.SECONDS
@@ -156,9 +153,6 @@ public class JwtUtils {
      * @date 2025/04/17 21:25
      */
     public short validateAccessToken(String token) {
-        // 从token中解析出user_id
-        Claims claims = parseAccessToken(token);
-        Long userId = claims.get("user_id", Long.class);
 
         // 检查黑名单中是否存在当前token，如果存在，则无效，反之则有效
         if (redisTemplate.hasKey("blacklist:" + token)) {
@@ -209,35 +203,23 @@ public class JwtUtils {
     /*
      * 从JWT令牌中提取用户身份和权限信息，构建Spring Security认证对象（Authentication）
      * Claims 是 Token 的有效载荷（Payload）部分，用于携带身份、权限或其他自定义数据。可以将 Claims 理解为 JWT 中存储的“声明”或“信息片段”
-     * 返回SpringSecurity的认证信息对象，Spring Security后续通过SecurityContextHolder获取当前用户身份，用于：鉴权（如@PreAuthorize("hasRole('ADMIN')")），获取用户信息（如@AuthenticationPrincipal User user）
+     * 返回SpringSecurity的认证信息对象，Spring Security后续通过SecurityContextHolder获取当前用户身份，用于：鉴权（如@PreAuthorize("hasRole('ADMIN')")），获取用户信息（如@AuthenticationPrincipal LoginUser user）
      * @param token
      * @return org.springframework.security.core.Authentication
      * @author admin
      * @date 2025/04/17 21:26
      */
     public Authentication getAuthentication(String token) {
-        // 从token中解析出user_id和username
+        // 从token中解析出loginUserJson
         Claims claims = parseAccessToken(token);
-        Long userId = claims.get("user_id", Long.class);
-        String username = claims.getSubject();
-
-        // 从claims中提取权限信息
-        List<String> authorities = claims.get("authorities", List.class);
-        // 将权限列表转换为SpringSecurity可以认识的权限列表（GrantedAuthority列表）
-        List<GrantedAuthority> grantedAuthorities = authorities.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-
-        // 构建User对象（根据实际情况调整）
-        User user = new User();
-        user.setUserId(userId);
-        user.setUsername(username);
-        user.setRoles(authorities); // 假设roles字段存储权限列表
+        // 将loginUserJson解析为LoginUser对象
+        String loginUserJson = claims.get("login_user", String.class);
+        LoginUser loginUser = JSON.parseObject(loginUserJson, LoginUser.class);
 
         return new UsernamePasswordAuthenticationToken(
-                user,
+                loginUser,
                 null, // 凭证置空
-                grantedAuthorities
+                loginUser.getAuthorities()
         );
     }
 

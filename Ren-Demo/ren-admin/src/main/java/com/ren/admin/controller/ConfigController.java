@@ -2,6 +2,7 @@ package com.ren.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ren.common.controller.BaseController;
+import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.User;
 import com.ren.common.domain.page.TableDataInfo;
@@ -44,7 +45,7 @@ public class ConfigController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/add")
-    public AjaxResultDTO addConfig(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Config addConfig) {
+    public AjaxResultDTO addConfig(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Config addConfig) {
         configService.addConfig(addConfig,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
@@ -58,7 +59,7 @@ public class ConfigController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/modify")
-    public AjaxResultDTO modifyConfig(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Config modifyConfig) {
+    public AjaxResultDTO modifyConfig(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Config modifyConfig) {
         configService.modifyConfig(modifyConfig,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
@@ -72,7 +73,7 @@ public class ConfigController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")
-    public AjaxResultDTO configDelete(@AuthenticationPrincipal User loginUser, long configId) {
+    public AjaxResultDTO configDelete(@AuthenticationPrincipal LoginUser loginUser, long configId) {
         configService.removeConfig(configId);
         return AjaxResultDTO.success();
     }

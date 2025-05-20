@@ -2,12 +2,16 @@ package com.ren.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ren.common.controller.BaseController;
+import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.User;
+import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.page.TableDataInfo;
+import com.ren.common.interfaces.OperLogAnn;
 import com.ren.common.interfaces.Pageable;
 import com.ren.system.entity.Notice;
 import com.ren.system.service.NoticeService;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +34,7 @@ public class NoticeController extends BaseController {
      */
     @GetMapping("/list/page")
     @Pageable  //注意，如果要开启字典类型，请添加该注解
+    @OperLogAnn(title = "公告管理", businessType = BusinessType.OTHER)
     public TableDataInfo listNoticeByPage(@RequestParam Map<String,Object> paramMap) {
         IPage<Notice> noticeList = noticeService.listNoticeByPage(paramMap);
         return getDataTable(noticeList);
@@ -44,7 +49,7 @@ public class NoticeController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/add")
-    public AjaxResultDTO addNotice(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Notice addNotice) {
+    public AjaxResultDTO addNotice(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Notice addNotice) {
         noticeService.addNotice(addNotice,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
@@ -58,7 +63,7 @@ public class NoticeController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/modify")
-    public AjaxResultDTO modifyNotice(@AuthenticationPrincipal User loginUser, @RequestBody(required = false) Notice modifyNotice) {
+    public AjaxResultDTO modifyNotice(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Notice modifyNotice) {
         noticeService.modifyNotice(modifyNotice,loginUser.getUsername());
         return AjaxResultDTO.success();
     }
@@ -72,7 +77,7 @@ public class NoticeController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")
-    public AjaxResultDTO noticeDelete(@AuthenticationPrincipal User loginUser, long noticeId) {
+    public AjaxResultDTO noticeDelete(@AuthenticationPrincipal LoginUser loginUser, long noticeId) {
         noticeService.removeNotice(noticeId);
         return AjaxResultDTO.success();
     }
