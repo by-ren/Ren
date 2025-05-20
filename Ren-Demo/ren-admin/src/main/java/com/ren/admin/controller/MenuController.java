@@ -7,7 +7,9 @@ import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.Menu;
 import com.ren.common.domain.entity.User;
+import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.vo.TreeSelectVO;
+import com.ren.common.interfaces.OperLogAnn;
 import com.ren.common.utils.TreeUtils;
 import com.ren.system.entity.RoleMenu;
 import com.ren.system.service.MenuService;
@@ -104,6 +106,7 @@ public class MenuController {
      * @date 2025/05/09 17:01
      */
     @PostMapping("/add")
+    @OperLogAnn(title = "菜单模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addMenu(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Menu addMenu) {
         menuService.addMenu(addMenu,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -118,6 +121,7 @@ public class MenuController {
      * @date 2025/05/09 17:01
      */
     @PostMapping("/modify")
+    @OperLogAnn(title = "菜单模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyMenu(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Menu modifyMenu) {
         menuService.modifyMenuById(modifyMenu,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -132,6 +136,7 @@ public class MenuController {
      * @date 2025/05/09 17:01
      */
     @DeleteMapping("/delete")
+    @OperLogAnn(title = "菜单模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO menuDelete(@AuthenticationPrincipal LoginUser loginUser, long menuId) {
         //查询是否有子级菜单
         Map<String,Object> paramMap = new HashMap<>();

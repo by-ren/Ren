@@ -34,7 +34,6 @@ public class NoticeController extends BaseController {
      */
     @GetMapping("/list/page")
     @Pageable  //注意，如果要开启字典类型，请添加该注解
-    @OperLogAnn(title = "公告管理", businessType = BusinessType.OTHER)
     public TableDataInfo listNoticeByPage(@RequestParam Map<String,Object> paramMap) {
         IPage<Notice> noticeList = noticeService.listNoticeByPage(paramMap);
         return getDataTable(noticeList);
@@ -49,6 +48,7 @@ public class NoticeController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/add")
+    @OperLogAnn(title = "通知公告模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addNotice(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Notice addNotice) {
         noticeService.addNotice(addNotice,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -63,6 +63,7 @@ public class NoticeController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/modify")
+    @OperLogAnn(title = "通知公告模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyNotice(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Notice modifyNotice) {
         noticeService.modifyNotice(modifyNotice,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -77,6 +78,7 @@ public class NoticeController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")
+    @OperLogAnn(title = "通知公告模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO noticeDelete(@AuthenticationPrincipal LoginUser loginUser, long noticeId) {
         noticeService.removeNotice(noticeId);
         return AjaxResultDTO.success();

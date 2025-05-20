@@ -7,7 +7,9 @@ import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.Role;
 import com.ren.common.domain.entity.User;
+import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.page.TableDataInfo;
+import com.ren.common.interfaces.OperLogAnn;
 import com.ren.common.interfaces.Pageable;
 import com.ren.system.service.RoleService;
 import com.ren.system.service.UserService;
@@ -64,6 +66,7 @@ public class RoleController extends BaseController {
      * @date 2025/05/08 15:01
      */
     @PostMapping("/add")
+    @OperLogAnn(title = "角色模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addRole(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Role addRole) {
         roleService.addRole(addRole,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -78,6 +81,7 @@ public class RoleController extends BaseController {
      * @date 2025/05/08 15:32
      */
     @PostMapping("/modify")
+    @OperLogAnn(title = "角色模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyRole(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Role modifyRole) {
         roleService.modifyRoleById(modifyRole,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -92,6 +96,7 @@ public class RoleController extends BaseController {
      * @date 2025/05/08 15:32
      */
     @DeleteMapping("/delete")
+    @OperLogAnn(title = "角色模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO roleDelete(@AuthenticationPrincipal LoginUser loginUser, long roleId) {
         //查询当前角色下是否有用户还在使用
         List<User> userList = userService.listUserByRoleId(roleId);

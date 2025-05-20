@@ -3,7 +3,6 @@ package com.ren.admin.aop;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.utils.FastJSON2Utils;
 import com.ren.common.utils.ip.IpUtils;
-import com.ren.system.service.OperLogService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -11,18 +10,15 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-@Aspect  // 声明为切面
+// 该切面用于给访问接口添加操作日志
+@Aspect
 @Component
 @Slf4j
 public class OperLogAspect {
-
-	@Autowired
-	private OperLogService operLogService;
 
 	/*
 	 * 匹配所有Controller的public方法

@@ -5,7 +5,9 @@ import com.ren.common.controller.BaseController;
 import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.User;
+import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.page.TableDataInfo;
+import com.ren.common.interfaces.OperLogAnn;
 import com.ren.common.interfaces.Pageable;
 import com.ren.system.entity.DictData;
 import com.ren.system.service.DictDataService;
@@ -45,6 +47,7 @@ public class DictDataController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/add")
+    @OperLogAnn(title = "字典模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addDictData(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) DictData addDictData) {
         dictDataService.addDictData(addDictData,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -59,6 +62,7 @@ public class DictDataController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/modify")
+    @OperLogAnn(title = "字典模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyDictData(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) DictData modifyDictData) {
         dictDataService.modifyDictData(modifyDictData,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -73,6 +77,7 @@ public class DictDataController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")
+    @OperLogAnn(title = "字典模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO dictDataDelete(@AuthenticationPrincipal LoginUser loginUser, long dictDataId) {
         dictDataService.removeDictData(dictDataId);
         return AjaxResultDTO.success();
