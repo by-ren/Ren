@@ -5,7 +5,9 @@ import com.ren.common.controller.BaseController;
 import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.User;
+import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.page.TableDataInfo;
+import com.ren.common.interfaces.OperLogAnn;
 import com.ren.common.interfaces.Pageable;
 import com.ren.common.domain.entity.OperLog;
 import com.ren.system.service.OperLogService;
@@ -45,6 +47,7 @@ public class OperLogController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")
+    @OperLogAnn(title = "日志模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO operLogDelete(@AuthenticationPrincipal LoginUser loginUser, long operLogId) {
         operLogService.removeOperLog(operLogId);
         return AjaxResultDTO.success();

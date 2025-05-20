@@ -5,7 +5,9 @@ import com.ren.common.controller.BaseController;
 import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.User;
+import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.page.TableDataInfo;
+import com.ren.common.interfaces.OperLogAnn;
 import com.ren.common.interfaces.Pageable;
 import com.ren.system.entity.Config;
 import com.ren.system.service.ConfigService;
@@ -45,6 +47,7 @@ public class ConfigController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/add")
+    @OperLogAnn(title = "配置模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addConfig(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Config addConfig) {
         configService.addConfig(addConfig,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -59,6 +62,7 @@ public class ConfigController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/modify")
+    @OperLogAnn(title = "配置模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyConfig(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Config modifyConfig) {
         configService.modifyConfig(modifyConfig,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -73,6 +77,7 @@ public class ConfigController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")
+    @OperLogAnn(title = "配置模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO configDelete(@AuthenticationPrincipal LoginUser loginUser, long configId) {
         configService.removeConfig(configId);
         return AjaxResultDTO.success();

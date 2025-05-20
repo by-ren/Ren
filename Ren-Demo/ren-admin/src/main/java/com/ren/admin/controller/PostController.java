@@ -5,7 +5,9 @@ import com.ren.common.controller.BaseController;
 import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.User;
+import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.page.TableDataInfo;
+import com.ren.common.interfaces.OperLogAnn;
 import com.ren.common.interfaces.Pageable;
 import com.ren.system.entity.Post;
 import com.ren.system.service.PostService;
@@ -45,6 +47,7 @@ public class PostController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/add")
+    @OperLogAnn(title = "岗位模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addPost(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Post addPost) {
         postService.addPost(addPost,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -59,6 +62,7 @@ public class PostController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @PostMapping("/modify")
+    @OperLogAnn(title = "岗位模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyPost(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Post modifyPost) {
         postService.modifyPost(modifyPost,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -73,6 +77,7 @@ public class PostController extends BaseController {
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")
+    @OperLogAnn(title = "岗位模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO postDelete(@AuthenticationPrincipal LoginUser loginUser, long postId) {
         postService.removePost(postId);
         return AjaxResultDTO.success();

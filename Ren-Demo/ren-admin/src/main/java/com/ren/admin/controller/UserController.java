@@ -10,9 +10,11 @@ import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.Menu;
 import com.ren.common.domain.entity.Role;
 import com.ren.common.domain.entity.User;
+import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.page.TableDataInfo;
 import com.ren.common.domain.vo.DynamicRouteVO;
 import com.ren.common.domain.vo.MenuVO;
+import com.ren.common.interfaces.OperLogAnn;
 import com.ren.common.interfaces.Pageable;
 import com.ren.common.utils.TreeUtils;
 import com.ren.system.entity.UserRole;
@@ -160,6 +162,7 @@ public class UserController extends BaseController {
      * @date 2025/05/04 16:26
      */
     @PostMapping("/add")
+    @OperLogAnn(title = "用户模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addUser(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) User addUser) {
         userService.addUser(addUser,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -174,6 +177,7 @@ public class UserController extends BaseController {
      * @date 2025/05/04 16:08
      */
     @PostMapping("/modify")
+    @OperLogAnn(title = "用户模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyUser(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) User modifyUser) {
         userService.modifyUser(modifyUser,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -188,6 +192,7 @@ public class UserController extends BaseController {
      * @date 2025/05/04 15:27
      */
     @DeleteMapping("/delete")
+    @OperLogAnn(title = "用户模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO deleteUser(@AuthenticationPrincipal LoginUser loginUser, long userId) {
         userService.modifyUserIsDelById(userId, AppConstants.COMMON_BYTE_YES,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -202,6 +207,7 @@ public class UserController extends BaseController {
      * @date 2025/05/04 14:33
      */
     @PostMapping("/resetPassword")
+    @OperLogAnn(title = "用户模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO resetPassword(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Map<String,Object> paramMap) {
         userService.resetPassword(Convert.toLong(paramMap.get("userId")),Convert.toStr(paramMap.get("password")),loginUser.getUsername());
         return AjaxResultDTO.success();

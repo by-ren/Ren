@@ -9,6 +9,8 @@ import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.Dept;
 import com.ren.common.domain.entity.User;
+import com.ren.common.domain.enums.BusinessType;
+import com.ren.common.interfaces.OperLogAnn;
 import com.ren.common.utils.TreeUtils;
 import com.ren.system.entity.RoleDept;
 import com.ren.system.service.DeptService;
@@ -120,6 +122,7 @@ public class DeptController {
      * @date 2025/05/09 17:01
      */
     @PostMapping("/add")
+    @OperLogAnn(title = "部门模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addDept(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Dept addDept) {
         deptService.addDept(addDept,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -134,6 +137,7 @@ public class DeptController {
      * @date 2025/05/09 17:01
      */
     @PostMapping("/modify")
+    @OperLogAnn(title = "部门模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyDept(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Dept modifyDept) {
         deptService.modifyDeptById(modifyDept,loginUser.getUsername());
         return AjaxResultDTO.success();
@@ -148,6 +152,7 @@ public class DeptController {
      * @date 2025/05/09 17:01
      */
     @DeleteMapping("/delete")
+    @OperLogAnn(title = "部门模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO deptDelete(@AuthenticationPrincipal LoginUser loginUser, long deptId) {
         //查询是否有子级部门
         Map<String,Object> paramMap = new HashMap<>();
