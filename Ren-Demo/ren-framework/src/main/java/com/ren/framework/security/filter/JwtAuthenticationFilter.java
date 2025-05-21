@@ -1,6 +1,7 @@
 package com.ren.framework.security.filter;
 
 import com.ren.common.domain.bo.LoginUser;
+import com.ren.framework.properties.TokenProperties;
 import com.ren.framework.security.utils.JwtUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +29,8 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;
-
+    @Autowired
+    private TokenProperties tokenProperties;
     /*
      * 过滤器，在请求到达Controller之前执行，用于验证Token是否有效，并设置认证信息到SecurityContext中
      * @param request
@@ -66,18 +69,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 throw new BadCredentialsException("Token 无效");
             }
 
-            // 从accessToken中解析出Authentication
-            // Authentication：SpringSecurity的认证信息对象
-            // 将认证信息存储到线程绑定的SecurityContext中
-            // Spring Security后续通过SecurityContextHolder获取当前用户身份，用于：鉴权（如@PreAuthorize("hasRole('ADMIN')")），获取用户信息（如@AuthenticationPrincipal LoginUser loginUser）
-            Authentication authentication = jwtUtils.getAuthentication(accessToken);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            // 检查是否需要刷新Token
-            if (jwtUtils.shouldRefreshToken(accessToken)) {
-                //生成新的AccessToken并设置到响应头中
-                String newToken = jwtUtils.createAccessToken((LoginUser) authentication.getPrincipal());
-                response.setHeader("X-Access-Token", "Bearer " + newToken);
+            if (jwtUtils.shouldRefreshToken(accessToken)) { // accessToken需要续期,重新生成Authentication对象，并存储
+                //获取新的AccessToken
+                String newAccessToken = jwtUtils.saveNewAuthenticationAndReturnAccessToken((byte)1,accessToken);
+                response.setHeader("X-Access-Token", "Bearer " + newAccessToken);
+            }else{ // accessToken无需续期,存储原Authentication，用于登陆验证
+                Authentication authentication = jwtUtils.getAuthenticationByAccessToken(accessToken);
+                //从原Token中解析出原LoginUser
+                LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+                loginUser.setToken(accessToken);
+                //重新创建一个新的Authentication 对象（保留原始凭证和权限），存入SpringSecurity
+                Authentication newAuth = new UsernamePasswordAuthenticationToken(
+                        loginUser,               // 新的 Principal
+                        authentication.getCredentials(), // 原始凭证（如密码）
+                        authentication.getAuthorities() // 原始权限
+                );
+                SecurityContextHolder.getContext().setAuthentication(newAuth);
             }
             //通过验证，并且token续期成功，放行请求
             chain.doFilter(request, response);

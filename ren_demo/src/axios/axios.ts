@@ -52,7 +52,23 @@ export const setupInterceptors = () => {
     //请求成功
     async (response: AxiosResponse) => {
       // 1. 获取响应数据中的业务状态码
-      const businessCode = response.data.code; 
+      let businessCode = response.data.code;
+
+      //浏览器自动把响应头给转成小写了
+      const token = response.headers['x-access-token'];
+      if(token != undefined && token != null && token != ""){
+        // 判断是否存在 "Bearer " 前缀（严格匹配大小写和空格）
+        if (token.startsWith("Bearer ")) {
+          const pureToken = token.split(" ")[1]; // 提取纯 Token
+          //console.log("有效 Token:", pureToken);
+          // 将token存储到Pinia
+          authStore.accessToken = pureToken;
+        } else {
+          //console.error("Token 格式错误：缺少 Bearer 前缀");
+          // accessToken获取失败，直接使用refreshToken刷新
+          businessCode = 401;
+        }
+      }
 
       // 2. 如果是401业务状态码（需刷新Token）
       if (businessCode === 401) {

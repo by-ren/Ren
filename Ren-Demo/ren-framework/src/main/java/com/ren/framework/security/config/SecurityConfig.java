@@ -105,6 +105,9 @@ public class SecurityConfig {
         config.setAllowedHeaders(Arrays.asList("*")); // 允许所有请求头
         config.setAllowCredentials(false); // 如果前端需要带凭证（如 cookies），改为 true
 
+        // 暴露自定义响应头（如 X-Access-Token）,如果后面请求中用到了自定义相应头，那么这里一定要设置，不然即使设置了跨域，前端还是获取不到响应头
+        config.addExposedHeader("X-Access-Token");
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
