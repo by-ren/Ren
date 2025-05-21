@@ -257,10 +257,8 @@ public class LoginUser implements UserDetails
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.user != null && this.user.getRoleList() != null && !this.user.getRoleList().isEmpty()){
-            return this.user.getRoleList().stream()
-                    .map((role) -> new SimpleGrantedAuthority(role.getRoleKey())) // 将字符串角色转换为权限对象
-                    .collect(Collectors.toList());
+        if(this.permissions != null && !this.permissions.isEmpty()){
+            return this.permissions.stream().map((permission) -> new SimpleGrantedAuthority(permission)).toList();
         }else{
             return null;
         }

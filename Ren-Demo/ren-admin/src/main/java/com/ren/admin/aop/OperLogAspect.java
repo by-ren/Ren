@@ -1,5 +1,6 @@
 package com.ren.admin.aop;
 
+import cn.hutool.core.util.ObjUtil;
 import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.utils.FastJSON2Utils;
 import com.ren.common.utils.ip.IpUtils;
@@ -70,16 +71,8 @@ public class OperLogAspect {
 		try {
 			// 执行目标方法
 			result = joinPoint.proceed();
-			//判断result是否是AjaxResultDTO类型，如果是，则需要判断其中请求状态码
-			if(result instanceof AjaxResultDTO ajaxResultDTO){
-				if(ajaxResultDTO.isSuccess()){
-					isSuccess = true;
-				}else {
-					log.info(">>>> 请求失败，错误信息: {}",ajaxResultDTO.get(AjaxResultDTO.MSG_TAG));
-				}
-			}else {
-				throw new RuntimeException("未获取到正确的请求结果类型");
-			}
+			// 如果请求失败会直接报错
+			isSuccess = true;
 		}catch (Exception e){
 			log.info(">>>> 请求失败，错误信息: {}", e.getMessage());
 		}
