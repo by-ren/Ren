@@ -23,7 +23,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity // 替换旧版@EnableGlobalMethodSecurity
+@EnableMethodSecurity // 替换旧版@EnableGlobalMethodSecurity，表示允许使用注解控制权限
 public class SecurityConfig {
 
     @Autowired

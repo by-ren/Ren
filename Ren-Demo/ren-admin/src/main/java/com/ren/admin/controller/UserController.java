@@ -74,7 +74,7 @@ public class UserController extends BaseController {
             //不是超级管理员获取相应菜单
             menuList = menuService.listMenuByRoleIds(roleIds);
         }
-        ajax.put("permissions", menuList.stream().filter(menu -> menu.getMenuType().equals(AppConstants.MENU_TYPE_BUTTON)).map(Menu::getPerms).toArray(String[]::new));
+        ajax.put("permissions", menuList.stream().filter(menu -> !menu.getMenuType().equals(AppConstants.MENU_TYPE_DIR)).map(Menu::getPerms).toArray(String[]::new));
         List<Menu> routerMenuList = menuList.stream().filter(menu -> menu.getMenuType().equals(AppConstants.MENU_TYPE_DIR) || menu.getMenuType().equals(AppConstants.MENU_TYPE_MENU)).toList();
         List<Menu> routerMenuTree = TreeUtils.formatTree(routerMenuList, menu -> Convert.toInt(BeanUtil.getProperty(menu, "parentId")) == 0,"menuId",null,null,null);
         //获取用户所能看到的菜单（包含目录），格式化后返回（前端用于侧边栏目录显示）

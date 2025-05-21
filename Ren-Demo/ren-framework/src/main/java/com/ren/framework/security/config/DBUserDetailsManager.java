@@ -1,8 +1,11 @@
 package com.ren.framework.security.config;
 
+import com.ren.common.constant.AppConstants;
 import com.ren.common.domain.bo.LoginUser;
+import com.ren.common.domain.entity.Menu;
 import com.ren.common.domain.entity.Role;
 import com.ren.common.domain.entity.User;
+import com.ren.system.mapper.MenuMapper;
 import com.ren.system.mapper.RoleMapper;
 import com.ren.system.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +29,8 @@ import java.util.stream.Collectors;
 @Component
 public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPasswordService {
 
+    @Autowired
+    private MenuMapper menuMapper;
     @Autowired
     private UserMapper userMapper;
     @Autowired
@@ -52,8 +58,19 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
             throw new UsernameNotFoundException(username);
         } else {
             List<Role> roleList = roleMapper.listRoleByUserId(user.getUserId());
-            user.setRoleList(roleList);
-			return new LoginUser(user.getUserId(), user, roleList.stream().map(Role::getRoleKey).collect(Collectors.toSet()));
+            Long[] roleIds = roleList.stream().map(Role::getRoleId).toArray(Long[]::new);
+            //是否Admin
+            boolean isAdmin = roleList.stream().anyMatch(role -> role.getRoleKey().equals(AppConstants.ROLE_SUPER_KEY));
+            //获取用所拥有权限，并返回（前端用于判断按钮权限）
+            List<Menu> menuList = new ArrayList<>();
+            if(isAdmin){
+                //超级管理员获取所有菜单
+                menuList = menuMapper.listMenuByParam(null);
+            }else if(roleIds.length > 0){
+                //不是超级管理员获取相应菜单
+                menuList = menuMapper.listMenuByRoleIds(roleIds);
+            }
+			return new LoginUser(user.getUserId(), user, menuList.stream().filter(menu -> !menu.getMenuType().equals(AppConstants.MENU_TYPE_DIR)).map(Menu::getPerms).collect(Collectors.toSet()));
         }
     }
 
