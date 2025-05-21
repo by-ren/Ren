@@ -5,12 +5,14 @@ import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
 import com.ren.common.domain.entity.Logininfor;
 import com.ren.common.domain.entity.OperLog;
+import com.ren.common.domain.entity.User;
 import com.ren.common.utils.ServletUtils;
 import com.ren.common.utils.SpringUtils;
 import com.ren.common.utils.ip.AddressUtils;
 import com.ren.common.utils.ip.IpUtils;
 import com.ren.system.service.LogininforService;
 import com.ren.system.service.OperLogService;
+import com.ren.system.service.UserService;
 
 import java.util.TimerTask;
 
@@ -51,9 +53,14 @@ public class AsyncFactory
                 logininfor.setIpaddr(ip);
                 logininfor.setBrowser(browser);
                 logininfor.setOs(os);
-                logininfor.setLoginLocation(AddressUtils.getRealAddressByIP(logininfor.getIpaddr()));
+                logininfor.setLoginLocation(AddressUtils.getRealAddressByIP(ip));
                 logininfor.setLoginTime(DateUtil.currentSeconds());
                 SpringUtils.getBean(LogininforService.class).addLogininfor(logininfor);
+
+                //更新最后登录时间
+                UserService userService = SpringUtils.getBean(UserService.class);
+                User loginIpUser = userService.getUserByUsername(username);
+                userService.modifyUserByLogin(loginIpUser.getUserId(),ip,DateUtil.currentSeconds(),username);
             }
         };
     }

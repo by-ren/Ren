@@ -1,5 +1,8 @@
 package com.ren.framework.security.utils;
 
+import cn.hutool.core.util.ByteUtil;
+import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.ren.common.domain.bo.LoginUser;
 import com.ren.framework.properties.TokenProperties;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -41,17 +45,19 @@ public class JwtUtils {
     /*
      * 生成AccessToken
      * @param loginUser
+     * @param expireTime 过期时间，毫秒时间戳
      * @return java.lang.String
      * @author admin
      * @date 2025/04/17 21:24
      */
-    public String createAccessToken(LoginUser loginUser) {
+    public String createAccessToken(LoginUser loginUser,Long expireTime) {
+        expireTime = expireTime == null ? (System.currentTimeMillis() + tokenProperties.getExpireTime() * 1000L) : expireTime;
         return Jwts.builder()
                 .setSubject(loginUser.getUsername())  //设置JWT的主题为用户名的字符串
                 .claim("user_id", loginUser.getUserId())  //添加一个自定义声明user_id，值为用户的ID
                 .claim("login_user", JSON.toJSONString(loginUser))  //将login_user整个对象序列化后放入自定义声明，方便后面使用
                 .setIssuedAt(new Date())  //设置JWT的签发时间为当前时间
-                .setExpiration(new Date(System.currentTimeMillis() + tokenProperties.getExpireTime() * 1000L))  //设置过期时间，基于当前时间加上配置的过期时长
+                .setExpiration(new Date(expireTime))  //设置过期时间，基于当前时间加上配置的过期时长
                 .signWith(getAccessKey(), SignatureAlgorithm.HS512)  //使用HS512算法和密钥进行签名
                 .compact();  //生成最终的JWT字符串
     }
@@ -63,12 +69,13 @@ public class JwtUtils {
      * @author admin
      * @date 2025/04/17 21:24
      */
-    public String createRefreshToken(LoginUser loginUser) {
+    public String createRefreshToken(LoginUser loginUser,Long expireTime) {
+        expireTime = expireTime == null ? (System.currentTimeMillis() + tokenProperties.getRefreshExpireTime() * 1000L) : expireTime;
         String refreshToken = Jwts.builder()
                 .setSubject(loginUser.getUsername())  //设置JWT的主题为用户名的字符串
                 .claim("user_id", loginUser.getUserId())  //添加一个自定义声明user_id，值为用户的ID
                 .claim("login_user", JSON.toJSONString(loginUser))  //将login_user整个对象序列化后放入自定义声明，方便后面使用
-                .setExpiration(new Date(System.currentTimeMillis() + tokenProperties.getRefreshExpireTime() * 1000L))  //设置过期时间，基于当前时间加上配置的过期时长
+                .setExpiration(new Date(expireTime))  //设置过期时间，基于当前时间加上配置的过期时长
                 .signWith(getRefreshKey(), SignatureAlgorithm.HS512)  //使用HS512算法和密钥进行签名
                 .compact();  //生成最终的JWT字符串
 
@@ -209,9 +216,30 @@ public class JwtUtils {
      * @author admin
      * @date 2025/04/17 21:26
      */
-    public Authentication getAuthentication(String token) {
+    public Authentication getAuthenticationByAccessToken(String token) {
         // 从token中解析出loginUserJson
         Claims claims = parseAccessToken(token);
+        // 将loginUserJson解析为LoginUser对象
+        String loginUserJson = claims.get("login_user", String.class);
+        LoginUser loginUser = JSON.parseObject(loginUserJson, LoginUser.class);
+
+        return new UsernamePasswordAuthenticationToken(
+                loginUser,
+                null, // 凭证置空
+                loginUser.getAuthorities()
+        );
+    }
+
+    /*
+     * 从 RefreshToken 解析出Authentication
+     * @param token
+     * @return org.springframework.security.core.Authentication
+     * @author admin
+     * @date 2025/05/21 09:42
+     */
+    public Authentication getAuthenticationByRefreshToken(String token) {
+        // 从token中解析出loginUserJson
+        Claims claims = parseRefreshToken(token);
         // 将loginUserJson解析为LoginUser对象
         String loginUserJson = claims.get("login_user", String.class);
         LoginUser loginUser = JSON.parseObject(loginUserJson, LoginUser.class);
@@ -234,6 +262,52 @@ public class JwtUtils {
         redisTemplate.delete("refresh:" + userId);
     }
 
+    /*
+     * 从传入的token中解析出相应内容，封装新的 Authentication 对象存入SpringSecurity，并返回新的 AccessToken
+     * @param tokenType token类型：1-AccessToken，2-RefreshToken
+     * @param token
+     * @return java.lang.String
+     * @author admin
+     * @date 2025/05/21 09:59
+     */
+    public String saveNewAuthenticationAndReturnAccessToken(byte tokenType,String token) {
+        Authentication authentication = null;
+        if(tokenType == 1){
+            // 从token中解析出Authentication
+            // Authentication：SpringSecurity的认证信息对象
+            // 将认证信息存储到线程绑定的SecurityContext中
+            // Spring Security后续通过SecurityContextHolder获取当前用户身份，用于：鉴权（如@PreAuthorize("hasRole('ADMIN')")），获取用户信息（如@AuthenticationPrincipal LoginUser loginUser）
+            authentication = getAuthenticationByAccessToken(token);
+        }else if(tokenType == 2){
+            authentication = getAuthenticationByRefreshToken(token);
+        }else{
+            throw new RuntimeException("参数错误");
+        }
+
+        //从原Token中解析出原LoginUser
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+
+        //重新设置过期时间
+        Long accessTokenExpireTime = System.currentTimeMillis() + tokenProperties.getExpireTime() * 1000L;
+        loginUser.setExpireTime(accessTokenExpireTime / 1000);
+
+        // 生成新的双Token
+        String newAccessToken = createAccessToken(loginUser,accessTokenExpireTime);
+        //refreshToken不重新生成，只要refreshToken过期，强制重新登陆一次
+        //String newRefreshToken = jwtUtils.createRefreshToken(userDetails);
+
+        loginUser.setToken(newAccessToken);
+        //重新创建一个新的Authentication 对象（保留原始凭证和权限），存入SpringSecurity
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(
+                loginUser,               // 新的 Principal
+                authentication.getCredentials(), // 原始凭证（如密码）
+                authentication.getAuthorities() // 原始权限
+        );
+        //将新的Authentication存入SpringSecurity
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+        return newAccessToken;
+    }
 
     public static void main(String[] args) {
         // 生成 64 字节（512 位）的 HS512 密钥

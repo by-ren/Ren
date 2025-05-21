@@ -1,6 +1,6 @@
 token:
   secret: spyVAlmCKL7NMJW2frntYVJUyQeyFzVtdlDHEYSIqWHp4H/wKpqVz2SNPjaE2WS7XhMcY37/vVc0IGYvebKN+w==  #accessToken加密密钥
   refresh-secret: MTCQ+jVSkyboQedcU5rWAnztQMOLPWAtLwZXmhVkfqnvQMQw69NDfNuP4Awx628Z4ET/idHdSnkTyMdJxD7Auw==   #refreshToken加密密钥
-  expire-time: 1800      # accessToken有效时长30分钟
+  expire-time: 310      # accessToken有效时长30分钟
   refresh-expire-time: 28800  # refreshToken有效时长8小时
   refresh-time: 300       # accessToken剩余5分钟时触发刷新
