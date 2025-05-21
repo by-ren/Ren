@@ -55,6 +55,7 @@ public class UserController extends BaseController {
     public AjaxResultDTO getUserInfo(@AuthenticationPrincipal LoginUser loginUser) {
         //获取用户信息，并返回
         AjaxResultDTO ajax = AjaxResultDTO.success();
+        loginUser.getUser().setPassword(null);
         ajax.put("user", loginUser);
         List<Role> roleList = roleService.listRoleByUserId(loginUser.getUserId());
         //是否Admin

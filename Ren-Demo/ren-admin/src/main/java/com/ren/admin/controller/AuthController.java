@@ -91,6 +91,7 @@ public class AuthController {
 
             loginUser.setLoginTime(DateUtil.currentSeconds());
             loginUser.setExpireTime(accessTokenExpireTime / 1000);
+            loginUser.setRefreshTokenExpireTime(refreshTokenExpireTime / 1000);
             loginUser.setIpaddr(IpUtils.getIpAddr());
             loginUser.setLoginLocation(AddressUtils.getRealAddressByIP(IpUtils.getIpAddr()));
             loginUser.setBrowser(browser);
@@ -99,8 +100,6 @@ public class AuthController {
             // 生成双Token
             String accessToken = jwtUtils.createAccessToken(loginUser,accessTokenExpireTime);
             String refreshToken = jwtUtils.createRefreshToken(loginUser,refreshTokenExpireTime);
-
-            loginUser.setToken(accessToken);
 
             //重新创建一个新的Authentication 对象（保留原始凭证和权限），存入SpringSecurity
             Authentication newAuth = new UsernamePasswordAuthenticationToken(

@@ -5,6 +5,7 @@ import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.ren.common.domain.bo.LoginUser;
+import com.ren.common.utils.FastJSON2Utils;
 import com.ren.framework.properties.TokenProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -52,10 +53,13 @@ public class JwtUtils {
      */
     public String createAccessToken(LoginUser loginUser,Long expireTime) {
         expireTime = expireTime == null ? (System.currentTimeMillis() + tokenProperties.getExpireTime() * 1000L) : expireTime;
+        String login_user = FastJSON2Utils.toString(loginUser);
+        //过滤敏感字段
+        //String login_user = FastJSON2Utils.filterSensitiveFields(FastJSON2Utils.EXCLUDE_PROPERTIES,loginUser);
         return Jwts.builder()
                 .setSubject(loginUser.getUsername())  //设置JWT的主题为用户名的字符串
                 .claim("user_id", loginUser.getUserId())  //添加一个自定义声明user_id，值为用户的ID
-                .claim("login_user", JSON.toJSONString(loginUser))  //将login_user整个对象序列化后放入自定义声明，方便后面使用
+                .claim("login_user", login_user)  //将login_user整个对象序列化后放入自定义声明，方便后面使用
                 .setIssuedAt(new Date())  //设置JWT的签发时间为当前时间
                 .setExpiration(new Date(expireTime))  //设置过期时间，基于当前时间加上配置的过期时长
                 .signWith(getAccessKey(), SignatureAlgorithm.HS512)  //使用HS512算法和密钥进行签名
@@ -71,10 +75,13 @@ public class JwtUtils {
      */
     public String createRefreshToken(LoginUser loginUser,Long expireTime) {
         expireTime = expireTime == null ? (System.currentTimeMillis() + tokenProperties.getRefreshExpireTime() * 1000L) : expireTime;
+        String login_user = FastJSON2Utils.toString(loginUser);
+        //过滤敏感字段
+        //String login_user = FastJSON2Utils.filterSensitiveFields(FastJSON2Utils.EXCLUDE_PROPERTIES,loginUser);
         String refreshToken = Jwts.builder()
                 .setSubject(loginUser.getUsername())  //设置JWT的主题为用户名的字符串
                 .claim("user_id", loginUser.getUserId())  //添加一个自定义声明user_id，值为用户的ID
-                .claim("login_user", JSON.toJSONString(loginUser))  //将login_user整个对象序列化后放入自定义声明，方便后面使用
+                .claim("login_user", login_user)  //将login_user整个对象序列化后放入自定义声明，方便后面使用
                 .setExpiration(new Date(expireTime))  //设置过期时间，基于当前时间加上配置的过期时长
                 .signWith(getRefreshKey(), SignatureAlgorithm.HS512)  //使用HS512算法和密钥进行签名
                 .compact();  //生成最终的JWT字符串
@@ -296,7 +303,6 @@ public class JwtUtils {
         //refreshToken不重新生成，只要refreshToken过期，强制重新登陆一次
         //String newRefreshToken = jwtUtils.createRefreshToken(userDetails);
 
-        loginUser.setToken(newAccessToken);
         //重新创建一个新的Authentication 对象（保留原始凭证和权限），存入SpringSecurity
         Authentication newAuth = new UsernamePasswordAuthenticationToken(
                 loginUser,               // 新的 Principal
