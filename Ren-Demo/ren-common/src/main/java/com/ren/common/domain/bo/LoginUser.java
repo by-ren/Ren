@@ -27,19 +27,19 @@ public class LoginUser implements UserDetails
     private Long userId;
 
     /**
-     * 用户唯一标识
+     * 过期时间
      */
-    private String token;
+    private Long expireTime;
+
+    /**
+     * 过期时间（refreshToken）
+     */
+    private Long refreshTokenExpireTime;
 
     /**
      * 登录时间
      */
     private Long loginTime;
-
-    /**
-     * 过期时间
-     */
-    private Long expireTime;
 
     /**
      * 登录IP地址
@@ -96,16 +96,6 @@ public class LoginUser implements UserDetails
     public void setUserId(Long userId)
     {
         this.userId = userId;
-    }
-
-    public String getToken()
-    {
-        return token;
-    }
-
-    public void setToken(String token)
-    {
-        this.token = token;
     }
 
     public Long getLoginTime()
@@ -186,6 +176,14 @@ public class LoginUser implements UserDetails
     public void setUser(User user)
     {
         this.user = user;
+    }
+
+    public Long getRefreshTokenExpireTime() {
+        return refreshTokenExpireTime;
+    }
+
+    public void setRefreshTokenExpireTime(Long refreshTokenExpireTime) {
+        this.refreshTokenExpireTime = refreshTokenExpireTime;
     }
 
     /*============================================以下为SpringSecurity相关字段===========================================*/

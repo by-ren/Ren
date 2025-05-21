@@ -52,7 +52,7 @@ public class OperLogAspect {
 		// 获取请求参数（过滤敏感字段之后的内容）
 		Object[] args = joinPoint.getArgs();
 		//过滤掉请求参数中的敏感字段
-		String params = FastJSON2Utils.filterSensitiveFields(new String[]{"password", "phone", "idCard"},args);
+		String params = FastJSON2Utils.filterSensitiveFields(FastJSON2Utils.EXCLUDE_PROPERTIES,args);
 		//添加请求进入的日志
 		log.info(">>>> 请求进入 - URL: {}, RequestMethod: {}, IP: {}, Class: {}, Method: {}, Param: {}",
 				request.getRequestURL(),

@@ -75,16 +75,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 response.setHeader("X-Access-Token", "Bearer " + newAccessToken);
             }else{ // accessToken无需续期,存储原Authentication，用于登陆验证
                 Authentication authentication = jwtUtils.getAuthenticationByAccessToken(accessToken);
-                //从原Token中解析出原LoginUser
-                LoginUser loginUser = (LoginUser) authentication.getPrincipal();
-                loginUser.setToken(accessToken);
-                //重新创建一个新的Authentication 对象（保留原始凭证和权限），存入SpringSecurity
-                Authentication newAuth = new UsernamePasswordAuthenticationToken(
-                        loginUser,               // 新的 Principal
-                        authentication.getCredentials(), // 原始凭证（如密码）
-                        authentication.getAuthorities() // 原始权限
-                );
-                SecurityContextHolder.getContext().setAuthentication(newAuth);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
             //通过验证，并且token续期成功，放行请求
             chain.doFilter(request, response);

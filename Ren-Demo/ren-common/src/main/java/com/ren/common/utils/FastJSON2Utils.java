@@ -42,6 +42,9 @@ public class FastJSON2Utils {
 	private static final Function<String, LocalTime> timeDeserializer = json -> LocalTime.parse(json, timeFormatter);
 	private static final Function<String, Date> __dateDeserializer = json -> Date.from(LocalDateTime.parse(json, dateTimeFormatter).atZone(ZoneId.systemDefault()).toInstant());
 
+	//排除敏感字段
+	public static final String[] EXCLUDE_PROPERTIES = { "password", "oldPassword", "newPassword", "confirmPassword" };
+
 	// FastJSON2 对象读取器提供者
 	private static final ObjectReaderProvider provider;
 
