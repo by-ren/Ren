@@ -1,8 +1,5 @@
 package com.ren.framework.security.utils;
 
-import cn.hutool.core.util.ByteUtil;
-import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.utils.FastJSON2Utils;
@@ -31,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 public class JwtUtils {
     @Autowired
     private TokenProperties tokenProperties;
+    //这里本来可以使用StringRedisTemplate，因为这里存储的时简单的字符串，但是为了项目统一，所以放弃，整个项目都使用配置后的RedisTemplate<String, Object>
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -88,7 +86,7 @@ public class JwtUtils {
 
         // 存储到Redis，有效期比Token长一些，key为refresh:+用户id，value为refreshToken，有效期为配置的过期时长+60秒（为了防止早删除），时间单位为秒
         redisTemplate.opsForValue().set(
-                "refresh:" + ((LoginUser) loginUser).getUserId(),
+                "refresh:" + loginUser.getUserId(),
                 refreshToken,
                 tokenProperties.getRefreshExpireTime() + 60,
                 TimeUnit.SECONDS

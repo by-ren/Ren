@@ -7,7 +7,6 @@ import cn.hutool.http.useragent.UserAgentUtil;
 import com.ren.common.constant.AppConstants;
 import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
-import com.ren.common.domain.entity.User;
 import com.ren.common.utils.ServletUtils;
 import com.ren.common.utils.ip.AddressUtils;
 import com.ren.common.utils.ip.IpUtils;
@@ -16,7 +15,6 @@ import com.ren.framework.manager.factory.AsyncFactory;
 import com.ren.framework.properties.TokenProperties;
 import com.ren.framework.security.config.AuthenticationContextHolder;
 import com.ren.framework.security.utils.JwtUtils;
-import com.ren.system.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +47,6 @@ public class AuthController {
     private RedisTemplate<String, Object> redisTemplate;  // 可存任意对象（需序列化）
     @Autowired
     private TokenProperties tokenProperties;
-    @Autowired
-    private UserService userService;
 
     /*
      * 自定义登录接口
@@ -163,7 +159,7 @@ public class AuthController {
         redisTemplate.opsForValue().set(
                 "blacklist:" + accessToken,
                 "logged_out",
-                tokenProperties.getExpireTime(),//黑名单时长内也使用accesstoken的有效时长
+                tokenProperties.getBlackListTime(),
                 TimeUnit.SECONDS);
 
         return AjaxResultDTO.success("退出成功");

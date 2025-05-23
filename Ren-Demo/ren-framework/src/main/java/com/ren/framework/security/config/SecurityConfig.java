@@ -125,7 +125,7 @@ public class SecurityConfig {
     }*/
 
     /*
-     * 配置密码编码器（多编码器模式，数据库密码一定要有前缀）
+     * 配置密码编码器（多编码器模式，数据库密码一定要有前缀）（底层默认使用BCryptPasswordEncoder密码管理器）
      * @return org.springframework.security.crypto.password.PasswordEncoder
      * @author admin
      * @date 2025/04/22 21:52

@@ -5,7 +5,8 @@ import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.exception.ServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * 安全服务工具类
@@ -91,7 +92,9 @@ public class SecurityUtils
      */
     public static String encryptPassword(String password)
     {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        //使用多密码管理器对密码进行加密（加密后会带有前缀）（默认使用BCryptPasswordEncoder密码管理器）
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         return passwordEncoder.encode(password);
     }
 
@@ -104,7 +107,9 @@ public class SecurityUtils
      */
     public static boolean matchesPassword(String rawPassword, String encodedPassword)
     {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        //使用多密码管理器对密码进行加密（加密后会带有前缀）（默认使用BCryptPasswordEncoder密码管理器）
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
