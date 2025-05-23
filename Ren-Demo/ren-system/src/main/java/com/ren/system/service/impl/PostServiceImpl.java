@@ -13,6 +13,7 @@ import com.ren.system.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -77,6 +78,22 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     }
 
     /*
+     * 岗位列表
+     * @param paramMap
+     * @return java.util.List<com.ren.system.entity.Post>
+     * @author admin
+     * @date 2025/05/23 14:30
+     */
+    @Override
+    public List<Post> listPostByParam(Map<String, Object> paramMap) {
+        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        }
+        List<Post> postList = postMapper.listPostByParam(paramMap);
+        return postList;
+    }
+
+    /*
      * 获取岗位详情
      * @param postId
      * @return com.ren.system.entity.Post
@@ -88,4 +105,5 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         Post post = postMapper.selectById(postId);
         return post;
     }
+
 }

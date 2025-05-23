@@ -88,4 +88,17 @@
         </where>
     </select>
 
+    <select id="listDictDataByDictType" resultMap="DictDataResult">
+        <include refid="selectDictDataVo"/>
+        where dict_type = #{dictType}
+        order by dict_sort asc
+    </select>
+
+    <select id="selectDictDataByParam" resultMap="DictDataResult">
+        <include refid="selectDictDataVo"/>
+        where dict_type = #{dictType} and is_default = #{isDefault}
+        order by dict_sort asc
+        limit 1
+    </select>
+
 </mapper>

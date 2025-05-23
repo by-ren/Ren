@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ren.system.entity.Post;
 
+import java.util.List;
 import java.util.Map;
 
 public interface PostService extends IService<Post> {
@@ -51,4 +52,13 @@ public interface PostService extends IService<Post> {
      * @date 2025/05/18 13:50
      */
     Post getPostById(long postId);
+
+    /*
+     * 岗位列表
+     * @param paramMap
+     * @return java.util.List<com.ren.system.entity.Post>
+     * @author admin
+     * @date 2025/05/23 14:29
+     */
+	List<Post> listPostByParam(Map<String,Object> paramMap);
 }

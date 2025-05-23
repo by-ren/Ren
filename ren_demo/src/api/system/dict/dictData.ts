@@ -35,3 +35,11 @@ export const deleteDictData = (dictDataId:number) => {
     params: { dictDataId } // 通过 URL 参数传递（如 /dictData/delete?dictDataId=1）
   }).then(response => response.data);
 };
+
+//获取字典类型列表
+export const getDictTypeList = () => {
+  return service({
+    method: 'get',
+    url: `/dictType/list`,
+  }).then(response => response.data)
+}

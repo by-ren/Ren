@@ -48,4 +48,12 @@ public interface ConfigMapper extends BaseMapper<Config> {
      */
     IPage<Config> listConfigByPage(Page<Config> page, @Param("paramMap")Map<String, Object> paramMap);
 
+    /*
+     * 获取配置详情
+     * @param configKey
+     * @return com.ren.system.entity.Config
+     * @author admin
+     * @date 2025/05/23 13:12
+     */
+	Config selectConfigByConfigKey(String configKey);
 }

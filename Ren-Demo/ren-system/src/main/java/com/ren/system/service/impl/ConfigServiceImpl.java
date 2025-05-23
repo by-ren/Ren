@@ -93,4 +93,17 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
         Config config = configMapper.selectById(configId);
         return config;
     }
+
+    /*
+     * 获取配置详情
+     * @param configKey
+     * @return com.ren.system.entity.Config
+     * @author admin
+     * @date 2025/05/23 13:12
+     */
+    @Override
+    public Config getConfigByConfigKey(String configKey) {
+        Config config = configMapper.selectConfigByConfigKey(configKey);
+        return config;
+    }
 }

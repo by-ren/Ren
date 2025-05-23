@@ -8,6 +8,7 @@ import com.ren.system.entity.DictData;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -21,6 +22,16 @@ public interface DictDataMapper extends BaseMapper<DictData> {
      * @date 2025/05/18 13:49
      */
     void insertDictData(DictData dictData);
+
+    /*
+     * 获取字典数据详情
+     * @param dictValue
+     * @param isDefault
+     * @return com.ren.system.entity.DictData
+     * @author admin
+     * @date 2025/05/23 14:05
+     */
+    DictData selectDictDataByParam(@Param("dictType") String dictType, @Param("isDefault") Byte isDefault);
 
     /*
      * 删除字典数据
@@ -46,5 +57,14 @@ public interface DictDataMapper extends BaseMapper<DictData> {
      * @date 2025/05/18 13:50
      */
     IPage<DictData> listDictDataByPage(Page<DictData> page, @Param("paramMap")Map<String, Object> paramMap);
+
+    /*
+     * 获取字典数据列表
+     * @param dictType
+     * @return java.util.List<com.ren.system.entity.DictData>
+     * @author admin
+     * @date 2025/05/23 13:31
+     */
+	List<DictData> listDictDataByDictType(String dictType);
 
 }

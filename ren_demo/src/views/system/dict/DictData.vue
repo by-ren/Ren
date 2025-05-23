@@ -52,8 +52,18 @@
                 <el-input v-model="addOrModifyDictDataForm.dictValue" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="字典类型" :label-width="addOrModifyDictDataFormLabelWidth" prop="dictType">
-                <el-input v-model="addOrModifyDictDataForm.dictType" autocomplete="off"></el-input>
-            </el-form-item>
+                <el-select
+                v-model="addOrModifyDictDataForm.dictType"
+                placeholder="请选择"
+                >
+                    <el-option
+                        v-for="item in addOrModifyDictTypeList"
+                        :key="item.dictCode"
+                        :label="item.dictName"
+                        :value="item.dictCode"
+                    />
+                </el-select>
+            </el-form-item> 
             <el-form-item label="样式属性" :label-width="addOrModifyDictDataFormLabelWidth" prop="cssClass">
                 <el-input v-model="addOrModifyDictDataForm.cssClass" autocomplete="off"></el-input>
             </el-form-item>
@@ -85,7 +95,7 @@
     import { ref,onMounted } from 'vue'
     import type { FormInstance,FormRules } from 'element-plus'
     import { ElMessage,ElTree } from 'element-plus'
-    import {getDictDataList,addDictData,modifyDictData,deleteDictData} from '@/api/system/dict/dictData'
+    import {getDictDataList,addDictData,modifyDictData,deleteDictData,getDictTypeList} from '@/api/system/dict/dictData'
     /*============================通用参数开始============================*/
     //表格数据
     let tableData = ref([]);
@@ -175,6 +185,8 @@
     };
     //添加字典数据表单对象
     const addOrModifyDictDataForm = ref({ ...initialAddOrModifyDictDataForm });
+    //用于添加和修改的字典类型列表
+    const addOrModifyDictTypeList = ref()
     //添加字典数据表单对象
     const addOrModifyDictDataFormRef = ref<FormInstance>()
     //添加字典数据表单验证规则
@@ -196,15 +208,6 @@
         dictType:[
             { required: true, message: '请填写字典类型', trigger: 'blur' }
         ],
-        cssClass:[
-            { required: true, message: '请填写样式属性', trigger: 'blur' }
-        ],
-        listClass:[
-            { required: true, message: '请填写表格回显样式', trigger: 'blur' }
-        ],
-        remark:[
-            { required: true, message: '请填写备注', trigger: 'blur' }
-        ],
     })
 
     //打开添加弹框
@@ -215,6 +218,18 @@
         addOrModifyDictDataForm.value = { ...initialAddOrModifyDictDataForm };
         //清除验证状态
         addOrModifyDictDataFormRef.value?.clearValidate();
+
+        try {
+            let result = await getDictTypeList();
+            if(result.code == 200){
+                addOrModifyDictTypeList.value = result.dictTypeList;
+            }else{
+                ElMessage.error(result.msg);
+            }
+        } catch (error) {
+            ElMessage.error('获取字典类型列表失败');
+        }
+
         //添加表单的主键设置为0
         addOrModifyDictDataForm.value.dictDataId = 0;
         //显示弹出框
@@ -228,6 +243,18 @@
         addOrModifyDictDataForm.value = { ...initialAddOrModifyDictDataForm };
         //清除验证状态
         addOrModifyDictDataFormRef.value?.clearValidate();
+
+        try {
+            let result = await getDictTypeList();
+            if(result.code == 200){
+                addOrModifyDictTypeList.value = result.dictTypeList;
+            }else{
+                ElMessage.error(result.msg);
+            }
+        } catch (error) {
+            ElMessage.error('获取字典类型列表失败');
+        }
+
         //显示弹出框
         dialogFormAddOrModifyDictData.value = true;
         //设置弹出框中相关值

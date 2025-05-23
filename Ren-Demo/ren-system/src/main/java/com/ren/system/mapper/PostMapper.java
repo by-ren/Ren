@@ -8,6 +8,7 @@ import com.ren.system.entity.Post;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -47,4 +48,12 @@ public interface PostMapper extends BaseMapper<Post> {
      */
     IPage<Post> listPostByPage(Page<Post> page, @Param("paramMap")Map<String, Object> paramMap);
 
+    /*
+     * 岗位列表
+     * @param paramMap
+     * @return java.util.List<com.ren.system.entity.Post>
+     * @author admin
+     * @date 2025/05/23 14:30
+     */
+    List<Post> listPostByParam(Map<String, Object> paramMap);
 }

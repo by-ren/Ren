@@ -73,4 +73,13 @@
         </where>
     </select>
 
+    <select id="listPostByParam" resultMap="PostResult">
+        <include refid="selectPostVo"/>
+        <where>
+            <if test="searchLike != null and searchLike != ''">
+                AND (post_code LIKE #{searchLike} OR post_name LIKE #{searchLike})
+            </if>
+        </where>
+    </select>
+
 </mapper>

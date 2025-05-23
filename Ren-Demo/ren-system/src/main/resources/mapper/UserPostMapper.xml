@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ren.system.mapper.UserPostMapper">
+
+    <resultMap type="userPost" id="UserPostResult">
+        <result property="userId"   column="user_id"  />
+        <result property="postId"     column="post_id"    />
+    </resultMap>
+
+    <sql id="selectUserPostVo">
+        select user_id, post_id
+        from sys_user_post
+    </sql>
+
+    <insert id="insertUserPost" parameterType="userPost">
+        insert into sys_user_post(
+            user_id,post_id
+        )values(
+           #{userId},#{postId}
+       )
+    </insert>
+
+    <insert id="insertUserPostBatch">
+        insert into sys_user_post(user_id, post_id) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.userId},#{item.postId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteUserPostByUserId">
+        delete from sys_user_post where user_id = #{userId}
+    </delete>
+
+    <select id="listUserPostByUserId" parameterType="long" resultMap="UserPostResult">
+        <include refid="selectUserPostVo"/>
+        where user_id = #{userId}
+    </select>
+
+</mapper>

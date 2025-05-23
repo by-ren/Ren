@@ -8,6 +8,7 @@ import com.ren.system.entity.DictType;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 @Mapper
@@ -46,5 +47,23 @@ public interface DictTypeMapper extends BaseMapper<DictType> {
      * @date 2025/05/18 13:50
      */
     IPage<DictType> listDictTypeByPage(Page<DictType> page, @Param("paramMap")Map<String, Object> paramMap);
+
+    /*
+     * 获取字典类型列表
+     * @param paramMap
+     * @return java.util.List<com.ren.system.entity.DictType>
+     * @author admin
+     * @date 2025/05/23 13:40
+     */
+    List<DictType> listDictTypeByParam(Map<String, Object> paramMap);
+
+    /*
+     * 获取字典类型详情
+     * @param dictCode
+     * @return com.ren.system.entity.DictType
+     * @author admin
+     * @date 2025/05/23 13:28
+     */
+	DictType selectDictTypeByDictCode(String dictCode);
 
 }
