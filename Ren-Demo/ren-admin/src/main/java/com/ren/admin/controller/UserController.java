@@ -150,7 +150,7 @@ public class UserController extends BaseController {
     @GetMapping("/list/page")
     @Pageable  //注意，如果要开启分页，请添加该注解
     public TableDataInfo listUserByPage(@RequestParam Map<String,Object> paramMap) {
-        IPage<User> userList = userService.listUserByParam(paramMap);
+        IPage<User> userList = userService.listUserByPage(paramMap);
         return getDataTable(userList);
     }
 

@@ -74,7 +74,7 @@ public class OperLogAspect {
 			// 如果请求失败会直接报错
 			isSuccess = true;
 		}catch (Exception e){
-			log.info(">>>> 请求失败，错误信息: {}", e.getMessage());
+			log.error(">>>> 请求失败" ,e);
 		}
 		long endTime = System.currentTimeMillis();
 		if(isSuccess){

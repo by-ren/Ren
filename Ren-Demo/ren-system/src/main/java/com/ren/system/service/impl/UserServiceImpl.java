@@ -156,11 +156,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @date 2025/04/26 15:52
      */
     @Override
-    public IPage<User> listUserByParam(Map<String,Object> paramMap) {
+    public IPage<User> listUserByPage(Map<String,Object> paramMap) {
         if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
             paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
         }
-        return userMapper.listUserByParam(PageUtils.createPage(User.class),paramMap);
+        return userMapper.listUserByPage(PageUtils.createPage(User.class),paramMap);
+    }
+
+    /*
+     * 获取用户列表
+     * @param paramMap
+     * @return java.util.List<com.ren.common.domain.entity.User>
+     * @author admin
+     * @date 2025/05/22 17:07
+     */
+    @Override
+    public List<User> listUserByParam(Map<String, Object> paramMap) {
+        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        }
+        return userMapper.listUserByParam(paramMap);
     }
 
     /*

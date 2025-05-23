@@ -1,0 +1,9 @@
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/  # 模板文件路径，默认从resources开始找起
+    suffix: .html
+    cache: false                   # 开发环境关闭缓存
+    mode: HTML
+    encoding: UTF-8
+    servlet:
+      content-type: text/html

@@ -30,7 +30,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!--Mybatis-Plus的依赖-->
+        <!--Mybatis-Plus的依赖（仅需要Mybatis，不需要Mysql引擎，因为这里不直接链接数据库）-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -61,7 +61,7 @@
             <version>5.8.26</version>
         </dependency>
 
-        <!-- FastJSON2（推荐使用最新版） -->
+        <!-- FastJSON2（推荐使用最新版）（替代SpringBoot自动集成的Jackson，因为我感觉FastJSON2更好用） -->
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>

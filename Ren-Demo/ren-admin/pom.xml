@@ -29,7 +29,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--模板引擎，用于加载前端页面，如果使用Vue，这里没必要引入-->
+        <!--模板引擎，用于加载前端页面，用于发送邮件-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -83,7 +83,7 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!--swagger测试-->
+        <!--swagger（接口文档自动生成工具包）-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
@@ -97,7 +97,7 @@
             <version>5.8.26</version>
         </dependency>
 
-        <!-- FastJSON2（推荐使用最新版） -->
+        <!-- FastJSON2（推荐使用最新版）（替代SpringBoot自动集成的Jackson，因为我感觉FastJSON2更好用） -->
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
@@ -144,6 +144,13 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>1.9.20.1</version>
+        </dependency>
+
+        <!--发送邮件所需Jar包-->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
         </dependency>
 
         <!-- 通用工具-->

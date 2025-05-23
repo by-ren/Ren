@@ -1,0 +1,7 @@
+mail:
+  host: smtp.163.com           # SMTP 服务器地址
+  port: 465                        # SSL 端口
+  username:      # 发件人邮箱（改为自己的）
+  password:           # 发件人授权码（改为自己的）
+  from:          # 发件人显示名称（需与发件人邮箱保持一致，否则会报550错误）
+  ssl-enable: true                 # 启用 SSL

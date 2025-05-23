@@ -71,7 +71,16 @@ public interface UserMapper extends BaseMapper<User> {
      * @author admin
      * @date 2025/05/13 15:43
      */
-    IPage<User> listUserByParam(Page<User> page, @Param("paramMap") Map<String,Object> paramMap);
+    IPage<User> listUserByPage(Page<User> page, @Param("paramMap") Map<String,Object> paramMap);
+
+    /*
+     * 获取用户列表
+     * @param paramMap
+     * @return java.util.List<com.ren.common.domain.entity.User>
+     * @author admin
+     * @date 2025/05/22 17:08
+     */
+    List<User> listUserByParam(Map<String, Object> paramMap);
 
     /*
      * 根据查询参数获取用户列表

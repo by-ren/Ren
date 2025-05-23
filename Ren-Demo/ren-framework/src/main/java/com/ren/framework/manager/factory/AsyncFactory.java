@@ -1,8 +1,11 @@
 package com.ren.framework.manager.factory;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.extra.mail.MailAccount;
+import cn.hutool.extra.mail.MailUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
+import com.ren.common.constant.AppConstants;
 import com.ren.common.domain.entity.Logininfor;
 import com.ren.common.domain.entity.OperLog;
 import com.ren.common.domain.entity.User;
@@ -10,10 +13,15 @@ import com.ren.common.utils.ServletUtils;
 import com.ren.common.utils.SpringUtils;
 import com.ren.common.utils.ip.AddressUtils;
 import com.ren.common.utils.ip.IpUtils;
+import com.ren.framework.config.MailConfig;
+import com.ren.system.entity.Notice;
 import com.ren.system.service.LogininforService;
 import com.ren.system.service.OperLogService;
 import com.ren.system.service.UserService;
+import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.context.Context;
 
+import java.util.List;
 import java.util.TimerTask;
 
 /**
@@ -24,6 +32,15 @@ import java.util.TimerTask;
 public class AsyncFactory
 {
 
+    /*
+     * 添加登录日志
+     * @param username
+     * @param isSuccess
+     * @param message
+     * @return java.util.TimerTask
+     * @author admin
+     * @date 2025/05/23 11:19
+     */
     public static TimerTask addLogininfor(final String username, final Byte isSuccess, final String message)
     {
         String userAgentStr = ServletUtils.getRequest().getHeader("User-Agent");
@@ -40,7 +57,8 @@ public class AsyncFactory
 
         // 获取客户端IP地址
         String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
-
+        // 注入UserService
+        UserService userService = SpringUtils.getBean(UserService.class);
         return new TimerTask()
         {
             @Override
@@ -58,7 +76,6 @@ public class AsyncFactory
                 SpringUtils.getBean(LogininforService.class).addLogininfor(logininfor);
 
                 //更新最后登录时间
-                UserService userService = SpringUtils.getBean(UserService.class);
                 User loginIpUser = userService.getUserByUsername(username);
                 userService.modifyUserByLogin(loginIpUser.getUserId(),ip,DateUtil.currentSeconds(),username);
             }
@@ -73,6 +90,8 @@ public class AsyncFactory
      */
     public static TimerTask addOperLog(final OperLog operLog)
     {
+        // 注入OperLogService
+        OperLogService operLogService = SpringUtils.getBean(OperLogService.class);
         return new TimerTask()
         {
             @Override
@@ -80,7 +99,50 @@ public class AsyncFactory
             {
                 // 远程查询操作地点
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
-                SpringUtils.getBean(OperLogService.class).addOperLog(operLog);
+                operLogService.addOperLog(operLog);
+            }
+        };
+    }
+
+    /*
+     * 异步发送邮件
+     * @param notice
+     * @return java.util.TimerTask
+     * @author admin
+     * @date 2025/05/23 11:22
+     */
+    public static TimerTask sendAddOrModifyNoticeEmail(final Notice notice,final String title)
+    {
+        UserService userService = SpringUtils.getBean(UserService.class);
+        //读取Mail配置文件
+        MailConfig mailConfig = SpringUtils.getBean(MailConfig.class);
+        // Spring 自动注入模板引擎（SpringBoot会自动按照所引入的Jar包（Velocity、Beetl、Freemarker、Thymeleaf），以及所配置的配置文件（如thymeleaf.yml）进行自动模板引擎注入）
+        ITemplateEngine templateEngine = SpringUtils.getBean(ITemplateEngine.class);
+        return new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                //获取所有用户列表，发送邮件
+                List<User> userList = userService.listUserByParam(null);
+                // 手动创建MailAccount对象，读取自定义的配置文件
+                MailAccount account = new MailAccount();
+                account.setHost(mailConfig.getHost());
+                account.setPort(mailConfig.getPort());
+                account.setUser(mailConfig.getUsername());
+                account.setPass(mailConfig.getPassword());
+                account.setFrom(mailConfig.getFrom());
+                account.setSslEnable(mailConfig.isSslEnable());
+                // 渲染模板
+                Context context = new Context();
+                context.setVariable("noticeTitle", notice.getNoticeTitle());
+                context.setVariable("noticeType", notice.getNoticeType() == AppConstants.NOTICE_TYPE_NOTICE ? "通知":"公告");
+                context.setVariable("noticeContent", notice.getNoticeContent());
+                context.setVariable("systemName", "Ren系统管理员");
+                String html = templateEngine.process("noticeMail", context); // 对应 noticeMail.html
+                //实现发送（群发）
+                List<String> toList = userList.stream().map(User::getEmail).toList();
+                MailUtil.send(account, toList, title, html, true);
             }
         };
     }

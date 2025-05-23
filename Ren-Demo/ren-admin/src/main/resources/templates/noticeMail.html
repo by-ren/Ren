@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>系统通知公告</title>
+</head>
+<body style="font-family: 'Microsoft YaHei', sans-serif; max-width: 800px; margin: 0 auto;">
+<!-- 头部标识 -->
+<!--<div style="background: #f5f5f5; padding: 20px; border-radius: 8px 8px 0 0;">-->
+<!--	<img th:src="${systemLogo}" alt="系统LOGO" style="height: 40px;">-->
+<!--</div>-->
+
+<!-- 主体内容 -->
+<div style="padding: 30px 20px; background: #ffffff;">
+	<!-- 标题区 -->
+	<h1 style="color: #333; border-left: 4px solid #1890ff; padding-left: 10px; margin: 0 0 25px 0;">
+		[[${noticeTitle}]]
+	</h1>
+
+	<!-- 公告类型 -->
+	<div style="margin-bottom: 20px;">
+            <span style="display: inline-block; background: #e6f7ff; color: #1890ff;
+                padding: 4px 12px; border-radius: 4px; font-size: 14px;">
+                [[${noticeType}]]
+            </span>
+	</div>
+
+	<!-- 富文本内容区（关键） -->
+	<div th:utext="${noticeContent}"
+		 style="line-height: 1.8; color: #666; font-size: 15px;
+                    border: 1px solid #eee; padding: 20px; border-radius: 6px;">
+	</div>
+</div>
+
+<!-- 页脚 -->
+<div style="padding: 20px; background: #fafafa; color: #999; font-size: 13px;
+         border-radius: 0 0 8px 8px; text-align: center;">
+	<p>本邮件由[[${systemName}]]自动发送，请勿直接回复</p>
+</div>
+</body>
+</html>
