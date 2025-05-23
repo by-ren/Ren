@@ -29,9 +29,6 @@ import java.util.Map;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
-    //自动注入密码管理器
-    @Autowired
-    private PasswordEncoder passwordEncoder;
     @Autowired
     private UserMapper userMapper;
     @Autowired
