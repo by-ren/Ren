@@ -3,6 +3,7 @@ package com.ren.common.utils;
 import com.ren.common.constant.HttpStatus;
 import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.exception.ServiceException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -93,8 +94,8 @@ public class SecurityUtils
     public static String encryptPassword(String password)
     {
         //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        //使用多密码管理器对密码进行加密（加密后会带有前缀）（默认使用BCryptPasswordEncoder密码管理器）
-        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        //使用多密码管理器对密码进行加密（加密后会带有前缀）（默认使用BCryptPasswordEncoder密码管理器）(SpringSecurity已经配置了PasswordEncoder，所以这里获取Bean使用)
+        PasswordEncoder passwordEncoder = SpringUtils.getBean(PasswordEncoder.class);
         return passwordEncoder.encode(password);
     }
 
@@ -108,8 +109,8 @@ public class SecurityUtils
     public static boolean matchesPassword(String rawPassword, String encodedPassword)
     {
         //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        //使用多密码管理器对密码进行加密（加密后会带有前缀）（默认使用BCryptPasswordEncoder密码管理器）
-        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        //使用多密码管理器对密码进行加密（加密后会带有前缀）（默认使用BCryptPasswordEncoder密码管理器）(SpringSecurity已经配置了PasswordEncoder，所以这里获取Bean使用)
+        PasswordEncoder passwordEncoder = SpringUtils.getBean(PasswordEncoder.class);
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
