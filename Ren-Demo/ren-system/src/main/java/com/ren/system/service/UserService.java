@@ -82,7 +82,16 @@ public interface UserService extends IService<User> {
      * @author admin
      * @date 2025/04/26 15:51
      */
-    IPage<User> listUserByParam(Map<String,Object> paramMap);
+    IPage<User> listUserByPage(Map<String,Object> paramMap);
+
+    /*
+     * 获取用户列表
+     * @param paramMap
+     * @return java.util.List<com.ren.common.domain.entity.User>
+     * @author admin
+     * @date 2025/05/22 17:07
+     */
+    List<User> listUserByParam(Map<String,Object> paramMap);
 
     /*
      * 获取用户列表

@@ -150,7 +150,7 @@
         where user_id = #{userId}
     </update>
 
-    <select id="listUserByParam" resultMap="SysUserResult">
+    <select id="listUserByPage" resultMap="SysUserResult">
         select u.user_id, u.username, u.nickname, u.password, u.is_del,u.dept_id, u.user_type, u.email, u.phonenumber, u.sex, u.avatar, u.login_ip,
         u.login_date, FROM_UNIXTIME(u.login_date, '%Y-%m-%d %H:%i:%s') AS login_date_str,u.create_time, u.create_by,
         FROM_UNIXTIME(u.create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, u.update_by, u.update_time, FROM_UNIXTIME(u.update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, u.remark
@@ -174,6 +174,29 @@
         <if test="page.orders.isEmpty()">
             ORDER BY u.create_time ASC
         </if>
+    </select>
+
+    <select id="listUserByParam" resultMap="SysUserResult">
+        select u.user_id, u.username, u.nickname, u.password, u.is_del,u.dept_id, u.user_type, u.email, u.phonenumber, u.sex, u.avatar, u.login_ip,
+        u.login_date, FROM_UNIXTIME(u.login_date, '%Y-%m-%d %H:%i:%s') AS login_date_str,u.create_time, u.create_by,
+        FROM_UNIXTIME(u.create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, u.update_by, u.update_time, FROM_UNIXTIME(u.update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, u.remark
+        from sys_user u
+        left join sys_dept d on u.dept_id = d. dept_id
+        <where>
+            u.is_del = 0
+            <if test="deptId != null and deptId != -1">
+                AND (u.dept_id = #{deptId} OR u.dept_id IN ( SELECT t.dept_id FROM sys_dept t WHERE find_in_set(#{deptId}, ancestors) ))
+            </if>
+            <if test="searchLike != null and searchLike != ''">
+                AND (u.nickname LIKE #{searchLike} OR u.email LIKE #{searchLike} OR u.phonenumber LIKE #{searchLike} OR u.username LIKE #{searchLike})
+            </if>
+            <if test="userType != null and userType != ''">
+                AND u.user_type = #{userType}
+            </if>
+            <if test="sex != null and sex != -1">
+                AND u.sex = #{sex}
+            </if>
+        </where>
     </select>
 
     <select id="selectUserByParam" resultMap="SysUserResult">

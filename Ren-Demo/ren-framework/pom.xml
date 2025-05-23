@@ -29,7 +29,8 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--模板引擎，用于加载前端页面，如果使用Vue，这里没必要引入-->
+
+        <!--模板引擎，用于加载前端页面，用于代码生成模块-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -40,26 +41,7 @@
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
 
-        <!--SpringBoot单元测试依赖-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!--SpringSecurity测试依赖-->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!--Mysql的链接依赖-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.30</version>
-        </dependency>
-        <!--Mybatis-Plus的依赖-->
+        <!--Mybatis-Plus的依赖（仅需要Mybatis，不需要Mysql引擎，因为这里不直接链接数据库）-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -83,7 +65,7 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!--swagger测试-->
+        <!--swagger（接口文档自动生成工具包）-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>

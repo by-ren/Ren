@@ -4,14 +4,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ren.common.controller.BaseController;
 import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
-import com.ren.common.domain.entity.User;
 import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.page.TableDataInfo;
 import com.ren.common.interfaces.OperLogAnn;
 import com.ren.common.interfaces.Pageable;
+import com.ren.framework.manager.AsyncManager;
+import com.ren.framework.manager.factory.AsyncFactory;
 import com.ren.system.entity.Notice;
 import com.ren.system.service.NoticeService;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +51,8 @@ public class NoticeController extends BaseController {
     @OperLogAnn(title = "通知公告模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addNotice(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Notice addNotice) {
         noticeService.addNotice(addNotice,loginUser.getUsername());
+        //线程池异步发送邮件
+        AsyncManager.me().execute(AsyncFactory.sendAddOrModifyNoticeEmail(addNotice,"Ren系统通知公告新增"));
         return AjaxResultDTO.success();
     }
 
@@ -66,6 +68,8 @@ public class NoticeController extends BaseController {
     @OperLogAnn(title = "通知公告模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyNotice(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Notice modifyNotice) {
         noticeService.modifyNotice(modifyNotice,loginUser.getUsername());
+        //线程池异步发送邮件
+        AsyncManager.me().execute(AsyncFactory.sendAddOrModifyNoticeEmail(modifyNotice,"Ren系统通知公告变更"));
         return AjaxResultDTO.success();
     }
 
