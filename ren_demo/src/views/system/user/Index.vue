@@ -148,6 +148,22 @@
                     />
                 </el-select>
             </el-form-item>
+            <el-form-item label="岗位" :label-width="addOrModifyUserFormLabelWidth" prop="postIdArr">
+                <el-select
+                v-model="addOrModifyUserForm.postIdArr"
+                multiple
+                collapse-tags
+                collapse-tags-tooltip
+                placeholder="请选择"
+                >
+                    <el-option
+                        v-for="item in addOrModifyPostList"
+                        :key="item.postId"
+                        :label="item.postName"
+                        :value="item.postId"
+                    />
+                </el-select>
+            </el-form-item>
             <el-form-item label="备注" :label-width="addOrModifyUserFormLabelWidth" prop="remark">
                 <el-input v-model="addOrModifyUserForm.remark" autocomplete="off"></el-input>
             </el-form-item>
@@ -185,7 +201,7 @@
     import { ref,onMounted } from 'vue'
     import type { FormInstance,FormRules } from 'element-plus'
     import { ElMessage } from 'element-plus'
-    import {getUserList,resetPassword,deleteUser,modifyUser,addUser,getDeptList,getRoleList,getUserInfo} from '@/api/system/user/index'
+    import {getUserList,resetPassword,deleteUser,modifyUser,addUser,getDeptList,getRoleList,getUserInfo,getPostList} from '@/api/system/user/index'
     /*============================通用参数开始============================*/
     //表格数据
     let tableData = ref([]);
@@ -295,6 +311,8 @@
         deptId: -1,
         //角色标识
         roleIdArr: [],
+        //岗位标识
+        postIdArr: [],
     };
     //添加用户表单对象
     const addOrModifyUserForm = ref({ ...initialAddOrModifyUserForm });
@@ -302,6 +320,8 @@
     const addOrModifyDeptList = ref<Tree[]>()
     //用于添加和修改的角色列表
     const addOrModifyRoleList = ref()
+    //用于添加和修改的部门列表
+    const addOrModifyPostList = ref()
     //添加用户表单对象
     const addOrModifyUserFormRef = ref<FormInstance>()
     //添加用户表单验证规则
@@ -341,9 +361,6 @@
             { pattern: /^(?!-1$|null$).*/, message: '请选择性别', trigger: 'blur' },
             { required: true, message: '请选择性别', trigger: 'blur' }
         ],
-        remark:[
-            { required: true, message: '请填写备注', trigger: 'blur' }
-        ],
     })
     //打开添加弹框
     const openAddUserDialog = async () => {
@@ -372,6 +389,16 @@
             }
         } catch (error) {
             ElMessage.error('获取角色列表失败');
+        }
+        try {
+            let result = await getPostList();
+            if(result.code == 200){
+                addOrModifyPostList.value = result.postList;
+            }else{
+                ElMessage.error(result.msg);
+            }
+        } catch (error) {
+            ElMessage.error('获取岗位列表失败');
         }
         addOrModifyUserForm.value.userId = 0;
     }
@@ -408,14 +435,25 @@
             ElMessage.error('获取角色列表失败');
         }
         try {
-            let result = await getUserInfo(row.userId);
+            let result = await getPostList();
             if(result.code == 200){
-                addOrModifyUserForm.value.roleIdArr = result.roleIdArr;
+                addOrModifyPostList.value = result.postList;
             }else{
                 ElMessage.error(result.msg);
             }
         } catch (error) {
-            ElMessage.error('获取角色列表失败');
+            ElMessage.error('获取岗位列表失败');
+        }
+        try {
+            let result = await getUserInfo(row.userId);
+            if(result.code == 200){
+                addOrModifyUserForm.value.roleIdArr = result.roleIdArr;
+                addOrModifyUserForm.value.postIdArr = result.postIdArr;
+            }else{
+                ElMessage.error(result.msg);
+            }
+        } catch (error) {
+            ElMessage.error('获取用户信息失败');
         }
         addOrModifyUserForm.value.userId = row.userId;
         addOrModifyUserForm.value.username = row.username;

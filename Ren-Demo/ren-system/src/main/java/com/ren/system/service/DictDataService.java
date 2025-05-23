@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ren.system.entity.DictData;
 
+import java.util.List;
 import java.util.Map;
 
 public interface DictDataService extends IService<DictData> {
@@ -51,4 +52,23 @@ public interface DictDataService extends IService<DictData> {
      * @date 2025/05/18 13:50
      */
     DictData getDictDataById(long dictDataId);
+
+    /*
+     * 获取字典数据详情
+     * @param dictValue
+     * @param isDefault
+     * @return com.ren.system.entity.DictData
+     * @author admin
+     * @date 2025/05/23 14:04
+     */
+    DictData getDictDataByParam(String dictType,Byte isDefault);
+
+    /*
+     * 获取字典数据列表
+     * @param dictType
+     * @return java.util.List<com.ren.system.entity.DictData>
+     * @author admin
+     * @date 2025/05/23 13:30
+     */
+    List<DictData> listDictDataByDictType(String dictType);
 }

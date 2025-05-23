@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,5 +29,10 @@ public class DictType extends BaseEntity {
     /**是否停用（1：是，0：否）*/
     @TableField(value = "is_stop")
     private Byte isStop;
+
+    /*==================================================以下为冗余字段===================================================*/
+    /**字典数据列表*/
+    @TableField(exist = false)
+    private List<DictData> dictDataList;
 
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ren.system.entity.DictType;
 
+import java.util.List;
 import java.util.Map;
 
 public interface DictTypeService extends IService<DictType> {
@@ -44,11 +45,29 @@ public interface DictTypeService extends IService<DictType> {
     IPage<DictType> listDictTypeByPage(Map<String,Object> paramMap);
 
     /*
+     * 获取字典类型列表
+     * @param paramMap
+     * @return java.util.List<com.ren.system.entity.DictType>
+     * @author admin
+     * @date 2025/05/23 13:40
+     */
+    List<DictType> listDictTypeByParam(Map<String,Object> paramMap);
+
+    /*
      * 获取字典类型详情
      * @param dictTypeId
      * @return com.ren.system.entity.DictType
      * @author admin
      * @date 2025/05/18 13:50
      */
-    DictType getDictTypeById(long dictTypeId);
+    DictType getDictTypeById(long dictTypeId, byte isHasList);
+
+    /*
+     * 获取字典类型详情
+     * @param dictCode
+     * @return com.ren.system.entity.DictType
+     * @author admin
+     * @date 2025/05/23 13:26
+     */
+    DictType getDictTypeByDictCode(String dictCode,byte isHasList);
 }

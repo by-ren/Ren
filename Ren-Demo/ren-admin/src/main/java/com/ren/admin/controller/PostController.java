@@ -1,9 +1,11 @@
 package com.ren.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.ren.common.constant.AppConstants;
 import com.ren.common.controller.BaseController;
 import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
+import com.ren.common.domain.entity.Role;
 import com.ren.common.domain.entity.User;
 import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.page.TableDataInfo;
@@ -15,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/post")
@@ -25,7 +29,7 @@ public class PostController extends BaseController {
     PostService postService;
 
     /*
-     * 岗位岗位列表
+     * 岗位分页列表
      * @param paramMap
      * @return com.ren.common.domain.page.TableDataInfo
      * @author admin
@@ -36,6 +40,18 @@ public class PostController extends BaseController {
     public TableDataInfo listPostByPage(@RequestParam Map<String,Object> paramMap) {
         IPage<Post> postList = postService.listPostByPage(paramMap);
         return getDataTable(postList);
+    }
+
+    /*
+     * 岗位列表
+     * @return com.ren.common.domain.dto.AjaxResultDTO
+     * @author admin
+     * @date 2025/05/23 14:29
+     */
+    @GetMapping("/list")
+    public AjaxResultDTO listPost() {
+        List<Post> postList = postService.listPostByParam(null);
+        return AjaxResultDTO.success().put("postList",postList);
     }
 
     /*

@@ -50,4 +50,13 @@ public interface ConfigService extends IService<Config> {
      * @date 2025/05/18 13:50
      */
     Config getConfigById(long configId);
+
+    /*
+     * 获取配置详情
+     * @param configKey
+     * @return com.ren.system.entity.Config
+     * @author admin
+     * @date 2025/05/23 13:12
+     */
+    Config getConfigByConfigKey(String configKey);
 }

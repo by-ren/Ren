@@ -61,11 +61,19 @@ export const getRoleList = () => {
   }).then(response => response.data)
 }
 
-//获取角色信息
+//获取用户信息
 export const getUserInfo = (userId:number) => {
   return service({
     method: 'get',
     url: `/user/info/v2`,
     params: { userId },
+  }).then(response => response.data)
+}
+
+//获取岗位列表
+export const getPostList = () => {
+  return service({
+    method: 'get',
+    url: `/post/list`,
   }).then(response => response.data)
 }

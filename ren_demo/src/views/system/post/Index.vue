@@ -170,9 +170,6 @@
                 trigger: ['blur', 'change']
             }
         ],
-        remark:[
-            { required: true, message: '请填写备注', trigger: 'blur' }
-        ],
     })
 
     //打开添加弹框

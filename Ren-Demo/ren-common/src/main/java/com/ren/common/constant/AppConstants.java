@@ -1,5 +1,11 @@
 package com.ren.common.constant;
 
+/**
+ * 通用常量（该类用于存储一些，基本不会变动的常量）
+ *
+ * @author: admin
+ * @time: 2025/05/23
+ */
 public class AppConstants {
 
     /*===================================================通用开始=======================================================*/
@@ -22,9 +28,6 @@ public class AppConstants {
     public static final byte USER_SEX_WOMAN = 1;
     /**用户-性别-未知*/
     public static final byte USER_SEX_UNKNOWN = 2;
-
-    /**用户-用户类型-系统用户*/
-    public static final String USER_USERTYPE_SYSTEM = "00";
     /*===================================================用户结束=======================================================*/
 
 

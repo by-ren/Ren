@@ -242,9 +242,6 @@
             { pattern: /^(?!-1$|null$).*/, message: '请选择数据权限', trigger: 'blur' },
             { required: true, message: '请选择数据权限', trigger: 'blur' }
         ],
-        remark:[
-            { required: true, message: '请填写备注', trigger: 'blur' }
-        ],
     })
 
     //菜单权限相关

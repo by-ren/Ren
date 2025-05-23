@@ -17,6 +17,14 @@ public interface UserRoleService extends IService<UserRole> {
     void addUserRole(UserRole userRole);
 
     /*
+     * 批量添加用户角色
+     * @param userRoleList
+     * @author admin
+     * @date 2025/05/23 14:45
+     */
+    void addUserRoleBatch(List<UserRole> userRoleList);
+
+    /*
      * 删除用户角色
      * @param userId
      * @author admin

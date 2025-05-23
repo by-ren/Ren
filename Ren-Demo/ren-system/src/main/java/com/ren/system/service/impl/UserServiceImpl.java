@@ -2,15 +2,18 @@ package com.ren.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ren.common.domain.entity.User;
 import com.ren.common.utils.PageUtils;
+import com.ren.system.entity.DictData;
+import com.ren.system.entity.UserPost;
 import com.ren.system.entity.UserRole;
 import com.ren.system.mapper.UserMapper;
 import com.ren.system.mapper.UserRoleMapper;
-import com.ren.system.service.UserService;
+import com.ren.system.service.*;
 import com.ren.common.constant.AppConstants;
 import com.ren.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +35,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    private UserRoleMapper userRoleMapper;
+    private UserRoleService userRoleService;
+    @Autowired
+    private ConfigService configService;
+    @Autowired
+    private DictDataService dictDataService;
+    @Autowired
+    private UserPostService userPostService;
 
 
     /*
@@ -44,18 +53,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional
     public long addUser(User user,String createBy) {
-        // 使用设定的密码管理器对密码进行编码(设置默认密码123456)
-        String encodedPassword = SecurityUtils.encryptPassword("123456");
         user.setIsDel(AppConstants.COMMON_BYTE_NO);
-        user.setUserType(AppConstants.USER_USERTYPE_SYSTEM);
+        //从字典表中查询出默认用户，进行设置
+        DictData dictData = dictDataService.getDictDataByParam("sys-user-usertype",AppConstants.COMMON_BYTE_YES);
+        user.setUserType(ObjUtil.isNotEmpty(dictData) ? (StrUtil.isNotBlank(dictData.getDictValue()) ? dictData.getDictValue() : "00") : "00");
         user.setCreateBy(createBy);
         user.setCreateTime(DateUtil.currentSeconds());
+        // 使用设定的密码管理器对密码进行编码(设置默认密码)
+        String password = configService.getConfigByConfigKey("sys.user.initPassword") != null ? (StrUtil.isNotBlank(configService.getConfigByConfigKey("sys.user.initPassword").getConfigValue()) ? configService.getConfigByConfigKey("sys.user.initPassword").getConfigValue() : "123456") : "123456";
+        String encodedPassword = SecurityUtils.encryptPassword(password);
         user.setPassword(encodedPassword);
         userMapper.insertUser(user);
         //添加角色
         if(user.getRoleIdArr() != null && user.getRoleIdArr().length > 0){
             List<UserRole> userRoleList = Arrays.stream(user.getRoleIdArr()).map(roleId -> new UserRole(user.getUserId(),roleId)).toList();
-            userRoleMapper.insertUserRoleBatch(userRoleList);
+            userRoleService.addUserRoleBatch(userRoleList);
+        }
+        //添加岗位
+        if(user.getPostIdArr() != null && user.getPostIdArr().length > 0){
+            List<UserPost> userPostList = Arrays.stream(user.getPostIdArr()).map(postId -> new UserPost(user.getUserId(),postId)).toList();
+            userPostService.addUserPostBatch(userPostList);
         }
         return user.getUserId();
     }
@@ -97,16 +114,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @date 2025/05/04 13:52
      */
     @Override
+    @Transactional
     public void modifyUser(User user, String updateBy) {
         user.setUpdateBy(updateBy);
         user.setUpdateTime(DateUtil.currentSeconds());
         userMapper.updateUser(user);
         //先删除角色
-        userRoleMapper.deleteUserRoleByUserId(user.getUserId());
+        userRoleService.removeUserRoleByUserId(user.getUserId());
         //重新添加角色
         if(user.getRoleIdArr() != null && user.getRoleIdArr().length > 0){
             List<UserRole> userRoleList = Arrays.stream(user.getRoleIdArr()).map(roleId -> new UserRole(user.getUserId(),roleId)).toList();
-            userRoleMapper.insertUserRoleBatch(userRoleList);
+            userRoleService.addUserRoleBatch(userRoleList);
+        }
+        //先删除岗位
+        userPostService.removeUserPostByUserId(user.getUserId());
+        //重新添加岗位
+        if(user.getPostIdArr() != null && user.getPostIdArr().length > 0){
+            List<UserPost> userPostList = Arrays.stream(user.getPostIdArr()).map(postId -> new UserPost(user.getUserId(),postId)).toList();
+            userPostService.addUserPostBatch(userPostList);
         }
     }
 

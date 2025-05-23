@@ -28,6 +28,17 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
 	}
 
 	/*
+	 * 批量添加用户角色
+	 * @param userRoleList
+	 * @author admin
+	 * @date 2025/05/23 14:45
+	 */
+	@Override
+	public void addUserRoleBatch(List<UserRole> userRoleList) {
+		userRoleMapper.insertUserRoleBatch(userRoleList);
+	}
+
+	/*
 	 * 删除用户角色
 	 * @param userId
 	 * @author admin

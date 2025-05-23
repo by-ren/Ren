@@ -17,11 +17,9 @@ import com.ren.common.domain.vo.MenuVO;
 import com.ren.common.interfaces.OperLogAnn;
 import com.ren.common.interfaces.Pageable;
 import com.ren.common.utils.TreeUtils;
+import com.ren.system.entity.UserPost;
 import com.ren.system.entity.UserRole;
-import com.ren.system.service.MenuService;
-import com.ren.system.service.RoleService;
-import com.ren.system.service.UserRoleService;
-import com.ren.system.service.UserService;
+import com.ren.system.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +36,8 @@ public class UserController extends BaseController {
     UserService userService;
     @Autowired
     UserRoleService userRoleService;
+    @Autowired
+    UserPostService userPostService;
     @Autowired
     RoleService roleService;
     @Autowired
@@ -138,7 +138,9 @@ public class UserController extends BaseController {
         User user = userService.getUserById(userId);
         List<UserRole> userRoleList = userRoleService.listUserRoleByUserId(userId);
         Long[] roleIdArr = userRoleList.stream().map(UserRole::getRoleId).toArray(Long[]::new);
-        return AjaxResultDTO.success().put("userInfo",user).put("roleIdArr",roleIdArr);
+        List<UserPost> userPostList = userPostService.listUserPostByUserId(userId);
+        Long[] postIdArr = userPostList.stream().map(UserPost::getPostId).toArray(Long[]::new);
+        return AjaxResultDTO.success().put("userInfo",user).put("roleIdArr",roleIdArr).put("postIdArr",postIdArr);
     }
 
     /*

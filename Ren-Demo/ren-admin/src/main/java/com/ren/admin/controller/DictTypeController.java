@@ -1,9 +1,11 @@
 package com.ren.admin.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.ren.common.constant.AppConstants;
 import com.ren.common.controller.BaseController;
 import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
+import com.ren.common.domain.entity.Role;
 import com.ren.common.domain.entity.User;
 import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.page.TableDataInfo;
@@ -15,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/dictType")
@@ -36,6 +40,18 @@ public class DictTypeController extends BaseController {
     public TableDataInfo listDictTypeByPage(@RequestParam Map<String,Object> paramMap) {
         IPage<DictType> dictTypeList = dictTypeService.listDictTypeByPage(paramMap);
         return getDataTable(dictTypeList);
+    }
+
+    /*
+     * 字典类型列表
+     * @return com.ren.common.domain.dto.AjaxResultDTO
+     * @author admin
+     * @date 2025/05/23 13:51
+     */
+    @GetMapping("/list")
+    public AjaxResultDTO listDictType() {
+        List<DictType> dictTypeList = dictTypeService.listDictTypeByParam(null);
+        return AjaxResultDTO.success().put("dictTypeList",dictTypeList);
     }
 
     /*

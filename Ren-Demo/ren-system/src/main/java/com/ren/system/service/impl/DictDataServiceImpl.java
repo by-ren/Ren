@@ -12,6 +12,7 @@ import com.ren.system.service.DictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -86,5 +87,32 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
     public DictData getDictDataById(long dictDataId) {
         DictData dictData = dictDataMapper.selectById(dictDataId);
         return dictData;
+    }
+
+    /*
+     * 获取字典数据详情
+     * @param dictValue
+     * @param isDefault
+     * @return com.ren.system.entity.DictData
+     * @author admin
+     * @date 2025/05/23 14:05
+     */
+    @Override
+    public DictData getDictDataByParam(String dictType , Byte isDefault) {
+        DictData dictData = dictDataMapper.selectDictDataByParam(dictType,isDefault);
+        return dictData;
+    }
+
+    /*
+     * 获取字典数据列表
+     * @param dictType
+     * @return java.util.List<com.ren.system.entity.DictData>
+     * @author admin
+     * @date 2025/05/23 13:30
+     */
+    @Override
+    public List<DictData> listDictDataByDictType(String dictType) {
+        List<DictData> dictDataList = dictDataMapper.listDictDataByDictType(dictType);
+        return dictDataList;
     }
 }

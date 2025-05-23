@@ -170,9 +170,6 @@
         configValue:[
             { required: true, message: '请填写参数键值', trigger: 'blur' }
         ],
-        remark:[
-            { required: true, message: '请填写备注', trigger: 'blur' }
-        ],
     })
 
     //打开添加弹框

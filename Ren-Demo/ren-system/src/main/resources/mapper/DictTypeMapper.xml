@@ -36,7 +36,7 @@
         <if test="dictTypeId != null and dictTypeId != ''">#{dictTypeId},</if>
         <if test="dictName != null">#{dictName},</if>
         <if test="dictCode != null">#{dictCode},</if>
-        <if test="dictCode != null">#{dictCode},</if>
+        <if test="isStop != null">#{isStop},</if>
         <if test="remark != null">#{remark},</if>
         #{createBy},
         #{createTime}
@@ -67,6 +67,20 @@
                 AND (dict_name LIKE #{paramMap.searchLike} or dict_code LIKE #{paramMap.searchLike})
             </if>
         </where>
+    </select>
+
+    <select id="listDictTypeByParam" resultMap="DictTypeResult">
+        <include refid="selectDictTypeVo"/>
+        <where>
+            <if test="searchLike != null and searchLike != ''">
+                AND (dict_name LIKE #{searchLike} or dict_code LIKE #{searchLike})
+            </if>
+        </where>
+    </select>
+
+    <select id="selectDictTypeByDictCode" resultMap="DictTypeResult">
+        <include refid="selectDictTypeVo"/>
+        where dict_code = #{dictCode}
     </select>
 
 </mapper>

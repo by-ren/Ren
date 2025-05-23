@@ -70,6 +70,9 @@ public class User extends BaseEntity{
     /**角色Id*/
     @TableField(exist = false)
     private Long[] roleIdArr;
+    /**岗位Id*/
+    @TableField(exist = false)
+    private Long[] postIdArr;
     /**最后登录时间Str*/
     @TableField(exist = false)
     private String loginDateStr;
