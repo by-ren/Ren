@@ -31,7 +31,7 @@ import java.util.TimeZone;
  * - 序列化排除 null 字段
  */
 @Slf4j
-public class JsonUtil {
+public class JsonUtils {
 
 	// 线程安全的 ObjectMapper（Jackson 2.10+ 已保证线程安全）
 	private static final ObjectMapper objectMapper = new ObjectMapper();

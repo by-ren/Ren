@@ -5,3 +5,4 @@ token:
   refresh-time: 300       # accessToken剩余5分钟时触发刷新
   refresh-expire-time: 28800  # refreshToken有效时长8小时
   black-list-time: 300    # accessToken加入黑名单后，黑名单持续时间
+  is-open-single-device-login: 0    # 是否开启单设备登录（1：开启 0：关闭）

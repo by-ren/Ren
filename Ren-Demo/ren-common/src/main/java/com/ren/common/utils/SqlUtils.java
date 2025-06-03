@@ -10,7 +10,7 @@ import org.springframework.util.StringUtils;
  * 
  * @author ren
  */
-public class SqlUtil
+public class SqlUtils
 {
     /**
      * 定义常用的 sql关键字
