@@ -20,7 +20,7 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
      * @param request
      * @param response
      * @param authException
-     * @author admin
+     * @author ren
      * @date 2025/04/18 20:34
      */
     @Override

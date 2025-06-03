@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * 时间工具类
  * 
- * @author admin
+ * @author ren
  */
 public class DateUtils {
     public static String YYYY = "yyyy";

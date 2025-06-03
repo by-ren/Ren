@@ -16,7 +16,7 @@ public class RedisConfig{
      * @description  redisTemplate配置
      * @param lettuceConnectionFactory
      * @return org.springframework.data.redis.core.RedisTemplate<java.lang.String,java.lang.Object>
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:27
      */
     @Bean

@@ -22,11 +22,11 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Autowired
     private PostMapper postMapper;
 
-    /*
+    /**
      * 添加岗位
      * @param post
      * @return int
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -37,10 +37,10 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return post.getPostId();
     }
 
-    /*
+    /**
      * 删除岗位
      * @param postId
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -48,10 +48,10 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         postMapper.deletePost(postId);
     }
 
-    /*
+    /**
      * 编辑岗位
      * @param post
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -61,11 +61,11 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         postMapper.updatePost(post);
     }
 
-    /*
+    /**
      * 分页获取岗位列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Post>
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     @Override
@@ -77,11 +77,11 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return postList;
     }
 
-    /*
+    /**
      * 岗位列表
      * @param paramMap
      * @return java.util.List<com.ren.system.entity.Post>
-     * @author admin
+     * @author ren
      * @date 2025/05/23 14:30
      */
     @Override
@@ -93,11 +93,11 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         return postList;
     }
 
-    /*
+    /**
      * 获取岗位详情
      * @param postId
      * @return com.ren.system.entity.Post
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     @Override

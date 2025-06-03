@@ -16,10 +16,10 @@ public class UserPostServiceImpl extends ServiceImpl<UserPostMapper, UserPost> i
 	@Autowired
 	private UserPostMapper userPostMapper;
 
-	/*
+	/**
 	 * 添加用户岗位
 	 * @param userPost
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/07 17:17
 	 */
 	@Override
@@ -27,10 +27,10 @@ public class UserPostServiceImpl extends ServiceImpl<UserPostMapper, UserPost> i
 		userPostMapper.insertUserPost(userPost);
 	}
 
-	/*
+	/**
 	 * 批量添加用户岗位
 	 * @param userPostList
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/23 14:47
 	 */
 	@Override
@@ -38,10 +38,10 @@ public class UserPostServiceImpl extends ServiceImpl<UserPostMapper, UserPost> i
 		userPostMapper.insertUserPostBatch(userPostList);
 	}
 
-	/*
+	/**
 	 * 删除用户岗位
 	 * @param userId
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/07 17:18
 	 */
 	@Override
@@ -49,11 +49,11 @@ public class UserPostServiceImpl extends ServiceImpl<UserPostMapper, UserPost> i
 		userPostMapper.deleteUserPostByUserId(userId);
 	}
 
-	/*
+	/**
 	 * 获取用户岗位列表
 	 * @param userId
 	 * @return java.util.List<com.ren.system.entity.UserPost>
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/07 17:19
 	 */
 	@Override

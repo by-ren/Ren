@@ -17,18 +17,19 @@ import lombok.NoArgsConstructor;
 public class Config extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
+    /** 参数主键 */
     @TableId(value = "config_id", type = IdType.AUTO)
     private Long configId;
-    /**参数名称*/
+    /** 参数名称 */
     @TableField(value = "config_name")
     private String configName;
-    /**参数键名*/
+    /** 参数键名 */
     @TableField(value = "config_key")
     private String configKey;
-    /**参数键值*/
+    /** 参数键值 */
     @TableField(value = "config_value")
     private String configValue;
-    /**是否系统内置（1：是，0：否）*/
+    /** 是否系统内置（1：是，0：否） */
     @TableField(value = "is_system")
     private Byte isSystem;
 

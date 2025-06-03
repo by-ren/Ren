@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Treeselect树结构实体类
  *
- * @author admin
+ * @author ren
  */
 @Data
 @NoArgsConstructor
@@ -43,7 +43,7 @@ public class TreeSelectVO implements Serializable
      * @param labelFieldName
      * @param disabledFieldName
      * @param childrenFieldName
-     * @author admin
+     * @author ren
      * @date 2025/05/09 22:35
      */
     public <T> TreeSelectVO(

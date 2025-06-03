@@ -13,7 +13,7 @@ public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
     /*
      * 添加角色菜单
      * @param roleMenu
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:17
      */
     void insertRoleMenu(RoleMenu roleMenu);
@@ -21,7 +21,7 @@ public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
     /*
      * 删除角色菜单
      * @param roleId
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:18
      */
     void deleteRoleMenuByRoleId(long roleId);
@@ -30,7 +30,7 @@ public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
      * 获取角色菜单列表
      * @param roleId
      * @return java.util.List<com.ren.system.entity.RoleMenu>
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:19
      */
     List<RoleMenu> listRoleMenuByRoleId(long roleId);
@@ -38,7 +38,7 @@ public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
     /*
      * 添加权限菜单
      * @param roleMenuList
-     * @author admin
+     * @author ren
      * @date 2025/05/12 15:45
      */
 	void insertRoleMenuBatch(List<RoleMenu> roleMenuList);

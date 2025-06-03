@@ -6,18 +6,16 @@ import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ren.common.constant.AppConstants;
 import com.ren.common.domain.entity.User;
 import com.ren.common.utils.PageUtils;
+import com.ren.common.utils.SecurityUtils;
 import com.ren.system.entity.DictData;
 import com.ren.system.entity.UserPost;
 import com.ren.system.entity.UserRole;
 import com.ren.system.mapper.UserMapper;
-import com.ren.system.mapper.UserRoleMapper;
 import com.ren.system.service.*;
-import com.ren.common.constant.AppConstants;
-import com.ren.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,10 +39,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserPostService userPostService;
 
 
-    /*
+    /**
      * 添加用户详情
      * @param user
-     * @author admin
+     * @author ren
      * @date 2025/04/16 16:24
      */
     @Override
@@ -74,12 +72,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return user.getUserId();
     }
 
-    /*
+    /**
      * 编辑用户是否删除
      * @param userId
      * @param isDel
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/04 13:59
      */
     @Override
@@ -87,12 +85,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userMapper.updateUserIsDelById(userId,isDel,updateBy,DateUtil.currentSeconds());
     }
 
-    /*
+    /**
      * 重置密码（后台使用）
      * @param userId
      * @param newPassword
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/04 13:38
      */
     @Override
@@ -103,11 +101,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userMapper.resetPassword(userId,newPassword,updateBy,DateUtil.currentSeconds());
     }
 
-    /*
+    /**
      * 编辑用户
      * @param user
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/04 13:52
      */
     @Override
@@ -132,13 +130,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
-    /*
+    /**
      * 编辑用户（登录用）
      * @param userId
      * @param loginIp
      * @param loginDate
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/16 16:08
      */
     @Override
@@ -146,11 +144,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userMapper.updateUserByLogin(userId,loginIp,loginDate,updateBy,DateUtil.currentSeconds());
     }
 
-    /*
+    /**
      * 根据登陆账号获取username
      * @param username
      * @return com.ren.admin.entity.User
-     * @author admin
+     * @author ren
      * @date 2025/05/04 17:27
      */
     @Override
@@ -158,11 +156,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userMapper.selectUserByParam(Map.of("username",username));
     }
 
-    /*
+    /**
      * 根据ID查询User
      * @param id
      * @return com.ren.entity.User
-     * @author admin
+     * @author ren
      * @date 2025/04/17 15:44
      */
     @Override
@@ -171,10 +169,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return user;
     }
 
-    /*
+    /**
      * 获取用户列表
      * @return java.util.List<com.ren.admin.entity.User>
-     * @author admin
+     * @author ren
      * @date 2025/04/26 15:52
      */
     @Override
@@ -185,11 +183,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userMapper.listUserByPage(PageUtils.createPage(User.class),paramMap);
     }
 
-    /*
+    /**
      * 获取用户列表
      * @param paramMap
      * @return java.util.List<com.ren.common.domain.entity.User>
-     * @author admin
+     * @author ren
      * @date 2025/05/22 17:07
      */
     @Override
@@ -200,11 +198,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userMapper.listUserByParam(paramMap);
     }
 
-    /*
+    /**
      * 获取用户列表
      * @param roleId
      * @return java.util.List<com.ren.common.core.entity.User>
-     * @author admin
+     * @author ren
      * @date 2025/05/13 10:10
      */
     @Override
@@ -213,11 +211,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userList;
     }
 
-    /*
+    /**
      * 获取用户列表
      * @param deptId
      * @return java.util.List<com.ren.common.core.entity.User>
-     * @author admin
+     * @author ren
      * @date 2025/05/13 10:10
      */
     @Override

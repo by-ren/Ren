@@ -20,11 +20,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Autowired
     private  MenuMapper menuMapper;
 
-    /*
+    /**
      * 添加菜单
      * @param createBy
      * @return long
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:12
      */
     @Override
@@ -35,11 +35,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         return menu.getMenuId();
     }
 
-    /*
+    /**
      * 编辑菜单
      * @param menu
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:13
      */
     @Override
@@ -49,11 +49,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         menuMapper.updateMenuById(menu);
     }
 
-    /*
+    /**
      * 获取菜单详情
      * @param menuId
      * @return com.ren.common.core.entity.Menu
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:14
      */
     @Override
@@ -62,11 +62,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         return menu;
     }
 
-    /*
+    /**
      * 根据参数获取菜单列表
      * @param paramMap
      * @return java.util.List<com.ren.common.core.entity.Menu>
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:15
      */
     @Override
@@ -78,12 +78,12 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         return menuList;
     }
 
-    /*
+    /**
      * 编辑菜单是否删除
-     * @param deptId
+     * @param menuId
      * @param isDel
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:13
      */
     @Override
@@ -91,11 +91,11 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         menuMapper.updateMenuIsDelById(menuId,isDel,updateBy,DateUtil.currentSeconds());
     }
 
-    /*
+    /**
      * 根据角色ID获取菜单列表
-     * @param roleId
+     * @param roleIds
      * @return java.util.List<com.ren.common.core.entity.Menu>
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:16
      */
     @Override

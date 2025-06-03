@@ -35,7 +35,7 @@ public class RoleController extends BaseController {
      * 角色分页列表
      * @param paramMap
      * @return com.ren.common.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/08 15:01
      */
     @GetMapping("/list/page")
@@ -48,7 +48,7 @@ public class RoleController extends BaseController {
     /*
      * 角色列表
      * @return com.ren.common.core.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/12 19:28
      */
     @GetMapping("/list")
@@ -63,7 +63,7 @@ public class RoleController extends BaseController {
      * @param loginUser
      * @param addRole
      * @return com.ren.common.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/08 15:01
      */
     @PostMapping("/add")
@@ -78,7 +78,7 @@ public class RoleController extends BaseController {
      * @param loginUser
      * @param modifyRole
      * @return com.ren.common.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/08 15:32
      */
     @PostMapping("/modify")
@@ -93,7 +93,7 @@ public class RoleController extends BaseController {
      * @param loginUser
      * @param userId
      * @return com.ren.common.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/08 15:32
      */
     @DeleteMapping("/delete")

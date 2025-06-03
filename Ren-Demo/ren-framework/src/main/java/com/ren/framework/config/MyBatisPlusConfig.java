@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Mybatis支持*匹配扫描包
  *
- * @author admin
+ * @author ren
  */
 @Configuration
 public class MyBatisPlusConfig
@@ -17,7 +17,7 @@ public class MyBatisPlusConfig
     /*
      * 配置分页插件
      * @return com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor
-     * @author admin
+     * @author ren
      * @date 2025/05/06 10:33
      */
 	@Bean

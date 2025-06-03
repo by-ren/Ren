@@ -48,7 +48,7 @@ public class UserController extends BaseController {
      * @AuthenticationPrincipal LoginUser loginUser可以直接从SpringSecurity中获取到当前的用户信息
      * @param user
      * @return org.springframework.http.ResponseEntity<?>
-     * @author admin
+     * @author ren
      * @date 2025/04/17 19:42
      */
     @GetMapping("/info")
@@ -95,7 +95,7 @@ public class UserController extends BaseController {
      * @param parentIndex
      * @param menuVOList
      * @return java.util.List<com.ren.common.domain.vo.MenuVO>
-     * @author admin
+     * @author ren
      * @date 2025/05/19 17:36
      */
     protected List<MenuVO> modifyMenuVOIndex(String parentIndex,List<MenuVO> menuVOList) {
@@ -113,7 +113,7 @@ public class UserController extends BaseController {
      * @param parentMenuShow
      * @param dynamicRouteVOList
      * @return java.util.List<com.ren.common.domain.vo.DynamicRouteVO>
-     * @author admin
+     * @author ren
      * @date 2025/05/19 17:36
      */
     protected List<DynamicRouteVO> modifyDynamicRouteVOMenuShow(String parentMenuShow,List<DynamicRouteVO> dynamicRouteVOList) {
@@ -130,7 +130,7 @@ public class UserController extends BaseController {
      * 用户信息（其他模块获取用户信息使用）
      * @param userId
      * @return com.ren.common.core.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/12 21:02
      */
     @GetMapping("/info/v2")
@@ -146,7 +146,7 @@ public class UserController extends BaseController {
     /*
      * 用户列表
      * @return com.ren.admin.common.dto.AjaxResult
-     * @author admin
+     * @author ren
      * @date 2025/04/26 15:55
      */
     @GetMapping("/list/page")
@@ -161,7 +161,7 @@ public class UserController extends BaseController {
      * @param loginUser
      * @param addUser
      * @return com.ren.admin.common.dto.AjaxResult
-     * @author admin
+     * @author ren
      * @date 2025/05/04 16:26
      */
     @PostMapping("/add")
@@ -176,7 +176,7 @@ public class UserController extends BaseController {
      * @param loginUser
      * @param modifyUser
      * @return com.ren.admin.common.dto.AjaxResult
-     * @author admin
+     * @author ren
      * @date 2025/05/04 16:08
      */
     @PostMapping("/modify")
@@ -191,7 +191,7 @@ public class UserController extends BaseController {
      * @param user
      * @param userId
      * @return com.ren.admin.common.dto.AjaxResult
-     * @author admin
+     * @author ren
      * @date 2025/05/04 15:27
      */
     @DeleteMapping("/delete")
@@ -206,7 +206,7 @@ public class UserController extends BaseController {
      * @param user
      * @param paramMap
      * @return com.ren.admin.common.dto.AjaxResult
-     * @author admin
+     * @author ren
      * @date 2025/05/04 14:33
      */
     @PostMapping("/resetPassword")

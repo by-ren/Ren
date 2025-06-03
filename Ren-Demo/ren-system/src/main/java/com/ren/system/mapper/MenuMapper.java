@@ -15,7 +15,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * 添加菜单
      * @param createBy
      * @return long
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:12
      */
     void insertMenu(Menu menu);
@@ -24,7 +24,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * 编辑菜单
      * @param menu
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:13
      */
     void updateMenuById(Menu menu);
@@ -33,7 +33,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * 根据参数获取菜单列表
      * @param paramMap
      * @return java.util.List<com.ren.common.core.entity.Menu>
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:15
      */
     List<Menu> listMenuByParam(Map<String, Object> paramMap);
@@ -43,7 +43,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @param deptId
      * @param isDel
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:13
      */
 	void updateMenuIsDelById(@Param("menuId") long menuId, @Param("isDel")byte isDel, @Param("updateBy")String updateBy, @Param("updateTime")long updateTime);
@@ -52,7 +52,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * 根据角色ID获取菜单列表
      * @param roleIds
      * @return java.util.List<com.ren.common.domain.entity.Menu>
-     * @author admin
+     * @author ren
      * @date 2025/05/16 14:49
      */
     List<Menu> listMenuByRoleIds(@Param("roleIds") Long[] roleIds);

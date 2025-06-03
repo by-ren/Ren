@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 public class RoleDept {
     private static final long serialVersionUID = 1L;
 
-    /**角色ID*/
+    /** 角色ID */
     @TableField(value = "role_id")
     private Long roleId;
-    /**部门ID*/
+    /** 部门ID */
     @TableField(value = "dept_id")
     private Long deptId;
 }

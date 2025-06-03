@@ -5,19 +5,13 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ren.common.constant.AppConstants;
-import com.ren.common.domain.entity.Dept;
-import com.ren.common.domain.entity.Role;
 import com.ren.common.utils.PageUtils;
 import com.ren.system.entity.Config;
 import com.ren.system.mapper.ConfigMapper;
-import com.ren.system.mapper.DeptMapper;
 import com.ren.system.service.ConfigService;
-import com.ren.system.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -26,11 +20,11 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
     @Autowired
     private ConfigMapper configMapper;
 
-    /*
+    /**
      * 添加配置
      * @param config
      * @return int
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -41,10 +35,10 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
         return config.getConfigId();
     }
 
-    /*
+    /**
      * 删除配置
      * @param configId
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -52,10 +46,10 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
         configMapper.deleteConfig(configId);
     }
 
-    /*
+    /**
      * 编辑配置
      * @param config
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -65,11 +59,11 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
         configMapper.updateConfig(config);
     }
 
-    /*
+    /**
      * 分页获取配置列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Config>
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     @Override
@@ -81,11 +75,11 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
         return configList;
     }
 
-    /*
+    /**
      * 获取配置详情
      * @param configId
      * @return com.ren.system.entity.Config
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     @Override
@@ -94,11 +88,11 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
         return config;
     }
 
-    /*
+    /**
      * 获取配置详情
      * @param configKey
      * @return com.ren.system.entity.Config
-     * @author admin
+     * @author ren
      * @date 2025/05/23 13:12
      */
     @Override

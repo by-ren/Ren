@@ -29,7 +29,7 @@ public class NoticeController extends BaseController {
      * 通知公告字典类型列表
      * @param paramMap
      * @return com.ren.common.domain.page.TableDataInfo
-     * @author admin
+     * @author ren
      * @date 2025/05/18 15:28
      */
     @GetMapping("/list/page")
@@ -44,7 +44,7 @@ public class NoticeController extends BaseController {
      * @param loginUser
      * @param addNotice
      * @return com.ren.common.domain.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/18 15:28
      */
     @PostMapping("/add")
@@ -61,7 +61,7 @@ public class NoticeController extends BaseController {
      * @param loginUser
      * @param modifyNotice
      * @return com.ren.common.domain.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/18 15:28
      */
     @PostMapping("/modify")
@@ -78,7 +78,7 @@ public class NoticeController extends BaseController {
      * @param loginUser
      * @param noticeId
      * @return com.ren.common.domain.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")

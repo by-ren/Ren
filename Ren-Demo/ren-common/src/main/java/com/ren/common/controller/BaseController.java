@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 /**
  * web层通用数据处理
  * 
- * @author admin
+ * @author ren
  */
 public class BaseController
 {
@@ -22,7 +22,7 @@ public class BaseController
      * 获取分页返回对象
      * @param list
      * @return com.ren.common.domain.page.TableDataInfo
-     * @author admin
+     * @author ren
      * @date 2025/05/13 16:33
      */
     protected TableDataInfo getDataTable(IPage<?> list)

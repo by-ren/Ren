@@ -308,7 +308,7 @@ public class FastJSON2Utils {
 	 * 过滤敏感字段
 	 * @param obj
 	 * @return java.lang.String
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/20 15:13
 	 */
 	public static String filterSensitiveFields(String[] excludeFields,Object... args) {

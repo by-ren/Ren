@@ -2,6 +2,7 @@ package com.ren.admin.controller;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
 import com.ren.common.constant.AppConstants;
@@ -52,7 +53,7 @@ public class AuthController {
      * 自定义登录接口
      * @param loginRequest
      * @return com.ren.admin.common.dto.AjaxResult
-     * @author admin
+     * @author ren
      * @date 2025/04/24 10:28
      */
     @PostMapping("/login")
@@ -131,7 +132,7 @@ public class AuthController {
      * @param paramMap
      * @param httpRequest
      * @return com.ren.common.domain.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/16 17:21
      */
     @PostMapping("/auto/login")
@@ -143,7 +144,7 @@ public class AuthController {
      * 自定义登出接口
      * @param user
      * @return com.ren.admin.common.dto.AjaxResult
-     * @author admin
+     * @author ren
      * @date 2025/04/24 10:28
      */
     @PostMapping("/logout")
@@ -156,11 +157,13 @@ public class AuthController {
 
         // 将现在的这个AccessToken加入黑名单，防止退出后还能登录
         String accessToken = jwtUtils.getAccessToken(request);
-        redisTemplate.opsForValue().set(
-                "blacklist:" + accessToken,
-                "logged_out",
-                tokenProperties.getBlackListTime(),
-                TimeUnit.SECONDS);
+        if(StrUtil.isNotBlank(accessToken)){
+            redisTemplate.opsForValue().set(
+                    "blacklist:" + accessToken,
+                    "logged_out",
+                    tokenProperties.getBlackListTime(),
+                    TimeUnit.SECONDS);
+        }
 
         return AjaxResultDTO.success("退出成功");
     }
@@ -169,7 +172,7 @@ public class AuthController {
      * 自定义刷新token接口
      * @param refreshToken
      * @return com.ren.admin.common.dto.AjaxResult
-     * @author admin
+     * @author ren
      * @date 2025/04/24 10:28
      */
     @PostMapping("/refreshToken")

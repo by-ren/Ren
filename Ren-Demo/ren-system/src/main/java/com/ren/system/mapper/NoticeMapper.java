@@ -17,7 +17,7 @@ public interface NoticeMapper extends BaseMapper<Notice> {
      * 添加通知公告
      * @param notice
      * @return int
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     void insertNotice(Notice notice);
@@ -25,7 +25,7 @@ public interface NoticeMapper extends BaseMapper<Notice> {
     /*
      * 删除通知公告
      * @param noticeId
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     void deleteNotice(long noticeId);
@@ -33,7 +33,7 @@ public interface NoticeMapper extends BaseMapper<Notice> {
     /*
      * 编辑通知公告
      * @param notice
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     void updateNotice(Notice notice);
@@ -42,7 +42,7 @@ public interface NoticeMapper extends BaseMapper<Notice> {
      * 分页获取通知公告列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Notice>
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     IPage<Notice> listNoticeByPage(Page<Notice> page, @Param("paramMap")Map<String, Object> paramMap);

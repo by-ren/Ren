@@ -19,11 +19,11 @@ public class OperLogServiceImpl extends ServiceImpl<OperLogMapper, OperLog> impl
     @Autowired
     private OperLogMapper operLogMapper;
 
-    /*
+    /**
      * 添加操作日志
      * @param operLog
      * @return int
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -32,10 +32,10 @@ public class OperLogServiceImpl extends ServiceImpl<OperLogMapper, OperLog> impl
         return operLog.getOperId();
     }
 
-    /*
+    /**
      * 删除操作日志
      * @param operId
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -43,11 +43,11 @@ public class OperLogServiceImpl extends ServiceImpl<OperLogMapper, OperLog> impl
         operLogMapper.deleteOperLog(operId);
     }
 
-    /*
+    /**
      * 分页获取操作日志列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.common.domain.entity.OperLog>
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     @Override
@@ -59,11 +59,11 @@ public class OperLogServiceImpl extends ServiceImpl<OperLogMapper, OperLog> impl
         return operLogList;
     }
 
-    /*
+    /**
      * 获取操作日志详情
      * @param operId
      * @return com.ren.common.domain.entity.OperLog
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     @Override

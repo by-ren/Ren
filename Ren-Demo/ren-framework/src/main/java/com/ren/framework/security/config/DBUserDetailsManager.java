@@ -41,7 +41,7 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
      * Spring Security在进行认证的时候会自动调用，然后用这里的内容与用户传进来的内容对比，如果相同，则认证成功
      * @param username
      * @return org.springframework.security.core.userdetails.UserDetails
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:31
      */
     @Override

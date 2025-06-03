@@ -8,7 +8,7 @@ import org.springframework.util.StringUtils;
 /**
  * sql操作工具类
  * 
- * @author admin
+ * @author ren
  */
 public class SqlUtil
 {

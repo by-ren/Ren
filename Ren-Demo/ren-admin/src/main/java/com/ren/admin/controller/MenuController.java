@@ -36,7 +36,7 @@ public class MenuController {
      * 菜单树形列表（页面显示用）
      * @param paramMap
      * @return com.ren.common.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/08 17:14
      */
     @GetMapping("/list/tree")
@@ -52,7 +52,7 @@ public class MenuController {
      * 排除本菜单Id的菜单列表（菜单本身修改时下拉列表使用）
      * @param menuId
      * @return com.ren.common.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/08 17:14
      */
     @GetMapping("/list/parent/{menuId}")
@@ -73,7 +73,7 @@ public class MenuController {
     /*
      * 角色菜单列表（其他模块下拉列表使用）
      * @return com.ren.common.core.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/12 14:53
      */
     @GetMapping("/list/role")
@@ -102,7 +102,7 @@ public class MenuController {
      * @param loginUser
      * @param addMenu
      * @return com.ren.common.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/09 17:01
      */
     @PostMapping("/add")
@@ -117,7 +117,7 @@ public class MenuController {
      * @param loginUser
      * @param modifyMenu
      * @return com.ren.common.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/09 17:01
      */
     @PostMapping("/modify")
@@ -132,7 +132,7 @@ public class MenuController {
      * @param loginUser
      * @param menuId
      * @return com.ren.common.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/09 17:01
      */
     @DeleteMapping("/delete")

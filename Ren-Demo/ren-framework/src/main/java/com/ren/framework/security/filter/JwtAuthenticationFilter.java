@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * @param request
      * @param response
      * @param chain
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:23
      */
     @Override
@@ -103,7 +103,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * 不需要鉴权的接口
      * @param uri
      * @return boolean
-     * @author admin
+     * @author ren
      * @date 2025/04/18 17:08
      */
     private boolean isOpenEndpoint(String uri) {

@@ -39,7 +39,7 @@ public class DeptController {
      * 部门树形列表（页面显示用）
      * @param paramMap
      * @return com.ren.common.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/08 17:14
      */
     @GetMapping("/list/tree")
@@ -54,7 +54,7 @@ public class DeptController {
     /*
      * 部门树形列表（其他模块下拉列表用）
      * @return com.ren.common.core.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/10 18:06
      */
     @GetMapping("/list")
@@ -70,7 +70,7 @@ public class DeptController {
      * 排除本部门Id的部门列表（部门本身修改时下拉列表使用）
      * @param deptId
      * @return com.ren.common.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/08 17:14
      */
     @GetMapping("/list/parent/{deptId}")
@@ -91,7 +91,7 @@ public class DeptController {
      * 角色部门权限列表
      * @param roleId
      * @return com.ren.common.core.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/12 16:18
      */
     @GetMapping("/list/role")
@@ -118,7 +118,7 @@ public class DeptController {
      * @param loginUser
      * @param addDept
      * @return com.ren.common.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/09 17:01
      */
     @PostMapping("/add")
@@ -133,7 +133,7 @@ public class DeptController {
      * @param loginUser
      * @param modifyDept
      * @return com.ren.common.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/09 17:01
      */
     @PostMapping("/modify")
@@ -148,7 +148,7 @@ public class DeptController {
      * @param loginUser
      * @param deptId
      * @return com.ren.common.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/09 17:01
      */
     @DeleteMapping("/delete")

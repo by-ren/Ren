@@ -8,12 +8,14 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ren.common.constant.AppConstants;
 import com.ren.common.domain.entity.Role;
-import com.ren.common.domain.entity.User;
 import com.ren.common.utils.PageUtils;
 import com.ren.system.entity.RoleDept;
 import com.ren.system.entity.RoleMenu;
 import com.ren.system.mapper.RoleMapper;
-import com.ren.system.service.*;
+import com.ren.system.service.DeptService;
+import com.ren.system.service.RoleDeptService;
+import com.ren.system.service.RoleMenuService;
+import com.ren.system.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,11 +37,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Autowired
     private DeptService deptService;
 
-    /*
+    /**
      * 添加角色
      * @param createBy
      * @return long
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:12
      */
     @Override
@@ -64,12 +66,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         return role.getRoleId();
     }
 
-    /*
+    /**
      * 编辑角色是否删除
      * @param roleId
      * @param isDel
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:13
      */
     @Override
@@ -77,11 +79,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         roleMapper.updateRoleIsDelById(roleId,isDel,updateBy,DateUtil.currentSeconds());
     }
 
-    /*
+    /**
      * 编辑角色
      * @param role
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:13
      */
     @Override
@@ -107,11 +109,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         }
     }
 
-    /*
+    /**
      * 获取角色详情
      * @param roleId
      * @return com.ren.common.core.entity.Role
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:14
      */
     @Override
@@ -120,11 +122,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         return role;
     }
 
-    /*
+    /**
      * 根据参数获取角色列表
      * @param paramMap
      * @return java.util.List<com.ren.common.core.entity.Role>
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:15
      */
     @Override
@@ -136,11 +138,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         return roleList;
     }
 
-    /*
+    /**
      * 根据参数获取角色列表
      * @param paramMap
      * @return java.util.List<com.ren.common.domain.entity.Role>
-     * @author admin
+     * @author ren
      * @date 2025/05/13 20:05
      */
     @Override
@@ -151,11 +153,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         return roleMapper.listRoleByParam(paramMap);
     }
 
-    /*
+    /**
      * 根据用户Id获取角色列表
      * @param userId
      * @return java.util.List<com.ren.common.domain.entity.Role>
-     * @author admin
+     * @author ren
      * @date 2025/05/16 14:36
      */
     @Override

@@ -20,11 +20,11 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     @Autowired
     private NoticeMapper noticeMapper;
 
-    /*
+    /**
      * 添加通知公告
      * @param notice
      * @return int
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -35,10 +35,10 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
         return notice.getNoticeId();
     }
 
-    /*
+    /**
      * 删除通知公告
      * @param noticeId
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -46,10 +46,10 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
         noticeMapper.deleteNotice(noticeId);
     }
 
-    /*
+    /**
      * 编辑通知公告
      * @param notice
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -59,11 +59,11 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
         noticeMapper.updateNotice(notice);
     }
 
-    /*
+    /**
      * 分页获取通知公告列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Notice>
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     @Override
@@ -75,11 +75,11 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
         return noticeList;
     }
 
-    /*
+    /**
      * 获取通知公告详情
      * @param noticeId
      * @return com.ren.system.entity.Notice
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     @Override

@@ -23,7 +23,7 @@ public class OperLogAspect {
 
 	/*
 	 * 匹配所有Controller的public方法
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/20 13:24
 	 */
 	@Pointcut("execution(public * com.ren.admin.controller..*.*(..))")
@@ -34,7 +34,7 @@ public class OperLogAspect {
 	 * 拦截所有符合controllerPointcut的请求
 	 * @param joinPoint
 	 * @return java.lang.Object
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/20 13:24
 	 */
 	@Around("controllerPointcut()")

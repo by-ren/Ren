@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * 格式化树结构方法
  * 
- * @author admin
+ * @author ren
  */
 public class TreeUtils {
 
@@ -162,7 +162,7 @@ public class TreeUtils {
      * @param disabledFieldName 树形下拉框是否禁用字段名 默认为disabled（注意：该字段名对应的字段需要是 short类型，0表示正常 1表示禁用）
      * @param childrenFieldName 树形下拉框子节点列表字段名 默认为children（注意：该字段名对应的字段需要为是 与所需要转换的列表类型相同的子列表）
      * @return java.util.List<com.ren.common.core.vo.TreeSelectVO>
-     * @author admin
+     * @author ren
      * @date 2025/05/09 22:35
      */
     public static <T> List<TreeSelectVO> convertTreeSelectForAll(List<T> tList,String idFieldName, String labelFieldName, String disabledFieldName, String childrenFieldName){

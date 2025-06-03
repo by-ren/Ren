@@ -28,7 +28,7 @@ public class DictDataController extends BaseController {
      * 字典数据字典数据列表
      * @param paramMap
      * @return com.ren.common.domain.page.TableDataInfo
-     * @author admin
+     * @author ren
      * @date 2025/05/18 15:28
      */
     @GetMapping("/list/page")
@@ -43,7 +43,7 @@ public class DictDataController extends BaseController {
      * @param loginUser
      * @param addDictData
      * @return com.ren.common.domain.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/18 15:28
      */
     @PostMapping("/add")
@@ -58,7 +58,7 @@ public class DictDataController extends BaseController {
      * @param loginUser
      * @param modifyDictData
      * @return com.ren.common.domain.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/18 15:28
      */
     @PostMapping("/modify")
@@ -73,7 +73,7 @@ public class DictDataController extends BaseController {
      * @param loginUser
      * @param dictDataId
      * @return com.ren.common.domain.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")
