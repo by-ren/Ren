@@ -8,6 +8,7 @@ import cn.hutool.http.useragent.UserAgentUtil;
 import com.ren.common.constant.AppConstants;
 import com.ren.common.domain.bo.LoginUser;
 import com.ren.common.domain.dto.AjaxResultDTO;
+import com.ren.common.utils.PersistentDeviceIdGeneratorUtils;
 import com.ren.common.utils.ServletUtils;
 import com.ren.common.utils.ip.AddressUtils;
 import com.ren.common.utils.ip.IpUtils;
@@ -96,7 +97,7 @@ public class AuthController {
 
             // 生成双Token
             String accessToken = jwtUtils.createAccessToken(loginUser,accessTokenExpireTime);
-            String refreshToken = jwtUtils.createRefreshToken(loginUser,refreshTokenExpireTime);
+            String refreshToken = jwtUtils.createRefreshToken(loginUser,refreshTokenExpireTime,httpRequest);
 
             //重新创建一个新的Authentication 对象（保留原始凭证和权限），存入SpringSecurity
             Authentication newAuth = new UsernamePasswordAuthenticationToken(
@@ -108,9 +109,9 @@ public class AuthController {
             // 将新创建的Authentication 对象存储到 SecurityContext,方便后面流程从SpringSecurity中直接获取用户信息
             SecurityContextHolder.getContext().setAuthentication(newAuth);
 
-
             // 异步登录操作日志并更新用户最后登录时间
             AsyncManager.me().execute(AsyncFactory.addLogininfor(loginUser.getUsername(), AppConstants.COMMON_BYTE_YES, "登录成功"));
+
             return AjaxResultDTO.success("登陆成功").put("accessToken",accessToken).put("refreshToken",refreshToken);
         } catch (BadCredentialsException e) {
             log.debug("登陆失败", e);
@@ -153,7 +154,7 @@ public class AuthController {
         SecurityContextHolder.clearContext();
 
         // 删除Redis中的RefreshToken
-        jwtUtils.deleteRefreshToken(loginUser.getUserId());
+        jwtUtils.deleteRefreshToken(loginUser.getUserId(),request);
 
         // 将现在的这个AccessToken加入黑名单，防止退出后还能登录
         String accessToken = jwtUtils.getAccessToken(request);
@@ -179,7 +180,7 @@ public class AuthController {
     public AjaxResultDTO refreshToken(HttpServletRequest request) {
         //从请求头中获取RefreshToken，只有RefreshToken有效才允许刷新Token，并验证refreshToken是否有效
         String refreshToken = jwtUtils.getRefreshToken(request);
-        if (!jwtUtils.validateRefreshToken(refreshToken)) {
+        if (!jwtUtils.validateRefreshToken(refreshToken,request)) {
             log.debug("refreshToken失效，请重新登录");
             return AjaxResultDTO.error(401, "refreshToken失效，请重新登录");
         }
