@@ -16,18 +16,19 @@ import lombok.NoArgsConstructor;
 public class Post extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
+    /** 岗位ID */
     @TableId(value = "post_id", type = IdType.AUTO)
     private Long postId;
-    /**岗位编码*/
+    /** 岗位编码 */
     @TableField(value = "post_code")
     private String postCode;
-    /**岗位名称*/
+    /** 岗位名称 */
     @TableField(value = "post_name")
     private String postName;
-    /**显示顺序*/
+    /** 显示顺序 */
     @TableField(value = "post_sort")
     private Integer postSort;
-    /**是否停用*/
+    /** 是否停用 */
     @TableField(value = "is_stop")
     private Byte isStop;
 

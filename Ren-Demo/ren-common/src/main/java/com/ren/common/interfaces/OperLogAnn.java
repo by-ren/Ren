@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 
 /*
  * 用在需要生成注解的方法上
- * @author admin
+ * @author ren
  * @date 2025/05/20 15:24
  */
 @Target({ ElementType.PARAMETER, ElementType.METHOD })

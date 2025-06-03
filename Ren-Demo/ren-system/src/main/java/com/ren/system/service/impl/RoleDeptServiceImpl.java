@@ -16,10 +16,10 @@ public class RoleDeptServiceImpl extends ServiceImpl<RoleDeptMapper, RoleDept> i
     @Autowired
     private RoleDeptMapper roleDeptMapper;
 
-    /*
+    /**
      * 添加可查看数据部门
      * @param roleDept
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:17
      */
     @Override
@@ -27,10 +27,10 @@ public class RoleDeptServiceImpl extends ServiceImpl<RoleDeptMapper, RoleDept> i
         roleDeptMapper.insertRoleDept(roleDept);
     }
 
-    /*
+    /**
      * 批量添加数据部门
      * @param roleDeptList
-     * @author admin
+     * @author ren
      * @date 2025/05/12 16:11
      */
     @Override
@@ -38,10 +38,10 @@ public class RoleDeptServiceImpl extends ServiceImpl<RoleDeptMapper, RoleDept> i
         roleDeptMapper.insertRoleDeptBatch(roleDeptList);
     }
 
-    /*
+    /**
      * 删除可查看数据部门
      * @param roleId
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:18
      */
     @Override
@@ -49,11 +49,11 @@ public class RoleDeptServiceImpl extends ServiceImpl<RoleDeptMapper, RoleDept> i
         roleDeptMapper.deleteRoleDeptByRoleId(roleId);
     }
 
-    /*
+    /**
      * 获取可查看数据部门列表
      * @param roleId
      * @return java.util.List<com.ren.system.entity.RoleDept>
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:19
      */
     @Override

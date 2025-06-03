@@ -3,7 +3,7 @@ package com.ren.common.constant;
 /**
  * 通用常量（该类用于存储一些，基本不会变动的常量）
  *
- * @author: admin
+ * @author ren
  * @time: 2025/05/23
  */
 public class AppConstants {

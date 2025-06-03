@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * 通用http工具封装
  * 
- * @author admin
+ * @author ren
  */
 public class HttpHelper
 {

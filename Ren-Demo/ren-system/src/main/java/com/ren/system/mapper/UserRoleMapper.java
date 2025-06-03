@@ -13,7 +13,7 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
 	/*
 	 * 添加用户角色
 	 * @param userRole
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/07 17:17
 	 */
 	void insertUserRole(UserRole userRole);
@@ -21,7 +21,7 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
 	/*
 	 * 批量添加用户角色
 	 * @param userRoleList
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/12 19:40
 	 */
 	void insertUserRoleBatch(List<UserRole> userRoleList);
@@ -29,7 +29,7 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
 	/*
 	 * 删除用户角色
 	 * @param userId
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/07 17:18
 	 */
 	void deleteUserRoleByUserId(long userId);
@@ -38,7 +38,7 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
 	 * 获取用户角色列表
 	 * @param userId
 	 * @return java.util.List<com.ren.system.entity.UserRole>
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/07 17:19
 	 */
 	List<UserRole> listUserRoleByUserId(long userId);

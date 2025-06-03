@@ -16,10 +16,10 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
 	@Autowired
 	private UserRoleMapper userRoleMapper;
 
-	/*
+	/**
 	 * 添加用户角色
 	 * @param userRole
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/07 17:17
 	 */
 	@Override
@@ -27,10 +27,10 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
 		userRoleMapper.insertUserRole(userRole);
 	}
 
-	/*
+	/**
 	 * 批量添加用户角色
 	 * @param userRoleList
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/23 14:45
 	 */
 	@Override
@@ -38,10 +38,10 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
 		userRoleMapper.insertUserRoleBatch(userRoleList);
 	}
 
-	/*
+	/**
 	 * 删除用户角色
 	 * @param userId
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/07 17:18
 	 */
 	@Override
@@ -49,11 +49,11 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
 		userRoleMapper.deleteUserRoleByUserId(userId);
 	}
 
-	/*
+	/**
 	 * 获取用户角色列表
 	 * @param userId
 	 * @return java.util.List<com.ren.system.entity.UserRole>
-	 * @author admin
+	 * @author ren
 	 * @date 2025/05/07 17:19
 	 */
 	@Override

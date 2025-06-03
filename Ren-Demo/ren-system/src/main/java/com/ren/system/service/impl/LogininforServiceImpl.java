@@ -19,11 +19,11 @@ public class LogininforServiceImpl extends ServiceImpl<LogininforMapper, Loginin
     @Autowired
     private LogininforMapper logininforMapper;
 
-    /*
+    /**
      * 添加登录日志
      * @param logininfor
      * @return int
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -32,10 +32,10 @@ public class LogininforServiceImpl extends ServiceImpl<LogininforMapper, Loginin
         return logininfor.getInfoId();
     }
 
-    /*
+    /**
      * 删除登录日志
      * @param infoId
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -43,11 +43,11 @@ public class LogininforServiceImpl extends ServiceImpl<LogininforMapper, Loginin
         logininforMapper.deleteLogininfor(infoId);
     }
 
-    /*
+    /**
      * 分页获取登录日志列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.common.domain.entity.Logininfor>
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     @Override
@@ -59,11 +59,11 @@ public class LogininforServiceImpl extends ServiceImpl<LogininforMapper, Loginin
         return logininforList;
     }
 
-    /*
+    /**
      * 获取登录日志详情
      * @param infoId
      * @return com.ren.common.domain.entity.Logininfor
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     @Override

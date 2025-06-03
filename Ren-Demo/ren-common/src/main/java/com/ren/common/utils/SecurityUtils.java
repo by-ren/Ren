@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * 安全服务工具类
  * 
- * @author admin
+ * @author ren
  */
 public class SecurityUtils
 {

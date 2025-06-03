@@ -14,7 +14,7 @@ public interface DeptMapper extends BaseMapper<Dept> {
     /*
      * 添加部门
      * @param dept
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:38
      */
     void insertDept(Dept dept);
@@ -25,7 +25,7 @@ public interface DeptMapper extends BaseMapper<Dept> {
      * @param isDel
      * @param updateBy
      * @param updateTime
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:30
      */
     void updateDeptIsDelById(@Param("deptId")long deptId, @Param("isDel")byte isDel, @Param("updateBy")String updateBy, @Param("updateTime")long updateTime);
@@ -33,7 +33,7 @@ public interface DeptMapper extends BaseMapper<Dept> {
     /*
      * 编辑部门
      * @param dept
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:31
      */
     void updateDeptById(Dept dept);
@@ -42,7 +42,7 @@ public interface DeptMapper extends BaseMapper<Dept> {
      * 根据参数获取部门列表
      * @param paramMap
      * @return java.util.List<com.ren.common.core.entity.Dept>
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:31
      */
     List<Dept> listDeptByParam(Map<String, Object> paramMap);

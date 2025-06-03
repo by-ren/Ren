@@ -18,7 +18,7 @@ public interface ConfigMapper extends BaseMapper<Config> {
      * 添加配置
      * @param config
      * @return int
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     void insertConfig(Config config);
@@ -26,7 +26,7 @@ public interface ConfigMapper extends BaseMapper<Config> {
     /*
      * 删除配置
      * @param configId
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     void deleteConfig(long configId);
@@ -34,7 +34,7 @@ public interface ConfigMapper extends BaseMapper<Config> {
     /*
      * 编辑配置
      * @param config
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     void updateConfig(Config config);
@@ -43,7 +43,7 @@ public interface ConfigMapper extends BaseMapper<Config> {
      * 分页获取配置列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Config>
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     IPage<Config> listConfigByPage(Page<Config> page, @Param("paramMap")Map<String, Object> paramMap);
@@ -52,7 +52,7 @@ public interface ConfigMapper extends BaseMapper<Config> {
      * 获取配置详情
      * @param configKey
      * @return com.ren.system.entity.Config
-     * @author admin
+     * @author ren
      * @date 2025/05/23 13:12
      */
 	Config selectConfigByConfigKey(String configKey);

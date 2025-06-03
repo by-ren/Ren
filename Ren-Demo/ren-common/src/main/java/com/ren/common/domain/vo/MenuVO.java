@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 /**
  * MenuVO树结构实体类
  *
- * @author admin
+ * @author ren
  */
 @Data
 @NoArgsConstructor
@@ -40,7 +40,7 @@ public class MenuVO implements Serializable
      * @param nameFieldName
      * @param iconFieldName
      * @param childrenFieldName
-     * @author admin
+     * @author ren
      * @date 2025/05/09 22:35
      */
     public <T> MenuVO(

@@ -20,11 +20,11 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
     @Autowired
     private DeptMapper deptMapper;
 
-    /*
+    /**
      * 添加部门
      * @param createBy
      * @return long
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:12
      */
     @Override
@@ -36,12 +36,12 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
         return dept.getDeptId();
     }
 
-    /*
+    /**
      * 编辑部门是否删除
      * @param deptId
      * @param isDel
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:13
      */
     @Override
@@ -49,11 +49,11 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
         deptMapper.updateDeptIsDelById(deptId,isDel,updateBy,DateUtil.currentSeconds());
     }
 
-    /*
+    /**
      * 编辑部门
      * @param dept
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:13
      */
     @Override
@@ -63,11 +63,11 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
         deptMapper.updateDeptById(dept);
     }
 
-    /*
+    /**
      * 获取部门详情
      * @param deptId
      * @return com.ren.common.core.entity.Dept
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:14
      */
     @Override
@@ -76,11 +76,11 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
         return dept;
     }
 
-    /*
+    /**
      * 根据参数获取部门列表
      * @param paramMap
      * @return java.util.List<com.ren.common.core.entity.Dept>
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:15
      */
     @Override

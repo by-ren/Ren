@@ -19,7 +19,7 @@ public interface RoleMapper extends BaseMapper<Role> {
      * 添加角色
      * @param createBy
      * @return long
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:12
      */
     void insertRole(Role role);
@@ -29,7 +29,7 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @param roleId
      * @param isDel
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:13
      */
     void updateRoleIsDelById(@Param("roleId")long roleId, @Param("isDel")byte isDel, @Param("updateBy")String updateBy, @Param("updateTime")long updateTime);
@@ -38,7 +38,7 @@ public interface RoleMapper extends BaseMapper<Role> {
      * 编辑角色
      * @param role
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:13
      */
     void updateRoleById(Role role);
@@ -47,7 +47,7 @@ public interface RoleMapper extends BaseMapper<Role> {
      * 根据参数获取角色列表
      * @param paramMap
      * @return java.util.List<com.ren.common.core.entity.Role>
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:15
      */
     IPage<Role> listRoleByPage(Page<Role> page, @Param("paramMap")Map<String, Object> paramMap);
@@ -56,7 +56,7 @@ public interface RoleMapper extends BaseMapper<Role> {
      * 根据参数获取角色列表
      * @param paramMap
      * @return java.util.List<com.ren.common.domain.entity.Role>
-     * @author admin
+     * @author ren
      * @date 2025/05/13 20:05
      */
     List<Role> listRoleByParam(Map<String, Object> paramMap);
@@ -65,7 +65,7 @@ public interface RoleMapper extends BaseMapper<Role> {
      * 根据用户Id获取角色列表
      * @param userId
      * @return java.util.List<com.ren.common.domain.entity.Role>
-     * @author admin
+     * @author ren
      * @date 2025/05/16 14:37
      */
     List<Role> listRoleByUserId(Long userId);

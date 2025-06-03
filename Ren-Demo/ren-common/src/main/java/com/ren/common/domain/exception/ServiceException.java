@@ -4,20 +4,13 @@ public final class ServiceException extends RuntimeException
 {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * 错误码
-	 */
+	/** 错误码 */
 	private Integer code;
 
-	/**
-	 * 错误提示
-	 */
+	/** 错误提示 */
 	private String message;
 
-	/**
-	 * 错误明细，内部调试错误
-	 *
-	 */
+	/** 错误明细，内部调试错误 */
 	private String detailMessage;
 
 	/**

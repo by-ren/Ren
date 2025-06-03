@@ -16,7 +16,7 @@ public interface LogininforMapper extends BaseMapper<Logininfor> {
      * 添加登录日志
      * @param logininfor
      * @return int
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     void insertLogininfor(Logininfor logininfor);
@@ -24,7 +24,7 @@ public interface LogininforMapper extends BaseMapper<Logininfor> {
     /*
      * 删除登录日志
      * @param infoId
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     void deleteLogininfor(long infoId);
@@ -33,7 +33,7 @@ public interface LogininforMapper extends BaseMapper<Logininfor> {
      * 分页获取登录日志列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.common.domain.entity.Logininfor>
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     IPage<Logininfor> listLogininforByPage(Page<Logininfor> page, @Param("paramMap")Map<String, Object> paramMap);

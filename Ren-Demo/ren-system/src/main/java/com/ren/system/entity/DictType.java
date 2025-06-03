@@ -18,20 +18,21 @@ import java.util.List;
 public class DictType extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
+    /** 字典类型ID */
     @TableId(value = "dict_type_id", type = IdType.AUTO)
     private Long dictTypeId;
-    /**字典名称*/
+    /** 字典名称 */
     @TableField(value = "dict_name")
     private String dictName;
-    /**字典编码*/
+    /** 字典编码 */
     @TableField(value = "dict_code")
     private String dictCode;
-    /**是否停用（1：是，0：否）*/
+    /** 是否停用（1：是，0：否） */
     @TableField(value = "is_stop")
     private Byte isStop;
 
     /*==================================================以下为冗余字段===================================================*/
-    /**字典数据列表*/
+    /** 字典数据列表 */
     @TableField(exist = false)
     private List<DictData> dictDataList;
 

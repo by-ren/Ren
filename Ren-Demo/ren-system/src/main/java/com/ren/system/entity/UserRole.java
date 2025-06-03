@@ -13,10 +13,10 @@ import lombok.NoArgsConstructor;
 public class UserRole {
     private static final long serialVersionUID = 1L;
 
-    /**用户ID*/
+    /** 用户ID */
     @TableField(value = "user_id")
     private Long userId;
-    /**角色ID*/
+    /** 角色ID */
     @TableField(value = "role_id")
     private Long roleId;
 

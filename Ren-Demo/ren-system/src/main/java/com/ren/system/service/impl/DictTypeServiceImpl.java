@@ -26,11 +26,11 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
     @Autowired
     private DictDataService dictDataService;
 
-    /*
+    /**
      * 添加字典类型
      * @param dictType
      * @return int
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -41,10 +41,10 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
         return dictType.getDictTypeId();
     }
 
-    /*
+    /**
      * 删除字典类型
      * @param dictTypeId
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -52,10 +52,10 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
         dictTypeMapper.deleteDictType(dictTypeId);
     }
 
-    /*
+    /**
      * 编辑字典类型
      * @param dictType
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:49
      */
     @Override
@@ -65,11 +65,11 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
         dictTypeMapper.updateDictType(dictType);
     }
 
-    /*
+    /**
      * 分页获取字典类型列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.DictType>
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     @Override
@@ -81,11 +81,11 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
         return dictTypeList;
     }
 
-    /*
+    /**
      * 获取字典类型列表
      * @param paramMap
      * @return java.util.List<com.ren.system.entity.DictType>
-     * @author admin
+     * @author ren
      * @date 2025/05/23 13:40
      */
     @Override
@@ -97,11 +97,11 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
         return dictTypeList;
     }
 
-    /*
+    /**
      * 获取字典类型详情
      * @param dictTypeId
      * @return com.ren.system.entity.DictType
-     * @author admin
+     * @author ren
      * @date 2025/05/18 13:50
      */
     @Override
@@ -114,12 +114,12 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
         return dictType;
     }
 
-    /*
+    /**
      * 获取字典类型详情
      * @param dictCode
      * @param isHasList
      * @return com.ren.system.entity.DictType
-     * @author admin
+     * @author ren
      * @date 2025/05/23 13:27
      */
     @Override

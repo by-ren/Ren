@@ -12,27 +12,27 @@ public class BaseEntity implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    /**创建者*/
+    /** 创建者 */
     @TableField(value = "create_by")
     private String createBy;
-    /**创建时间 (秒时间戳)*/
+    /** 创建时间 (秒时间戳) */
     @TableField(value = "create_time")
     private Long createTime;
-    /**更新者*/
+    /** 更新者 */
     @TableField(value = "update_by")
     private String updateBy;
-    /**更新时间 (秒时间戳)*/
+    /** 更新时间 (秒时间戳) */
     @TableField(value = "update_time")
     private Long updateTime;
-    /**备注*/
+    /** 备注 */
     @TableField(value = "remark")
     private String remark;
 
     /*==================================================以下为冗余字段===================================================*/
-    /**创建时间Str*/
+    /** 创建时间Str */
     @TableField(exist = false)
     private String createTimeStr;
-    /**更新时间Str*/
+    /** 更新时间Str */
     @TableField(exist = false)
     private String updateTimeStr;
 }

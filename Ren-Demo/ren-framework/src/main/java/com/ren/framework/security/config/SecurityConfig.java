@@ -33,7 +33,7 @@ public class SecurityConfig {
      * 将AuthenticationManager 交给Spring管理，用于登录方法调用认证
      * @param authConfig
      * @return org.springframework.security.authentication.AuthenticationManager
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:30
      */
     @Bean
@@ -46,7 +46,7 @@ public class SecurityConfig {
      * 配置过滤器链
      * @param http
      * @return org.springframework.security.web.SecurityFilterChain
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:30
      */
     @Bean
@@ -93,7 +93,7 @@ public class SecurityConfig {
 
     /*
      * 自定义 CORS 配置源
-     * @author admin
+     * @author ren
      * @date 2025/04/19 18:24
      */
     @Bean
@@ -116,7 +116,7 @@ public class SecurityConfig {
     /*
      * 配置密码编码器（固定死使用BCryptPasswordEncoder密码格式，数据库密码不可以有前缀）
      * @return org.springframework.security.crypto.password.PasswordEncoder
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:40
      */
     /*@Bean
@@ -127,7 +127,7 @@ public class SecurityConfig {
     /*
      * 配置密码编码器（多编码器模式，数据库密码一定要有前缀）（底层默认使用BCryptPasswordEncoder密码管理器）
      * @return org.springframework.security.crypto.password.PasswordEncoder
-     * @author admin
+     * @author ren
      * @date 2025/04/22 21:52
      */
     @Bean

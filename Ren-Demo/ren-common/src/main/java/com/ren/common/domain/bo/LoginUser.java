@@ -6,69 +6,46 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * 登录用户身份权限
  * 
- * @author admin
+ * @author ren
  */
 public class LoginUser implements UserDetails
 {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 用户ID
-     */
+    /**用户ID*/
     private Long userId;
 
-    /**
-     * 过期时间
-     */
+    /**过期时间*/
     private Long expireTime;
 
-    /**
-     * 过期时间（refreshToken）
-     */
+    /**过期时间（refreshToken）*/
     private Long refreshTokenExpireTime;
 
-    /**
-     * 登录时间
-     */
+    /**登录时间*/
     private Long loginTime;
 
-    /**
-     * 登录IP地址
-     */
+    /**登录IP地址*/
     private String ipaddr;
 
-    /**
-     * 登录地点
-     */
+    /**登录地点*/
     private String loginLocation;
 
-    /**
-     * 浏览器类型
-     */
+    /**浏览器类型*/
     private String browser;
 
-    /**
-     * 操作系统
-     */
+    /**操作系统*/
     private String os;
 
-    /**
-     * 权限列表
-     */
+    /**权限列表*/
     private Set<String> permissions;
 
-    /**
-     * 用户信息
-     */
+    /**用户信息*/
     private User user;
 
     public LoginUser()
@@ -250,7 +227,7 @@ public class LoginUser implements UserDetails
     /*
      * 将数据库中查询出来的角色转换为SpringSecurity可以认识的权限对象，SpringSecurity会自己调用这个方法，来获取权限
      * @return java.util.Collection<? extends org.springframework.security.core.GrantedAuthority>
-     * @author admin
+     * @author ren
      * @date 2025/04/29 21:01
      */
     @Override

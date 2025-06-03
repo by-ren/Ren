@@ -16,30 +16,31 @@ import lombok.NoArgsConstructor;
 public class DictData extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
+    /** 字典编码 */
     @TableId(value = "dict_data_id", type = IdType.AUTO)
     private Long dictDataId;
-    /**字典排序*/
+    /** 字典排序 */
     @TableField(value = "dict_sort")
     private Integer dictSort;
-    /**字典标签*/
+    /** 字典标签 */
     @TableField(value = "dict_label")
     private String dictLabel;
-    /**字典键值*/
+    /** 字典键值 */
     @TableField(value = "dict_value")
     private String dictValue;
-    /**字典类型*/
+    /** 字典类型 */
     @TableField(value = "dict_type")
     private String dictType;
-    /**样式属性（其他样式扩展）*/
+    /** 样式属性（其他样式扩展） */
     @TableField(value = "css_class")
     private String cssClass;
-    /**表格回显样式*/
+    /** 表格回显样式 */
     @TableField(value = "list_class")
     private String listClass;
-    /**是否默认（1：是，0：否）*/
+    /** 是否默认（1：是，0：否） */
     @TableField(value = "is_default")
     private Byte isDefault;
-    /**是否停用（1：是，0：否）*/
+    /** 是否停用（1：是，0：否） */
     @TableField(value = "is_stop")
     private Byte isStop;
 

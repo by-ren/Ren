@@ -16,7 +16,7 @@ public interface UserMapper extends BaseMapper<User> {
     /*
      * 添加用户
      * @param user
-     * @author admin
+     * @author ren
      * @date 2025/05/04 13:30
      */
     void insertUser(User user);
@@ -27,7 +27,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param isDel
      * @param updateBy
      * @param updateTime
-     * @author admin
+     * @author ren
      * @date 2025/05/04 13:59
      */
     void updateUserIsDelById(@Param("userId")long userId, @Param("isDel")byte isDel, @Param("updateBy")String updateBy,@Param("updateTime")long updateTime);
@@ -38,7 +38,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param newPassword
      * @param updateBy
      * @param updateTime
-     * @author admin
+     * @author ren
      * @date 2025/05/04 13:50
      */
     void resetPassword(@Param("userId")long userId, @Param("newPassword")String newPassword, @Param("updateBy")String updateBy,@Param("updateTime")long updateTime);
@@ -47,7 +47,7 @@ public interface UserMapper extends BaseMapper<User> {
      * 编辑用户
      * @param user
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/04 13:52
      */
     void updateUser(User user);
@@ -58,7 +58,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param loginIp
      * @param loginDate
      * @param updateBy
-     * @author admin
+     * @author ren
      * @date 2025/05/16 16:08
      */
     void updateUserByLogin(@Param("userId") long userId, @Param("loginIp")String loginIp, @Param("loginDate")long loginDate, @Param("updateBy")String updateBy, @Param("updateTime")long updateTime);
@@ -68,7 +68,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param page
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.common.domain.entity.User>
-     * @author admin
+     * @author ren
      * @date 2025/05/13 15:43
      */
     IPage<User> listUserByPage(Page<User> page, @Param("paramMap") Map<String,Object> paramMap);
@@ -77,7 +77,7 @@ public interface UserMapper extends BaseMapper<User> {
      * 获取用户列表
      * @param paramMap
      * @return java.util.List<com.ren.common.domain.entity.User>
-     * @author admin
+     * @author ren
      * @date 2025/05/22 17:08
      */
     List<User> listUserByParam(Map<String, Object> paramMap);
@@ -86,7 +86,7 @@ public interface UserMapper extends BaseMapper<User> {
      * 根据查询参数获取用户列表
      * @param paramMap
      * @return com.ren.admin.entity.User
-     * @author admin
+     * @author ren
      * @date 2025/05/04 13:28
      */
     User selectUserByParam(Map<String,Object> paramMap);
@@ -95,7 +95,7 @@ public interface UserMapper extends BaseMapper<User> {
      * 获取用户列表
      * @param roleId
      * @return java.util.List<com.ren.common.core.entity.User>
-     * @author admin
+     * @author ren
      * @date 2025/05/13 10:11
      */
     List<User> listUserByRoleId(long roleId);
@@ -104,7 +104,7 @@ public interface UserMapper extends BaseMapper<User> {
      * 获取用户列表
      * @param deptId
      * @return java.util.List<com.ren.common.core.entity.User>
-     * @author admin
+     * @author ren
      * @date 2025/05/13 10:10
      */
     List<User> listUserByDeptId(long deptId);

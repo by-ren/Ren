@@ -28,7 +28,7 @@ public class OperLogController extends BaseController {
      * 操作日志分页列表
      * @param paramMap
      * @return com.ren.common.domain.page.TableDataInfo
-     * @author admin
+     * @author ren
      * @date 2025/05/18 15:28
      */
     @GetMapping("/list/page")
@@ -43,7 +43,7 @@ public class OperLogController extends BaseController {
      * @param loginUser
      * @param operLogId
      * @return com.ren.common.domain.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")

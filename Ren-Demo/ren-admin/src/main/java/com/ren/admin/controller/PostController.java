@@ -32,7 +32,7 @@ public class PostController extends BaseController {
      * 岗位分页列表
      * @param paramMap
      * @return com.ren.common.domain.page.TableDataInfo
-     * @author admin
+     * @author ren
      * @date 2025/05/18 15:28
      */
     @GetMapping("/list/page")
@@ -45,7 +45,7 @@ public class PostController extends BaseController {
     /*
      * 岗位列表
      * @return com.ren.common.domain.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/23 14:29
      */
     @GetMapping("/list")
@@ -59,7 +59,7 @@ public class PostController extends BaseController {
      * @param loginUser
      * @param addPost
      * @return com.ren.common.domain.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/18 15:28
      */
     @PostMapping("/add")
@@ -74,7 +74,7 @@ public class PostController extends BaseController {
      * @param loginUser
      * @param modifyPost
      * @return com.ren.common.domain.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/18 15:28
      */
     @PostMapping("/modify")
@@ -89,7 +89,7 @@ public class PostController extends BaseController {
      * @param loginUser
      * @param postId
      * @return com.ren.common.domain.dto.AjaxResultDTO
-     * @author admin
+     * @author ren
      * @date 2025/05/18 15:28
      */
     @DeleteMapping("/delete")

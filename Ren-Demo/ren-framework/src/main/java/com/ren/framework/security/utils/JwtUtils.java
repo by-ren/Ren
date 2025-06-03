@@ -46,7 +46,7 @@ public class JwtUtils {
      * @param loginUser
      * @param expireTime 过期时间，毫秒时间戳
      * @return java.lang.String
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:24
      */
     public String createAccessToken(LoginUser loginUser,Long expireTime) {
@@ -68,7 +68,7 @@ public class JwtUtils {
      * 生成RefreshToken（只包含用户ID和用户名）
      * @param user
      * @return java.lang.String
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:24
      */
     public String createRefreshToken(LoginUser loginUser,Long expireTime) {
@@ -98,7 +98,7 @@ public class JwtUtils {
      * 从请求头中提取AccessToken
      * @param request
      * @return java.lang.String
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:24
      */
     public String getAccessToken(HttpServletRequest request) {
@@ -115,7 +115,7 @@ public class JwtUtils {
      * 从请求头中提取RefreshToken
      * @param request
      * @return java.lang.String
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:24
      */
     public String getRefreshToken(HttpServletRequest request) {
@@ -128,10 +128,10 @@ public class JwtUtils {
      * Claims 是 Token 的有效载荷（Payload）部分，用于携带身份、权限或其他自定义数据。可以将 Claims 理解为 JWT 中存储的“声明”或“信息片段”
      * @param token
      * @return io.jsonwebtoken.Claims
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:24
      */
-    private Claims parseAccessToken(String token) {
+    public Claims parseAccessToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getAccessKey())
                 .build()
@@ -144,7 +144,7 @@ public class JwtUtils {
      * Claims 是 Token 的有效载荷（Payload）部分，用于携带身份、权限或其他自定义数据。可以将 Claims 理解为 JWT 中存储的“声明”或“信息片段”
      * @param token
      * @return io.jsonwebtoken.Claims
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:25
      */
     public Claims parseRefreshToken(String token) {
@@ -161,7 +161,7 @@ public class JwtUtils {
      * 返回值200：表示正常，有效    返回值403：表示黑名单    返回值401：表示已过期    返回值422：表示Token无效
      * @param token
      * @return short
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:25
      */
     public short validateAccessToken(String token) {
@@ -181,7 +181,7 @@ public class JwtUtils {
      * Claims 是 Token 的有效载荷（Payload）部分，用于携带身份、权限或其他自定义数据。可以将 Claims 理解为 JWT 中存储的“声明”或“信息片段”
      * @param refreshToken
      * @return boolean
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:25
      */
     public boolean validateRefreshToken(String refreshToken) {
@@ -199,7 +199,7 @@ public class JwtUtils {
      * Claims 是 Token 的有效载荷（Payload）部分，用于携带身份、权限或其他自定义数据。可以将 Claims 理解为 JWT 中存储的“声明”或“信息片段”
      * @param token
      * @return boolean
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:26
      */
     public boolean shouldRefreshToken(String token) {
@@ -218,7 +218,7 @@ public class JwtUtils {
      * 返回SpringSecurity的认证信息对象，Spring Security后续通过SecurityContextHolder获取当前用户身份，用于：鉴权（如@PreAuthorize("hasRole('ADMIN')")），获取用户信息（如@AuthenticationPrincipal LoginUser user）
      * @param token
      * @return org.springframework.security.core.Authentication
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:26
      */
     public Authentication getAuthenticationByAccessToken(String token) {
@@ -239,7 +239,7 @@ public class JwtUtils {
      * 从 RefreshToken 解析出Authentication
      * @param token
      * @return org.springframework.security.core.Authentication
-     * @author admin
+     * @author ren
      * @date 2025/05/21 09:42
      */
     public Authentication getAuthenticationByRefreshToken(String token) {
@@ -259,7 +259,7 @@ public class JwtUtils {
     /*
      * 删除RefreshToken（登出时调用）
      * @param userId
-     * @author admin
+     * @author ren
      * @date 2025/04/17 21:26
      */
     public void deleteRefreshToken(Long userId) {
@@ -272,7 +272,7 @@ public class JwtUtils {
      * @param tokenType token类型：1-AccessToken，2-RefreshToken
      * @param token
      * @return java.lang.String
-     * @author admin
+     * @author ren
      * @date 2025/05/21 09:59
      */
     public String saveNewAuthenticationAndReturnAccessToken(byte tokenType,String token) {

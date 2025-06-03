@@ -27,7 +27,7 @@ import java.util.TimerTask;
 /**
  * 异步工厂（产生任务用）
  * 
- * @author admin
+ * @author ren
  */
 public class AsyncFactory
 {
@@ -38,7 +38,7 @@ public class AsyncFactory
      * @param isSuccess
      * @param message
      * @return java.util.TimerTask
-     * @author admin
+     * @author ren
      * @date 2025/05/23 11:19
      */
     public static TimerTask addLogininfor(final String username, final Byte isSuccess, final String message)
@@ -108,7 +108,7 @@ public class AsyncFactory
      * 异步发送邮件
      * @param notice
      * @return java.util.TimerTask
-     * @author admin
+     * @author ren
      * @date 2025/05/23 11:22
      */
     public static TimerTask sendAddOrModifyNoticeEmail(final Notice notice,final String title)

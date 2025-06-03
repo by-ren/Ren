@@ -16,10 +16,10 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> i
     @Autowired
     private RoleMenuMapper roleMenuMapper;
 
-    /*
+    /**
      * 添加角色菜单
      * @param roleMenu
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:17
      */
     @Override
@@ -27,10 +27,10 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> i
         roleMenuMapper.insertRoleMenu(roleMenu);
     }
 
-    /*
+    /**
      * 添加权限菜单
      * @param roleMenuList
-     * @author admin
+     * @author ren
      * @date 2025/05/12 15:44
      */
     @Override
@@ -38,10 +38,10 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> i
         roleMenuMapper.insertRoleMenuBatch(roleMenuList);
     }
 
-    /*
+    /**
      * 删除角色菜单
      * @param roleId
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:18
      */
     @Override
@@ -49,11 +49,11 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> i
         roleMenuMapper.deleteRoleMenuByRoleId(roleId);
     }
 
-    /*
+    /**
      * 获取角色菜单列表
      * @param roleId
      * @return java.util.List<com.ren.system.entity.RoleMenu>
-     * @author admin
+     * @author ren
      * @date 2025/05/07 17:19
      */
     @Override

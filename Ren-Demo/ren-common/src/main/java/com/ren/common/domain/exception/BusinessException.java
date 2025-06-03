@@ -1,8 +1,8 @@
 package com.ren.common.domain.exception;
 
-/*
+/**
  * 自定义异常类
- * @author admin
+ * @author ren
  * @date 2025/05/08 11:56
  */
 public class BusinessException extends RuntimeException {

@@ -7,7 +7,7 @@ import cn.hutool.core.util.StrUtil;
 /**
  * 分页数据
  * 
- * @author admin
+ * @author ren
  */
 public class PageDomain
 {
