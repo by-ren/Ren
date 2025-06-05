@@ -1,7 +1,6 @@
 package com.ren.admin;
 
-import com.ren.framework.properties.TokenProperties;
-import jakarta.annotation.Resource;
+import com.ren.common.properties.TokenProperties;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.type.TypeAliasRegistry;
 import org.junit.jupiter.api.Test;

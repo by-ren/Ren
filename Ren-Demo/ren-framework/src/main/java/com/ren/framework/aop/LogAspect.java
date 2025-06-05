@@ -6,7 +6,7 @@ import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.ren.common.constant.AppConstants;
-import com.ren.common.domain.bo.LoginUser;
+import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.entity.OperLog;
 import com.ren.common.interfaces.OperLogAnn;
 import com.ren.common.utils.FastJSON2Utils;

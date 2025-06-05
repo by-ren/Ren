@@ -1,10 +1,10 @@
 package com.ren.framework.security.utils;
 
 import com.alibaba.fastjson2.JSON;
-import com.ren.common.domain.bo.LoginUser;
+import com.ren.common.domain.model.bo.LoginUser;
+import com.ren.common.properties.TokenProperties;
 import com.ren.common.utils.FastJSON2Utils;
-import com.ren.common.utils.PersistentDeviceIdGeneratorUtils;
-import com.ren.framework.properties.TokenProperties;
+import com.ren.common.utils.RedisCacheUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,7 +12,6 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,9 +28,8 @@ import java.util.concurrent.TimeUnit;
 public class JwtUtils {
     @Autowired
     private TokenProperties tokenProperties;
-    //这里本来可以使用StringRedisTemplate，因为这里存储的时简单的字符串，但是为了项目统一，所以放弃，整个项目都使用配置后的RedisTemplate<String, Object>
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisCacheUtils redisCacheUtils;
 
     // 密钥生成
     private Key getAccessKey() {
@@ -85,15 +83,8 @@ public class JwtUtils {
                 .signWith(getRefreshKey(), SignatureAlgorithm.HS512)  //使用HS512算法和密钥进行签名
                 .compact();  //生成最终的JWT字符串
 
-        String refreshKey = "refresh:" + loginUser.getUserId();
-        if(tokenProperties.getIsOpenSingleDeviceLogin() == 1) refreshKey += ":" + PersistentDeviceIdGeneratorUtils.generate(httpRequest);
-        // 存储到Redis，有效期比Token长一些，key为refresh:+用户id，value为refreshToken，有效期为配置的过期时长+60秒（为了防止早删除），时间单位为秒
-        redisTemplate.opsForValue().set(
-                refreshKey,
-                refreshToken,
-                tokenProperties.getRefreshExpireTime() + 60,
-                TimeUnit.SECONDS
-        );
+        // 存储到Redis，有效期比Token长一些，key为regresh_token:+用户id，value为refreshToken，有效期为配置的过期时长+60秒（为了防止早删除），时间单位为秒
+        redisCacheUtils.setCacheObject(redisCacheUtils.getRefreshTokenKey(loginUser.getUserId(),httpRequest),refreshToken,tokenProperties.getRefreshExpireTime() + 60,TimeUnit.SECONDS);
         return refreshToken;
     }
 
@@ -168,14 +159,12 @@ public class JwtUtils {
      * @date 2025/04/17 21:25
      */
     public short validateAccessToken(String token) {
-
         // 检查黑名单中是否存在当前token，如果存在，则无效，反之则有效
-        if (redisTemplate.hasKey("blacklist:" + token)) {
+        if (redisCacheUtils.hasKey(redisCacheUtils.getBlackTokenKey(token))) {
             // 黑名单 → 返回 403
             log.warn("当前Token处于黑名单，请确认");
             return 403;
         }
-
         return 200;
     }
 
@@ -191,10 +180,7 @@ public class JwtUtils {
         // 从token中解析出user_id
         Claims claims = parseRefreshToken(refreshToken);
         Long userId = claims.get("user_id", Long.class);
-        //从redis中获取对应的refreshToken
-        String refreshKey = "refresh:" + userId;
-        if(tokenProperties.getIsOpenSingleDeviceLogin() == 1) refreshKey += ":" + PersistentDeviceIdGeneratorUtils.generate(request);
-        String storedToken = (String) redisTemplate.opsForValue().get(refreshKey);
+        String storedToken = redisCacheUtils.getCacheObject(redisCacheUtils.getRefreshTokenKey(userId,request));
         //如果redis中的refreshToken与传递过来的refreshToken一致，则有效，反之则无效
         return refreshToken.equals(storedToken);
     }
@@ -227,11 +213,7 @@ public class JwtUtils {
      * @date 2025/04/17 21:26
      */
     public Authentication getAuthenticationByAccessToken(String token) {
-        // 从token中解析出loginUserJson
-        Claims claims = parseAccessToken(token);
-        // 将loginUserJson解析为LoginUser对象
-        String loginUserJson = claims.get("login_user", String.class);
-        LoginUser loginUser = JSON.parseObject(loginUserJson, LoginUser.class);
+        LoginUser loginUser = getLoginUserByToken((byte) 1,token);
 
         return new UsernamePasswordAuthenticationToken(
                 loginUser,
@@ -248,17 +230,34 @@ public class JwtUtils {
      * @date 2025/05/21 09:42
      */
     public Authentication getAuthenticationByRefreshToken(String token) {
-        // 从token中解析出loginUserJson
-        Claims claims = parseRefreshToken(token);
-        // 将loginUserJson解析为LoginUser对象
-        String loginUserJson = claims.get("login_user", String.class);
-        LoginUser loginUser = JSON.parseObject(loginUserJson, LoginUser.class);
+        LoginUser loginUser = getLoginUserByToken((byte) 2,token);
 
         return new UsernamePasswordAuthenticationToken(
                 loginUser,
                 null, // 凭证置空
                 loginUser.getAuthorities()
         );
+    }
+
+    /**
+     * 根据token 获取 LoginUser
+     * @param type 1：AccessToken 2：RefreshToken
+     * @param token
+     * @return com.ren.common.domain.model.bo.LoginUser
+     * @author ren
+     * @date 2025/06/05 13:26
+     */
+    public LoginUser getLoginUserByToken(byte type,String token) {
+        // 从token中解析出loginUserJson
+        Claims claims;
+        if(type == 1){
+            claims = parseAccessToken(token);
+        }else{
+            claims = parseRefreshToken(token);
+        }
+        // 将loginUserJson解析为LoginUser对象
+        String loginUserJson = claims.get("login_user", String.class);
+        return JSON.parseObject(loginUserJson, LoginUser.class);
     }
 
     /*
@@ -268,10 +267,7 @@ public class JwtUtils {
      * @date 2025/04/17 21:26
      */
     public void deleteRefreshToken(Long userId, HttpServletRequest request) {
-        //从redis中删除refreshToken
-        String refreshKey = "refresh:" + userId;
-        if(tokenProperties.getIsOpenSingleDeviceLogin() == 1) refreshKey += ":" + PersistentDeviceIdGeneratorUtils.generate(request);
-        redisTemplate.delete(refreshKey);
+        redisCacheUtils.deleteObject(redisCacheUtils.getRefreshTokenKey(userId,request));
     }
 
     /*

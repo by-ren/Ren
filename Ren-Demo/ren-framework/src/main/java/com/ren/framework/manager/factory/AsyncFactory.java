@@ -13,7 +13,7 @@ import com.ren.common.utils.ServletUtils;
 import com.ren.common.utils.SpringUtils;
 import com.ren.common.utils.ip.AddressUtils;
 import com.ren.common.utils.ip.IpUtils;
-import com.ren.framework.config.MailConfig;
+import com.ren.common.properties.MailProperties;
 import com.ren.system.entity.Notice;
 import com.ren.system.service.LogininforService;
 import com.ren.system.service.OperLogService;
@@ -115,7 +115,7 @@ public class AsyncFactory
     {
         UserService userService = SpringUtils.getBean(UserService.class);
         //读取Mail配置文件
-        MailConfig mailConfig = SpringUtils.getBean(MailConfig.class);
+        MailProperties mailProperties = SpringUtils.getBean(MailProperties.class);
         // Spring 自动注入模板引擎（SpringBoot会自动按照所引入的Jar包（Velocity、Beetl、Freemarker、Thymeleaf），以及所配置的配置文件（如thymeleaf.yml）进行自动模板引擎注入）
         ITemplateEngine templateEngine = SpringUtils.getBean(ITemplateEngine.class);
         return new TimerTask()
@@ -127,12 +127,12 @@ public class AsyncFactory
                 List<User> userList = userService.listUserByParam(null);
                 // 手动创建MailAccount对象，读取自定义的配置文件
                 MailAccount account = new MailAccount();
-                account.setHost(mailConfig.getHost());
-                account.setPort(mailConfig.getPort());
-                account.setUser(mailConfig.getUsername());
-                account.setPass(mailConfig.getPassword());
-                account.setFrom(mailConfig.getFrom());
-                account.setSslEnable(mailConfig.isSslEnable());
+                account.setHost(mailProperties.getHost());
+                account.setPort(mailProperties.getPort());
+                account.setUser(mailProperties.getUsername());
+                account.setPass(mailProperties.getPassword());
+                account.setFrom(mailProperties.getFrom());
+                account.setSslEnable(mailProperties.isSslEnable());
                 // 渲染模板
                 Context context = new Context();
                 context.setVariable("noticeTitle", notice.getNoticeTitle());

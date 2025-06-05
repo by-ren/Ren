@@ -2,7 +2,7 @@ package com.ren.common.utils;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
-import com.ren.common.domain.vo.TreeSelectVO;
+import com.ren.common.domain.model.vo.TreeSelectVO;
 
 import java.util.*;
 import java.util.function.Predicate;
