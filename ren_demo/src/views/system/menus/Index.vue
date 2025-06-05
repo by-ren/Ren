@@ -87,22 +87,22 @@
             <el-form-item label="显示顺序" :label-width="addOrModifyMenuFormLabelWidth" prop="orderNum" class="smallLine" >
                 <el-input v-model="addOrModifyMenuForm.orderNum" autocomplete="off"></el-input>
             </el-form-item>
+            <el-form-item label="路由名称" :label-width="addOrModifyMenuFormLabelWidth" prop="routeName" class="smallLine" v-if="addOrModifyMenuForm.menuType=='M' || addOrModifyMenuForm.menuType=='C'">
+                <el-input v-model="addOrModifyMenuForm.routeName" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="路由地址" :label-width="addOrModifyMenuFormLabelWidth" prop="path" class="smallLine" v-if="addOrModifyMenuForm.menuType=='M' || addOrModifyMenuForm.menuType=='C'">
+                <el-input v-model="addOrModifyMenuForm.path" autocomplete="off"></el-input>
+            </el-form-item>
             <el-form-item label="是否外链" :label-width="addOrModifyMenuFormLabelWidth" prop="isFrame" class="smallLine" v-if="addOrModifyMenuForm.menuType=='M' || addOrModifyMenuForm.menuType=='C'">
                 <el-radio-group v-model="addOrModifyMenuForm.isFrame" size="large" fill="#6cf">
                     <el-radio-button label="否" :value="0" />
                     <el-radio-button label="是" :value="1" />
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="路由名称" :label-width="addOrModifyMenuFormLabelWidth" prop="routeName" class="smallLine" v-if="addOrModifyMenuForm.menuType=='C'">
-                <el-input v-model="addOrModifyMenuForm.routeName" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="路由地址" :label-width="addOrModifyMenuFormLabelWidth" prop="path" class="smallLine" v-if="addOrModifyMenuForm.menuType=='C'">
-                <el-input v-model="addOrModifyMenuForm.path" autocomplete="off"></el-input>
-            </el-form-item>
             <el-form-item label="组件路径" :label-width="addOrModifyMenuFormLabelWidth" prop="component" class="smallLine" v-if="addOrModifyMenuForm.menuType=='C'">
                 <el-input v-model="addOrModifyMenuForm.component" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="权限字符" :label-width="addOrModifyMenuFormLabelWidth" prop="perms" class="smallLine" v-if="addOrModifyMenuForm.menuType=='M' || addOrModifyMenuForm.menuType=='F'">
+            <el-form-item label="权限字符" :label-width="addOrModifyMenuFormLabelWidth" prop="perms" class="smallLine" v-if="addOrModifyMenuForm.menuType=='C' || addOrModifyMenuForm.menuType=='F'">
                 <el-input v-model="addOrModifyMenuForm.perms" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="路由参数" :label-width="addOrModifyMenuFormLabelWidth" prop="query" class="smallLine" v-if="addOrModifyMenuForm.menuType=='C'">
@@ -251,6 +251,9 @@
         ],
         path:[
             { required: true, message: '请填写路由地址', trigger: 'blur' }
+        ],
+        routeName:[
+            { required: true, message: '请填写路由名称', trigger: 'blur' }
         ],
     })
     //打开添加弹框

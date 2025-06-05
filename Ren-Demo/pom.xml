@@ -23,6 +23,8 @@
         <module>ren-common</module>
         <module>ren-framework</module>
         <module>ren-system</module>
+		<module>ren-monitor</module>
+        <module>ren-business</module>
     </modules>
 
     <!-- 全局参数，可以在全局中直接使用，一次配置，多地方使用 -->

@@ -1,7 +1,7 @@
 package com.ren.framework.security.filter;
 
-import com.ren.common.domain.bo.LoginUser;
-import com.ren.framework.properties.TokenProperties;
+import com.ren.common.domain.model.bo.LoginUser;
+import com.ren.common.utils.RedisCacheUtils;
 import com.ren.framework.security.utils.JwtUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
-    private TokenProperties tokenProperties;
+    private RedisCacheUtils redisCacheUtils;
     /*
      * 过滤器，在请求到达Controller之前执行，用于验证Token是否有效，并设置认证信息到SecurityContext中
      * @param request
@@ -62,11 +61,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 throw new AuthenticationCredentialsNotFoundException("未提供 Token");
             }
 
-            // 验证 Token 并处理不同状态
+            // 验证 accessToken 是否正常
             int validationResult = jwtUtils.validateAccessToken(accessToken);
             if (validationResult != 200) {
                 // Token无效（如过期、黑名单、篡改），抛错，被下方的AuthenticationException-catch块捕获并抛出
                 throw new BadCredentialsException("Token 无效");
+            }
+
+            LoginUser loginUser = jwtUtils.getLoginUserByToken((byte)1,accessToken);
+            //验证refreshToken是否存在（主要用于强退功能）
+            String refreshTokenKey = redisCacheUtils.getRefreshTokenKey(loginUser.getUserId(),request);
+            if (!redisCacheUtils.hasKey(refreshTokenKey)) { // refreshToken是否存在
+                // 账号被强退，需重新登录
+                throw new BadCredentialsException("refreshToken 无效");
             }
 
             if (jwtUtils.shouldRefreshToken(accessToken)) { // accessToken需要续期,重新生成Authentication对象，并存储

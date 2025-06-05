@@ -7,6 +7,7 @@ import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -212,5 +213,55 @@ public class DateUtils {
         LocalDateTime localDateTime = LocalDateTime.of(temporalAccessor, LocalTime.of(0, 0, 0));
         ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
         return Date.from(zdt.toInstant());
+    }
+
+    /**
+     * 将时间戳转换为字符串（默认时区，默认格式）
+     * @param timestamp 毫秒时间戳
+     * @return 格式化的日期时间字符串（yyyy-MM-dd HH:mm:ss）
+     */
+    public static String timestampToStrDefault(long timestamp) {
+        return timestampToStr(timestamp, ZoneId.systemDefault(), YYYY_MM_DD_HH_MM_SS);
+    }
+
+    /**
+     * 带时区的转换方法
+     * @param timestamp 毫秒时间戳
+     * @param timeZone 时区ID（如 "Asia/Shanghai"）
+     * @return 格式化的日期时间字符串
+     */
+    public static String timestampToStrTimeZone(long timestamp, String timeZone) {
+        return timestampToStr(timestamp, ZoneId.of(timeZone), YYYY_MM_DD_HH_MM_SS);
+    }
+
+    /**
+     * 带格式化选项的转换方法
+     * @param timestamp 毫秒时间戳
+     * @param pattern 格式模式（如 "yyyy/MM/dd HH:mm"）
+     * @return 格式化的日期时间字符串
+     */
+    public static String timestampToStrPattern(long timestamp, String pattern) {
+        return timestampToStr(timestamp, ZoneId.systemDefault(), pattern);
+    }
+
+    /**
+     * 完全自定义的转换方法
+     * @param timestamp 毫秒时间戳
+     * @param zoneId 时区ID对象
+     * @param pattern 格式模式
+     * @return 格式化的日期时间字符串
+     */
+    public static String timestampToStr(long timestamp, ZoneId zoneId, String pattern) {
+        // 1. 将毫秒时间戳转换为Instant
+        Instant instant = Instant.ofEpochMilli(timestamp);
+
+        // 2. 将Instant转换为指定时区的LocalDateTime
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, zoneId);
+
+        // 3. 创建格式化器
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+
+        // 4. 格式化为字符串
+        return dateTime.format(formatter);
     }
 }

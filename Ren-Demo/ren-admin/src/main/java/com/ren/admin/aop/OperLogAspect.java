@@ -1,7 +1,5 @@
 package com.ren.admin.aop;
 
-import cn.hutool.core.util.ObjUtil;
-import com.ren.common.domain.dto.AjaxResultDTO;
 import com.ren.common.utils.FastJSON2Utils;
 import com.ren.common.utils.ip.IpUtils;
 import jakarta.servlet.http.HttpServletRequest;

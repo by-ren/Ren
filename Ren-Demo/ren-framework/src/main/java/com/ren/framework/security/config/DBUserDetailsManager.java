@@ -1,7 +1,7 @@
 package com.ren.framework.security.config;
 
 import com.ren.common.constant.AppConstants;
-import com.ren.common.domain.bo.LoginUser;
+import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.entity.Menu;
 import com.ren.common.domain.entity.Role;
 import com.ren.common.domain.entity.User;
