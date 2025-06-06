@@ -109,7 +109,52 @@ Ren-Demo/
 └── vite.config.js				 # 项目心脏,构建/开发服务器配置
 ```
 
+## ✨ 作者寄语
 
+> 这个项目始于闲暇时的灵感火花，却在开发过程中逐渐成为承载理想的载体。  
+> 作为独立开发者，我对未来的规划越发清晰，但开发进度难免受限于个人精力。  
+> **请相信：所有规划的功能都会如约而至，只是需要您多一份耐心等待。**  
+
+## 🚀 诚邀同行者  
+
+**如果您：**  
+
+- 渴望打造一款与众不同的开源框架  
+- 愿与志同道合者并肩作战  
+- 被Java/Vue全栈开发所吸引  
+
+**欢迎通过邮箱联系我：**  
+📮 wy18434294023@163.com  
+（每封邮件必复！若响应热烈，我们将建立专属开发者社群）  
+
+**深夜改bug时最暖的光，  
+是看到"Star"数又新增一颗✨**  
+
+## 📝 项目截图
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/87988c8e/32562f29.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/17c8cb9b/b0cca69c.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/162acef3/33c5502a.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/6429f9bd/36f74a56.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/914e1852/cfd10474.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/dd471baa/4fb98d02.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/f775bdea/9407cdad.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/eb3fcba7/032b2832.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/be3b32e6/0ae2b5da.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/cc760e81/fd52a2ef.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/7f4a6fd9/ba9bd11e.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/2d2321a5/e19f59af.png)
 
 ## 📜 许可证
 
