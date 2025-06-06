@@ -158,7 +158,11 @@ Ren-Demo/
 
 ## 📜 许可证
 
-[Apache License 2.0](LICENSE)
+本项目采用 [Apache License 2.0](LICENSE) 开源协议，允许：  
+- ✅ 商业使用  
+- ✅ 修改源码  
+- ✅ 专利授权  
+- ❗ **但必须保留原始许可声明**（见源码文件头）  
 
 ---
 
