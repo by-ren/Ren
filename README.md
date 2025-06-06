@@ -109,6 +109,29 @@ Ren-Demo/
 └── vite.config.js				 # 项目心脏,构建/开发服务器配置
 ```
 
+## ⚡ 5分钟快速体验
+
+```bash
+# 后端启动
+git clone https://gitee.com/huimouyixiaojifeigoutiao/Ren.git
+#或
+git clone https://github.com/by-ren/Ren.git
+#注意根据自己下载的项目路径，调整命令
+cd Ren-Demo/ren-admin
+mvn spring-boot:run
+
+# 前端启动
+cd ren-ui
+npm install
+npm run dev
+```
+
+> [!TIP]
+>
+> 默认账号：admin
+> 默认密码：111111
+> 访问地址：http://localhost:5173
+
 ## ✨ 作者寄语
 
 > 这个项目始于闲暇时的灵感火花，却在开发过程中逐渐成为承载理想的载体。  
