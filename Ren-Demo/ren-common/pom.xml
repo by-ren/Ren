@@ -54,6 +54,13 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
+        <!--数据监控模块所需（新版Hutool需要手动导入该Jar包）-->
+        <dependency>
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+            <version>6.4.1</version>
+        </dependency>
+
         <!-- Hutool 核心 -->
         <dependency>
             <groupId>cn.hutool</groupId>

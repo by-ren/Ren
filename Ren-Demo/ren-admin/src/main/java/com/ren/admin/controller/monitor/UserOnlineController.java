@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/monitor/online")
+@RequestMapping("/monitor/user/online")
 @Slf4j
-public class SysUserOnlineController extends BaseController {
+public class UserOnlineController extends BaseController {
 
     @Autowired
     private RedisCacheUtils redisCacheUtils;
