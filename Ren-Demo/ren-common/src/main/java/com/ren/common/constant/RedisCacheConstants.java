@@ -11,10 +11,10 @@ public class RedisCacheConstants
     /**
      * 登录用户刷新Token redis key
      */
-    public static final String REFRESH_TOKEN_KEY = "regresh_token:";
+    public static final String REFRESH_TOKEN_KEY = "regresh_token";
 
     /**
      * 用户黑名单Token redis key
      */
-    public static final String BLACK_TOKEN_KEY = "black_token:";
+    public static final String BLACK_TOKEN_KEY = "black_token";
 }

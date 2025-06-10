@@ -31,7 +31,7 @@ public class RedisCacheUtils {
      * @date 2025/06/05 09:42
      */
     public String getRefreshTokenKey(long userId, HttpServletRequest httpRequest){
-        String refreshKey = RedisCacheConstants.REFRESH_TOKEN_KEY + userId;
+        String refreshKey = RedisCacheConstants.REFRESH_TOKEN_KEY + ":" + userId;
         if(tokenProperties.getIsOpenSingleDeviceLogin() == 0) refreshKey += ":" + PersistentDeviceIdGeneratorUtils.generate(httpRequest);
         return refreshKey;
     }
@@ -44,7 +44,7 @@ public class RedisCacheUtils {
      * @date 2025/06/05 09:54
      */
     public String getBlackTokenKey(String accessToken){
-        return RedisCacheConstants.BLACK_TOKEN_KEY + accessToken;
+        return RedisCacheConstants.BLACK_TOKEN_KEY + ":" + accessToken;
     }
 
     /**
@@ -205,6 +205,43 @@ public class RedisCacheUtils {
     public boolean deleteCacheMapValue(final String key, final String hKey)
     {
         return redisTemplate.opsForHash().delete(key, hKey) > 0;
+    }
+
+    /**
+     * 删除Redis中匹配的键
+     * @param pattern
+     * @author ren
+     * @date 2025/06/10 16:32
+     */
+    public boolean deleteKeysByPattern(String pattern) {
+        try {
+            redisTemplate.execute((RedisCallback<Boolean>) connection -> {
+                // 创建扫描选项
+                ScanOptions scanOptions = ScanOptions.scanOptions()
+                        .match(pattern) // 匹配键的模式
+                        .count(100)    // 每次扫描的键数量（调整以提高性能）
+                        .build();
+
+                List<byte[]> keys = new ArrayList<>();
+
+                // 使用 SCAN 命令迭代获取匹配的键
+                Cursor<byte[]> cursor = connection.scan(scanOptions);
+                while (cursor.hasNext()) {
+                    keys.add(cursor.next());
+                }
+                cursor.close();
+
+                // 批量删除键
+                if (!keys.isEmpty()) {
+                    byte[][] keysArray = keys.toArray(new byte[0][0]);
+                    connection.del(keysArray);
+                }
+                return true;
+            });
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**

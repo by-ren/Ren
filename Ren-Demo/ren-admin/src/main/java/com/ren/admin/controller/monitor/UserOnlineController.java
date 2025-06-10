@@ -47,7 +47,7 @@ public class UserOnlineController extends BaseController {
     @GetMapping("/list")
     public AjaxResultDTO getOnlineUsers(@RequestParam Map<String,Object> paramMap) {
         List<SysUserOnlineVO> userOnlineList = new ArrayList<>();
-        String pattern = RedisCacheConstants.REFRESH_TOKEN_KEY + "*"; // 匹配所有regresh_token:开头的键
+        String pattern = RedisCacheConstants.REFRESH_TOKEN_KEY + ":" + "*"; // 匹配所有regresh_token:开头的键
         // 使用SCAN命令安全遍历（避免KEYS阻塞）
         try(Cursor<String> cursor = redisCacheUtils.scan(pattern)){
             String ipaddr = Convert.toStr(paramMap.get("ipaddr"));
