@@ -29,10 +29,9 @@
         :total="tableData.length"
         v-model:page="pageNum"
         v-model:limit="pageSize"
-        @pagination="getList"
     />
 </template>
-  
+
 <script setup lang="ts" name="sysUserOnline">
     import { ref,onMounted } from 'vue'
     import type { FormInstance,FormRules } from 'element-plus'
@@ -63,8 +62,8 @@
     //每页显示多少条
     const pageSize = ref(10)
     /*============================通用参数结束============================*/
-    
-    
+
+
     /*============================页面方法开始============================*/
     //获取列表
     const getList = async () => {
@@ -123,7 +122,7 @@
     })
     /*============================生命周期钩子结束============================*/
 </script>
-  
+
 <style scoped>
     .demo-form-inline .el-input {
         --el-input-width: 220px;
