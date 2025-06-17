@@ -49,7 +49,7 @@ public class ConfigController extends BaseController {
     @OperLogAnn(title = "配置模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addConfig(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Config addConfig) {
         configService.addConfig(addConfig,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -64,7 +64,7 @@ public class ConfigController extends BaseController {
     @OperLogAnn(title = "配置模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyConfig(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Config modifyConfig) {
         configService.modifyConfig(modifyConfig,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -79,7 +79,7 @@ public class ConfigController extends BaseController {
     @OperLogAnn(title = "配置模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO configDelete(@AuthenticationPrincipal LoginUser loginUser, long configId) {
         configService.removeConfig(configId);
-        return AjaxResultDTO.success();
+        return success();
     }
 
 }

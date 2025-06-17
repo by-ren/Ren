@@ -49,7 +49,7 @@ public class OperLogController extends BaseController {
     @OperLogAnn(title = "日志模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO operLogDelete(@AuthenticationPrincipal LoginUser loginUser, long operLogId) {
         operLogService.removeOperLog(operLogId);
-        return AjaxResultDTO.success();
+        return success();
     }
 
 }

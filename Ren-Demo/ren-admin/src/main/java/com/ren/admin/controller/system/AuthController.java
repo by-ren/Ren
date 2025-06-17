@@ -6,9 +6,10 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
 import com.ren.common.constant.AppConstants;
+import com.ren.common.controller.BaseController;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.model.dto.AjaxResultDTO;
-import com.ren.common.utils.RedisCacheUtils;
+import com.ren.common.utils.redis.RedisOperateUtils;
 import com.ren.common.utils.ServletUtils;
 import com.ren.common.utils.ip.AddressUtils;
 import com.ren.common.utils.ip.IpUtils;
@@ -38,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/auth")
 @Slf4j
-public class AuthController {
+public class AuthController extends BaseController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -47,7 +48,7 @@ public class AuthController {
     @Autowired
     private TokenProperties tokenProperties;
     @Autowired
-    private RedisCacheUtils redisCacheUtils;
+    private RedisOperateUtils redisOperateUtils;
 
     /*
      * 自定义登录接口
@@ -111,17 +112,17 @@ public class AuthController {
             // 异步登录操作日志并更新用户最后登录时间
             AsyncManager.me().execute(AsyncFactory.addLogininfor(loginUser.getUsername(), AppConstants.COMMON_BYTE_YES, "登录成功"));
 
-            return AjaxResultDTO.success("登陆成功").put("accessToken",accessToken).put("refreshToken",refreshToken);
+            return success("登陆成功").put("accessToken",accessToken).put("refreshToken",refreshToken);
         } catch (BadCredentialsException e) {
             log.debug("登陆失败", e);
             // 密码错误
             AsyncManager.me().execute(AsyncFactory.addLogininfor(Convert.toStr(paramMap.get("username")), AppConstants.COMMON_BYTE_NO, "登录失败"));
-            return AjaxResultDTO.error(401, e.getMessage());
+            return error(401, e.getMessage());
         } catch (AuthenticationException e) {
             log.debug("登陆失败", e);
             // 其他认证异常（如用户被锁定）
             AsyncManager.me().execute(AsyncFactory.addLogininfor(Convert.toStr(paramMap.get("username")), AppConstants.COMMON_BYTE_NO, "登录失败"));
-            return AjaxResultDTO.error(401, e.getMessage());
+            return error(401, e.getMessage());
         }finally{
             AuthenticationContextHolder.clearContext();
         }
@@ -137,7 +138,7 @@ public class AuthController {
      */
     @PostMapping("/auto/login")
     public AjaxResultDTO autoLogin() {
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -158,14 +159,14 @@ public class AuthController {
         // 将现在的这个AccessToken加入黑名单，防止退出后还能登录
         String accessToken = jwtUtils.getAccessToken(request);
         if(StrUtil.isNotBlank(accessToken)){
-            redisCacheUtils.setCacheObject(
-                    redisCacheUtils.getBlackTokenKey(accessToken),
+            redisOperateUtils.setCacheObject(
+                    redisOperateUtils.getBlackTokenKey(accessToken),
                     "logged_out",
                     tokenProperties.getBlackListTime(),
                     TimeUnit.SECONDS);
         }
 
-        return AjaxResultDTO.success("退出成功");
+        return success("退出成功");
     }
 
     /*
@@ -181,7 +182,7 @@ public class AuthController {
         String refreshToken = jwtUtils.getRefreshToken(request);
         if (!jwtUtils.validateRefreshToken(refreshToken,request)) {
             log.debug("refreshToken失效，请重新登录");
-            return AjaxResultDTO.error(401, "refreshToken失效，请重新登录");
+            return error(401, "refreshToken失效，请重新登录");
         }
 
         try {
@@ -189,10 +190,10 @@ public class AuthController {
             String newAccessToken = jwtUtils.saveNewAuthenticationAndReturnAccessToken((byte)2,refreshToken);
 
             // 返回双Token（其中accessToken为新生成的，refreshToken还是用原来的，保证每隔一段时间重新登陆一次，防止token永不失效）
-            return AjaxResultDTO.success().put("accessToken",newAccessToken).put("refreshToken",refreshToken);
+            return success().put("accessToken",newAccessToken).put("refreshToken",refreshToken);
         }catch (Exception e){
             log.debug("refreshToken失效，请重新登录",e);
-            return AjaxResultDTO.error(401, "refreshToken失效，请重新登录");
+            return error(401, "refreshToken失效，请重新登录");
         }
     }
 

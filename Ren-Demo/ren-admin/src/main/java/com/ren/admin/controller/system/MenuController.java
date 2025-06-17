@@ -3,6 +3,7 @@ package com.ren.admin.controller.system;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
 import com.ren.common.constant.AppConstants;
+import com.ren.common.controller.BaseController;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.model.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.Menu;
@@ -24,7 +25,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/menu")
-public class MenuController {
+public class MenuController extends BaseController {
 
     @Autowired
     MenuService menuService;
@@ -44,7 +45,7 @@ public class MenuController {
         List<Menu> menuList = menuService.listMenuByParam(paramMap);
         //将列表转为树形结构
         menuList = TreeUtils.formatTree(menuList, menu -> Convert.toInt(BeanUtil.getProperty(menu, "parentId")) == 0,"menuId",null,null,"orderNum");
-        return AjaxResultDTO.success().put("menuList",menuList);
+        return success().put("menuList",menuList);
     }
 
     /*
@@ -66,7 +67,7 @@ public class MenuController {
         TreeSelectVO mianSelect = new TreeSelectVO(0L,"主目录",false,treeSelectVOList);
         List<TreeSelectVO> mianTree = new ArrayList<>();
         mianTree.add(mianSelect);
-        return AjaxResultDTO.success().put("parentMenuList",mianTree);
+        return success().put("parentMenuList",mianTree);
     }
 
     /*
@@ -93,7 +94,7 @@ public class MenuController {
             }
         }
 
-        return AjaxResultDTO.success().put("menuList",treeSelectVOList).put("menuIdArr",menuIdArr);
+        return success().put("menuList",treeSelectVOList).put("menuIdArr",menuIdArr);
     }
 
     /*
@@ -108,7 +109,7 @@ public class MenuController {
     @OperLogAnn(title = "菜单模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addMenu(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Menu addMenu) {
         menuService.addMenu(addMenu,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -123,7 +124,7 @@ public class MenuController {
     @OperLogAnn(title = "菜单模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyMenu(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Menu modifyMenu) {
         menuService.modifyMenuById(modifyMenu,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -142,11 +143,11 @@ public class MenuController {
         paramMap.put("parentId",menuId);
         List<Menu> menuList = menuService.listMenuByParam(paramMap);
         if(menuList != null && !menuList.isEmpty()){
-            return AjaxResultDTO.warn("请先删除子级菜单");
+            return warn("请先删除子级菜单");
         }
         //删除菜单
         menuService.modifyMenuIsDelById(menuId, AppConstants.COMMON_BYTE_YES,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
 }

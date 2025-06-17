@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.properties.TokenProperties;
 import com.ren.common.utils.FastJSON2Utils;
-import com.ren.common.utils.RedisCacheUtils;
+import com.ren.common.utils.redis.RedisOperateUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,7 +29,7 @@ public class JwtUtils {
     @Autowired
     private TokenProperties tokenProperties;
     @Autowired
-    private RedisCacheUtils redisCacheUtils;
+    private RedisOperateUtils redisOperateUtils;
 
     // 密钥生成
     private Key getAccessKey() {
@@ -84,7 +84,7 @@ public class JwtUtils {
                 .compact();  //生成最终的JWT字符串
 
         // 存储到Redis，有效期比Token长一些，key为regresh_token:+用户id，value为refreshToken，有效期为配置的过期时长+60秒（为了防止早删除），时间单位为秒
-        redisCacheUtils.setCacheObject(redisCacheUtils.getRefreshTokenKey(loginUser.getUserId(),httpRequest),refreshToken,tokenProperties.getRefreshExpireTime() + 60,TimeUnit.SECONDS);
+        redisOperateUtils.setCacheObject(redisOperateUtils.getRefreshTokenKey(loginUser.getUserId(),httpRequest),refreshToken,tokenProperties.getRefreshExpireTime() + 60,TimeUnit.SECONDS);
         return refreshToken;
     }
 
@@ -160,7 +160,7 @@ public class JwtUtils {
      */
     public short validateAccessToken(String token) {
         // 检查黑名单中是否存在当前token，如果存在，则无效，反之则有效
-        if (redisCacheUtils.hasKey(redisCacheUtils.getBlackTokenKey(token))) {
+        if (redisOperateUtils.hasKey(redisOperateUtils.getBlackTokenKey(token))) {
             // 黑名单 → 返回 403
             log.warn("当前Token处于黑名单，请确认");
             return 403;
@@ -180,7 +180,7 @@ public class JwtUtils {
         // 从token中解析出user_id
         Claims claims = parseRefreshToken(refreshToken);
         Long userId = claims.get("user_id", Long.class);
-        String storedToken = redisCacheUtils.getCacheObject(redisCacheUtils.getRefreshTokenKey(userId,request));
+        String storedToken = redisOperateUtils.getCacheObject(redisOperateUtils.getRefreshTokenKey(userId,request));
         //如果redis中的refreshToken与传递过来的refreshToken一致，则有效，反之则无效
         return refreshToken.equals(storedToken);
     }
@@ -267,7 +267,7 @@ public class JwtUtils {
      * @date 2025/04/17 21:26
      */
     public void deleteRefreshToken(Long userId, HttpServletRequest request) {
-        redisCacheUtils.deleteObject(redisCacheUtils.getRefreshTokenKey(userId,request));
+        redisOperateUtils.deleteObject(redisOperateUtils.getRefreshTokenKey(userId,request));
     }
 
     /*

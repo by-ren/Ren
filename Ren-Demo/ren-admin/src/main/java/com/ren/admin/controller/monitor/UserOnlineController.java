@@ -7,7 +7,7 @@ import com.ren.common.constant.RedisCacheConstants;
 import com.ren.common.controller.BaseController;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.model.dto.AjaxResultDTO;
-import com.ren.common.utils.RedisCacheUtils;
+import com.ren.common.utils.redis.RedisOperateUtils;
 import com.ren.common.utils.SecurityUtils;
 import com.ren.framework.security.utils.JwtUtils;
 import com.ren.monitor.domain.vo.SysUserOnlineVO;
@@ -31,7 +31,7 @@ import java.util.Map;
 public class UserOnlineController extends BaseController {
 
     @Autowired
-    private RedisCacheUtils redisCacheUtils;
+    private RedisOperateUtils redisOperateUtils;
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
@@ -49,14 +49,14 @@ public class UserOnlineController extends BaseController {
         List<SysUserOnlineVO> userOnlineList = new ArrayList<>();
         String pattern = RedisCacheConstants.REFRESH_TOKEN_KEY + ":" + "*"; // 匹配所有regresh_token:开头的键
         // 使用SCAN命令安全遍历（避免KEYS阻塞）
-        try(Cursor<String> cursor = redisCacheUtils.scan(pattern)){
+        try(Cursor<String> cursor = redisOperateUtils.scan(pattern)){
             String ipaddr = Convert.toStr(paramMap.get("ipaddr"));
             String userName = Convert.toStr(paramMap.get("userName"));
 
             while (cursor.hasNext()) {
                 String key = cursor.next();
                 // 获取键对应的值（JWT Token）
-                String refreshToken = redisCacheUtils.getCacheObject(key);
+                String refreshToken = redisOperateUtils.getCacheObject(key);
                 LoginUser user = jwtUtils.getLoginUserByToken((byte) 2,refreshToken);
 
                 if(ObjUtil.isNotNull(user) && ObjUtil.isNotNull(user.getUser())){
@@ -103,16 +103,16 @@ public class UserOnlineController extends BaseController {
     @GetMapping("/compulsoryWithdrawal")
     public AjaxResultDTO compulsoryWithdrawal(@RequestParam String tokenId, HttpServletRequest request)
     {
-        String refreshToken = redisCacheUtils.getCacheObject(tokenId);
+        String refreshToken = redisOperateUtils.getCacheObject(tokenId);
         if(StrUtil.isNotBlank(refreshToken)){
-            String refreshTokenKey = redisCacheUtils.getRefreshTokenKey(SecurityUtils.getUserId(), request);
+            String refreshTokenKey = redisOperateUtils.getRefreshTokenKey(SecurityUtils.getUserId(), request);
             if(refreshTokenKey.equals(tokenId)){
                 return error("不可强退当前帐号，请正常退出");
             }
         }else{
             return error("用户不存在");
         }
-        redisCacheUtils.deleteObject(tokenId);
+        redisOperateUtils.deleteObject(tokenId);
         return success();
     }
 

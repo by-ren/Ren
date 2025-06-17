@@ -49,7 +49,7 @@ public class DictDataController extends BaseController {
     @OperLogAnn(title = "字典模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addDictData(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) DictData addDictData) {
         dictDataService.addDictData(addDictData,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -64,7 +64,7 @@ public class DictDataController extends BaseController {
     @OperLogAnn(title = "字典模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyDictData(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) DictData modifyDictData) {
         dictDataService.modifyDictData(modifyDictData,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -79,7 +79,7 @@ public class DictDataController extends BaseController {
     @OperLogAnn(title = "字典模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO dictDataDelete(@AuthenticationPrincipal LoginUser loginUser, long dictDataId) {
         dictDataService.removeDictData(dictDataId);
-        return AjaxResultDTO.success();
+        return success();
     }
 
 }

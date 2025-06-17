@@ -2,6 +2,7 @@ package com.ren.common.utils;
 
 import cn.hutool.core.date.DateException;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 
 import java.lang.management.ManagementFactory;
 import java.text.ParseException;
@@ -245,7 +246,7 @@ public class DateUtils {
     }
 
     /**
-     * 完全自定义的转换方法
+     * 将时间戳转换为字符串
      * @param timestamp 毫秒时间戳
      * @param zoneId 时区ID对象
      * @param pattern 格式模式
@@ -263,5 +264,35 @@ public class DateUtils {
 
         // 4. 格式化为字符串
         return dateTime.format(formatter);
+    }
+
+    /**
+     * 根据时间字符串得到时间戳（单位：毫秒）
+     * @param dateStr
+     * @param datecode
+     * @return java.lang.Long
+     * @author zhiwei
+     * @date 2025/06/16 13:23
+     */
+    public static Long convertDateStringToLong(String dateStr, String datecode) {
+        if(StrUtil.isBlank(datecode)) datecode = YYYY_MM_DD_HH_MM_SS;
+        return (DateUtil.parse(dateStr, datecode).getTime());
+    }
+
+    /**
+     * 得到给定日期（long型的时间戳） 的零点和24点的时戳
+     * @param currentTimestamp
+     * @return long[]
+     * @author ren
+     * @date 2025/06/16 13:57
+     */
+    @SuppressWarnings("static-access")
+    public static long[] getOneDayTimestamp(Long currentTimestamp) {
+        long[] timeArray = new long[2];
+        Date date = new Date();
+        if (currentTimestamp != null) date = new Date(currentTimestamp * 1000);
+        timeArray[0] = DateUtil.beginOfDay(date).getTime()/1000;
+        timeArray[1] = DateUtil.endOfDay(date).getTime()/1000;
+        return timeArray;
     }
 }

@@ -54,7 +54,7 @@ public class UserController extends BaseController {
     @GetMapping("/info")
     public AjaxResultDTO getUserInfo(@AuthenticationPrincipal LoginUser loginUser) {
         //获取用户信息，并返回
-        AjaxResultDTO ajax = AjaxResultDTO.success();
+        AjaxResultDTO ajax = success();
         loginUser.getUser().setPassword(null);
         ajax.put("user", loginUser);
         List<Role> roleList = roleService.listRoleByUserId(loginUser.getUserId());
@@ -140,7 +140,7 @@ public class UserController extends BaseController {
         Long[] roleIdArr = userRoleList.stream().map(UserRole::getRoleId).toArray(Long[]::new);
         List<UserPost> userPostList = userPostService.listUserPostByUserId(userId);
         Long[] postIdArr = userPostList.stream().map(UserPost::getPostId).toArray(Long[]::new);
-        return AjaxResultDTO.success().put("userInfo",user).put("roleIdArr",roleIdArr).put("postIdArr",postIdArr);
+        return success().put("userInfo",user).put("roleIdArr",roleIdArr).put("postIdArr",postIdArr);
     }
 
     /*
@@ -168,7 +168,7 @@ public class UserController extends BaseController {
     @OperLogAnn(title = "用户模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addUser(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) User addUser) {
         userService.addUser(addUser,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -183,7 +183,7 @@ public class UserController extends BaseController {
     @OperLogAnn(title = "用户模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyUser(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) User modifyUser) {
         userService.modifyUser(modifyUser,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -198,7 +198,7 @@ public class UserController extends BaseController {
     @OperLogAnn(title = "用户模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO deleteUser(@AuthenticationPrincipal LoginUser loginUser, long userId) {
         userService.modifyUserIsDelById(userId, AppConstants.COMMON_BYTE_YES,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -213,7 +213,7 @@ public class UserController extends BaseController {
     @OperLogAnn(title = "用户模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO resetPassword(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Map<String,Object> paramMap) {
         userService.resetPassword(Convert.toLong(paramMap.get("userId")),Convert.toStr(paramMap.get("password")),loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
 }

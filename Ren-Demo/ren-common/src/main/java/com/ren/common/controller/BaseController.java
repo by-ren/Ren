@@ -78,6 +78,14 @@ public class BaseController
     }
 
     /**
+     * 返回失败消息
+     */
+    public AjaxResultDTO error(int code, String message)
+    {
+        return AjaxResultDTO.error(code,message);
+    }
+
+    /**
      * 返回警告消息
      */
     public AjaxResultDTO warn(String message)

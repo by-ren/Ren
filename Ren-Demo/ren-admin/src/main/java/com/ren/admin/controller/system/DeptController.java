@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import com.ren.common.constant.AppConstants;
+import com.ren.common.controller.BaseController;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.model.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.Dept;
@@ -26,7 +27,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/dept")
-public class DeptController {
+public class DeptController extends BaseController {
 
     @Autowired
     DeptService deptService;
@@ -48,7 +49,7 @@ public class DeptController {
         List<Dept> deptList = deptService.listDeptByParam(paramMap);
         //将列表转为树形结构
         deptList = TreeUtils.formatTree(deptList, dept -> Convert.toInt(BeanUtil.getProperty(dept, "parentId")) == 0,"deptId",null,null,null);
-        return AjaxResultDTO.success().put("deptList",deptList);
+        return success().put("deptList",deptList);
     }
 
     /*
@@ -63,7 +64,7 @@ public class DeptController {
         List<Dept> deptList = deptService.listDeptByParam(null);
         //将列表转为树形结构
         deptList = TreeUtils.formatTree(deptList, dept -> Convert.toInt(BeanUtil.getProperty(dept, "parentId")) == 0,"deptId",null,null,null);
-        return AjaxResultDTO.success().put("deptList",TreeUtils.convertTreeSelectForAll(deptList, "deptId", "deptName", "isStop", "children"));
+        return success().put("deptList",TreeUtils.convertTreeSelectForAll(deptList, "deptId", "deptName", "isStop", "children"));
     }
 
     /*
@@ -84,7 +85,7 @@ public class DeptController {
         //将列表转为树形结构
         deptList = TreeUtils.formatTree(deptList,dept -> Convert.toInt(BeanUtil.getProperty(dept, "parentId")) == 0,"deptId","parentId","children",null);
         //将部门列表转换为下拉框树形结构后传输到前台
-        return AjaxResultDTO.success().put("parentDeptList",TreeUtils.convertTreeSelectForAll(deptList, "deptId", "deptName", "isStop", "children"));
+        return success().put("parentDeptList",TreeUtils.convertTreeSelectForAll(deptList, "deptId", "deptName", "isStop", "children"));
     }
 
     /*
@@ -110,7 +111,7 @@ public class DeptController {
             }
         }
 
-        return AjaxResultDTO.success().put("deptList",TreeUtils.convertTreeSelectForAll(deptList, "deptId", "deptName", "isStop", "children")).put("deptIdArr",deptIdArr);
+        return success().put("deptList",TreeUtils.convertTreeSelectForAll(deptList, "deptId", "deptName", "isStop", "children")).put("deptIdArr",deptIdArr);
     }
 
     /*
@@ -125,7 +126,7 @@ public class DeptController {
     @OperLogAnn(title = "部门模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addDept(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Dept addDept) {
         deptService.addDept(addDept,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -140,7 +141,7 @@ public class DeptController {
     @OperLogAnn(title = "部门模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyDept(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Dept modifyDept) {
         deptService.modifyDeptById(modifyDept,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -159,15 +160,15 @@ public class DeptController {
         paramMap.put("parentId",deptId);
         List<Dept> deptList = deptService.listDeptByParam(paramMap);
         if(deptList != null && !deptList.isEmpty()){
-            return AjaxResultDTO.warn("请先删除子级部门");
+            return warn("请先删除子级部门");
         }
         //查询部门下是否有用户
         List<User> userList = userService.listUserByDeptId(deptId);
         if(userList != null && !userList.isEmpty()){
-            return AjaxResultDTO.warn("该部门下还有正在使用的用户，请先删除");
+            return warn("该部门下还有正在使用的用户，请先删除");
         }
         deptService.modifyDeptIsDelById(deptId, AppConstants.COMMON_BYTE_YES,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
 }

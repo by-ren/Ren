@@ -53,7 +53,7 @@ public class NoticeController extends BaseController {
         noticeService.addNotice(addNotice,loginUser.getUsername());
         //线程池异步发送邮件
         AsyncManager.me().execute(AsyncFactory.sendAddOrModifyNoticeEmail(addNotice,"Ren系统通知公告新增"));
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -70,7 +70,7 @@ public class NoticeController extends BaseController {
         noticeService.modifyNotice(modifyNotice,loginUser.getUsername());
         //线程池异步发送邮件
         AsyncManager.me().execute(AsyncFactory.sendAddOrModifyNoticeEmail(modifyNotice,"Ren系统通知公告变更"));
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -85,7 +85,7 @@ public class NoticeController extends BaseController {
     @OperLogAnn(title = "通知公告模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO noticeDelete(@AuthenticationPrincipal LoginUser loginUser, long noticeId) {
         noticeService.removeNotice(noticeId);
-        return AjaxResultDTO.success();
+        return success();
     }
 
 }

@@ -47,7 +47,7 @@ public class DictTypeController extends BaseController {
     @GetMapping("/list")
     public AjaxResultDTO listDictType() {
         List<DictType> dictTypeList = dictTypeService.listDictTypeByParam(null);
-        return AjaxResultDTO.success().put("dictTypeList",dictTypeList);
+        return success().put("dictTypeList",dictTypeList);
     }
 
     /*
@@ -62,7 +62,7 @@ public class DictTypeController extends BaseController {
     @OperLogAnn(title = "字典模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addDictType(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) DictType addDictType) {
         dictTypeService.addDictType(addDictType,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -77,7 +77,7 @@ public class DictTypeController extends BaseController {
     @OperLogAnn(title = "字典模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyDictType(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) DictType modifyDictType) {
         dictTypeService.modifyDictType(modifyDictType,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -92,7 +92,7 @@ public class DictTypeController extends BaseController {
     @OperLogAnn(title = "字典模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO dictTypeDelete(@AuthenticationPrincipal LoginUser loginUser, long dictTypeId) {
         dictTypeService.removeDictType(dictTypeId);
-        return AjaxResultDTO.success();
+        return success();
     }
 
 }
