@@ -54,7 +54,7 @@ public class RoleController extends BaseController {
     public AjaxResultDTO listRole() {
         List<Role> roleList = roleService.listRoleByParam(null);
         roleList = roleList.stream().filter(role -> !role.getRoleKey().equals(AppConstants.ROLE_SUPER_KEY)).collect(Collectors.toList());
-        return AjaxResultDTO.success().put("roleList",roleList);
+        return success().put("roleList",roleList);
     }
 
     /*
@@ -69,7 +69,7 @@ public class RoleController extends BaseController {
     @OperLogAnn(title = "角色模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addRole(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Role addRole) {
         roleService.addRole(addRole,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -84,7 +84,7 @@ public class RoleController extends BaseController {
     @OperLogAnn(title = "角色模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyRole(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Role modifyRole) {
         roleService.modifyRoleById(modifyRole,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -101,10 +101,10 @@ public class RoleController extends BaseController {
         //查询当前角色下是否有用户还在使用
         List<User> userList = userService.listUserByRoleId(roleId);
         if(userList != null && !userList.isEmpty()){
-            return AjaxResultDTO.error("当前角色下还有用户在使用，不能删除");
+            return error("当前角色下还有用户在使用，不能删除");
         }
         roleService.modifyRoleIsDelById(roleId, AppConstants.COMMON_BYTE_YES,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
 }

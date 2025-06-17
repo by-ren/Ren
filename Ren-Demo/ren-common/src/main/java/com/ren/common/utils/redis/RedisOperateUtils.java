@@ -1,7 +1,8 @@
-package com.ren.common.utils;
+package com.ren.common.utils.redis;
 
 import com.ren.common.constant.RedisCacheConstants;
 import com.ren.common.properties.TokenProperties;
+import com.ren.common.utils.PersistentDeviceIdGeneratorUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
@@ -11,12 +12,12 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Redis缓存工具类
+ * Redis操作工具类
  * 
  * @author ren
  */
 @Component
-public class RedisCacheUtils {
+public class RedisOperateUtils {
 
     @Autowired
     private TokenProperties tokenProperties; // 静态字段

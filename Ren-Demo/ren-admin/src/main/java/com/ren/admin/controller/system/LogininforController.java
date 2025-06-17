@@ -49,7 +49,7 @@ public class LogininforController extends BaseController {
     @OperLogAnn(title = "日志模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO logininforDelete(@AuthenticationPrincipal LoginUser loginUser, long logininforId) {
         logininforService.removeLogininfor(logininforId);
-        return AjaxResultDTO.success();
+        return success();
     }
 
 }

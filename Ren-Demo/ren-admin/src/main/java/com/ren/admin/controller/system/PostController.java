@@ -47,7 +47,7 @@ public class PostController extends BaseController {
     @GetMapping("/list")
     public AjaxResultDTO listPost() {
         List<Post> postList = postService.listPostByParam(null);
-        return AjaxResultDTO.success().put("postList",postList);
+        return success().put("postList",postList);
     }
 
     /*
@@ -62,7 +62,7 @@ public class PostController extends BaseController {
     @OperLogAnn(title = "岗位模块", businessType = BusinessType.INSERT)
     public AjaxResultDTO addPost(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Post addPost) {
         postService.addPost(addPost,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -77,7 +77,7 @@ public class PostController extends BaseController {
     @OperLogAnn(title = "岗位模块", businessType = BusinessType.UPDATE)
     public AjaxResultDTO modifyPost(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Post modifyPost) {
         postService.modifyPost(modifyPost,loginUser.getUsername());
-        return AjaxResultDTO.success();
+        return success();
     }
 
     /*
@@ -92,7 +92,7 @@ public class PostController extends BaseController {
     @OperLogAnn(title = "岗位模块", businessType = BusinessType.DELETE)
     public AjaxResultDTO postDelete(@AuthenticationPrincipal LoginUser loginUser, long postId) {
         postService.removePost(postId);
-        return AjaxResultDTO.success();
+        return success();
     }
 
 }
