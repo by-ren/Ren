@@ -33,13 +33,12 @@
   - 在线用户：查看本系统已经登陆的所有用户，超级管理员在该界面可以对用户账号进行强退
   - 服务监控：查看服务器CPU、内存、Java虚拟机以及服务器本身详细信息
   - 缓存列表：查看Redis中所有数据内容
+  - 缓存监控：对Redis的缓存情况进行监控
 
 即将完成：
 
 - 系统任务
   - 定时任务：对系统中需要定时执行的任务进行配置，如定时取消订单
-- 系统监控
-  - 缓存监控：对Redis的缓存情况进行监控
 - 系统工具
   - 表单构建：通过拖拉拽的方式，快速进行表单的排版与构建，极大节省了前端页面的编写
   - 代码生成：快速完成从实体类、接口、Mapper层的代码生成，节省了二次开发人员的大量重复无意义工作
@@ -50,6 +49,7 @@
 1. 系统基础功能完成后将逐步加入支付宝支付，微信支付等等各种支付功能的傻瓜式开发，同时添加各步骤操作手册，旨在让二次开发人员只通过简单的配置与修改即可完成一些复杂功能的开发，节省大量查询资料与配置时间
 2. 逐步加入工业上各种协议的对接模块，如MQTT、MODBUS等协议对接，同样配备傻瓜式的各步骤操作手册，让二次开发人员只需要按照操作手册进行简单配置即可完成复杂协议对接
 3. 以上模块完成开发后不会内置于项目中，而会作为独立可插拔模块，独立于项目之外，尽量提高原始项目的简洁性，让不需要的用户可以更简单的使用系统，同时让需要的用户可以通过简单的导入即可使用
+4. 该项目诞生的初衷就是让不论初级还是高级开发者都可以顺畅的使用，基于此目标，该项目中添加了非常多的注释，复杂功能甚至达到了一行注释一行代码，帮助大家快速的理解项目
 
 ## 🗂️ 项目结构
 
@@ -177,7 +177,13 @@ npm run dev
 
 ![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/7f4a6fd9/ba9bd11e.png)
 
-![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/2d2321a5/e19f59af.png)
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/4f181119/d2b844cb.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/ee4ef7f9/f1253777.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/ff892d3d/8c1050df.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/74b5d97b/c1705393.png)
 
 ## 📜 许可证
 
