@@ -34,7 +34,6 @@ public class RedisMonitorInfoUtils {
      * @date 2025/06/17 14:33
      */
     public Properties getRedisBasicInfo(){
-        //execute执行因为不常用而未经过封装的Redis命令
         return (Properties) redisTemplate.execute((RedisCallback<Object>) connection -> connection.info());
     }
 
@@ -45,7 +44,6 @@ public class RedisMonitorInfoUtils {
      * @date 2025/06/17 14:34
      */
     public Properties getRedisCommandStatInfo(){
-        //execute执行因为不常用而未经过封装的Redis命令
         return (Properties) redisTemplate.execute((RedisCallback<Object>) connection -> connection.info("commandstats"));
     }
 
@@ -56,7 +54,6 @@ public class RedisMonitorInfoUtils {
      * @date 2025/06/17 14:35
      */
     public Object getRedisKeyNumber(){
-        //execute执行因为不常用而未经过封装的Redis命令
         return redisTemplate.execute((RedisCallback<Object>) connection -> connection.dbSize());
     }
 

@@ -1,6 +1,6 @@
 package com.ren.admin.aop;
 
-import com.ren.common.utils.json.FastJSON2Utils;
+import com.ren.common.utils.FastJSON2Utils;
 import com.ren.common.utils.ip.IpUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;

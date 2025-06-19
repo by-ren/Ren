@@ -216,7 +216,6 @@ public class RedisOperateUtils {
      */
     public boolean deleteKeysByPattern(String pattern) {
         try {
-            //execute执行因为不常用而未经过封装的Redis命令
             redisTemplate.execute((RedisCallback<Boolean>) connection -> {
                 // 创建扫描选项
                 ScanOptions scanOptions = ScanOptions.scanOptions()
