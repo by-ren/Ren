@@ -30,12 +30,16 @@ public class RedisConfig{
     public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory lettuceConnectionFactory){
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(lettuceConnectionFactory);
-        //设置key序列化方式string
+
+        FastJson2JsonRedisSerializer serializer = new FastJson2JsonRedisSerializer(Object.class);
+        //使用StringRedisSerializer来序列化和反序列化redis的key值
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        //设置vaLue的序列化方式json
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        //使用FastJson2来序列化和反序列化redis的value值
+        redisTemplate.setValueSerializer(serializer);
+        //Hash的key也采用StringRedisSerializer的序列化方式
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+        //Hash的Value也采用FastJson2的序列化方式
+        redisTemplate.setHashValueSerializer(serializer);
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }

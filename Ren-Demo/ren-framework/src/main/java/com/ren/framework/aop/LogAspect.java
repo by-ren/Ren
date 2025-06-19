@@ -9,7 +9,7 @@ import com.ren.common.constant.AppConstants;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.entity.OperLog;
 import com.ren.common.interfaces.OperLogAnn;
-import com.ren.common.utils.FastJSON2Utils;
+import com.ren.common.utils.json.FastJSON2Utils;
 import com.ren.common.utils.ip.IpUtils;
 import com.ren.common.utils.SecurityUtils;
 import com.ren.common.utils.ServletUtils;

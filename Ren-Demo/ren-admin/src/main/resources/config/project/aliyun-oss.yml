@@ -1,0 +1,14 @@
+# 阿里云OSS相关配置
+aliyun:
+  # OSS 服务的访问入口地址（可以理解为工业园地址）（改为你自己的）
+  endpoint:
+  # 存储桶名称（存储空间）（可以理解为工业园内的仓库）（改为你自己的）
+  bucket-name:
+  # 阿里云accessKeyId（可以理解为仓库门禁卡）（改为你自己的）
+  access-key-id:
+  # 阿里云accessKeySecret（可以理解为门禁密码）（改为你自己的）
+  access-key-secret:
+  # 文件上传的目标目录路径（可以理解为仓库内的某个货架）（改为你自己的）
+  image-upload-path:
+  # 文件的公开访问地址前缀（可以理解为为大众开放的访问该仓库内文件的路径，一般为前端访问文件使用）（改为你自己的）
+  image_oss_path_read:

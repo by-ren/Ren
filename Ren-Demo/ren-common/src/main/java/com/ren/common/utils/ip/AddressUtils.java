@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.ren.common.constant.Constants;
 import com.ren.common.utils.http.HttpUtils;
+import com.ren.common.utils.json.FastJSON2Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,7 @@ public class AddressUtils
                 log.error("获取地理位置异常 {}", ip);
                 return UNKNOWN;
             }
-            JSONObject obj = JSON.parseObject(rspStr);
+            JSONObject obj = FastJSON2Utils.toJSONObject(rspStr);
             String region = obj.getString("pro");
             String city = obj.getString("city");
             return String.format("%s %s", region, city);

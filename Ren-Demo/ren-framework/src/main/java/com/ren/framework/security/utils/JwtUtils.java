@@ -3,7 +3,7 @@ package com.ren.framework.security.utils;
 import com.alibaba.fastjson2.JSON;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.properties.TokenProperties;
-import com.ren.common.utils.FastJSON2Utils;
+import com.ren.common.utils.json.FastJSON2Utils;
 import com.ren.common.utils.redis.RedisOperateUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -50,7 +50,7 @@ public class JwtUtils {
      */
     public String createAccessToken(LoginUser loginUser,Long expireTime) {
         expireTime = expireTime == null ? (System.currentTimeMillis() + tokenProperties.getExpireTime() * 1000L) : expireTime;
-        String login_user = FastJSON2Utils.toString(loginUser);
+        String login_user = FastJSON2Utils.toJson(loginUser);
         //过滤敏感字段
         //String login_user = FastJSON2Utils.filterSensitiveFields(FastJSON2Utils.EXCLUDE_PROPERTIES,loginUser);
         return Jwts.builder()
@@ -72,7 +72,7 @@ public class JwtUtils {
      */
     public String createRefreshToken(LoginUser loginUser,Long expireTime, HttpServletRequest httpRequest) {
         expireTime = expireTime == null ? (System.currentTimeMillis() + tokenProperties.getRefreshExpireTime() * 1000L) : expireTime;
-        String login_user = FastJSON2Utils.toString(loginUser);
+        String login_user = FastJSON2Utils.toJson(loginUser);
         //过滤敏感字段
         //String login_user = FastJSON2Utils.filterSensitiveFields(FastJSON2Utils.EXCLUDE_PROPERTIES,loginUser);
         String refreshToken = Jwts.builder()
