@@ -14,7 +14,7 @@
             <el-button type="primary" @click="openAddMenuDialog">添加菜单</el-button>
         </el-col>
     </el-row>
-    
+
     <el-table
       :data="tableData"
       style="width: 100%; margin-bottom: 20px"
@@ -27,7 +27,7 @@
       <el-table-column prop="menuName" label="菜单名称" sortable />
       <el-table-column prop="icon" label="菜单图标" sortable width="120" :align="'center'">
         <template #default="item">
-            <component :is="item.row.icon" style="width: 24px;"/>
+          <component v-if="item.row.icon && item.row.icon !== '#'" :is="item.row.icon" style="width: 24px;"/>
         </template>
       </el-table-column>
       <el-table-column prop="orderNum" label="排序" sortable />
@@ -243,9 +243,9 @@
         ],
         orderNum:[
             { required: true, message: '请填写显示顺序', trigger: 'blur' },
-            { 
-                pattern: /^[1-9]\d*$/, 
-                message: '只能输入正整数', 
+            {
+                pattern: /^[1-9]\d*$/,
+                message: '只能输入正整数',
                 trigger: ['blur', 'change']
             }
         ],
@@ -278,6 +278,7 @@
     }
     //打开修改弹框
     const openModifyMenuDialog = async(index: number, row: any) => {
+      debugger
         //表单值恢复为初始值
         addOrModifyMenuForm.value = { ...initialAddOrModifyMenuForm };
         //清除验证状态
@@ -290,7 +291,7 @@
 
                 // 等待树形组件渲染完成
                 await nextTick();
-                
+
                 // 设置默认选中值
                 addOrModifyMenuForm.value.parentId = row.parentId;
             }else{
