@@ -9,13 +9,13 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>ren-business</artifactId>
-
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>ren-example</module>
+		<module>ren-cloudstorage</module>
 	</modules>
+
+	<artifactId>ren-feature</artifactId>
 
 	<properties>
 		<maven.compiler.source>21</maven.compiler.source>

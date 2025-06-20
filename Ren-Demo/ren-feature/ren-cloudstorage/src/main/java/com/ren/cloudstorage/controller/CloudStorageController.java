@@ -1,0 +1,79 @@
+package com.ren.cloudstorage.controller;
+
+import cn.hutool.core.util.StrUtil;
+import com.ren.cloudstorage.config.AliyunConfig;
+import com.ren.cloudstorage.config.CloudStorageConfig;
+import com.ren.cloudstorage.domain.dto.AjaxResultDTO;
+import com.ren.cloudstorage.domain.entity.ImageLog;
+import com.ren.cloudstorage.domain.enums.OSSReturnCodeEnum;
+import com.ren.cloudstorage.domain.exception.OSSException;
+import com.ren.cloudstorage.service.CloudStorageService;
+import com.ren.cloudstorage.service.route.CloudStorageServiceRouter;
+import com.ren.cloudstorage.utils.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+@RestController
+@RequestMapping("/cloudStorage")
+public class CloudStorageController{
+
+    @Autowired
+    private CloudStorageServiceRouter cloudStorageServiceRouter;
+    @Autowired
+    private AliyunConfig aLiYunConfig;
+    @Autowired
+    private CloudStorageConfig cloudStorageConfig;
+
+    /**
+     * 文件上传接口
+     *
+     * @param file 上传的文件
+     * @param belong 业务归属分类
+     * @return 上传后的图片记录
+     * @throws OSSException 上传异常
+     */
+    @PostMapping("/upload")
+    public AjaxResultDTO uploadFile(MultipartFile file, String belong) throws OSSException {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("文件不能为空");
+        }
+        //如果没有指定分类，则使用默认分类
+        if(StrUtil.isNotBlank(belong)){
+            belong = aLiYunConfig.getImageUploadPath() + "/"+ belong;
+        }else{
+            belong = aLiYunConfig.getImageUploadPath();
+        }
+
+        //根据不同的云存储厂商，获取对应的服务
+        CloudStorageService cloudStorageService = cloudStorageServiceRouter.getService(cloudStorageConfig.getVendor());
+        try {
+            ImageLog imageLog = cloudStorageService.upload(file.getBytes(),belong,file.getOriginalFilename());
+            AjaxResultDTO ajax = AjaxResultDTO.success();
+            ajax.put("url", imageLog.getImageUrl());
+            ajax.put("fileName", imageLog.getName());
+            ajax.put("newFileName", FileUtils.getName(imageLog.getName()));
+            ajax.put("originalFilename", file.getOriginalFilename());
+            return ajax;
+        } catch (IOException e) {
+            throw new OSSException(OSSReturnCodeEnum.UPLOAD_ERROR, e);
+        }
+    }
+
+    /**
+     * 生成文件预览URL接口
+     *
+     * @param filePath 文件在存储桶中的路径
+     * @return 预览URL字符串
+     * @throws OSSException 生成异常
+     */
+    @GetMapping("/preview")
+    public String generatePreviewUrl(@RequestParam("filePath") String filePath) throws OSSException {
+        //根据不同的云存储厂商，获取对应的服务
+        CloudStorageService cloudStorageService = cloudStorageServiceRouter.getService(cloudStorageConfig.getVendor());
+        return cloudStorageService.generatePreviewUrl(filePath).toString();
+    }
+
+}
