@@ -169,12 +169,22 @@
             <artifactId>ren-system</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+        <!--监控模块-->
 		<dependency>
 			<groupId>com.ren</groupId>
 			<artifactId>ren-monitor</artifactId>
 			<version>1.0-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
+
+        <!--文件上传模块-->
+        <dependency>
+            <groupId>com.ren</groupId>
+            <artifactId>ren-cloudstorage</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
 	</dependencies>
 

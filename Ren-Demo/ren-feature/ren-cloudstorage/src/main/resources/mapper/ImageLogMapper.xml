@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ren.cloudstorage.mapper.ImageLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="imageLog">
+        <id column="id" property="id" />
+        <result column="bucket" property="bucket" />
+        <result column="image_url" property="imageUrl" />
+        <result column="belong" property="belong" />
+        <result column="name" property="name" />
+        <result column="etag" property="etag" />
+        <result column="file_size" property="fileSize" />
+        <result column="mime_type" property="mimeType" />
+        <result column="cloud_name" property="cloudName" />
+        <result column="create_time" property="createTime" />
+        <result column="create_time_str" property="createTimeStr"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        select id, bucket, image_url, belong, name, etag, file_size, mime_type, create_time, cloud_name,FROM_UNIXTIME(create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str
+        from sys_image_log
+    </sql>
+
+    <insert id="insertImageLog" parameterType="imageLog" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into sys_image_log(
+        <if test="id != null and id != 0">id,</if>
+        <if test="bucket != null">bucket,</if>
+        <if test="imageUrl != null">image_url,</if>
+        <if test="belong != null">belong,</if>
+        <if test="name != null">name,</if>
+        <if test="etag != null">etag,</if>
+        <if test="fileSize != null">file_size,</if>
+        <if test="mimeType != null">mime_type,</if>
+        <if test="cloudName != null">cloud_name,</if>
+        create_time
+        )values(
+        <if test="id != null and id != 0">#{id},</if>
+        <if test="bucket != null">#{bucket},</if>
+        <if test="imageUrl != null">#{imageUrl},</if>
+        <if test="belong != null">#{belong},</if>
+        <if test="name != null">#{name},</if>
+        <if test="etag != null">#{etag},</if>
+        <if test="fileSize != null">#{fileSize},</if>
+        <if test="mimeType != null">#{mimeType},</if>
+        <if test="cloudName != null">#{cloudName},</if>
+        #{createTime}
+        )
+    </insert>
+
+</mapper>
