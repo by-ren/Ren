@@ -12,10 +12,10 @@ declare module 'axios' {
     _retry?: boolean;
   }
 }
-  
+
 // 创建唯一实例（无拦截器）
 export const service: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_APP_BASE_API,
   timeout: 100000
 });
 
@@ -23,12 +23,12 @@ export const service: AxiosInstance = axios.create({
 export const setupInterceptors = () => {
   const UN_AUTH_PATHS: readonly string[] = ['/auth/login', '/auth/refreshToken'];
   const authStore = useAuthStore(); // 初始化 store
-  
+
   // 请求前的拦截器，用于加AccessToken
   service.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
       if (!config.url) return config;
-  
+
       // 跳过无需认证的接口
       if (UN_AUTH_PATHS.some(path => config.url?.includes(path))) {
         return config;
@@ -42,7 +42,7 @@ export const setupInterceptors = () => {
         accessToken ? `Bearer ${accessToken.value}` : "false accessToken",
         true // 允许覆盖已有值
       );
-  
+
       return config;
     }
   );

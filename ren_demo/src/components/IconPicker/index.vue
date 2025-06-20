@@ -1,7 +1,7 @@
 <template>
   <!-- 弹出层组件，点击触发，宽度360，自定义popper类 -->
-  <el-popover 
-    trigger="click" 
+  <el-popover
+    trigger="click"
     :width="360"
     popper-class="icon-picker-popper"
   >
@@ -11,7 +11,7 @@
         <!-- 显示已选图标 -->
         <el-icon v-if="selectedIcon" :size="20" style="margin-right: 10px;">
             <!-- 动态组件显示图标 -->
-            <component :is="selectedIcon"/>
+            <component v-if="selectedIcon && selectedIcon !== '#'" :is="selectedIcon"/>
         </el-icon>
         <!-- 未选择时的提示文字 -->
         <span class="trigger-text">{{ selectedIcon || '请选择图标' }}</span>
@@ -36,7 +36,7 @@
       <!-- 图标网格布局 -->
       <div class="icon-grid">
         <!-- 遍历过滤后的图标列表 -->
-        <div 
+        <div
           v-for="registeredName in filteredIcons"
           :key="registeredName"
           class="icon-item"
@@ -47,7 +47,7 @@
           <el-tooltip :content="registeredName.split('-').slice(2).join('-')" placement="top">
             <el-icon :size="24">
               <!-- 动态显示图标组件 -->
-              <component :is="registeredName"/>
+              <component v-if="selectedIcon && selectedIcon !== '#'" :is="registeredName"/>
             </el-icon>
           </el-tooltip>
         </div>
@@ -72,14 +72,14 @@ const emit = defineEmits(['update:modelValue'])
 const searchText = ref('')  // 搜索关键词
 // 生成带前缀的图标名称列表
 const iconList = ref(
-  Object.keys(ElementPlusIconsVue).map(key => 
+  Object.keys(ElementPlusIconsVue).map(key =>
     `i-ep-${key.toLowerCase()}`
   )
 )
 
 // 计算属性：过滤后的图标列表（根据搜索关键词）(监控iconList.value的修改)
 const filteredIcons = computed(() => {
-  return iconList.value.filter(registeredName => 
+  return iconList.value.filter(registeredName =>
     registeredName.toLowerCase().includes(searchText.value.toLowerCase())
   )
 })
@@ -109,13 +109,13 @@ const handleSelect = (icon: string) => {
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.1s;             /* 平滑过渡效果 */
-  
+
   /* 悬停效果 */
   &:hover {
     border-color: var(--el-color-primary);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   }
-  
+
   /* 提示文字样式 */
   .trigger-text {
     color: var(--el-text-color-regular);
@@ -126,7 +126,7 @@ const handleSelect = (icon: string) => {
 /* 弹出层内容容器 */
 .icon-picker-container {
   padding: 12px;
-  
+
   /* 搜索框样式 */
   .search-input {
     margin-bottom: 12px;
@@ -154,13 +154,13 @@ const handleSelect = (icon: string) => {
       cursor: pointer;
       transition: all 0.2s;          /* 过渡动画 */
       background: var(--el-fill-color-light); /* 默认背景 */
-      
+
       /* 悬停效果 */
       &:hover {
         background: var(--el-color-primary-light-9);
         transform: scale(1.1);       /* 放大效果 */
       }
-      
+
       /* 选中状态 */
       &.active {
         background: var(--el-color-primary-light-8);

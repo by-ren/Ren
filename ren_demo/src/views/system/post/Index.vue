@@ -62,7 +62,7 @@
         </template>
     </el-dialog>
 </template>
-  
+
 <script setup lang="ts" name="post">
     import { ref,onMounted } from 'vue'
     import type { FormInstance,FormRules } from 'element-plus'
@@ -104,8 +104,8 @@
     //总页数
     const totalPage = ref(1)
     /*============================通用参数结束============================*/
-    
-    
+
+
     /*============================页面方法开始============================*/
     //获取列表
     const getList = async () => {
@@ -164,9 +164,9 @@
         ],
         postSort:[
             { required: true, message: '请填写显示顺序', trigger: 'blur' },
-            { 
-                pattern: /^[0-9]\d*$/, 
-                message: '只能输入正整数', 
+            {
+                pattern: /^[0-9]\d*$/,
+                message: '只能输入正整数',
                 trigger: ['blur', 'change']
             }
         ],
@@ -311,7 +311,7 @@
     })
     /*============================生命周期钩子结束============================*/
 </script>
-  
+
 <style scoped>
     .demo-form-inline .el-input {
         --el-input-width: 220px;
