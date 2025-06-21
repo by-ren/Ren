@@ -74,6 +74,8 @@ declare module 'vue' {
     Pagination: typeof import('./src/components/Pagination/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SafeDynamicComponent: typeof import('./src/components/SafeDynamicComponent/index.vue')['default']
+    SidebarItem: typeof import('./src/components/SidebarItem/index.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon/index.vue')['default']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
