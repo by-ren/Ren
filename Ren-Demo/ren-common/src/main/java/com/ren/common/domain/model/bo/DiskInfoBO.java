@@ -2,7 +2,7 @@ package com.ren.common.domain.model.bo;
 
 import cn.hutool.core.util.NumberUtil;
 import com.ren.common.utils.BigDecimalUtils;
-import com.ren.common.utils.FileUtils;
+import com.ren.common.utils.file.FileUtils;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import oshi.software.os.OSFileStore;

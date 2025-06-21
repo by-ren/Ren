@@ -6,7 +6,7 @@ import com.ren.monitor.domain.vo.SysUserOnlineVO;
 /**
  * 在线用户 服务层
  * 
- * @author ruoyi
+ * @author ren
  */
 public interface SysUserOnlineService
 {
