@@ -70,6 +70,7 @@ declare module 'vue' {
     IEpSetting: typeof import('~icons/ep/setting')['default']
     ImagePreview: typeof import('./src/components/ImagePreview/index.vue')['default']
     ImageUpload: typeof import('./src/components/ImageUpload/index.vue')['default']
+    Index: typeof import('./src/components/SidebarItem/Index.vue')['default']
     Pagination: typeof import('./src/components/Pagination/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
