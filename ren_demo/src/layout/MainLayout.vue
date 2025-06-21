@@ -3,7 +3,7 @@
     <el-container>
       <el-aside class="aside" :width="isCollapse ? '64px' : '200px'">
 
-        <el-menu 
+        <el-menu
           :router="true"
           active-text-color="#ffd04b"
           background-color="#545c64"
@@ -18,7 +18,7 @@
           <SidebarItem v-for="item in menuItems" :key="item.index" :item="item"></SidebarItem>
         </el-menu>
       </el-aside>
-      
+
       <el-container>
         <el-header class="container-header">
           <el-row class="el-row1">
@@ -47,7 +47,7 @@
             <el-tag :closable="item.closable" :type="item.type" v-for="(item,index) in tagArr" :key="item.tagId" @click="tagClick(index)" @close="tagClose(index)">{{item.tagName}}</el-tag>
           </el-row>
         </el-header>
-        
+
         <el-main class="container-main">
           <RouterView></RouterView>
         </el-main>
@@ -64,7 +64,7 @@
   import type { MenuVO } from '@/types/MenuVo';
   import { storeToRefs } from 'pinia'
   // 该组件是递归组件，所以无法自动导入，需要手动导入
-  import SidebarItem from '@/components/SidebarItem/Index.vue'
+  import SidebarItem from '@/components/SidebarItem/index.vue'
   /*============================通用参数开始============================*/
   // auth相关pinia
   const authStore = useAuthStore()
@@ -120,7 +120,7 @@
   let tagClick = async (index:number) => {
     await router.push({ path: tagArr[index].tagId });
     // 动态选中菜单
-    menuRef.value.updateActiveIndex(tagArr[index].tagId); 
+    menuRef.value.updateActiveIndex(tagArr[index].tagId);
     updateTagStates(tagArr[index].tagId);
   };
   //标签页关闭方法

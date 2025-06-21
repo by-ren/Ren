@@ -10,8 +10,8 @@
       <div class="trigger-box">
         <!-- 显示已选图标 -->
         <el-icon v-if="selectedIcon" :size="20" style="margin-right: 10px;">
-            <!-- 动态组件显示图标 -->
-            <component v-if="selectedIcon && selectedIcon !== '#'" :is="selectedIcon"/>
+            <!-- 使用自定义动态绑定组件，可以判断组件是否存在，防止报错 -->
+            <SafeDynamicComponent :componentName="selectedIcon" />
         </el-icon>
         <!-- 未选择时的提示文字 -->
         <span class="trigger-text">{{ selectedIcon || '请选择图标' }}</span>
@@ -46,8 +46,8 @@
           <!-- 鼠标悬停显示图标名称提示 -->
           <el-tooltip :content="registeredName.split('-').slice(2).join('-')" placement="top">
             <el-icon :size="24">
-              <!-- 动态显示图标组件 -->
-              <component v-if="selectedIcon && selectedIcon !== '#'" :is="registeredName"/>
+              <!-- 使用自定义动态绑定组件，可以判断组件是否存在，防止报错 -->
+              <SafeDynamicComponent :componentName="registeredName" />
             </el-icon>
           </el-tooltip>
         </div>
