@@ -27,7 +27,8 @@
       <el-table-column prop="menuName" label="菜单名称" sortable />
       <el-table-column prop="icon" label="菜单图标" sortable width="120" :align="'center'">
         <template #default="item">
-          <component v-if="item.row.icon && item.row.icon !== '#'" :is="item.row.icon" style="width: 24px;"/>
+          <!-- 使用自定义动态绑定组件，可以判断组件是否存在，防止报错 -->
+          <SafeDynamicComponent :componentName="item.row.icon" />
         </template>
       </el-table-column>
       <el-table-column prop="orderNum" label="排序" sortable />
@@ -278,7 +279,6 @@
     }
     //打开修改弹框
     const openModifyMenuDialog = async(index: number, row: any) => {
-      debugger
         //表单值恢复为初始值
         addOrModifyMenuForm.value = { ...initialAddOrModifyMenuForm };
         //清除验证状态

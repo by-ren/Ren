@@ -7,7 +7,7 @@
             <template #title>
                 <el-icon>
                     <!-- 动态绑定目标组件，此种方式依赖于main.ts中的全局注册，所以一定要先注册之后再使用动态绑定 -->
-                    <component v-if="item.icon && item.icon !== '#'" :is="item.icon" />
+                    <SafeDynamicComponent :componentName="item.icon" width="20px" height="20px" />
                 </el-icon>
                 <span>{{ item.name }}</span>
             </template>
@@ -18,7 +18,8 @@
         <el-menu-item v-else :index="item.index">
             <el-icon>
               <!-- 动态绑定目标组件，此种方式依赖于main.ts中的全局注册，所以一定要先注册之后再使用动态绑定 -->
-              <component v-if="item.icon && item.icon !== '#'" :is="item.icon" />
+              <!-- 使用自定义动态绑定组件，可以判断组件是否存在，防止报错 -->
+              <SafeDynamicComponent :componentName="item.icon" width="20px" height="20px" />
             </el-icon>
             <span>{{ item.name }}</span>
         </el-menu-item>

@@ -1,5 +1,6 @@
 package com.ren.framework.security.config;
 
+import cn.hutool.core.util.StrUtil;
 import com.ren.common.constant.AppConstants;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.entity.Menu;
@@ -70,7 +71,7 @@ public class DBUserDetailsManager implements UserDetailsManager, UserDetailsPass
                 //不是超级管理员获取相应菜单
                 menuList = menuMapper.listMenuByRoleIds(roleIds);
             }
-			return new LoginUser(user.getUserId(), user, menuList.stream().filter(menu -> !menu.getMenuType().equals(AppConstants.MENU_TYPE_DIR)).map(Menu::getPerms).collect(Collectors.toSet()));
+			return new LoginUser(user.getUserId(), user, menuList.stream().filter(menu -> !menu.getMenuType().equals(AppConstants.MENU_TYPE_DIR) && StrUtil.isNotBlank(menu.getPerms())).map(Menu::getPerms).collect(Collectors.toSet()));
         }
     }
 
