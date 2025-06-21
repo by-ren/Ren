@@ -1,8 +1,8 @@
 package com.ren.cloudstorage.controller;
 
 import cn.hutool.core.util.StrUtil;
-import com.ren.cloudstorage.config.AliyunConfig;
-import com.ren.cloudstorage.config.CloudStorageConfig;
+import com.ren.cloudstorage.properties.AliyunProperties;
+import com.ren.cloudstorage.properties.CloudStorageProperties;
 import com.ren.cloudstorage.domain.dto.AjaxResultDTO;
 import com.ren.cloudstorage.domain.entity.ImageLog;
 import com.ren.cloudstorage.domain.enums.OSSReturnCodeEnum;
@@ -23,9 +23,9 @@ public class CloudStorageController{
     @Autowired
     private CloudStorageServiceRouter cloudStorageServiceRouter;
     @Autowired
-    private AliyunConfig aLiYunConfig;
+    private AliyunProperties aLiYunProperties;
     @Autowired
-    private CloudStorageConfig cloudStorageConfig;
+    private CloudStorageProperties cloudStorageProperties;
 
     /**
      * 文件上传接口
@@ -42,13 +42,13 @@ public class CloudStorageController{
         }
         //如果没有指定分类，则使用默认分类
         if(StrUtil.isNotBlank(belong)){
-            belong = aLiYunConfig.getImageUploadPath() + "/"+ belong;
+            belong = aLiYunProperties.getImageUploadPath() + "/"+ belong;
         }else{
-            belong = aLiYunConfig.getImageUploadPath();
+            belong = aLiYunProperties.getImageUploadPath();
         }
 
         //根据不同的云存储厂商，获取对应的服务
-        CloudStorageService cloudStorageService = cloudStorageServiceRouter.getService(cloudStorageConfig.getVendor());
+        CloudStorageService cloudStorageService = cloudStorageServiceRouter.getService(cloudStorageProperties.getVendor());
         try {
             ImageLog imageLog = cloudStorageService.upload(file.getBytes(),belong,file.getOriginalFilename());
             AjaxResultDTO ajax = AjaxResultDTO.success();
@@ -72,7 +72,7 @@ public class CloudStorageController{
     @GetMapping("/preview")
     public String generatePreviewUrl(@RequestParam("filePath") String filePath) throws OSSException {
         //根据不同的云存储厂商，获取对应的服务
-        CloudStorageService cloudStorageService = cloudStorageServiceRouter.getService(cloudStorageConfig.getVendor());
+        CloudStorageService cloudStorageService = cloudStorageServiceRouter.getService(cloudStorageProperties.getVendor());
         return cloudStorageService.generatePreviewUrl(filePath).toString();
     }
 

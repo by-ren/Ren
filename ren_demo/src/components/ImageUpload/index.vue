@@ -119,7 +119,7 @@ const headers = computed(() => ({
 
 // 计算上传地址
 const uploadImgUrl = computed(() => {
-  const defaultAction = props.isLocal ? "/common/upload" : "/cloudStorage/upload"
+  const defaultAction = props.isLocal ? "/localStorage/upload" : "/cloudStorage/upload"
   const action = props.action || defaultAction
   return import.meta.env.VITE_APP_BASE_API + action
 })

@@ -178,7 +178,7 @@
 			<scope>compile</scope>
 		</dependency>
 
-        <!--文件上传模块-->
+        <!--云文件上传模块-->
         <dependency>
             <groupId>com.ren</groupId>
             <artifactId>ren-cloudstorage</artifactId>

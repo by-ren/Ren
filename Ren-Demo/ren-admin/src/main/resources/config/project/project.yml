@@ -6,3 +6,7 @@ token:
   refresh-expire-time: 28800  # refreshToken有效时长8小时
   black-list-time: 300    # accessToken加入黑名单后，黑名单持续时间
   is-open-single-device-login: 1    # 是否开启单设备登录（1：开启 0：关闭）
+
+localstorage:
+  # 文件路径 示例（ Windows配置C:/ren/uploadPath，Linux配置 /home/ren/uploadPath）
+  profile: C:/ren/uploadPath

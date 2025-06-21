@@ -11,6 +11,7 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/ren-business/example/pom.xml" />
+        <option value="$PROJECT_DIR$/ren-feature/ren-localstorage/pom.xml" />
       </set>
     </option>
   </component>

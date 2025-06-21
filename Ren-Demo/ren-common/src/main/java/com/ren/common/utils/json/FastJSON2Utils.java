@@ -9,6 +9,7 @@ import com.alibaba.fastjson2.util.ParameterizedTypeImpl;
 import jakarta.servlet.Filter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -217,7 +218,7 @@ public class FastJSON2Utils {
 		//过滤掉请求参数中的Servlet对象,防止序列化，如果强行序列化会报错
 		List<Object> safeArgs = new ArrayList<>();
 		for (Object arg : args) {
-			if (arg instanceof HttpServletRequest || arg instanceof HttpServletResponse) {
+			if (arg instanceof HttpServletRequest || arg instanceof HttpServletResponse || arg instanceof MultipartFile) {
 				continue;
 			}
 			safeArgs.add(arg);

@@ -116,7 +116,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private boolean isOpenEndpoint(String uri) {
         AntPathMatcher matcher = new AntPathMatcher();
         return matcher.match("/auth/login", uri) ||
-                matcher.match("/auth/refreshToken", uri);
+                matcher.match("/auth/refreshToken", uri)||
+
+                // 静态资源 (使用通配符匹配)
+                matcher.match("/", uri) ||
+                matcher.match("/*.html", uri) ||
+                matcher.match("/**/*.html", uri) ||  // 多层HTML
+                matcher.match("/**/*.css", uri) ||   // 多层CSS
+                matcher.match("/**/*.js", uri) ||    // 多层JS
+                matcher.match("/profile/**", uri) || // 所有profile路径
+
+                // 其他开放端点
+                matcher.match("/swagger-ui.html", uri) ||
+                matcher.match("/swagger-resources/**", uri) ||
+                matcher.match("/webjars/**", uri) ||
+                matcher.match("/*/api-docs", uri) ||
+                matcher.match("/druid/**", uri) ||
+
+                // 特殊匹配：OPTIONS 方法通配
+                (uri.equals("OPTIONS") && matcher.match("/**", uri));
     }
 
 

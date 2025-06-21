@@ -271,7 +271,7 @@ public class DateUtils {
      * @param dateStr
      * @param datecode
      * @return java.lang.Long
-     * @author zhiwei
+     * @author ren
      * @date 2025/06/16 13:23
      */
     public static Long convertDateStringToLong(String dateStr, String datecode) {

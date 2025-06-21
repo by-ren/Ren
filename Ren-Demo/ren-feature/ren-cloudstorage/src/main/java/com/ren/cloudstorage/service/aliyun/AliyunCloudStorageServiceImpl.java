@@ -7,7 +7,7 @@ import com.ren.cloudstorage.domain.enums.OSSReturnCodeEnum;
 import com.ren.cloudstorage.domain.exception.OSSException;
 import com.ren.cloudstorage.mapper.ImageLogMapper;
 import com.ren.cloudstorage.utils.FileUtils;
-import com.ren.cloudstorage.config.AliyunConfig;
+import com.ren.cloudstorage.properties.AliyunProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.aliyun.oss.OSS;
@@ -24,13 +24,13 @@ import java.util.Date;
 public class AliyunCloudStorageServiceImpl implements AliyunCloudStorageService {
 
 	private final OSS ossClient;
-	private final AliyunConfig aLiYunConfig;
+	private final AliyunProperties aLiYunProperties;
 	private final ImageLogMapper imageLogMapper;
 
 	@Autowired
-	public AliyunCloudStorageServiceImpl(OSS ossClient, AliyunConfig aLiYunConfig, ImageLogMapper imageLogMapper) {
+	public AliyunCloudStorageServiceImpl(OSS ossClient, AliyunProperties aLiYunProperties, ImageLogMapper imageLogMapper) {
 		this.ossClient = ossClient;
-		this.aLiYunConfig = aLiYunConfig;
+		this.aLiYunProperties = aLiYunProperties;
 		this.imageLogMapper = imageLogMapper;
 	}
 
@@ -61,8 +61,8 @@ public class AliyunCloudStorageServiceImpl implements AliyunCloudStorageService 
 		String fileName = FileUtils.getFileNameHex(belong, sourceFileName);
 
 		try {
-			ossClient.putObject(aLiYunConfig.getBucketName(), fileName, new ByteArrayInputStream(data));
-			return createImageLog(fileName, belong, ossClient.getObjectMetadata(aLiYunConfig.getBucketName(), fileName));
+			ossClient.putObject(aLiYunProperties.getBucketName(), fileName, new ByteArrayInputStream(data));
+			return createImageLog(fileName, belong, ossClient.getObjectMetadata(aLiYunProperties.getBucketName(), fileName));
 		} catch (Exception e) {
 			throw new OSSException(OSSReturnCodeEnum.UPLOAD_ERROR, e);
 		}
@@ -82,7 +82,7 @@ public class AliyunCloudStorageServiceImpl implements AliyunCloudStorageService 
 		String fileName = FileUtils.getFileNameHex(belong, sourceFileName);
 
 		try {
-			PutObjectRequest request = new PutObjectRequest(aLiYunConfig.getBucketName(), fileName, new ByteArrayInputStream(data));
+			PutObjectRequest request = new PutObjectRequest(aLiYunProperties.getBucketName(), fileName, new ByteArrayInputStream(data));
 
 			ObjectMetadata metadata = new ObjectMetadata();
 			metadata.setContentType("application/octet-stream");
@@ -108,8 +108,8 @@ public class AliyunCloudStorageServiceImpl implements AliyunCloudStorageService 
 		String fileName = FileUtils.getFileNameHex(belong, sourceFileName);
 
 		try {
-			ossClient.putObject(aLiYunConfig.getBucketName(), fileName, inputStream);
-			return createImageLog(fileName, belong, ossClient.getObjectMetadata(aLiYunConfig.getBucketName(), fileName));
+			ossClient.putObject(aLiYunProperties.getBucketName(), fileName, inputStream);
+			return createImageLog(fileName, belong, ossClient.getObjectMetadata(aLiYunProperties.getBucketName(), fileName));
 		} catch (Exception e) {
 			throw new OSSException(OSSReturnCodeEnum.UPLOAD_ERROR, e);
 		}
@@ -129,7 +129,7 @@ public class AliyunCloudStorageServiceImpl implements AliyunCloudStorageService 
 			final int PREVIEW_EXPIRATION_MINUTES = 10;
 			Date expiration = new Date(System.currentTimeMillis() + PREVIEW_EXPIRATION_MINUTES * 60 * 1000);
 
-			GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(aLiYunConfig.getBucketName(), filePath, HttpMethod.GET);
+			GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(aLiYunProperties.getBucketName(), filePath, HttpMethod.GET);
 			req.setExpiration(expiration);
 			req.setProcess("imm/previewdoc,copy_1");
 
@@ -155,12 +155,12 @@ public class AliyunCloudStorageServiceImpl implements AliyunCloudStorageService 
 	 */
 	private ImageLog createImageLog(String fileName, String belong, ObjectMetadata metadata) {
 		ImageLog imageLog = new ImageLog();
-		imageLog.setBucket(aLiYunConfig.getBucketName());
+		imageLog.setBucket(aLiYunProperties.getBucketName());
 		imageLog.setEtag(metadata.getETag());
 		imageLog.setName(fileName);
 		imageLog.setFileSize(metadata.getContentLength());
 		imageLog.setMimeType(metadata.getContentType());
-		imageLog.setImageUrl(FileUtils.getImageUrl(aLiYunConfig.getImageOssPathRead(), fileName));
+		imageLog.setImageUrl(FileUtils.getImageUrl(aLiYunProperties.getImageOssPathRead(), fileName));
 		imageLog.setCloudName("aliyun");
 		imageLog.setBelong(belong);
 		imageLog.setCreateTime(DateUtil.currentSeconds());

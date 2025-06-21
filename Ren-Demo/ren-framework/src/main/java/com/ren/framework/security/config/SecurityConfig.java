@@ -61,13 +61,21 @@ public class SecurityConfig {
         // 配置会话管理为无状态，告诉 Spring Security 不要用 Session 存储用户状态，所有认证信息通过 Token 传递
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+        //请注意，以下代码放行的路径，还需要在JwtAuthenticationFilter中配置一遍
         http.authorizeHttpRequests(auth -> auth
                 // 允许 OPTIONS 方法通过
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // 请求授权配置（放行登录和刷新token接口）
                 .requestMatchers("/auth/login", "/auth/refreshToken").permitAll()
+                // 静态资源，可匿名访问
+                .requestMatchers(request -> {
+                    String path = request.getServletPath();
+                    return (request.getMethod().equals("GET") && ( "/".equals(path) || path.endsWith(".html") || path.endsWith(".css") || path.endsWith(".js") || path.startsWith("/profile/")));
+                }).permitAll()
+                .requestMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs", "/druid/**").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
+
         );
 
 

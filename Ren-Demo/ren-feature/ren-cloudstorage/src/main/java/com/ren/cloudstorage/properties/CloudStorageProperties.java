@@ -1,4 +1,4 @@
-package com.ren.cloudstorage.config;
+package com.ren.cloudstorage.properties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 
 /**
  * 云存储通用配置类
- * @author zhiwei
+ * @author ren
  * @date 2025/06/20 13:46
  */
 @Component
 @ConfigurationProperties(prefix = "cloud.storage")
 @PropertySource(value = { "classpath:/config/project/cloud-storage.yml" })
-public class CloudStorageConfig {
+public class CloudStorageProperties {
 
 	/** 云存储厂商名称 */
 	private String vendor;

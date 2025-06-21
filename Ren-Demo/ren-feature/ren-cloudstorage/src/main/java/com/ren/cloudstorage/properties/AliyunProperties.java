@@ -1,4 +1,4 @@
-package com.ren.cloudstorage.config;
+package com.ren.cloudstorage.properties;
 
 import com.aliyun.oss.ClientBuilderConfiguration;
 import com.aliyun.oss.OSS;
@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 
 /**
  * 阿里云云存储专属配置类
- * @author zhiwei
+ * @author ren
  * @date 2025/06/20 13:46
  */
 @Component
 @ConfigurationProperties(prefix = "cloud.storage.vendor.aliyun")
 @PropertySource(value = { "classpath:/config/project/cloud-storage.yml" })
-public class AliyunConfig
+public class AliyunProperties
 {
 	/** 阿里云accessKeyId */
 	private String accessKeyId;

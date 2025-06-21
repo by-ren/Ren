@@ -7,6 +7,7 @@ import cn.hutool.system.*;
 import cn.hutool.system.oshi.CpuInfo;
 import cn.hutool.system.oshi.OshiUtil;
 import com.ren.common.domain.model.bo.*;
+import com.ren.common.utils.file.FileUtils;
 import com.ren.common.utils.ip.IpUtils;
 import oshi.SystemInfo;
 import oshi.hardware.ComputerSystem;
