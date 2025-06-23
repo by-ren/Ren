@@ -1,20 +1,11 @@
 
 package com.ren.common.utils.redis;
 
-import com.ren.common.constant.RedisCacheConstants;
-import com.ren.common.properties.TokenProperties;
-import com.ren.common.utils.PersistentDeviceIdGeneratorUtils;
-import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.sync.RedisCommands;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * Redis监控信息工具类

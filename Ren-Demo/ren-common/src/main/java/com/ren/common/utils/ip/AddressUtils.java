@@ -1,9 +1,8 @@
 package com.ren.common.utils.ip;
 
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.ren.common.constant.Constants;
+import com.ren.common.domain.constant.Constants;
 import com.ren.common.utils.http.HttpUtils;
 import com.ren.common.utils.json.FastJSON2Utils;
 import org.slf4j.Logger;

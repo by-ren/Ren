@@ -1,4 +1,4 @@
-package com.ren.common.interfaces;
+package com.ren.common.domain.interfaces;
 
 import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.enums.OperatorType;

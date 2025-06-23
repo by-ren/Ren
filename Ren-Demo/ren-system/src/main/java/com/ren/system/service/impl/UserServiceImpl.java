@@ -6,7 +6,7 @@ import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ren.common.constant.AppConstants;
+import com.ren.common.domain.constant.AppConstants;
 import com.ren.common.domain.entity.User;
 import com.ren.common.utils.PageUtils;
 import com.ren.common.utils.SecurityUtils;

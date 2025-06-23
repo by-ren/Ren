@@ -1,4 +1,4 @@
-package com.ren.common.constant;
+package com.ren.common.domain.constant;
 
 /*
  * 返回状态码

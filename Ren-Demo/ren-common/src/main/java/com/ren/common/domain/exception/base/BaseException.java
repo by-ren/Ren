@@ -1,7 +1,9 @@
 package com.ren.common.domain.exception.base;
 
 import cn.hutool.core.util.StrUtil;
-import com.ren.common.utils.MessageUtils;
+import com.ren.common.utils.SpringUtils;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 /**
  * 基础异常
@@ -66,7 +68,7 @@ public class BaseException extends RuntimeException
         String message = null;
         if (!StrUtil.isEmpty(code))
         {
-            message = MessageUtils.message(code, args);
+            message = message(code, args);
         }
         if (message == null)
         {
@@ -93,5 +95,18 @@ public class BaseException extends RuntimeException
     public String getDefaultMessage()
     {
         return defaultMessage;
+    }
+
+    /**
+     * 根据消息键和参数 获取消息 委托给spring messageSource
+     *
+     * @param code 消息键
+     * @param args 参数
+     * @return 获取国际化翻译值
+     */
+    public String message(String code, Object... args)
+    {
+        MessageSource messageSource = SpringUtils.getBean(MessageSource.class);
+        return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
     }
 }

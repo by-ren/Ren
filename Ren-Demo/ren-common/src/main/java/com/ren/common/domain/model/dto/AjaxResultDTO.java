@@ -2,7 +2,7 @@ package com.ren.common.domain.model.dto;
 
 
 import cn.hutool.core.util.ObjUtil;
-import com.ren.common.constant.HttpStatus;
+import com.ren.common.domain.constant.HttpStatus;
 
 import java.util.HashMap;
 import java.util.Objects;

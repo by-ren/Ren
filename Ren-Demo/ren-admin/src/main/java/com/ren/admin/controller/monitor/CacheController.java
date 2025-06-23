@@ -1,7 +1,7 @@
 package com.ren.admin.controller.monitor;
 
 import cn.hutool.core.convert.Convert;
-import com.ren.common.constant.RedisCacheConstants;
+import com.ren.common.domain.constant.RedisCacheConstants;
 import com.ren.common.controller.BaseController;
 import com.ren.common.domain.model.dto.AjaxResultDTO;
 import com.ren.common.utils.BigDecimalUtils;
@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.Cursor;
-import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,7 +1,7 @@
 package com.ren.admin.controller.system;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.ren.common.constant.AppConstants;
+import com.ren.common.domain.constant.AppConstants;
 import com.ren.common.controller.BaseController;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.model.dto.AjaxResultDTO;
@@ -9,8 +9,8 @@ import com.ren.common.domain.entity.Role;
 import com.ren.common.domain.entity.User;
 import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.page.TableDataInfo;
-import com.ren.common.interfaces.OperLogAnn;
-import com.ren.common.interfaces.Pageable;
+import com.ren.common.domain.interfaces.OperLogAnn;
+import com.ren.common.domain.interfaces.Pageable;
 import com.ren.system.service.RoleService;
 import com.ren.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

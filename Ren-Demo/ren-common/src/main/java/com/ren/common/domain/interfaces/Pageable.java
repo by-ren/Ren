@@ -1,4 +1,4 @@
-package com.ren.common.interfaces;
+package com.ren.common.domain.interfaces;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

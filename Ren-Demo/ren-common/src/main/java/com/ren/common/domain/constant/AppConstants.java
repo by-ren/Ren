@@ -1,4 +1,4 @@
-package com.ren.common.constant;
+package com.ren.common.domain.constant;
 
 /**
  * 通用常量（该类用于存储一些，基本不会变动的常量）

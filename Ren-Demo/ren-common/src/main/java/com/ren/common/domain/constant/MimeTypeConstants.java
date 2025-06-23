@@ -1,11 +1,11 @@
-package com.ren.common.utils;
+package com.ren.common.domain.constant;
 
 /**
  * 媒体类型工具类
  * 
  * @author ren
  */
-public class MimeTypeUtils
+public class MimeTypeConstants
 {
     public static final String IMAGE_PNG = "image/png";
 

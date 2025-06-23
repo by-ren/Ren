@@ -2,14 +2,14 @@ package com.ren.admin.controller.system;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
-import com.ren.common.constant.AppConstants;
+import com.ren.common.domain.constant.AppConstants;
 import com.ren.common.controller.BaseController;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.model.dto.AjaxResultDTO;
 import com.ren.common.domain.entity.Menu;
 import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.model.vo.TreeSelectVO;
-import com.ren.common.interfaces.OperLogAnn;
+import com.ren.common.domain.interfaces.OperLogAnn;
 import com.ren.common.utils.TreeUtils;
 import com.ren.system.entity.RoleMenu;
 import com.ren.system.service.MenuService;
