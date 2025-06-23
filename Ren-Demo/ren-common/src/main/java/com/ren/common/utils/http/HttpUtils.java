@@ -1,7 +1,7 @@
 package com.ren.common.utils.http;
 
 import cn.hutool.core.util.StrUtil;
-import com.ren.common.constant.Constants;
+import com.ren.common.domain.constant.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;

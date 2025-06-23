@@ -5,7 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
-import com.ren.common.constant.AppConstants;
+import com.ren.common.domain.constant.AppConstants;
 import com.ren.common.controller.BaseController;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.model.dto.AjaxResultDTO;

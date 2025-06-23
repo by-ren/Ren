@@ -1,6 +1,6 @@
 package com.ren.common.utils.redis;
 
-import com.ren.common.constant.RedisCacheConstants;
+import com.ren.common.domain.constant.RedisCacheConstants;
 import com.ren.common.properties.TokenProperties;
 import com.ren.common.utils.PersistentDeviceIdGeneratorUtils;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,5 +1,5 @@
 
-package com.ren.common.constant;
+package com.ren.common.domain.constant;
 
 /**
  * Redis缓存的key 常量

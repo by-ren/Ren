@@ -1,6 +1,6 @@
 package com.ren.framework.aop;
 
-import com.ren.common.interfaces.Pageable;
+import com.ren.common.domain.interfaces.Pageable;
 import com.ren.common.utils.PageUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

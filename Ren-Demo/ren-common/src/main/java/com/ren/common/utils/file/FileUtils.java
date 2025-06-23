@@ -4,8 +4,8 @@ package com.ren.common.utils.file;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.util.IOUtils;
-import com.ren.common.constant.Constants;
-import com.ren.common.utils.MimeTypeUtils;
+import com.ren.common.domain.constant.Constants;
+import com.ren.common.domain.constant.MimeTypeConstants;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.*;
@@ -69,7 +69,7 @@ public final class FileUtils {
         }
 
         // 检查允许下载的文件规则
-        if (ArrayUtil.contains(MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION, FileTypeUtils.getFileType(resource)))
+        if (ArrayUtil.contains(MimeTypeConstants.DEFAULT_ALLOWED_EXTENSION, FileTypeUtils.getFileType(resource)))
         {
             return true;
         }

@@ -2,7 +2,7 @@ package com.ren.common.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.ren.common.constant.HttpStatus;
+import com.ren.common.domain.constant.HttpStatus;
 import com.ren.common.domain.model.dto.AjaxResultDTO;
 import com.ren.common.domain.page.TableDataInfo;
 import org.slf4j.Logger;

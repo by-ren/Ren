@@ -1,6 +1,6 @@
 package com.ren.common.utils;
 
-import com.ren.common.constant.HttpStatus;
+import com.ren.common.domain.constant.HttpStatus;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.exception.ServiceException;
 import org.springframework.security.core.Authentication;

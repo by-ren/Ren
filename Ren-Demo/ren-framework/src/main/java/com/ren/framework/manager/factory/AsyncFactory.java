@@ -5,7 +5,7 @@ import cn.hutool.extra.mail.MailAccount;
 import cn.hutool.extra.mail.MailUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
-import com.ren.common.constant.AppConstants;
+import com.ren.common.domain.constant.AppConstants;
 import com.ren.common.domain.entity.Logininfor;
 import com.ren.common.domain.entity.OperLog;
 import com.ren.common.domain.entity.User;

@@ -3,7 +3,7 @@ package com.ren.admin.controller.monitor;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
-import com.ren.common.constant.RedisCacheConstants;
+import com.ren.common.domain.constant.RedisCacheConstants;
 import com.ren.common.controller.BaseController;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.model.dto.AjaxResultDTO;

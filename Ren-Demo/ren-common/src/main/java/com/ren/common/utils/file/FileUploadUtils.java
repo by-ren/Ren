@@ -1,13 +1,13 @@
 package com.ren.common.utils.file;
 
 import cn.hutool.core.util.StrUtil;
-import com.ren.common.constant.Constants;
+import com.ren.common.domain.constant.Constants;
 import com.ren.common.domain.exception.file.FileNameLengthLimitExceededException;
 import com.ren.common.domain.exception.file.FileSizeLimitExceededException;
 import com.ren.common.domain.exception.file.InvalidExtensionException;
 import com.ren.common.properties.LocalStorageProperties;
 import com.ren.common.utils.DateUtils;
-import com.ren.common.utils.MimeTypeUtils;
+import com.ren.common.domain.constant.MimeTypeConstants;
 import com.ren.common.utils.uuid.IdUtils;
 import com.ren.common.utils.uuid.Seq;
 import org.apache.commons.io.FilenameUtils;
@@ -61,7 +61,7 @@ public class FileUploadUtils
     {
         try
         {
-            return upload(getDefaultBaseDir(), file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
+            return upload(getDefaultBaseDir(), file, MimeTypeConstants.DEFAULT_ALLOWED_EXTENSION);
         }
         catch (Exception e)
         {
@@ -81,7 +81,7 @@ public class FileUploadUtils
     {
         try
         {
-            return upload(baseDir, file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION);
+            return upload(baseDir, file, MimeTypeConstants.DEFAULT_ALLOWED_EXTENSION);
         }
         catch (Exception e)
         {
@@ -198,22 +198,22 @@ public class FileUploadUtils
         String extension = getExtension(file);
         if (allowedExtension != null && !isAllowedExtension(extension, allowedExtension))
         {
-            if (allowedExtension == MimeTypeUtils.IMAGE_EXTENSION)
+            if (allowedExtension == MimeTypeConstants.IMAGE_EXTENSION)
             {
                 throw new InvalidExtensionException.InvalidImageExtensionException(allowedExtension, extension,
                         fileName);
             }
-            else if (allowedExtension == MimeTypeUtils.FLASH_EXTENSION)
+            else if (allowedExtension == MimeTypeConstants.FLASH_EXTENSION)
             {
                 throw new InvalidExtensionException.InvalidFlashExtensionException(allowedExtension, extension,
                         fileName);
             }
-            else if (allowedExtension == MimeTypeUtils.MEDIA_EXTENSION)
+            else if (allowedExtension == MimeTypeConstants.MEDIA_EXTENSION)
             {
                 throw new InvalidExtensionException.InvalidMediaExtensionException(allowedExtension, extension,
                         fileName);
             }
-            else if (allowedExtension == MimeTypeUtils.VIDEO_EXTENSION)
+            else if (allowedExtension == MimeTypeConstants.VIDEO_EXTENSION)
             {
                 throw new InvalidExtensionException.InvalidVideoExtensionException(allowedExtension, extension,
                         fileName);
@@ -255,7 +255,7 @@ public class FileUploadUtils
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         if (StrUtil.isEmpty(extension))
         {
-            extension = MimeTypeUtils.getExtension(Objects.requireNonNull(file.getContentType()));
+            extension = MimeTypeConstants.getExtension(Objects.requireNonNull(file.getContentType()));
         }
         return extension;
     }
