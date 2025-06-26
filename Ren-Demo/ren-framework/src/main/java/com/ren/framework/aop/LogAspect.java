@@ -3,23 +3,28 @@ package com.ren.framework.aop;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.thread.threadlocal.NamedThreadLocal;
 import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSON;
 import com.ren.common.domain.constant.AppConstants;
-import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.entity.OperLog;
 import com.ren.common.domain.interfaces.OperLogAnn;
-import com.ren.common.utils.json.FastJSON2Utils;
-import com.ren.common.utils.ip.IpUtils;
-import com.ren.common.utils.SecurityUtils;
+import com.ren.common.domain.model.bo.LoginUser;
+import com.ren.common.manager.SecurityManager;
+import com.ren.common.utils.DateUtils;
+import com.ren.common.utils.ExceptionUtils;
 import com.ren.common.utils.ServletUtils;
+import com.ren.common.utils.StringUtils;
+import com.ren.common.utils.ip.IpUtils;
+import com.ren.common.utils.json.FastJSON2Utils;
+import com.ren.framework.factory.AsyncFactory;
 import com.ren.framework.manager.AsyncManager;
-import com.ren.framework.manager.factory.AsyncFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -47,7 +52,7 @@ public class LogAspect {
 	@Before(value = "@annotation(controllerLog)")
 	public void boBefore(JoinPoint joinPoint, OperLogAnn controllerLog)
 	{
-		TIME_THREADLOCAL.set(System.currentTimeMillis());
+		TIME_THREADLOCAL.set(DateUtils.current());
 	}
 
 	/**
@@ -78,7 +83,7 @@ public class LogAspect {
 		try
 		{
 			// 获取当前的用户
-			LoginUser loginUser = SecurityUtils.getLoginUser();
+			LoginUser loginUser = SecurityManager.getLoginUser();
 
 			// *========数据库日志=========*//
 			OperLog operLog = new OperLog();
@@ -86,7 +91,7 @@ public class LogAspect {
 			// 请求的地址
 			String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
 			operLog.setOperIp(ip);
-			operLog.setOperUrl(StrUtil.sub(ServletUtils.getRequest().getRequestURI(), 0, 255));
+			operLog.setOperUrl(StringUtils.sub(ServletUtils.getRequest().getRequestURI(), 0, 255));
 			if (loginUser != null)
 			{
 				operLog.setOperName(loginUser.getUsername());
@@ -95,7 +100,8 @@ public class LogAspect {
 			if (e != null)
 			{
 				operLog.setIsNormal(AppConstants.COMMON_BYTE_NO);
-				operLog.setErrorMsg(StrUtil.sub(e.getMessage(), 0, 2000));
+				//日志存入数据库，所以这里获取详细信息存储比较好，方便排查问题
+				operLog.setErrorMsg(StringUtils.sub(ExceptionUtils.getExceptionMessage(e), 0, 2000));
 			}
 			// 设置方法名称
 			String className = joinPoint.getTarget().getClass().getName();
@@ -106,7 +112,7 @@ public class LogAspect {
 			// 处理设置注解上的参数
 			getControllerMethodDescription(joinPoint, controllerLog, operLog, jsonResult);
 			// 设置消耗时间
-			operLog.setCostTime(System.currentTimeMillis() - TIME_THREADLOCAL.get());
+			operLog.setCostTime(DateUtils.current() - TIME_THREADLOCAL.get());
 			// 异步添加操作日志
 			AsyncManager.me().execute(AsyncFactory.addOperLog(operLog));
 		}
@@ -146,7 +152,7 @@ public class LogAspect {
 		// 是否需要保存response，参数和值
 		if (log.isSaveResponseData() && ObjUtil.isNotNull(jsonResult))
 		{
-			operLog.setJsonResult(StrUtil.sub(JSON.toJSONString(jsonResult), 0, 2000));
+			operLog.setJsonResult(StringUtils.sub(JSON.toJSONString(jsonResult), 0, 2000));
 		}
 	}
 
@@ -164,9 +170,9 @@ public class LogAspect {
 		String requestMethod = operLog.getRequestMethod();
 		//如果请求链接中的请求参数为空，并且请求方式为POST或PUT，则获取请求体中的参数
 		if (ObjUtil.isEmpty(paramsMap) && (HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod))){
-			operLog.setOperParam(StrUtil.sub(FastJSON2Utils.filterSensitiveFields(excludeParamNames,joinPoint.getArgs()), 0, 2000));
+			operLog.setOperParam(StringUtils.sub(FastJSON2Utils.filterSensitiveFields(excludeParamNames,joinPoint.getArgs()), 0, 2000));
 		}else{
-			operLog.setOperParam(StrUtil.sub(FastJSON2Utils.filterSensitiveFields(excludeParamNames,paramsMap), 0, 2000));
+			operLog.setOperParam(StringUtils.sub(FastJSON2Utils.filterSensitiveFields(excludeParamNames,paramsMap), 0, 2000));
 		}
 	}
 

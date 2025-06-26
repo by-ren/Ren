@@ -14,7 +14,7 @@ import java.util.Map;
 @Mapper
 public interface DictTypeMapper extends BaseMapper<DictType> {
 
-    /*
+    /**
      * 添加字典类型
      * @param dictType
      * @return int
@@ -23,7 +23,7 @@ public interface DictTypeMapper extends BaseMapper<DictType> {
      */
     void insertDictType(DictType dictType);
 
-    /*
+    /**
      * 删除字典类型
      * @param dictTypeId
      * @author ren
@@ -31,7 +31,7 @@ public interface DictTypeMapper extends BaseMapper<DictType> {
      */
     void deleteDictType(long dictTypeId);
 
-    /*
+    /**
      * 编辑字典类型
      * @param dictType
      * @author ren
@@ -39,7 +39,7 @@ public interface DictTypeMapper extends BaseMapper<DictType> {
      */
     void updateDictType(DictType dictType);
 
-    /*
+    /**
      * 分页获取字典类型列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.DictType>
@@ -48,7 +48,7 @@ public interface DictTypeMapper extends BaseMapper<DictType> {
      */
     IPage<DictType> listDictTypeByPage(Page<DictType> page, @Param("paramMap")Map<String, Object> paramMap);
 
-    /*
+    /**
      * 获取字典类型列表
      * @param paramMap
      * @return java.util.List<com.ren.system.entity.DictType>
@@ -57,7 +57,7 @@ public interface DictTypeMapper extends BaseMapper<DictType> {
      */
     List<DictType> listDictTypeByParam(Map<String, Object> paramMap);
 
-    /*
+    /**
      * 获取字典类型详情
      * @param dictCode
      * @return com.ren.system.entity.DictType

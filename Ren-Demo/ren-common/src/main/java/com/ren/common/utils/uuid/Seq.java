@@ -2,13 +2,14 @@ package com.ren.common.utils.uuid;
 
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
 import com.ren.common.utils.DateUtils;
+import com.ren.common.utils.StringUtils;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author ren 序列生成类
+ * 序列生成类
+ * @author ren
  */
 public class Seq
 {
@@ -84,6 +85,6 @@ public class Seq
             atomicInt.set(1);
         }
         // 转字符串，用0左补齐
-        return StrUtil.padPre(Convert.toStr(value), length, '0');
+        return StringUtils.padPre(Convert.toStr(value), length, '0');
     }
 }

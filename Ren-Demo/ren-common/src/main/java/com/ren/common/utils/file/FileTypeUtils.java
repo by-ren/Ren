@@ -1,6 +1,6 @@
 package com.ren.common.utils.file;
 
-import cn.hutool.core.util.StrUtil;
+import com.ren.common.utils.StringUtils;
 
 import java.io.File;
 
@@ -23,7 +23,7 @@ public class FileTypeUtils
     {
         if (null == file)
         {
-            return StrUtil.EMPTY;
+            return StringUtils.EMPTY;
         }
         return getFileType(file.getName());
     }

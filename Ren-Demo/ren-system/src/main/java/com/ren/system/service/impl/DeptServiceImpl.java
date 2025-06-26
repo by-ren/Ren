@@ -1,11 +1,11 @@
 package com.ren.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ren.common.domain.constant.AppConstants;
 import com.ren.common.domain.entity.Dept;
+import com.ren.common.utils.DateUtils;
+import com.ren.common.utils.StringUtils;
 import com.ren.system.mapper.DeptMapper;
 import com.ren.system.service.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
     public long addDept(Dept dept, String createBy) {
         dept.setIsDel(AppConstants.COMMON_BYTE_NO);
         dept.setCreateBy(createBy);
-        dept.setCreateTime(DateUtil.currentSeconds());
+        dept.setCreateTime(DateUtils.currentSeconds());
         deptMapper.insertDept(dept);
         return dept.getDeptId();
     }
@@ -46,7 +46,7 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
      */
     @Override
     public void modifyDeptIsDelById(long deptId, byte isDel, String updateBy) {
-        deptMapper.updateDeptIsDelById(deptId,isDel,updateBy,DateUtil.currentSeconds());
+        deptMapper.updateDeptIsDelById(deptId,isDel,updateBy,DateUtils.currentSeconds());
     }
 
     /**
@@ -59,7 +59,7 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
     @Override
     public void modifyDeptById(Dept dept, String updateBy) {
         dept.setUpdateBy(updateBy);
-        dept.setUpdateTime(DateUtil.currentSeconds());
+        dept.setUpdateTime(DateUtils.currentSeconds());
         deptMapper.updateDeptById(dept);
     }
 
@@ -85,8 +85,8 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements De
      */
     @Override
     public List<Dept> listDeptByParam(Map<String, Object> paramMap) {
-        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
-            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        if(paramMap != null && paramMap.containsKey("searchLike") && StringUtils.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StringUtils.format("%%{}%%",paramMap.get("searchLike")));
         }
         List<Dept> deptList = deptMapper.listDeptByParam(paramMap);
         return deptList;

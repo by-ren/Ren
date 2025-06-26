@@ -1,5 +1,6 @@
-package com.ren.admin.aop;
+package com.ren.framework.aop;
 
+import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.json.FastJSON2Utils;
 import com.ren.common.utils.ip.IpUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -65,7 +66,7 @@ public class OperLogAspect {
 		//获取请求结果相关
 		Object result = null;
 		//获取请求耗时
-		long startTime = System.currentTimeMillis();
+		long startTime = DateUtils.current();
 		try {
 			// 执行目标方法
 			result = joinPoint.proceed();
@@ -74,7 +75,7 @@ public class OperLogAspect {
 		}catch (Exception e){
 			log.error(">>>> 请求失败" ,e);
 		}
-		long endTime = System.currentTimeMillis();
+		long endTime = DateUtils.current();
 		if(isSuccess){
 			log.info(">>>> 请求成功，耗时: {}ms", endTime - startTime);
 		}

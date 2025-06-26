@@ -12,8 +12,11 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
+    "ant-design-vue": "^4.0.0-rc.6",
     "axios": "^1.8.4",
+    "dayjs": "^1.11.13",
     "echarts": "^5.6.0",
+    "no-vue3-cron": "^2.0.0",
     "pinia": "^3.0.1",
     "sortablejs": "^1.15.6",
     "vue": "^3.5.13",

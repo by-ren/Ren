@@ -42,12 +42,12 @@ public class PageUtils
         PageDomain.PAGE_NUM.set(Convert.toInt(ServletUtils.getParameter(PAGE_NUM), 1));
         PageDomain.PAGE_SIZE.set(Convert.toInt(ServletUtils.getParameter(PAGE_SIZE), 10));
         String orderByColumn = Convert.toStr(ServletUtils.getParameter(ORDER_BY_COLUMN),"");
-        if(StrUtil.isNotBlank(orderByColumn)){
+        if(StringUtils.isNotBlank(orderByColumn)){
             //将小驼峰转为下划线
-            orderByColumn = StrUtil.toUnderlineCase(orderByColumn);
-            /*if(StrUtil.contains(orderByColumn,"_str")){
+            orderByColumn = StringUtils.toUnderlineCase(orderByColumn);
+            /*if(StringUtils.contains(orderByColumn,"_str")){
                 //截取第一个_str之前的部分，false表示不包含_str（匹配日期类型的字段）
-                orderByColumn = StrUtil.subBefore(orderByColumn, "_str", false);
+                orderByColumn = StringUtils.subBefore(orderByColumn, "_str", false);
             }*/
         }
         PageDomain.ORDER_BY_COLUMN.set(orderByColumn);
@@ -66,7 +66,7 @@ public class PageUtils
     public static <T> Page<T> createPage(Class<T> clazz){
 
         Page<T> page = new Page<>(PageDomain.PAGE_NUM.get(),PageDomain.PAGE_SIZE.get());
-        if(StrUtil.isNotBlank(PageDomain.ORDER_BY_COLUMN.get()) && StrUtil.isNotBlank(PageDomain.ORDER_BY_WAY.get())){
+        if(StringUtils.isNotBlank(PageDomain.ORDER_BY_COLUMN.get()) && StringUtils.isNotBlank(PageDomain.ORDER_BY_WAY.get())){
             OrderItem orderItem = new OrderItem(PageDomain.ORDER_BY_COLUMN.get(),PageDomain.ORDER_BY_WAY.get().equalsIgnoreCase("asc"));
             page.addOrder(orderItem);
         }

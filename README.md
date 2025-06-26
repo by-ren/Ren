@@ -9,7 +9,7 @@
 任是一套全部开源的快速开发平台，现阶段所有功能全部免费开放给个人开发者与企业学习和使用
 
 - 前端采用Vue3+TypeScript+ElementPlus
-- 后端采用Spring Boot、Spring Security、Redis & Jwt。
+- 后端采用Spring Boot、Spring Security、Redis & Jwt、Quartz。
 - 使用双Token进行登录验证，实现Token无感续期，Token黑名单，强退用户等功能
 - 动态加载权限菜单与菜单路由
 
@@ -34,11 +34,14 @@
   - 服务监控：查看服务器CPU、内存、Java虚拟机以及服务器本身详细信息
   - 缓存列表：查看Redis中所有数据内容
   - 缓存监控：对Redis的缓存情况进行监控
+- 系统任务
+  - 定时任务：对系统中需要定时执行的任务进行配置，如定时取消订单
+- 组件示例
+  - 图片上传组件：包含OSS云上传与本地上传
+
 
 即将完成：
 
-- 系统任务
-  - 定时任务：对系统中需要定时执行的任务进行配置，如定时取消订单
 - 系统工具
   - 表单构建：通过拖拉拽的方式，快速进行表单的排版与构建，极大节省了前端页面的编写
   - 代码生成：快速完成从实体类、接口、Mapper层的代码生成，节省了二次开发人员的大量重复无意义工作
@@ -61,8 +64,11 @@ Ren-Demo/
 ├── ren-business			# 业务总模块
 │   ├── ren-example			# 业务示例模块（本模块无实际功能，仅作为代码规范示例使用，方便二次开发者参照，可删除）
 ├── ren-common			    # 通用模块（主要用于存放各个模块通用内容，如常量类，公共控制器，通用实体、VO、BO类，注解，配置文件，工具类）
+├── ren-feature			    # 可插拔功能模块
+│   ├── ren-cloudstorage	# 云上传图片模块
 ├── ren-framework			# 核心模块（主要用于存放系统核心业务，如AOP切面，拦截器，监听器，通用接口以及权限认证等内容）
 ├── ren-monitor				# 监控模块，存放监控模块所有内容
+├── ren-quartz				# 定时任务，存放定时任务所有内容
 └── ren-system				# 系统模块，存放系统模块所有内容 
 ```
 
@@ -94,6 +100,7 @@ ren_demo/
 ├── .env.staging				# 测试环境配置
 ├── .gitattributes				# 定义Git如何处理特定文件（如换行符）
 ├── .gitignore					# git 忽略项
+├── .prettierrc					# 代码格式化工具配置文件
 ├── auto-imports.d.ts		     # 自动导入的组件/API的类型声明文件
 ├── components.d.ts			     # 全局组件的TypeScript类型声明
 ├── index.html					# 应用入口,唯一HTML文件
@@ -184,6 +191,10 @@ npm run dev
 ![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/ff892d3d/8c1050df.png)
 
 ![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/74b5d97b/c1705393.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/23bfbece/bf2e74f3.png)
+
+![License](https://pic.yupoo.com/huimouyixiaojifeigoutiao/57803ac1/1bf56f47.png)
 
 ## 📜 许可证
 

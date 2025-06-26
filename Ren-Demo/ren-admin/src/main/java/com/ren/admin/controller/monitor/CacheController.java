@@ -5,8 +5,8 @@ import com.ren.common.domain.constant.RedisCacheConstants;
 import com.ren.common.controller.BaseController;
 import com.ren.common.domain.model.dto.AjaxResultDTO;
 import com.ren.common.utils.BigDecimalUtils;
-import com.ren.common.utils.redis.RedisMonitorInfoUtils;
-import com.ren.common.utils.redis.RedisOperateUtils;
+import com.ren.common.manager.redis.RedisMonitorInfoManager;
+import com.ren.common.manager.redis.RedisOperateManager;
 import com.ren.monitor.domain.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -25,9 +25,9 @@ import java.util.*;
 public class CacheController extends BaseController {
 
 	@Autowired
-	private RedisOperateUtils redisOperateUtils;
+	private RedisOperateManager redisOperateManager;
 	@Autowired
-	private RedisMonitorInfoUtils redisMonitorInfoUtils;
+	private RedisMonitorInfoManager redisMonitorInfoManager;
 
 	/**
 	 * 缓存列表
@@ -58,11 +58,11 @@ public class CacheController extends BaseController {
 		List<CacheKeyVO> cacheKeyVOList = new ArrayList<>();
 		String pattern = name + ":" + "*"; // 匹配所有regresh_token:开头的键
 		// 使用SCAN命令安全遍历（避免KEYS阻塞）
-		try(Cursor<String> cursor = redisOperateUtils.scan(pattern)){
+		try(Cursor<String> cursor = redisOperateManager.scan(pattern)){
 			while (cursor.hasNext()) {
 				String key = cursor.next();
 				// 获取键对应的值（JWT Token）
-				String refreshToken = redisOperateUtils.getCacheObject(key);
+				String refreshToken = redisOperateManager.getCacheObject(key);
 				cacheKeyVOList.add(new CacheKeyVO(key.substring(key.indexOf(":")+1), refreshToken));
 			}
 		}
@@ -79,7 +79,7 @@ public class CacheController extends BaseController {
 	 */
 	@DeleteMapping("/delete")
 	public AjaxResultDTO cacheDelete(String name) {
-		redisOperateUtils.deleteKeysByPattern(name + ":" + "*");
+		redisOperateManager.deleteKeysByPattern(name + ":" + "*");
 		return success();
 	}
 
@@ -93,7 +93,7 @@ public class CacheController extends BaseController {
 	 */
 	@DeleteMapping("/key/delete")
 	public AjaxResultDTO cacheKeyDelete(String name,String key) {
-		redisOperateUtils.deleteObject(name + ":" + key);
+		redisOperateManager.deleteObject(name + ":" + key);
 		return success();
 	}
 
@@ -105,7 +105,7 @@ public class CacheController extends BaseController {
      */
 	@DeleteMapping("/clean")
 	public AjaxResultDTO cacheKeyClean() {
-		redisOperateUtils.deleteKeysByPattern("*");
+		redisOperateManager.deleteKeysByPattern("*");
 		return success();
 	}
 
@@ -119,8 +119,8 @@ public class CacheController extends BaseController {
 	public AjaxResultDTO cacheDetail()
 	{
 
-		Properties redisBasicInfo = redisMonitorInfoUtils.getRedisBasicInfo();
-		Object keyNumber = redisMonitorInfoUtils.getRedisKeyNumber();
+		Properties redisBasicInfo = redisMonitorInfoManager.getRedisBasicInfo();
+		Object keyNumber = redisMonitorInfoManager.getRedisKeyNumber();
 
 		//基础信息总列表
 		List<List<BasicInfoItem>> basicInfoItemList = new ArrayList<>();
@@ -147,7 +147,7 @@ public class CacheController extends BaseController {
 		basicInfoItemList.add(basicInfoItemThirdList);
 
 		//命令统计
-		Properties redisCommandStatInfo = redisMonitorInfoUtils.getRedisCommandStatInfo();
+		Properties redisCommandStatInfo = redisMonitorInfoManager.getRedisCommandStatInfo();
 		List<CommandStatItem> commandStatItemList = new ArrayList<>();
 		redisCommandStatInfo.stringPropertyNames().forEach(key -> {
 			// 获取命令属性字符串

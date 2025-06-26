@@ -1,12 +1,12 @@
 package com.ren.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.PageUtils;
+import com.ren.common.utils.StringUtils;
 import com.ren.system.entity.DictData;
 import com.ren.system.entity.DictType;
 import com.ren.system.mapper.DictTypeMapper;
@@ -36,7 +36,7 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
     @Override
     public long addDictType(DictType dictType,String createBy) {
         dictType.setCreateBy(createBy);
-        dictType.setCreateTime(DateUtil.currentSeconds());
+        dictType.setCreateTime(DateUtils.currentSeconds());
         dictTypeMapper.insertDictType(dictType);
         return dictType.getDictTypeId();
     }
@@ -61,7 +61,7 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
     @Override
     public void modifyDictType(DictType dictType,String updateBy) {
         dictType.setUpdateBy(updateBy);
-        dictType.setUpdateTime(DateUtil.currentSeconds());
+        dictType.setUpdateTime(DateUtils.currentSeconds());
         dictTypeMapper.updateDictType(dictType);
     }
 
@@ -74,8 +74,8 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
      */
     @Override
     public IPage<DictType> listDictTypeByPage(Map<String, Object> paramMap) {
-        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
-            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        if(paramMap != null && paramMap.containsKey("searchLike") && StringUtils.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StringUtils.format("%%{}%%",paramMap.get("searchLike")));
         }
         IPage<DictType> dictTypeList = dictTypeMapper.listDictTypeByPage(PageUtils.createPage(DictType.class),paramMap);
         return dictTypeList;
@@ -90,8 +90,8 @@ public class DictTypeServiceImpl extends ServiceImpl<DictTypeMapper, DictType> i
      */
     @Override
     public List<DictType> listDictTypeByParam(Map<String, Object> paramMap) {
-        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
-            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        if(paramMap != null && paramMap.containsKey("searchLike") && StringUtils.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StringUtils.format("%%{}%%",paramMap.get("searchLike")));
         }
         List<DictType> dictTypeList = dictTypeMapper.listDictTypeByParam(paramMap);
         return dictTypeList;

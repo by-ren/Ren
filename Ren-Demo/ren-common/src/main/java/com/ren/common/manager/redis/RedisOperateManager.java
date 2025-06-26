@@ -1,4 +1,4 @@
-package com.ren.common.utils.redis;
+package com.ren.common.manager.redis;
 
 import com.ren.common.domain.constant.RedisCacheConstants;
 import com.ren.common.properties.TokenProperties;
@@ -12,12 +12,12 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Redis操作工具类
+ * Redis操作工具类（由于不是纯静态方法，参与了业务逻辑的计算，所以设计为Manager模块，而不是Utils模块）
  * 
  * @author ren
  */
 @Component
-public class RedisOperateUtils {
+public class RedisOperateManager {
 
     @Autowired
     private TokenProperties tokenProperties; // 静态字段

@@ -1,11 +1,11 @@
 package com.ren.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.PageUtils;
+import com.ren.common.utils.StringUtils;
 import com.ren.system.entity.Notice;
 import com.ren.system.mapper.NoticeMapper;
 import com.ren.system.service.NoticeService;
@@ -30,7 +30,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     @Override
     public long addNotice(Notice notice,String createBy) {
         notice.setCreateBy(createBy);
-        notice.setCreateTime(DateUtil.currentSeconds());
+        notice.setCreateTime(DateUtils.currentSeconds());
         noticeMapper.insertNotice(notice);
         return notice.getNoticeId();
     }
@@ -55,7 +55,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     @Override
     public void modifyNotice(Notice notice,String updateBy) {
         notice.setUpdateBy(updateBy);
-        notice.setUpdateTime(DateUtil.currentSeconds());
+        notice.setUpdateTime(DateUtils.currentSeconds());
         noticeMapper.updateNotice(notice);
     }
 
@@ -68,8 +68,8 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
      */
     @Override
     public IPage<Notice> listNoticeByPage(Map<String, Object> paramMap) {
-        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
-            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        if(paramMap != null && paramMap.containsKey("searchLike") && StringUtils.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StringUtils.format("%%{}%%",paramMap.get("searchLike")));
         }
         IPage<Notice> noticeList = noticeMapper.listNoticeByPage(PageUtils.createPage(Notice.class),paramMap);
         return noticeList;

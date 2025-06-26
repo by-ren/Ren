@@ -1,4 +1,4 @@
-package com.ren.common.utils;
+package com.ren.common.manager;
 
 import com.ren.common.domain.constant.HttpStatus;
 import com.ren.common.domain.model.bo.LoginUser;
@@ -8,11 +8,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * 安全服务工具类
+ * 安全服务工具类（由于不是纯静态方法，参与了业务逻辑的计算，所以设计为Manager模块，而不是Utils模块）
  * 
  * @author ren
  */
-public class SecurityUtils
+public class SecurityManager
 {
 
     /**
@@ -93,7 +93,7 @@ public class SecurityUtils
     {
         //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         //使用多密码管理器对密码进行加密（加密后会带有前缀）（默认使用BCryptPasswordEncoder密码管理器）(SpringSecurity已经配置了PasswordEncoder，所以这里获取Bean使用)
-        PasswordEncoder passwordEncoder = SpringUtils.getBean(PasswordEncoder.class);
+        PasswordEncoder passwordEncoder = SpringManager.getBean(PasswordEncoder.class);
         return passwordEncoder.encode(password);
     }
 
@@ -108,7 +108,7 @@ public class SecurityUtils
     {
         //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         //使用多密码管理器对密码进行加密（加密后会带有前缀）（默认使用BCryptPasswordEncoder密码管理器）(SpringSecurity已经配置了PasswordEncoder，所以这里获取Bean使用)
-        PasswordEncoder passwordEncoder = SpringUtils.getBean(PasswordEncoder.class);
+        PasswordEncoder passwordEncoder = SpringManager.getBean(PasswordEncoder.class);
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 

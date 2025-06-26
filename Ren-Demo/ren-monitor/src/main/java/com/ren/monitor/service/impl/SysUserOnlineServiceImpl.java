@@ -27,7 +27,7 @@ public class SysUserOnlineServiceImpl implements SysUserOnlineService
     @Override
     public SysUserOnlineVO selectOnlineByIpaddr(String ipaddr, LoginUser user, String refreshToken)
     {
-        if (StrUtil.equals(ipaddr, user.getIpaddr()))
+        if (StringUtils.equals(ipaddr, user.getIpaddr()))
         {
             return selectOnline(user, refreshToken);
         }

@@ -1,15 +1,15 @@
 package com.ren.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ren.common.domain.constant.AppConstants;
 import com.ren.common.domain.entity.User;
+import com.ren.common.manager.SecurityManager;
+import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.PageUtils;
-import com.ren.common.utils.SecurityUtils;
+import com.ren.common.utils.StringUtils;
 import com.ren.system.entity.DictData;
 import com.ren.system.entity.UserPost;
 import com.ren.system.entity.UserRole;
@@ -51,12 +51,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setIsDel(AppConstants.COMMON_BYTE_NO);
         //从字典表中查询出默认用户，进行设置
         DictData dictData = dictDataService.getDictDataByParam("sys-user-usertype",AppConstants.COMMON_BYTE_YES);
-        user.setUserType(ObjUtil.isNotEmpty(dictData) ? (StrUtil.isNotBlank(dictData.getDictValue()) ? dictData.getDictValue() : "00") : "00");
+        user.setUserType(ObjUtil.isNotEmpty(dictData) ? (StringUtils.isNotBlank(dictData.getDictValue()) ? dictData.getDictValue() : "00") : "00");
         user.setCreateBy(createBy);
-        user.setCreateTime(DateUtil.currentSeconds());
+        user.setCreateTime(DateUtils.currentSeconds());
         // 使用设定的密码管理器对密码进行编码(设置默认密码)
-        String password = configService.getConfigByConfigKey("sys.user.initPassword") != null ? (StrUtil.isNotBlank(configService.getConfigByConfigKey("sys.user.initPassword").getConfigValue()) ? configService.getConfigByConfigKey("sys.user.initPassword").getConfigValue() : "123456") : "123456";
-        String encodedPassword = SecurityUtils.encryptPassword(password);
+        String password = configService.getConfigByConfigKey("sys.user.initPassword") != null ? (StringUtils.isNotBlank(configService.getConfigByConfigKey("sys.user.initPassword").getConfigValue()) ? configService.getConfigByConfigKey("sys.user.initPassword").getConfigValue() : "123456") : "123456";
+        String encodedPassword = SecurityManager.encryptPassword(password);
         user.setPassword(encodedPassword);
         userMapper.insertUser(user);
         //添加角色
@@ -82,7 +82,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public void modifyUserIsDelById(long userId, byte isDel, String updateBy) {
-        userMapper.updateUserIsDelById(userId,isDel,updateBy,DateUtil.currentSeconds());
+        userMapper.updateUserIsDelById(userId,isDel,updateBy,DateUtils.currentSeconds());
     }
 
     /**
@@ -95,10 +95,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public void resetPassword(long userId, String newPassword, String updateBy) {
-        if(StrUtil.isNotBlank(newPassword)){
-            newPassword = SecurityUtils.encryptPassword(newPassword);
+        if(StringUtils.isNotBlank(newPassword)){
+            newPassword = SecurityManager.encryptPassword(newPassword);
         }
-        userMapper.resetPassword(userId,newPassword,updateBy,DateUtil.currentSeconds());
+        userMapper.resetPassword(userId,newPassword,updateBy,DateUtils.currentSeconds());
     }
 
     /**
@@ -112,7 +112,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Transactional
     public void modifyUser(User user, String updateBy) {
         user.setUpdateBy(updateBy);
-        user.setUpdateTime(DateUtil.currentSeconds());
+        user.setUpdateTime(DateUtils.currentSeconds());
         userMapper.updateUser(user);
         //先删除角色
         userRoleService.removeUserRoleByUserId(user.getUserId());
@@ -141,7 +141,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public void modifyUserByLogin(long userId, String loginIp, long loginDate, String updateBy) {
-        userMapper.updateUserByLogin(userId,loginIp,loginDate,updateBy,DateUtil.currentSeconds());
+        userMapper.updateUserByLogin(userId,loginIp,loginDate,updateBy,DateUtils.currentSeconds());
     }
 
     /**
@@ -177,8 +177,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public IPage<User> listUserByPage(Map<String,Object> paramMap) {
-        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
-            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        if(paramMap != null && paramMap.containsKey("searchLike") && StringUtils.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StringUtils.format("%%{}%%",paramMap.get("searchLike")));
         }
         return userMapper.listUserByPage(PageUtils.createPage(User.class),paramMap);
     }
@@ -192,8 +192,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public List<User> listUserByParam(Map<String, Object> paramMap) {
-        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
-            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        if(paramMap != null && paramMap.containsKey("searchLike") && StringUtils.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StringUtils.format("%%{}%%",paramMap.get("searchLike")));
         }
         return userMapper.listUserByParam(paramMap);
     }

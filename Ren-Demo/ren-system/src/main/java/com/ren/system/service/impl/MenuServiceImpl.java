@@ -2,10 +2,10 @@
 package com.ren.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ren.common.domain.entity.Menu;
+import com.ren.common.utils.DateUtils;
+import com.ren.common.utils.StringUtils;
 import com.ren.system.mapper.MenuMapper;
 import com.ren.system.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public long addMenu(Menu menu, String createBy) {
         menu.setCreateBy(createBy);
-        menu.setCreateTime(DateUtil.currentSeconds());
+        menu.setCreateTime(DateUtils.currentSeconds());
         menuMapper.insertMenu(menu);
         return menu.getMenuId();
     }
@@ -45,7 +45,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public void modifyMenuById(Menu menu, String updateBy) {
         menu.setUpdateBy(updateBy);
-        menu.setUpdateTime(DateUtil.currentSeconds());
+        menu.setUpdateTime(DateUtils.currentSeconds());
         menuMapper.updateMenuById(menu);
     }
 
@@ -71,8 +71,8 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
      */
     @Override
     public List<Menu> listMenuByParam(Map<String, Object> paramMap) {
-        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
-            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        if(paramMap != null && paramMap.containsKey("searchLike") && StringUtils.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StringUtils.format("%%{}%%",paramMap.get("searchLike")));
         }
         List<Menu> menuList = menuMapper.listMenuByParam(paramMap);
         return menuList;
@@ -88,7 +88,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
      */
     @Override
     public void modifyMenuIsDelById(long menuId, byte isDel, String updateBy) {
-        menuMapper.updateMenuIsDelById(menuId,isDel,updateBy,DateUtil.currentSeconds());
+        menuMapper.updateMenuIsDelById(menuId,isDel,updateBy,DateUtils.currentSeconds());
     }
 
     /**

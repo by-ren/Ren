@@ -1,11 +1,11 @@
 package com.ren.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ren.common.utils.PageUtils;
 import com.ren.common.domain.entity.OperLog;
+import com.ren.common.utils.PageUtils;
+import com.ren.common.utils.StringUtils;
 import com.ren.system.mapper.OperLogMapper;
 import com.ren.system.service.OperLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +52,8 @@ public class OperLogServiceImpl extends ServiceImpl<OperLogMapper, OperLog> impl
      */
     @Override
     public IPage<OperLog> listOperLogByPage(Map<String, Object> paramMap) {
-        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
-            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        if(paramMap != null && paramMap.containsKey("searchLike") && StringUtils.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StringUtils.format("%%{}%%",paramMap.get("searchLike")));
         }
         IPage<OperLog> operLogList = operLogMapper.listOperLogByPage(PageUtils.createPage(OperLog.class),paramMap);
         return operLogList;

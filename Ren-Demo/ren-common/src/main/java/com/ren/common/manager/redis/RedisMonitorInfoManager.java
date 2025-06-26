@@ -1,5 +1,5 @@
 
-package com.ren.common.utils.redis;
+package com.ren.common.manager.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
@@ -8,13 +8,12 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 /**
- * Redis监控信息工具类
+ * Redis监控信息工具类（由于不是纯静态方法，参与了业务逻辑的计算，所以设计为Manager模块，而不是Utils模块）
  * 
  * @author ren
  */
 @Component
-public class RedisMonitorInfoUtils {
-
+public class RedisMonitorInfoManager {
 
     @Autowired
     public RedisTemplate redisTemplate;

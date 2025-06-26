@@ -1,4 +1,4 @@
-package com.ren.framework.manager.factory;
+package com.ren.framework.factory;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.extra.mail.MailAccount;
@@ -9,8 +9,9 @@ import com.ren.common.domain.constant.AppConstants;
 import com.ren.common.domain.entity.Logininfor;
 import com.ren.common.domain.entity.OperLog;
 import com.ren.common.domain.entity.User;
+import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.ServletUtils;
-import com.ren.common.utils.SpringUtils;
+import com.ren.common.manager.SpringManager;
 import com.ren.common.utils.ip.AddressUtils;
 import com.ren.common.utils.ip.IpUtils;
 import com.ren.common.properties.MailProperties;
@@ -58,7 +59,7 @@ public class AsyncFactory
         // 获取客户端IP地址
         String ip = IpUtils.getIpAddr(ServletUtils.getRequest());
         // 注入UserService
-        UserService userService = SpringUtils.getBean(UserService.class);
+        UserService userService = SpringManager.getBean(UserService.class);
         return new TimerTask()
         {
             @Override
@@ -72,12 +73,12 @@ public class AsyncFactory
                 logininfor.setBrowser(browser);
                 logininfor.setOs(os);
                 logininfor.setLoginLocation(AddressUtils.getRealAddressByIP(ip));
-                logininfor.setLoginTime(DateUtil.currentSeconds());
-                SpringUtils.getBean(LogininforService.class).addLogininfor(logininfor);
+                logininfor.setLoginTime(DateUtils.currentSeconds());
+                SpringManager.getBean(LogininforService.class).addLogininfor(logininfor);
 
                 //更新最后登录时间
                 User loginIpUser = userService.getUserByUsername(username);
-                userService.modifyUserByLogin(loginIpUser.getUserId(),ip,DateUtil.currentSeconds(),username);
+                userService.modifyUserByLogin(loginIpUser.getUserId(),ip,DateUtils.currentSeconds(),username);
             }
         };
     }
@@ -91,7 +92,7 @@ public class AsyncFactory
     public static TimerTask addOperLog(final OperLog operLog)
     {
         // 注入OperLogService
-        OperLogService operLogService = SpringUtils.getBean(OperLogService.class);
+        OperLogService operLogService = SpringManager.getBean(OperLogService.class);
         return new TimerTask()
         {
             @Override
@@ -113,11 +114,11 @@ public class AsyncFactory
      */
     public static TimerTask sendAddOrModifyNoticeEmail(final Notice notice,final String title)
     {
-        UserService userService = SpringUtils.getBean(UserService.class);
+        UserService userService = SpringManager.getBean(UserService.class);
         //读取Mail配置文件
-        MailProperties mailProperties = SpringUtils.getBean(MailProperties.class);
+        MailProperties mailProperties = SpringManager.getBean(MailProperties.class);
         // Spring 自动注入模板引擎（SpringBoot会自动按照所引入的Jar包（Velocity、Beetl、Freemarker、Thymeleaf），以及所配置的配置文件（如thymeleaf.yml）进行自动模板引擎注入）
-        ITemplateEngine templateEngine = SpringUtils.getBean(ITemplateEngine.class);
+        ITemplateEngine templateEngine = SpringManager.getBean(ITemplateEngine.class);
         return new TimerTask()
         {
             @Override

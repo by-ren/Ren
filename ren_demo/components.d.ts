@@ -8,6 +8,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Crontab: typeof import('./src/components/Crontab/index.vue')['default']
+    CronTab: typeof import('./src/components/MyCron/CronTab.vue')['default']
+    Day: typeof import('./src/components/Crontab/day.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
@@ -58,6 +61,7 @@ declare module 'vue' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Header: typeof import('./src/components/Header.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    Hour: typeof import('./src/components/Crontab/hour.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']
     IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
@@ -74,14 +78,21 @@ declare module 'vue' {
     ImagePreview: typeof import('./src/components/ImagePreview/index.vue')['default']
     ImageUpload: typeof import('./src/components/ImageUpload/index.vue')['default']
     Index: typeof import('./src/components/SidebarItem/Index.vue')['default']
+    Min: typeof import('./src/components/Crontab/min.vue')['default']
+    Month: typeof import('./src/components/Crontab/month.vue')['default']
+    MyCron: typeof import('./src/components/MyCron/index.vue')['default']
     Pagination: typeof import('./src/components/Pagination/index.vue')['default']
+    Result: typeof import('./src/components/Crontab/result.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SafeDynamicComponent: typeof import('./src/components/SafeDynamicComponent/index.vue')['default']
+    Second: typeof import('./src/components/Crontab/second.vue')['default']
     SidebarItem: typeof import('./src/components/SidebarItem/index.vue')['default']
     SvgIcon: typeof import('./src/components/SvgIcon/index.vue')['default']
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
+    Week: typeof import('./src/components/Crontab/week.vue')['default']
     WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
+    Year: typeof import('./src/components/Crontab/year.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

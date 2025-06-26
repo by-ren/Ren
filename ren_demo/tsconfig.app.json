@@ -5,7 +5,7 @@
     "src/**/*", 
     "src/**/*.vue",
     "auto-imports.d.ts", // 包含自动导入类型
-    "components.d.ts"    // 包含组件类型（可选，但建议保留）
+    "components.d.ts",   // 自定义组件的导入
   ],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
@@ -13,9 +13,7 @@
       "vite/client",
       "element-plus/global" // 加载 Element Plus 全局类型
     ],
-
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-
     "paths": {
       "@/*": ["./src/*"]
     }

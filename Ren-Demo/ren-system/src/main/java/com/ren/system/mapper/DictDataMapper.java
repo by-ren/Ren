@@ -14,7 +14,7 @@ import java.util.Map;
 @Mapper
 public interface DictDataMapper extends BaseMapper<DictData> {
 
-    /*
+    /**
      * 添加字典数据
      * @param dictData
      * @return int
@@ -23,9 +23,9 @@ public interface DictDataMapper extends BaseMapper<DictData> {
      */
     void insertDictData(DictData dictData);
 
-    /*
+    /**
      * 获取字典数据详情
-     * @param dictValue
+     * @param dictType
      * @param isDefault
      * @return com.ren.system.entity.DictData
      * @author ren
@@ -33,7 +33,7 @@ public interface DictDataMapper extends BaseMapper<DictData> {
      */
     DictData selectDictDataByParam(@Param("dictType") String dictType, @Param("isDefault") Byte isDefault);
 
-    /*
+    /**
      * 删除字典数据
      * @param dictDataId
      * @author ren
@@ -41,7 +41,7 @@ public interface DictDataMapper extends BaseMapper<DictData> {
      */
     void deleteDictData(long dictDataId);
 
-    /*
+    /**
      * 编辑字典数据
      * @param dictData
      * @author ren
@@ -49,7 +49,7 @@ public interface DictDataMapper extends BaseMapper<DictData> {
      */
     void updateDictData(DictData dictData);
 
-    /*
+    /**
      * 分页获取字典数据列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.DictData>
@@ -58,7 +58,7 @@ public interface DictDataMapper extends BaseMapper<DictData> {
      */
     IPage<DictData> listDictDataByPage(Page<DictData> page, @Param("paramMap")Map<String, Object> paramMap);
 
-    /*
+    /**
      * 获取字典数据列表
      * @param dictType
      * @return java.util.List<com.ren.system.entity.DictData>

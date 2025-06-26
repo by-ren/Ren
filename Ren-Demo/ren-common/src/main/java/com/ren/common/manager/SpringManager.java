@@ -1,4 +1,4 @@
-package com.ren.common.utils;
+package com.ren.common.manager;
 
 import cn.hutool.core.util.ArrayUtil;
 import org.springframework.aop.framework.AopContext;
@@ -11,12 +11,12 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 /**
- * spring工具类 方便在非spring管理环境中获取bean
+ * spring工具类 方便在非spring管理环境中获取bean（由于不是纯静态方法，参与了业务逻辑的计算，所以设计为Manager模块，而不是Utils模块）
  *
  * @author baotai
  */
 @Component
-public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware
+public final class SpringManager implements BeanFactoryPostProcessor, ApplicationContextAware
 {
 	/** Spring应用上下文环境 */
 	private static ConfigurableListableBeanFactory beanFactory;
@@ -26,13 +26,13 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException
 	{
-		SpringUtils.beanFactory = beanFactory;
+		SpringManager.beanFactory = beanFactory;
 	}
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException
 	{
-		SpringUtils.applicationContext = applicationContext;
+		SpringManager.applicationContext = applicationContext;
 	}
 
 	/**

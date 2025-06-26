@@ -9,7 +9,7 @@ import com.ren.common.domain.page.TableDataInfo;
 import com.ren.common.domain.interfaces.OperLogAnn;
 import com.ren.common.domain.interfaces.Pageable;
 import com.ren.framework.manager.AsyncManager;
-import com.ren.framework.manager.factory.AsyncFactory;
+import com.ren.framework.factory.AsyncFactory;
 import com.ren.system.entity.Notice;
 import com.ren.system.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;

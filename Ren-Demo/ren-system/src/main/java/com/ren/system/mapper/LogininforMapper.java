@@ -12,7 +12,7 @@ import java.util.Map;
 @Mapper
 public interface LogininforMapper extends BaseMapper<Logininfor> {
 
-    /*
+    /**
      * 添加登录日志
      * @param logininfor
      * @return int
@@ -21,7 +21,7 @@ public interface LogininforMapper extends BaseMapper<Logininfor> {
      */
     void insertLogininfor(Logininfor logininfor);
 
-    /*
+    /**
      * 删除登录日志
      * @param infoId
      * @author ren
@@ -29,7 +29,7 @@ public interface LogininforMapper extends BaseMapper<Logininfor> {
      */
     void deleteLogininfor(long infoId);
 
-    /*
+    /**
      * 分页获取登录日志列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.common.domain.entity.Logininfor>
