@@ -1,15 +1,15 @@
 package com.ren.cloudstorage.controller;
 
-import cn.hutool.core.util.StrUtil;
-import com.ren.cloudstorage.properties.AliyunProperties;
-import com.ren.cloudstorage.properties.CloudStorageProperties;
 import com.ren.cloudstorage.domain.dto.AjaxResultDTO;
 import com.ren.cloudstorage.domain.entity.ImageLog;
 import com.ren.cloudstorage.domain.enums.OSSReturnCodeEnum;
 import com.ren.cloudstorage.domain.exception.OSSException;
+import com.ren.cloudstorage.properties.AliyunProperties;
+import com.ren.cloudstorage.properties.CloudStorageProperties;
 import com.ren.cloudstorage.service.CloudStorageService;
 import com.ren.cloudstorage.service.route.CloudStorageServiceRouter;
 import com.ren.cloudstorage.utils.FileUtils;
+import com.ren.cloudstorage.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,7 +41,7 @@ public class CloudStorageController{
             throw new IllegalArgumentException("文件不能为空");
         }
         //如果没有指定分类，则使用默认分类
-        if(StrUtil.isNotBlank(belong)){
+        if(StringUtils.isNotBlank(belong)){
             belong = aLiYunProperties.getImageUploadPath() + "/"+ belong;
         }else{
             belong = aLiYunProperties.getImageUploadPath();

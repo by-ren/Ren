@@ -1,7 +1,7 @@
 package com.ren.framework.manager;
 
 
-import com.ren.common.utils.SpringUtils;
+import com.ren.common.manager.SpringManager;
 import com.ren.common.utils.Threads;
 
 import java.util.TimerTask;
@@ -23,7 +23,7 @@ public class AsyncManager
     /**
      * 异步操作任务调度线程池
      */
-    private ScheduledExecutorService executor = SpringUtils.getBean("scheduledExecutorService");
+    private ScheduledExecutorService executor = SpringManager.getBean("scheduledExecutorService");
 
     /**
      * 单例模式

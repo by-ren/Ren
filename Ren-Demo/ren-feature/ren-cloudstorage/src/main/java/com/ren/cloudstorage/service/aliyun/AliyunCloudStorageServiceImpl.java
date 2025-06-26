@@ -1,17 +1,18 @@
 package com.ren.cloudstorage.service.aliyun;
 
-import cn.hutool.core.date.DateUtil;
 import com.aliyun.oss.HttpMethod;
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.model.GeneratePresignedUrlRequest;
+import com.aliyun.oss.model.ObjectMetadata;
+import com.aliyun.oss.model.PutObjectRequest;
 import com.ren.cloudstorage.domain.entity.ImageLog;
 import com.ren.cloudstorage.domain.enums.OSSReturnCodeEnum;
 import com.ren.cloudstorage.domain.exception.OSSException;
 import com.ren.cloudstorage.mapper.ImageLogMapper;
-import com.ren.cloudstorage.utils.FileUtils;
 import com.ren.cloudstorage.properties.AliyunProperties;
+import com.ren.cloudstorage.utils.DateUtils;
+import com.ren.cloudstorage.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.aliyun.oss.OSS;
-import com.aliyun.oss.model.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -127,7 +128,7 @@ public class AliyunCloudStorageServiceImpl implements AliyunCloudStorageService 
 	public URL generatePreviewUrl(String filePath) throws OSSException {
 		try {
 			final int PREVIEW_EXPIRATION_MINUTES = 10;
-			Date expiration = new Date(System.currentTimeMillis() + PREVIEW_EXPIRATION_MINUTES * 60 * 1000);
+			Date expiration = new Date(DateUtils.current() + PREVIEW_EXPIRATION_MINUTES * 60 * 1000);
 
 			GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(aLiYunProperties.getBucketName(), filePath, HttpMethod.GET);
 			req.setExpiration(expiration);
@@ -163,7 +164,7 @@ public class AliyunCloudStorageServiceImpl implements AliyunCloudStorageService 
 		imageLog.setImageUrl(FileUtils.getImageUrl(aLiYunProperties.getImageOssPathRead(), fileName));
 		imageLog.setCloudName("aliyun");
 		imageLog.setBelong(belong);
-		imageLog.setCreateTime(DateUtil.currentSeconds());
+		imageLog.setCreateTime(DateUtils.currentSeconds());
 
 		imageLogMapper.insertImageLog(imageLog);
 		return imageLog;

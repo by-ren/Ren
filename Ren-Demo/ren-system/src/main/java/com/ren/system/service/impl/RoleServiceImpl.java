@@ -2,13 +2,13 @@
 package com.ren.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ren.common.domain.constant.AppConstants;
 import com.ren.common.domain.entity.Role;
+import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.PageUtils;
+import com.ren.common.utils.StringUtils;
 import com.ren.system.entity.RoleDept;
 import com.ren.system.entity.RoleMenu;
 import com.ren.system.mapper.RoleMapper;
@@ -49,7 +49,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     public long addRole(Role role, String createBy) {
         role.setIsDel(AppConstants.COMMON_BYTE_NO);
         role.setCreateBy(createBy);
-        role.setCreateTime(DateUtil.currentSeconds());
+        role.setCreateTime(DateUtils.currentSeconds());
         roleMapper.insertRole(role);
         if(role.getMenuIds() != null && role.getMenuIds().length > 0){
             //添加权限菜单
@@ -76,7 +76,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      */
     @Override
     public void modifyRoleIsDelById(long roleId, byte isDel, String updateBy) {
-        roleMapper.updateRoleIsDelById(roleId,isDel,updateBy,DateUtil.currentSeconds());
+        roleMapper.updateRoleIsDelById(roleId,isDel,updateBy,DateUtils.currentSeconds());
     }
 
     /**
@@ -89,7 +89,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Override
     public void modifyRoleById(Role role, String updateBy) {
         role.setUpdateBy(updateBy);
-        role.setUpdateTime(DateUtil.currentSeconds());
+        role.setUpdateTime(DateUtils.currentSeconds());
         roleMapper.updateRoleById(role);
         //删除角色权限菜单
         roleMenuService.removeRoleMenuByRoleId(role.getRoleId());
@@ -131,8 +131,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      */
     @Override
     public IPage<Role> listRoleByPage(Map<String, Object> paramMap) {
-        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
-            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        if(paramMap != null && paramMap.containsKey("searchLike") && StringUtils.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StringUtils.format("%%{}%%",paramMap.get("searchLike")));
         }
         IPage<Role> roleList = roleMapper.listRoleByPage(PageUtils.createPage(Role.class),paramMap);
         return roleList;
@@ -147,8 +147,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
      */
     @Override
     public List<Role> listRoleByParam(Map<String, Object> paramMap) {
-        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
-            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        if(paramMap != null && paramMap.containsKey("searchLike") && StringUtils.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StringUtils.format("%%{}%%",paramMap.get("searchLike")));
         }
         return roleMapper.listRoleByParam(paramMap);
     }

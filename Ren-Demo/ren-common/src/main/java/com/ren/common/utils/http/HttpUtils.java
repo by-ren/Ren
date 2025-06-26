@@ -1,7 +1,7 @@
 package com.ren.common.utils.http;
 
-import cn.hutool.core.util.StrUtil;
 import com.ren.common.domain.constant.Constants;
+import com.ren.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -32,7 +32,7 @@ public class HttpUtils
      */
     public static String sendGet(String url)
     {
-        return sendGet(url, StrUtil.EMPTY);
+        return sendGet(url, StringUtils.EMPTY);
     }
 
     /**
@@ -61,7 +61,7 @@ public class HttpUtils
         BufferedReader in = null;
         try
         {
-            String urlNameString = StrUtil.isNotBlank(param) ? url + "?" + param : url;
+            String urlNameString = StringUtils.isNotBlank(param) ? url + "?" + param : url;
             log.info("sendGet - {}", urlNameString);
             URL realUrl = new URL(urlNameString);
             URLConnection connection = realUrl.openConnection();

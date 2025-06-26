@@ -2,8 +2,6 @@ package com.ren.common.utils;
 
 
 import cn.hutool.core.exceptions.UtilException;
-import cn.hutool.core.util.StrUtil;
-import org.springframework.util.StringUtils;
 
 /**
  * sql操作工具类
@@ -32,11 +30,11 @@ public class SqlUtils
      */
     public static String escapeOrderBySql(String value)
     {
-        if (StrUtil.isNotBlank(value) && !isValidOrderBySql(value))
+        if (StringUtils.isNotBlank(value) && !isValidOrderBySql(value))
         {
             throw new UtilException("参数不符合规范，不能进行查询");
         }
-        if (StrUtil.length(value) > ORDER_BY_MAX_LENGTH)
+        if (StringUtils.length(value) > ORDER_BY_MAX_LENGTH)
         {
             throw new UtilException("参数已超过最大限制，不能进行查询");
         }
@@ -60,10 +58,10 @@ public class SqlUtils
         {
             return;
         }
-        String[] sqlKeywords = StringUtils.split(SQL_REGEX, "\\|");
+        String[] sqlKeywords = StringUtils.split(SQL_REGEX, "\\|").toArray(new String[0]);
         for (String sqlKeyword : sqlKeywords)
         {
-            if (StrUtil.indexOfIgnoreCase(value, sqlKeyword) > -1)
+            if (StringUtils.indexOfIgnoreCase(value, sqlKeyword) > -1)
             {
                 throw new UtilException("参数存在SQL注入风险");
             }

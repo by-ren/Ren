@@ -13,7 +13,7 @@ import java.util.Map;
 @Mapper
 public interface NoticeMapper extends BaseMapper<Notice> {
 
-    /*
+    /**
      * 添加通知公告
      * @param notice
      * @return int
@@ -22,7 +22,7 @@ public interface NoticeMapper extends BaseMapper<Notice> {
      */
     void insertNotice(Notice notice);
 
-    /*
+    /**
      * 删除通知公告
      * @param noticeId
      * @author ren
@@ -30,7 +30,7 @@ public interface NoticeMapper extends BaseMapper<Notice> {
      */
     void deleteNotice(long noticeId);
 
-    /*
+    /**
      * 编辑通知公告
      * @param notice
      * @author ren
@@ -38,7 +38,7 @@ public interface NoticeMapper extends BaseMapper<Notice> {
      */
     void updateNotice(Notice notice);
 
-    /*
+    /**
      * 分页获取通知公告列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Notice>

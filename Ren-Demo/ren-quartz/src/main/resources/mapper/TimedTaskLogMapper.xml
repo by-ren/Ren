@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ren.quartz.mapper.TimedTaskLogMapper">
+
+    <resultMap type="timedTaskLog" id="TimedTaskLogResult">
+        <id     property="taskbLogId"       column="task_log_id"      />
+        <result property="taskName"     column="task_name"    />
+        <result property="taskGroup"     column="task_group"    />
+        <result property="invokeTarget"     column="invoke_target"    />
+        <result property="taskMessage"     column="task_message"    />
+        <result property="status"     column="status"    />
+        <result property="exceptionInfo"     column="exception_info"    />
+        <result property="createTime"   column="create_time"  />
+        <result property="createTimeStr"   column="create_time_str"  />
+    </resultMap>
+
+    <sql id="selectTimedTaskLogVo">
+        select
+            task_log_id,task_name,task_group,invoke_target,task_message,status,exception_info,
+            create_time,FROM_UNIXTIME(create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str
+        from sys_timed_task_log
+    </sql>
+
+    <insert id="insertTimedTaskLog" parameterType="timedTaskLog" useGeneratedKeys="true" keyProperty="taskbLogId" keyColumn="task_log_id">
+        insert into sys_timed_task_log(
+        <if test="taskbLogId != null and taskbLogId != 0">task_log_id,</if>
+        <if test="taskName != null and taskName != ''">task_name,</if>
+        <if test="taskGroup != null and taskGroup != ''">task_group,</if>
+        <if test="invokeTarget != null and invokeTarget != ''">invoke_target,</if>
+        <if test="taskMessage != null and taskMessage != ''">task_message,</if>
+        <if test="status != null">status,</if>
+        <if test="exceptionInfo != null and exceptionInfo != ''">exception_info,</if>
+        create_time
+        )values(
+        <if test="taskbLogId != null and taskbLogId != ''">#{taskbLogId},</if>
+        <if test="taskName != null and taskName != ''">#{taskName},</if>
+        <if test="taskGroup != null and taskGroup != ''">#{taskGroup},</if>
+        <if test="invokeTarget != null and invokeTarget != ''">#{invokeTarget},</if>
+        <if test="taskMessage != null and taskMessage != ''">#{taskMessage},</if>
+        <if test="status != null">#{status},</if>
+        <if test="exceptionInfo != null and exceptionInfo != ''">#{exceptionInfo},</if>
+        #{createTime}
+        )
+    </insert>
+
+    <select id="listTimedTaskLogByParam" resultMap="TimedTaskLogResult">
+        <include refid="selectTimedTaskLogVo"/>
+        <where>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+    </select>
+
+</mapper>

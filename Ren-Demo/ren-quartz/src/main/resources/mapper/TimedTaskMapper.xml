@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ren.quartz.mapper.TimedTaskMapper">
+
+    <resultMap type="timedTask" id="TimedTaskResult">
+        <id     property="taskId"       column="task_id"      />
+        <result property="taskName"     column="task_name"    />
+        <result property="taskGroup"     column="task_group"    />
+        <result property="invokeTarget"     column="invoke_target"    />
+        <result property="cronExpression"     column="cron_expression"    />
+        <result property="misfirePolicy"     column="misfire_policy"    />
+        <result property="concurrent"     column="concurrent"    />
+        <result property="status"     column="status"    />
+        <result property="createBy"     column="create_by"    />
+        <result property="createTime"   column="create_time"  />
+        <result property="createTimeStr"   column="create_time_str"  />
+        <result property="updateBy"     column="update_by"    />
+        <result property="updateTime"   column="update_time"  />
+        <result property="updateTimeStr"   column="update_time_str"  />
+        <result property="remark"       column="remark"       />
+    </resultMap>
+
+    <sql id="selectTimedTaskVo">
+        select
+            task_id,task_name,task_group,invoke_target,cron_expression,misfire_policy,concurrent,status,
+            create_time, create_by,FROM_UNIXTIME(create_time, '%Y-%m-%d %H:%i:%s') AS create_time_str, update_by, update_time, FROM_UNIXTIME(update_time, '%Y-%m-%d %H:%i:%s') AS update_time_str, remark
+        from sys_timed_task
+    </sql>
+
+    <insert id="insertTimedTask" parameterType="timedTask" useGeneratedKeys="true" keyProperty="taskId" keyColumn="task_id">
+        insert into sys_timed_task(
+        <if test="taskId != null and taskId != 0">task_id,</if>
+        <if test="taskName != null and taskName != ''">task_name,</if>
+        <if test="taskGroup != null and taskGroup != ''">task_group,</if>
+        <if test="invokeTarget != null and invokeTarget != ''">invoke_target,</if>
+        <if test="cronExpression != null and cronExpression != ''">cron_expression,</if>
+        <if test="misfirePolicy != null">misfire_policy,</if>
+        <if test="concurrent != null">concurrent,</if>
+        <if test="status != null">status,</if>
+        create_by,
+        create_time
+        )values(
+        <if test="taskId != null and taskId != ''">#{taskId},</if>
+        <if test="taskName != null and taskName != ''">#{taskName},</if>
+        <if test="taskGroup != null and taskGroup != ''">#{taskGroup},</if>
+        <if test="invokeTarget != null and invokeTarget != ''">#{invokeTarget},</if>
+        <if test="cronExpression != null and cronExpression != ''">#{cronExpression},</if>
+        <if test="misfirePolicy != null">#{misfirePolicy},</if>
+        <if test="concurrent != null">#{concurrent},</if>
+        <if test="status != null">#{status},</if>
+        #{createBy},
+        #{createTime}
+        )
+    </insert>
+
+    <update id="updateTimedTaskStatusById">
+        update sys_timed_task
+        <set>
+            status = #{status},
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        </set>
+        where task_id = #{taskId}
+    </update>
+
+    <update id="updateTimedTaskById" parameterType="user">
+        update sys_timed_task
+        <set>
+            <if test="taskName != null and taskName != ''">task_name = #{taskName},</if>
+            <if test="taskGroup != null and taskGroup != ''">task_group = #{taskGroup},</if>
+            <if test="invokeTarget != null and invokeTarget != ''">invoke_target = #{invokeTarget},</if>
+            <if test="cronExpression != null and cronExpression != ''">cron_expression = #{cronExpression},</if>
+            <if test="misfirePolicy != null">misfire_policy = #{misfirePolicy},</if>
+            <if test="concurrent != null">concurrent = #{concurrent},</if>
+            <if test="status != null">status = #{status},</if>
+            update_by = #{updateBy},
+            update_time = #{updateTime}
+        </set>
+        where task_id = #{taskId}
+    </update>
+
+    <select id="listTimedTaskByPage" resultMap="TimedTaskResult">
+        <include refid="selectTimedTaskVo"/>
+        <where>
+            <if test="paramMap.searchLike != null and paramMap.searchLike != ''">
+                AND (task_name LIKE #{paramMap.searchLike} OR task_name LIKE #{paramMap.searchLike})
+            </if>
+        </where>
+    </select>
+
+    <select id="listTimedTaskByParam" resultMap="TimedTaskResult">
+        <include refid="selectTimedTaskVo"/>
+        <where>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteTimedTaskById">
+        delete from sys_timed_task where task_id = #{sys_timed_task}
+    </delete>
+
+</mapper>

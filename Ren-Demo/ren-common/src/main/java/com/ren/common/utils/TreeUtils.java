@@ -1,7 +1,6 @@
 package com.ren.common.utils;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
 import com.ren.common.domain.model.vo.TreeSelectVO;
 
 import java.util.*;
@@ -34,9 +33,9 @@ public class TreeUtils {
             throw new RuntimeException("需格式化列表不可为空");
         }
 
-        idFieldName = StrUtil.isBlank(idFieldName) ? "id" : idFieldName;
-        parentIdFieldName = StrUtil.isBlank(parentIdFieldName) ? "parentId" : parentIdFieldName;
-        childrenFieldName = StrUtil.isBlank(childrenFieldName) ? "children" : childrenFieldName;
+        idFieldName = StringUtils.isBlank(idFieldName) ? "id" : idFieldName;
+        parentIdFieldName = StringUtils.isBlank(parentIdFieldName) ? "parentId" : parentIdFieldName;
+        childrenFieldName = StringUtils.isBlank(childrenFieldName) ? "children" : childrenFieldName;
 
         // 1. 创建节点映射表：以节点ID为key，节点对象为value
         Map<Object, T> nodeMap = new HashMap<>();
@@ -118,7 +117,7 @@ public class TreeUtils {
 
         // 5. 递归排序所有子节点（按 orderNum 排序）
         // 只有排序字段不为空才排序，否则不排序
-        if(StrUtil.isNotBlank(orderNumFieldName)){
+        if(StringUtils.isNotBlank(orderNumFieldName)){
             sortChildren(roots,childrenFieldName,orderNumFieldName);
         }
         return roots;
@@ -167,10 +166,10 @@ public class TreeUtils {
      */
     public static <T> List<TreeSelectVO> convertTreeSelectForAll(List<T> tList,String idFieldName, String labelFieldName, String disabledFieldName, String childrenFieldName){
         //判断是否存在，不存在则设置默认字段名
-        idFieldName = StrUtil.isBlank(idFieldName) ? "id" : idFieldName;
-        labelFieldName = StrUtil.isBlank(labelFieldName) ? "label" : labelFieldName;
-        disabledFieldName = StrUtil.isBlank(disabledFieldName) ? "isDisabled" : disabledFieldName;
-        childrenFieldName = StrUtil.isBlank(childrenFieldName) ? "children" : childrenFieldName;
+        idFieldName = StringUtils.isBlank(idFieldName) ? "id" : idFieldName;
+        labelFieldName = StringUtils.isBlank(labelFieldName) ? "label" : labelFieldName;
+        disabledFieldName = StringUtils.isBlank(disabledFieldName) ? "isDisabled" : disabledFieldName;
+        childrenFieldName = StringUtils.isBlank(childrenFieldName) ? "children" : childrenFieldName;
 
         //由于需要调用流式处理，所以需要将字段重新设置一遍，变为一个未曾改变的对象
         String finalDisabledFieldName = disabledFieldName;

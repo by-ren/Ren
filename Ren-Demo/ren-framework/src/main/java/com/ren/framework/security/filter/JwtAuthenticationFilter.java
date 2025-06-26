@@ -1,7 +1,7 @@
 package com.ren.framework.security.filter;
 
 import com.ren.common.domain.model.bo.LoginUser;
-import com.ren.common.utils.redis.RedisOperateUtils;
+import com.ren.common.manager.redis.RedisOperateManager;
 import com.ren.framework.security.utils.JwtUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
-    private RedisOperateUtils redisOperateUtils;
+    private RedisOperateManager redisOperateManager;
     /*
      * 过滤器，在请求到达Controller之前执行，用于验证Token是否有效，并设置认证信息到SecurityContext中
      * @param request
@@ -70,8 +70,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             LoginUser loginUser = jwtUtils.getLoginUserByToken((byte)1,accessToken);
             //验证refreshToken是否存在（主要用于强退功能）
-            String refreshTokenKey = redisOperateUtils.getRefreshTokenKey(loginUser.getUserId(),request);
-            if (!redisOperateUtils.hasKey(refreshTokenKey)) { // refreshToken是否存在
+            String refreshTokenKey = redisOperateManager.getRefreshTokenKey(loginUser.getUserId(),request);
+            if (!redisOperateManager.hasKey(refreshTokenKey)) { // refreshToken是否存在
                 // 账号被强退，需重新登录
                 throw new BadCredentialsException("refreshToken 无效");
             }

@@ -1,10 +1,10 @@
 package com.ren.common.controller;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.ren.common.domain.constant.HttpStatus;
 import com.ren.common.domain.model.dto.AjaxResultDTO;
 import com.ren.common.domain.page.TableDataInfo;
+import com.ren.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -120,7 +120,7 @@ public class BaseController
      */
     public String redirect(String url)
     {
-        return StrUtil.format("redirect:{}", url);
+        return StringUtils.format("redirect:{}", url);
     }
 
 }

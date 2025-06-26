@@ -1,7 +1,7 @@
 package com.ren.common.utils.ip;
 
 import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.StrUtil;
+import com.ren.common.utils.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -272,7 +272,7 @@ public class IpUtils
                 }
             }
         }
-        return StrUtil.sub(ip, 0, 255);
+        return StringUtils.sub(ip, 0, 255);
     }
 
     /**
@@ -283,7 +283,7 @@ public class IpUtils
      */
     public static boolean isUnknown(String checkString)
     {
-        return StrUtil.isBlank(checkString) || "unknown".equalsIgnoreCase(checkString);
+        return StringUtils.isBlank(checkString) || "unknown".equalsIgnoreCase(checkString);
     }
 
     /**
@@ -291,7 +291,7 @@ public class IpUtils
      */
     public static boolean isIP(String ip)
     {
-        return StrUtil.isNotBlank(ip) && ip.matches(REGX_IP);
+        return StringUtils.isNotBlank(ip) && ip.matches(REGX_IP);
     }
 
     /**
@@ -299,7 +299,7 @@ public class IpUtils
      */
     public static boolean isIpWildCard(String ip)
     {
-        return StrUtil.isNotBlank(ip) && ip.matches(REGX_IP_WILDCARD);
+        return StringUtils.isNotBlank(ip) && ip.matches(REGX_IP_WILDCARD);
     }
 
     /**
@@ -326,7 +326,7 @@ public class IpUtils
      */
     public static boolean isIPSegment(String ipSeg)
     {
-        return StrUtil.isNotBlank(ipSeg) && ipSeg.matches(REGX_IP_SEG);
+        return StringUtils.isNotBlank(ipSeg) && ipSeg.matches(REGX_IP_SEG);
     }
 
     /**
@@ -363,7 +363,7 @@ public class IpUtils
      */
     public static boolean isMatchedIp(String filter, String ip)
     {
-        if (StrUtil.isEmpty(filter) || StrUtil.isEmpty(ip))
+        if (StringUtils.isEmpty(filter) || StringUtils.isEmpty(ip))
         {
             return false;
         }

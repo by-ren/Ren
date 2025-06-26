@@ -2,11 +2,11 @@
 package com.ren.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.PageUtils;
+import com.ren.common.utils.StringUtils;
 import com.ren.system.entity.Post;
 import com.ren.system.mapper.PostMapper;
 import com.ren.system.service.PostService;
@@ -32,7 +32,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Override
     public long addPost(Post post,String createBy) {
         post.setCreateBy(createBy);
-        post.setCreateTime(DateUtil.currentSeconds());
+        post.setCreateTime(DateUtils.currentSeconds());
         postMapper.insertPost(post);
         return post.getPostId();
     }
@@ -57,7 +57,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Override
     public void modifyPost(Post post,String updateBy) {
         post.setUpdateBy(updateBy);
-        post.setUpdateTime(DateUtil.currentSeconds());
+        post.setUpdateTime(DateUtils.currentSeconds());
         postMapper.updatePost(post);
     }
 
@@ -70,8 +70,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
      */
     @Override
     public IPage<Post> listPostByPage(Map<String, Object> paramMap) {
-        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
-            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        if(paramMap != null && paramMap.containsKey("searchLike") && StringUtils.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StringUtils.format("%%{}%%",paramMap.get("searchLike")));
         }
         IPage<Post> postList = postMapper.listPostByPage(PageUtils.createPage(Post.class),paramMap);
         return postList;
@@ -86,8 +86,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
      */
     @Override
     public List<Post> listPostByParam(Map<String, Object> paramMap) {
-        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
-            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        if(paramMap != null && paramMap.containsKey("searchLike") && StringUtils.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StringUtils.format("%%{}%%",paramMap.get("searchLike")));
         }
         List<Post> postList = postMapper.listPostByParam(paramMap);
         return postList;

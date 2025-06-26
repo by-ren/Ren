@@ -2,22 +2,22 @@
 .router-link-active,
 .router-link-exact-active,
 .router-link {
-  text-decoration: none;  /* 移除下划线 */
-  color: inherit;         /* 继承父级颜色（覆盖默认蓝色） */
-  cursor: pointer;
+	text-decoration: none; /* 移除下划线 */
+	color: inherit; /* 继承父级颜色（覆盖默认蓝色） */
+	cursor: pointer;
 }
 
-a{
-  text-decoration: none;  /* 移除下划线 */
+a {
+	text-decoration: none; /* 移除下划线 */
 }
 
 /* 折叠时隐藏所有菜单项文字 */
 .el-menu--collapse .el-menu-item span,
 .el-menu--collapse .el-sub-menu__title span {
-  display: none !important;
+	display: none !important;
 }
 
 /* 折叠时隐藏箭头图标（如需） */
 .el-menu--collapse .el-sub-menu__icon-arrow {
-  display: none !important;
+	display: none !important;
 }

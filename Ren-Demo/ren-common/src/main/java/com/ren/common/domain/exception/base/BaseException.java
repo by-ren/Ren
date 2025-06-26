@@ -1,7 +1,7 @@
 package com.ren.common.domain.exception.base;
 
-import cn.hutool.core.util.StrUtil;
-import com.ren.common.utils.SpringUtils;
+import com.ren.common.manager.SpringManager;
+import com.ren.common.utils.StringUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
@@ -66,7 +66,7 @@ public class BaseException extends RuntimeException
     public String getMessage()
     {
         String message = null;
-        if (!StrUtil.isEmpty(code))
+        if (!StringUtils.isEmpty(code))
         {
             message = message(code, args);
         }
@@ -106,7 +106,7 @@ public class BaseException extends RuntimeException
      */
     public String message(String code, Object... args)
     {
-        MessageSource messageSource = SpringUtils.getBean(MessageSource.class);
+        MessageSource messageSource = SpringManager.getBean(MessageSource.class);
         return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
     }
 }

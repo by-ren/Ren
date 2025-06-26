@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface UserRoleMapper extends BaseMapper<UserRole> {
 
-	/*
+	/**
 	 * 添加用户角色
 	 * @param userRole
 	 * @author ren
@@ -18,7 +18,7 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
 	 */
 	void insertUserRole(UserRole userRole);
 
-	/*
+	/**
 	 * 批量添加用户角色
 	 * @param userRoleList
 	 * @author ren
@@ -26,7 +26,7 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
 	 */
 	void insertUserRoleBatch(List<UserRole> userRoleList);
 
-	/*
+	/**
 	 * 删除用户角色
 	 * @param userId
 	 * @author ren
@@ -34,7 +34,7 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
 	 */
 	void deleteUserRoleByUserId(long userId);
 
-	/*
+	/**
 	 * 获取用户角色列表
 	 * @param userId
 	 * @return java.util.List<com.ren.system.entity.UserRole>

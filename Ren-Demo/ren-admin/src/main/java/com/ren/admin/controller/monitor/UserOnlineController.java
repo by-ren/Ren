@@ -2,13 +2,13 @@ package com.ren.admin.controller.monitor;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.StrUtil;
-import com.ren.common.domain.constant.RedisCacheConstants;
 import com.ren.common.controller.BaseController;
+import com.ren.common.domain.constant.RedisCacheConstants;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.model.dto.AjaxResultDTO;
-import com.ren.common.utils.redis.RedisOperateUtils;
-import com.ren.common.utils.SecurityUtils;
+import com.ren.common.manager.SecurityManager;
+import com.ren.common.manager.redis.RedisOperateManager;
+import com.ren.common.utils.StringUtils;
 import com.ren.framework.security.utils.JwtUtils;
 import com.ren.monitor.domain.vo.SysUserOnlineVO;
 import com.ren.monitor.service.SysUserOnlineService;
@@ -31,7 +31,7 @@ import java.util.Map;
 public class UserOnlineController extends BaseController {
 
     @Autowired
-    private RedisOperateUtils redisOperateUtils;
+    private RedisOperateManager redisOperateManager;
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
@@ -49,14 +49,14 @@ public class UserOnlineController extends BaseController {
         List<SysUserOnlineVO> userOnlineList = new ArrayList<>();
         String pattern = RedisCacheConstants.REFRESH_TOKEN_KEY + ":" + "*"; // 匹配所有regresh_token:开头的键
         // 使用SCAN命令安全遍历（避免KEYS阻塞）
-        try(Cursor<String> cursor = redisOperateUtils.scan(pattern)){
+        try(Cursor<String> cursor = redisOperateManager.scan(pattern)){
             String ipaddr = Convert.toStr(paramMap.get("ipaddr"));
             String userName = Convert.toStr(paramMap.get("userName"));
 
             while (cursor.hasNext()) {
                 String key = cursor.next();
                 // 获取键对应的值（JWT Token）
-                String refreshToken = redisOperateUtils.getCacheObject(key);
+                String refreshToken = redisOperateManager.getCacheObject(key);
                 LoginUser user = jwtUtils.getLoginUserByToken((byte) 2,refreshToken);
 
                 if(ObjUtil.isNotNull(user) && ObjUtil.isNotNull(user.getUser())){
@@ -82,11 +82,11 @@ public class UserOnlineController extends BaseController {
      * @date 2025/06/05 16:10
      */
     private SysUserOnlineVO determineOnlineUser(String ipaddr, String userName,LoginUser user, String key){
-        if (StrUtil.isAllNotBlank(ipaddr, userName)) {
+        if (StringUtils.isAllNotBlank(ipaddr, userName)) {
             return sysUserOnlineService.selectOnlineByInfo(ipaddr, userName, user, key);
-        } else if (StrUtil.isNotBlank(ipaddr)) {
+        } else if (StringUtils.isNotBlank(ipaddr)) {
             return sysUserOnlineService.selectOnlineByIpaddr(ipaddr, user, key);
-        } else if (StrUtil.isNotBlank(userName)) {
+        } else if (StringUtils.isNotBlank(userName)) {
             return sysUserOnlineService.selectOnlineByUserName(userName, user, key);
         } else {
             return sysUserOnlineService.selectOnline(user, key);
@@ -103,16 +103,16 @@ public class UserOnlineController extends BaseController {
     @GetMapping("/compulsoryWithdrawal")
     public AjaxResultDTO compulsoryWithdrawal(@RequestParam String tokenId, HttpServletRequest request)
     {
-        String refreshToken = redisOperateUtils.getCacheObject(tokenId);
-        if(StrUtil.isNotBlank(refreshToken)){
-            String refreshTokenKey = redisOperateUtils.getRefreshTokenKey(SecurityUtils.getUserId(), request);
+        String refreshToken = redisOperateManager.getCacheObject(tokenId);
+        if(StringUtils.isNotBlank(refreshToken)){
+            String refreshTokenKey = redisOperateManager.getRefreshTokenKey(SecurityManager.getUserId(), request);
             if(refreshTokenKey.equals(tokenId)){
                 return error("不可强退当前帐号，请正常退出");
             }
         }else{
             return error("用户不存在");
         }
-        redisOperateUtils.deleteObject(tokenId);
+        redisOperateManager.deleteObject(tokenId);
         return success();
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface RoleDeptMapper extends BaseMapper<RoleDept> {
 
-    /*
+    /**
      * 添加可查看数据部门
      * @param roleDept
      * @author ren
@@ -17,7 +17,7 @@ public interface RoleDeptMapper extends BaseMapper<RoleDept> {
      */
     void insertRoleDept(RoleDept roleDept);
 
-    /*
+    /**
      * 删除可查看数据部门
      * @param roleId
      * @author ren
@@ -25,7 +25,7 @@ public interface RoleDeptMapper extends BaseMapper<RoleDept> {
      */
     void deleteRoleDeptByRoleId(long roleId);
 
-    /*
+    /**
      * 获取可查看数据部门列表
      * @param roleId
      * @return java.util.List<com.ren.system.entity.RoleDept>
@@ -34,7 +34,7 @@ public interface RoleDeptMapper extends BaseMapper<RoleDept> {
      */
     List<RoleDept> listRoleDeptByRoleId(long roleId);
 
-    /*
+    /**
      * 批量添加数据部门
      * @param roleDeptList
      * @author ren

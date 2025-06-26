@@ -9,12 +9,14 @@ import com.ren.common.domain.constant.AppConstants;
 import com.ren.common.controller.BaseController;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.domain.model.dto.AjaxResultDTO;
-import com.ren.common.utils.redis.RedisOperateUtils;
+import com.ren.common.manager.redis.RedisOperateManager;
+import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.ServletUtils;
+import com.ren.common.utils.StringUtils;
 import com.ren.common.utils.ip.AddressUtils;
 import com.ren.common.utils.ip.IpUtils;
 import com.ren.framework.manager.AsyncManager;
-import com.ren.framework.manager.factory.AsyncFactory;
+import com.ren.framework.factory.AsyncFactory;
 import com.ren.common.properties.TokenProperties;
 import com.ren.framework.security.config.AuthenticationContextHolder;
 import com.ren.framework.security.utils.JwtUtils;
@@ -48,7 +50,7 @@ public class AuthController extends BaseController {
     @Autowired
     private TokenProperties tokenProperties;
     @Autowired
-    private RedisOperateUtils redisOperateUtils;
+    private RedisOperateManager redisOperateManager;
 
     /*
      * 自定义登录接口
@@ -73,8 +75,8 @@ public class AuthController extends BaseController {
             //获取用户身份信息
             LoginUser loginUser = (LoginUser) authentication.getPrincipal();
 
-            Long accessTokenExpireTime = System.currentTimeMillis() + tokenProperties.getExpireTime() * 1000L;
-            Long refreshTokenExpireTime = System.currentTimeMillis() + tokenProperties.getRefreshExpireTime() * 1000L;
+            Long accessTokenExpireTime = DateUtils.current() + tokenProperties.getExpireTime() * 1000L;
+            Long refreshTokenExpireTime = DateUtils.current() + tokenProperties.getRefreshExpireTime() * 1000L;
 
             // 从请求头中获取User-Agent（浏览器与操作系统相关信息）
             String userAgentStr = ServletUtils.getRequest().getHeader("User-Agent");
@@ -87,9 +89,9 @@ public class AuthController extends BaseController {
             // 获取操作系统
             String os = userAgent.getOs().getName();
 
-            loginUser.setLoginTime(DateUtil.currentSeconds());
-            loginUser.setExpireTime(accessTokenExpireTime / 1000);
-            loginUser.setRefreshTokenExpireTime(refreshTokenExpireTime / 1000);
+            loginUser.setLoginTime(DateUtils.currentSeconds());
+            loginUser.setExpireTime(DateUtils.millisecondsToSeconds(accessTokenExpireTime));
+            loginUser.setRefreshTokenExpireTime(DateUtils.millisecondsToSeconds(refreshTokenExpireTime));
             loginUser.setIpaddr(IpUtils.getIpAddr());
             loginUser.setLoginLocation(AddressUtils.getRealAddressByIP(IpUtils.getIpAddr()));
             loginUser.setBrowser(browser);
@@ -158,9 +160,9 @@ public class AuthController extends BaseController {
 
         // 将现在的这个AccessToken加入黑名单，防止退出后还能登录
         String accessToken = jwtUtils.getAccessToken(request);
-        if(StrUtil.isNotBlank(accessToken)){
-            redisOperateUtils.setCacheObject(
-                    redisOperateUtils.getBlackTokenKey(accessToken),
+        if(StringUtils.isNotBlank(accessToken)){
+            redisOperateManager.setCacheObject(
+                    redisOperateManager.getBlackTokenKey(accessToken),
                     "logged_out",
                     tokenProperties.getBlackListTime(),
                     TimeUnit.SECONDS);

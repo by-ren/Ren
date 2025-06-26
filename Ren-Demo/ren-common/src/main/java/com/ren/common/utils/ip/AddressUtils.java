@@ -1,8 +1,8 @@
 package com.ren.common.utils.ip;
 
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.JSONObject;
 import com.ren.common.domain.constant.Constants;
+import com.ren.common.utils.StringUtils;
 import com.ren.common.utils.http.HttpUtils;
 import com.ren.common.utils.json.FastJSON2Utils;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ public class AddressUtils
         try
         {
             String rspStr = HttpUtils.sendGet(IP_URL, "ip=" + ip + "&json=true", Constants.GBK);
-            if (StrUtil.isEmpty(rspStr))
+            if (StringUtils.isEmpty(rspStr))
             {
                 log.error("获取地理位置异常 {}", ip);
                 return UNKNOWN;

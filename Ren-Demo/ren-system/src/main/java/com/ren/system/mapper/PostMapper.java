@@ -14,7 +14,7 @@ import java.util.Map;
 @Mapper
 public interface PostMapper extends BaseMapper<Post> {
 
-    /*
+    /**
      * 添加岗位
      * @param post
      * @return int
@@ -23,7 +23,7 @@ public interface PostMapper extends BaseMapper<Post> {
      */
     void insertPost(Post post);
 
-    /*
+    /**
      * 删除岗位
      * @param postId
      * @author ren
@@ -31,7 +31,7 @@ public interface PostMapper extends BaseMapper<Post> {
      */
     void deletePost(long postId);
 
-    /*
+    /**
      * 编辑岗位
      * @param post
      * @author ren
@@ -39,7 +39,7 @@ public interface PostMapper extends BaseMapper<Post> {
      */
     void updatePost(Post post);
 
-    /*
+    /**
      * 分页获取岗位列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.system.entity.Post>
@@ -48,7 +48,7 @@ public interface PostMapper extends BaseMapper<Post> {
      */
     IPage<Post> listPostByPage(Page<Post> page, @Param("paramMap")Map<String, Object> paramMap);
 
-    /*
+    /**
      * 岗位列表
      * @param paramMap
      * @return java.util.List<com.ren.system.entity.Post>

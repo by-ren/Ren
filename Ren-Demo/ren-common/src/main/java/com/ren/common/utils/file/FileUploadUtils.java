@@ -1,13 +1,13 @@
 package com.ren.common.utils.file;
 
-import cn.hutool.core.util.StrUtil;
 import com.ren.common.domain.constant.Constants;
+import com.ren.common.domain.constant.MimeTypeConstants;
 import com.ren.common.domain.exception.file.FileNameLengthLimitExceededException;
 import com.ren.common.domain.exception.file.FileSizeLimitExceededException;
 import com.ren.common.domain.exception.file.InvalidExtensionException;
 import com.ren.common.properties.LocalStorageProperties;
 import com.ren.common.utils.DateUtils;
-import com.ren.common.domain.constant.MimeTypeConstants;
+import com.ren.common.utils.StringUtils;
 import com.ren.common.utils.uuid.IdUtils;
 import com.ren.common.utils.uuid.Seq;
 import org.apache.commons.io.FilenameUtils;
@@ -145,7 +145,7 @@ public class FileUploadUtils
      */
     public static final String extractFilename(MultipartFile file)
     {
-        return StrUtil.format("{}/{}_{}.{}", DateUtils.datePath(), FilenameUtils.getBaseName(file.getOriginalFilename()), Seq.getId(Seq.uploadSeqType), getExtension(file));
+        return StringUtils.format("{}/{}_{}.{}", DateUtils.datePath(), FilenameUtils.getBaseName(file.getOriginalFilename()), Seq.getId(Seq.uploadSeqType), getExtension(file));
     }
 
     /**
@@ -153,7 +153,7 @@ public class FileUploadUtils
      */
     public static final String uuidFilename(MultipartFile file)
     {
-        return StrUtil.format("{}/{}.{}", DateUtils.datePath(), IdUtils.fastSimpleUUID(), getExtension(file));
+        return StringUtils.format("{}/{}.{}", DateUtils.datePath(), IdUtils.fastSimpleUUID(), getExtension(file));
     }
 
     public static final File getAbsoluteFile(String uploadDir, String fileName) throws IOException
@@ -173,7 +173,7 @@ public class FileUploadUtils
     public static final String getPathFileName(String uploadDir, String fileName) throws IOException
     {
         int dirLastIndex = defaultBaseDir.length() + 1;
-        String currentDir = StrUtil.sub(uploadDir,dirLastIndex, uploadDir.length());
+        String currentDir = StringUtils.sub(uploadDir,dirLastIndex, uploadDir.length());
         return Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
     }
 
@@ -253,7 +253,7 @@ public class FileUploadUtils
     public static final String getExtension(MultipartFile file)
     {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-        if (StrUtil.isEmpty(extension))
+        if (StringUtils.isEmpty(extension))
         {
             extension = MimeTypeConstants.getExtension(Objects.requireNonNull(file.getContentType()));
         }

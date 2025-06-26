@@ -13,7 +13,7 @@ import java.util.Map;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
-    /*
+    /**
      * 添加用户
      * @param user
      * @author ren
@@ -21,7 +21,7 @@ public interface UserMapper extends BaseMapper<User> {
      */
     void insertUser(User user);
 
-    /*
+    /**
      * 编辑用户是否删除
      * @param userId
      * @param isDel
@@ -32,7 +32,7 @@ public interface UserMapper extends BaseMapper<User> {
      */
     void updateUserIsDelById(@Param("userId")long userId, @Param("isDel")byte isDel, @Param("updateBy")String updateBy,@Param("updateTime")long updateTime);
 
-    /*
+    /**
      * 重置密码（后台使用）
      * @param userId
      * @param newPassword
@@ -43,16 +43,15 @@ public interface UserMapper extends BaseMapper<User> {
      */
     void resetPassword(@Param("userId")long userId, @Param("newPassword")String newPassword, @Param("updateBy")String updateBy,@Param("updateTime")long updateTime);
 
-    /*
+    /**
      * 编辑用户
      * @param user
-     * @param updateBy
      * @author ren
      * @date 2025/05/04 13:52
      */
     void updateUser(User user);
 
-    /*
+    /**
      * 编辑用户（登录用）
      * @param userId
      * @param loginIp
@@ -63,7 +62,7 @@ public interface UserMapper extends BaseMapper<User> {
      */
     void updateUserByLogin(@Param("userId") long userId, @Param("loginIp")String loginIp, @Param("loginDate")long loginDate, @Param("updateBy")String updateBy, @Param("updateTime")long updateTime);
 
-    /*
+    /**
      * 获取用户列表
      * @param page
      * @param paramMap
@@ -73,7 +72,7 @@ public interface UserMapper extends BaseMapper<User> {
      */
     IPage<User> listUserByPage(Page<User> page, @Param("paramMap") Map<String,Object> paramMap);
 
-    /*
+    /**
      * 获取用户列表
      * @param paramMap
      * @return java.util.List<com.ren.common.domain.entity.User>
@@ -82,7 +81,7 @@ public interface UserMapper extends BaseMapper<User> {
      */
     List<User> listUserByParam(Map<String, Object> paramMap);
 
-    /*
+    /**
      * 根据查询参数获取用户列表
      * @param paramMap
      * @return com.ren.admin.entity.User
@@ -91,7 +90,7 @@ public interface UserMapper extends BaseMapper<User> {
      */
     User selectUserByParam(Map<String,Object> paramMap);
 
-    /*
+    /**
      * 获取用户列表
      * @param roleId
      * @return java.util.List<com.ren.common.core.entity.User>
@@ -100,7 +99,7 @@ public interface UserMapper extends BaseMapper<User> {
      */
     List<User> listUserByRoleId(long roleId);
 
-    /*
+    /**
      * 获取用户列表
      * @param deptId
      * @return java.util.List<com.ren.common.core.entity.User>

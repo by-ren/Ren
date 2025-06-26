@@ -12,7 +12,7 @@ import java.util.Map;
 @Mapper
 public interface OperLogMapper extends BaseMapper<OperLog> {
 
-    /*
+    /**
      * 添加操作日志
      * @param operLog
      * @return int
@@ -21,7 +21,7 @@ public interface OperLogMapper extends BaseMapper<OperLog> {
      */
     void insertOperLog(OperLog operLog);
 
-    /*
+    /**
      * 删除操作日志
      * @param operId
      * @author ren
@@ -29,7 +29,7 @@ public interface OperLogMapper extends BaseMapper<OperLog> {
      */
     void deleteOperLog(long operId);
 
-    /*
+    /**
      * 分页获取操作日志列表
      * @param paramMap
      * @return com.baomidou.mybatisplus.core.metadata.IPage<com.ren.common.domain.entity.OperLog>

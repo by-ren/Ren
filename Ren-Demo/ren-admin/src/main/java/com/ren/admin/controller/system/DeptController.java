@@ -3,15 +3,15 @@ package com.ren.admin.controller.system;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
-import com.ren.common.domain.constant.AppConstants;
 import com.ren.common.controller.BaseController;
-import com.ren.common.domain.model.bo.LoginUser;
-import com.ren.common.domain.model.dto.AjaxResultDTO;
+import com.ren.common.domain.constant.AppConstants;
 import com.ren.common.domain.entity.Dept;
 import com.ren.common.domain.entity.User;
 import com.ren.common.domain.enums.BusinessType;
 import com.ren.common.domain.interfaces.OperLogAnn;
+import com.ren.common.domain.model.bo.LoginUser;
+import com.ren.common.domain.model.dto.AjaxResultDTO;
+import com.ren.common.utils.StringUtils;
 import com.ren.common.utils.TreeUtils;
 import com.ren.system.entity.RoleDept;
 import com.ren.system.service.DeptService;
@@ -79,7 +79,7 @@ public class DeptController extends BaseController {
     {
         List<Dept> deptList = deptService.listDeptByParam(null);
         deptList.removeIf(d -> d.getDeptId().intValue() == deptId || CollUtil.contains(
-                StrUtil.split(d.getAncestors(), ","),
+                StringUtils.split(d.getAncestors(), ","),
                 String.valueOf(deptId)
         ));
         //将列表转为树形结构

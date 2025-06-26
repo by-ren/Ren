@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface UserPostMapper extends BaseMapper<UserPost> {
 
-	/*
+	/**
 	 * 添加用户岗位
 	 * @param userPost
 	 * @author ren
@@ -18,7 +18,7 @@ public interface UserPostMapper extends BaseMapper<UserPost> {
 	 */
 	void insertUserPost(UserPost userPost);
 
-	/*
+	/**
 	 * 批量添加用户岗位
 	 * @param userPostList
 	 * @author ren
@@ -26,7 +26,7 @@ public interface UserPostMapper extends BaseMapper<UserPost> {
 	 */
 	void insertUserPostBatch(List<UserPost> userPostList);
 
-	/*
+	/**
 	 * 删除用户岗位
 	 * @param userId
 	 * @author ren
@@ -34,7 +34,7 @@ public interface UserPostMapper extends BaseMapper<UserPost> {
 	 */
 	void deleteUserPostByUserId(long userId);
 
-	/*
+	/**
 	 * 获取用户岗位列表
 	 * @param userId
 	 * @return java.util.List<com.ren.system.entity.UserPost>

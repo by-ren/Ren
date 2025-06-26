@@ -155,9 +155,9 @@ public class ComputerInfoUtils
         // 格式化为可读的日期字符串
         String startTimeStr = DateUtils.timestampToStrDefault(startTime);
         // 计算运行时间(当前时间-启动时间)
-        long runningTime = System.currentTimeMillis() - startTime;
+        long runningTime = DateUtils.current() - startTime;
         // 获取两个时间之间的间隔，并将间隔转换为人类可读的形式
-        String runningTimeStr = DateUtil.formatBetween(runningTime);
+        String runningTimeStr = DateUtils.formatBetween(runningTime);
         return new ProjectInfoBO()
                 .setProjectDir(projectDir)
                 .setStartTimeStr(startTimeStr)

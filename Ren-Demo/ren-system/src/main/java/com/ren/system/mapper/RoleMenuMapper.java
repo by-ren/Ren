@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
 
-    /*
+    /**
      * 添加角色菜单
      * @param roleMenu
      * @author ren
@@ -18,7 +18,7 @@ public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
      */
     void insertRoleMenu(RoleMenu roleMenu);
 
-    /*
+    /**
      * 删除角色菜单
      * @param roleId
      * @author ren
@@ -26,7 +26,7 @@ public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
      */
     void deleteRoleMenuByRoleId(long roleId);
 
-    /*
+    /**
      * 获取角色菜单列表
      * @param roleId
      * @return java.util.List<com.ren.system.entity.RoleMenu>
@@ -35,7 +35,7 @@ public interface RoleMenuMapper extends BaseMapper<RoleMenu> {
      */
     List<RoleMenu> listRoleMenuByRoleId(long roleId);
 
-    /*
+    /**
      * 添加权限菜单
      * @param roleMenuList
      * @author ren

@@ -16,7 +16,7 @@ import java.util.Date;
  * 
  * @author ren
  */
-public class DateUtils {
+public class DateUtils extends DateUtil{
     public static String YYYY = "yyyy";
 
     public static String YYYY_MM = "yyyy-MM";
@@ -125,7 +125,7 @@ public class DateUtils {
     public static final String datePath()
     {
         Date now = new Date();
-        return DateUtil.format(now, "yyyy/MM/dd");
+        return format(now, "yyyy/MM/dd");
     }
 
     /**
@@ -134,7 +134,7 @@ public class DateUtils {
     public static final String dateTime()
     {
         Date now = new Date();
-        return DateUtil.format(now, "yyyyMMdd");
+        return format(now, "yyyyMMdd");
     }
 
     /**
@@ -148,7 +148,7 @@ public class DateUtils {
         }
         try
         {
-            return DateUtil.parse(str.toString(), parsePatterns);
+            return parse(str.toString(), parsePatterns);
         }catch (DateException e) {
             return null;
         }
@@ -275,12 +275,12 @@ public class DateUtils {
      * @date 2025/06/16 13:23
      */
     public static Long convertDateStringToLong(String dateStr, String datecode) {
-        if(StrUtil.isBlank(datecode)) datecode = YYYY_MM_DD_HH_MM_SS;
-        return (DateUtil.parse(dateStr, datecode).getTime());
+        if(StringUtils.isBlank(datecode)) datecode = YYYY_MM_DD_HH_MM_SS;
+        return (parse(dateStr, datecode).getTime());
     }
 
     /**
-     * 得到给定日期（long型的时间戳） 的零点和24点的时戳
+     * 得到给定日期（long型的时间戳） 的零点和24点的时戳（单位：毫秒）
      * @param currentTimestamp
      * @return long[]
      * @author ren
@@ -291,8 +291,20 @@ public class DateUtils {
         long[] timeArray = new long[2];
         Date date = new Date();
         if (currentTimestamp != null) date = new Date(currentTimestamp * 1000);
-        timeArray[0] = DateUtil.beginOfDay(date).getTime()/1000;
-        timeArray[1] = DateUtil.endOfDay(date).getTime()/1000;
+        timeArray[0] = beginOfDay(date).getTime();
+        timeArray[1] = endOfDay(date).getTime();
         return timeArray;
     }
+
+    /**
+     * 毫秒转秒
+     * @param milliseconds
+     * @return java.lang.Long
+     * @author ren
+     * @date 2025/06/25 11:56
+     */
+    public static Long millisecondsToSeconds(Long milliseconds) {
+        return milliseconds / 1000;
+    }
+
 }

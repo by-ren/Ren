@@ -3,8 +3,9 @@ package com.ren.framework.security.utils;
 import com.alibaba.fastjson2.JSON;
 import com.ren.common.domain.model.bo.LoginUser;
 import com.ren.common.properties.TokenProperties;
+import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.json.FastJSON2Utils;
-import com.ren.common.utils.redis.RedisOperateUtils;
+import com.ren.common.manager.redis.RedisOperateManager;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,7 +30,7 @@ public class JwtUtils {
     @Autowired
     private TokenProperties tokenProperties;
     @Autowired
-    private RedisOperateUtils redisOperateUtils;
+    private RedisOperateManager redisOperateManager;
 
     // 密钥生成
     private Key getAccessKey() {
@@ -49,7 +50,7 @@ public class JwtUtils {
      * @date 2025/04/17 21:24
      */
     public String createAccessToken(LoginUser loginUser,Long expireTime) {
-        expireTime = expireTime == null ? (System.currentTimeMillis() + tokenProperties.getExpireTime() * 1000L) : expireTime;
+        expireTime = expireTime == null ? (DateUtils.current() + tokenProperties.getExpireTime() * 1000L) : expireTime;
         String login_user = FastJSON2Utils.toJson(loginUser);
         //过滤敏感字段
         //String login_user = FastJSON2Utils.filterSensitiveFields(FastJSON2Utils.EXCLUDE_PROPERTIES,loginUser);
@@ -71,7 +72,7 @@ public class JwtUtils {
      * @date 2025/04/17 21:24
      */
     public String createRefreshToken(LoginUser loginUser,Long expireTime, HttpServletRequest httpRequest) {
-        expireTime = expireTime == null ? (System.currentTimeMillis() + tokenProperties.getRefreshExpireTime() * 1000L) : expireTime;
+        expireTime = expireTime == null ? (DateUtils.current() + tokenProperties.getRefreshExpireTime() * 1000L) : expireTime;
         String login_user = FastJSON2Utils.toJson(loginUser);
         //过滤敏感字段
         //String login_user = FastJSON2Utils.filterSensitiveFields(FastJSON2Utils.EXCLUDE_PROPERTIES,loginUser);
@@ -84,7 +85,7 @@ public class JwtUtils {
                 .compact();  //生成最终的JWT字符串
 
         // 存储到Redis，有效期比Token长一些，key为regresh_token:+用户id，value为refreshToken，有效期为配置的过期时长+60秒（为了防止早删除），时间单位为秒
-        redisOperateUtils.setCacheObject(redisOperateUtils.getRefreshTokenKey(loginUser.getUserId(),httpRequest),refreshToken,tokenProperties.getRefreshExpireTime() + 60,TimeUnit.SECONDS);
+        redisOperateManager.setCacheObject(redisOperateManager.getRefreshTokenKey(loginUser.getUserId(),httpRequest),refreshToken,tokenProperties.getRefreshExpireTime() + 60,TimeUnit.SECONDS);
         return refreshToken;
     }
 
@@ -160,7 +161,7 @@ public class JwtUtils {
      */
     public short validateAccessToken(String token) {
         // 检查黑名单中是否存在当前token，如果存在，则无效，反之则有效
-        if (redisOperateUtils.hasKey(redisOperateUtils.getBlackTokenKey(token))) {
+        if (redisOperateManager.hasKey(redisOperateManager.getBlackTokenKey(token))) {
             // 黑名单 → 返回 403
             log.warn("当前Token处于黑名单，请确认");
             return 403;
@@ -180,7 +181,7 @@ public class JwtUtils {
         // 从token中解析出user_id
         Claims claims = parseRefreshToken(refreshToken);
         Long userId = claims.get("user_id", Long.class);
-        String storedToken = redisOperateUtils.getCacheObject(redisOperateUtils.getRefreshTokenKey(userId,request));
+        String storedToken = redisOperateManager.getCacheObject(redisOperateManager.getRefreshTokenKey(userId,request));
         //如果redis中的refreshToken与传递过来的refreshToken一致，则有效，反之则无效
         return refreshToken.equals(storedToken);
     }
@@ -198,7 +199,7 @@ public class JwtUtils {
         Claims claims = parseAccessToken(token);
         Date expiration = claims.getExpiration();
         // 剩余时间 = 过期时间-当前时间（单位：秒）
-        long remainTime = expiration.getTime() - System.currentTimeMillis();
+        long remainTime = expiration.getTime() - DateUtils.current();
         // 如果剩余时间小于刷新时间，则需要刷新Token
         return remainTime < tokenProperties.getRefreshTime() * 1000L;
     }
@@ -267,7 +268,7 @@ public class JwtUtils {
      * @date 2025/04/17 21:26
      */
     public void deleteRefreshToken(Long userId, HttpServletRequest request) {
-        redisOperateUtils.deleteObject(redisOperateUtils.getRefreshTokenKey(userId,request));
+        redisOperateManager.deleteObject(redisOperateManager.getRefreshTokenKey(userId,request));
     }
 
     /*
@@ -296,8 +297,8 @@ public class JwtUtils {
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
 
         //重新设置过期时间
-        Long accessTokenExpireTime = System.currentTimeMillis() + tokenProperties.getExpireTime() * 1000L;
-        loginUser.setExpireTime(accessTokenExpireTime / 1000);
+        Long accessTokenExpireTime = DateUtils.current() + tokenProperties.getExpireTime() * 1000L;
+        loginUser.setExpireTime(DateUtils.millisecondsToSeconds(accessTokenExpireTime));
 
         // 生成新的双Token
         String newAccessToken = createAccessToken(loginUser,accessTokenExpireTime);

@@ -1,9 +1,10 @@
 package com.ren.admin.controller.localstorage;
 
-import cn.hutool.core.util.StrUtil;
 import com.ren.common.domain.model.dto.AjaxResultDTO;
 import com.ren.common.properties.LocalStorageProperties;
+import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.ServletUtils;
+import com.ren.common.utils.StringUtils;
 import com.ren.common.utils.file.FileUploadUtils;
 import com.ren.common.utils.file.FileUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -85,10 +86,10 @@ public class LocalStorageController {
                 originalFilenames.add(file.getOriginalFilename());
             }
             AjaxResultDTO ajax = AjaxResultDTO.success();
-            ajax.put("urls", StrUtil.join(FILE_DELIMETER, urls));
-            ajax.put("fileNames", StrUtil.join(FILE_DELIMETER, fileNames));
-            ajax.put("newFileNames", StrUtil.join(FILE_DELIMETER, newFileNames));
-            ajax.put("originalFilenames", StrUtil.join(FILE_DELIMETER, originalFilenames));
+            ajax.put("urls", StringUtils.join(FILE_DELIMETER, urls));
+            ajax.put("fileNames", StringUtils.join(FILE_DELIMETER, fileNames));
+            ajax.put("newFileNames", StringUtils.join(FILE_DELIMETER, newFileNames));
+            ajax.put("originalFilenames", StringUtils.join(FILE_DELIMETER, originalFilenames));
             return ajax;
         }
         catch (Exception e)
@@ -111,12 +112,12 @@ public class LocalStorageController {
         {
             if (!FileUtils.checkAllowDownload(fileName))
             {
-                throw new Exception(StrUtil.format("文件名称({})非法，不允许下载。 ", fileName));
+                throw new Exception(StringUtils.format("文件名称({})非法，不允许下载。 ", fileName));
             }
             // 文件下载路径
             String filePath = LocalStorageProperties.getDownloadPath() + fileName;
             // 下载的新文件名
-            String downloadName = System.currentTimeMillis() + fileName.substring(fileName.indexOf("_") + 1);
+            String downloadName = DateUtils.current() + fileName.substring(fileName.indexOf("_") + 1);
 
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             FileUtils.setAttachmentResponseHeader(response, downloadName);
@@ -148,12 +149,12 @@ public class LocalStorageController {
         {
             if (!FileUtils.checkAllowDownload(resource))
             {
-                throw new Exception(StrUtil.format("资源文件({})非法，不允许下载。 ", resource));
+                throw new Exception(StringUtils.format("资源文件({})非法，不允许下载。 ", resource));
             }
             // 文件下载路径
             String downloadPath = LocalStorageProperties.getProfile() + FileUtils.stripPrefix(resource);
             // 下载的新文件名
-            String downloadName = StrUtil.subAfter(downloadPath, "/",true);
+            String downloadName = StringUtils.subAfter(downloadPath, "/",true);
 
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             FileUtils.setAttachmentResponseHeader(response, downloadName);

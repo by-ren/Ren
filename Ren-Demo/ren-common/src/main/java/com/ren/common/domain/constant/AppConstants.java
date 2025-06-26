@@ -18,6 +18,7 @@ public class AppConstants {
     public static final boolean COMMON_BOOLEAN_YES = true;
     /**通用-否*/
     public static final boolean COMMON_BOOLEAN_NO = false;
+
     /*===================================================通用结束=======================================================*/
 
 
@@ -83,5 +84,13 @@ public class AppConstants {
     /**操作日志-操作类别-手机端用户*/
     public static final byte OPERATOR_TYPE_MOBILE = 2;
     /*==================================================操作日志结束=====================================================*/
+
+
+    /*==================================================任务日志开始=====================================================*/
+    /**任务日志-任务状态-正常*/
+    public static final byte TIMED_TASK_LOG_STATUS_NORMAL = 1;
+    /**任务日志-任务状态-失败*/
+    public static final byte TIMED_TASK_LOG_STATUS_FAIL = 2;
+    /*==================================================任务日志结束=====================================================*/
 
 }

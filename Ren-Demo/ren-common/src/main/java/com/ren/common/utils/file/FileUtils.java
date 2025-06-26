@@ -2,10 +2,10 @@
 package com.ren.common.utils.file;
 
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson2.util.IOUtils;
 import com.ren.common.domain.constant.Constants;
 import com.ren.common.domain.constant.MimeTypeConstants;
+import com.ren.common.utils.StringUtils;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.*;
@@ -63,7 +63,7 @@ public final class FileUtils {
     public static boolean checkAllowDownload(String resource)
     {
         // 禁止目录上跳级别
-        if (StrUtil.contains(resource, ".."))
+        if (StringUtils.contains(resource, ".."))
         {
             return false;
         }
@@ -193,7 +193,7 @@ public final class FileUtils {
      */
     public static String stripPrefix(String filePath)
     {
-        return StrUtil.subAfter(filePath, Constants.RESOURCE_PREFIX,true);
+        return StringUtils.subAfter(filePath, Constants.RESOURCE_PREFIX,true);
     }
 
 }

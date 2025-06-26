@@ -1,11 +1,11 @@
 package com.ren.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.PageUtils;
+import com.ren.common.utils.StringUtils;
 import com.ren.system.entity.DictData;
 import com.ren.system.mapper.DictDataMapper;
 import com.ren.system.service.DictDataService;
@@ -31,7 +31,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
     @Override
     public long addDictData(DictData dictData,String createBy) {
         dictData.setCreateBy(createBy);
-        dictData.setCreateTime(DateUtil.currentSeconds());
+        dictData.setCreateTime(DateUtils.currentSeconds());
         dictDataMapper.insertDictData(dictData);
         return dictData.getDictDataId();
     }
@@ -56,7 +56,7 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
     @Override
     public void modifyDictData(DictData dictData, String updateBy) {
         dictData.setUpdateBy(updateBy);
-        dictData.setUpdateTime(DateUtil.currentSeconds());
+        dictData.setUpdateTime(DateUtils.currentSeconds());
         dictDataMapper.updateDictData(dictData);
     }
 
@@ -69,8 +69,8 @@ public class DictDataServiceImpl extends ServiceImpl<DictDataMapper, DictData> i
      */
     @Override
     public IPage<DictData> listDictDataByPage(Map<String, Object> paramMap) {
-        if(paramMap != null && paramMap.containsKey("searchLike") && StrUtil.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
-            paramMap.put("searchLike", StrUtil.format("%%{}%%",paramMap.get("searchLike")));
+        if(paramMap != null && paramMap.containsKey("searchLike") && StringUtils.isNotBlank(Convert.toStr(paramMap.get("searchLike")))){
+            paramMap.put("searchLike", StringUtils.format("%%{}%%",paramMap.get("searchLike")));
         }
         IPage<DictData> dictDataList = dictDataMapper.listDictDataByPage(PageUtils.createPage(DictData.class),paramMap);
         return dictDataList;
