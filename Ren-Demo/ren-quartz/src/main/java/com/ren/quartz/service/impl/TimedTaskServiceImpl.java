@@ -47,9 +47,7 @@ public class TimedTaskServiceImpl extends ServiceImpl<TimedTaskMapper, TimedTask
     @PostConstruct
     public void init() throws SchedulerException, QuartzException {
         scheduler.clear();
-        Map<String, Object> map = new HashMap<>();
-        map.put("status", QuartzContents.Status.NORMAL.getValue());
-        List<TimedTask> timedTaskList = timedTaskMapper.listTimedTaskByParam(map);
+        List<TimedTask> timedTaskList = timedTaskMapper.listTimedTaskByParam(null);
         for (TimedTask timedTask : timedTaskList) {
             QuartzManager.createScheduleJob(scheduler, timedTask);
         }

@@ -1,5 +1,6 @@
 package com.ren.quartz.manager;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjUtil;
 import com.ren.common.domain.constant.Constants;
 import com.ren.common.manager.SpringManager;
@@ -63,7 +64,7 @@ public class QuartzManager {
 		}
 
 		// 判断该任务是否处于暂停状态，如果是，则在注册后执行暂停操作
-		if (timedTask.getStatus().equals(QuartzContents.Status.PAUSE.getValue()))
+		if (timedTask.getStatus() == Convert.toByte(QuartzContents.Status.PAUSE.getValue()))
 		{
 			scheduler.pauseJob(getJobKey(taskId, taskGroup));
 		}
