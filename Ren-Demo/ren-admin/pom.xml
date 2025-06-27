@@ -180,13 +180,13 @@
 			<scope>compile</scope>
 		</dependency>
 
-        <!--云文件上传模块-->
-        <dependency>
-            <groupId>com.ren</groupId>
-            <artifactId>ren-cloudstorage</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+        <!--云文件上传模块（暂时不引入）-->
+<!--        <dependency>-->
+<!--            <groupId>com.ren</groupId>-->
+<!--            <artifactId>ren-cloudstorage</artifactId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
 
         <!--本地文件上传模块-->
         <dependency>
