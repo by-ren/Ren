@@ -3,6 +3,7 @@ package com.ren.cloudstorage.domain.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,8 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true) // 开启链式调用
-public class ImageLog {
+@TableName("sys_image_log")
+public class CloudImageLog {
 	/** 主键ID */
 	@TableId(value = "id", type = IdType.AUTO)
 	private Long id;

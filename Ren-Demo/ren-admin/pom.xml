@@ -188,6 +188,14 @@
             <scope>compile</scope>
         </dependency>
 
+        <!--本地文件上传模块-->
+        <dependency>
+            <groupId>com.ren</groupId>
+            <artifactId>ren-localstorage</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
 	</dependencies>
 
 </project>

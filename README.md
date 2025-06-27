@@ -63,9 +63,10 @@ Ren-Demo/
 ├── ren-admin			    # 项目启动的主启动类与控制层所处模块
 ├── ren-business			# 业务总模块
 │   ├── ren-example			# 业务示例模块（本模块无实际功能，仅作为代码规范示例使用，方便二次开发者参照，可删除）
+│   ├── ren-localstorage	# 本地上传图片模块
 ├── ren-common			    # 通用模块（主要用于存放各个模块通用内容，如常量类，公共控制器，通用实体、VO、BO类，注解，配置文件，工具类）
 ├── ren-feature			    # 可插拔功能模块
-│   ├── ren-cloudstorage	# 云上传图片模块
+│   ├── ren-cloudstorage	# 云上传图片模块（注意：该模块虽可独立使用，配套上传组件与数据库表分别为/ImageUpload/index.vue、sys_image_log）
 ├── ren-framework			# 核心模块（主要用于存放系统核心业务，如AOP切面，拦截器，监听器，通用接口以及权限认证等内容）
 ├── ren-monitor				# 监控模块，存放监控模块所有内容
 ├── ren-quartz				# 定时任务，存放定时任务所有内容

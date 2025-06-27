@@ -1,22 +1,40 @@
 package com.ren.cloudstorage.utils;
 
-import java.util.UUID;
+import java.util.Objects;
+
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.ren.cloudstorage.domain.constant.MimeTypeConstants;
+import com.ren.cloudstorage.utils.uuid.IdUtils;
+import com.ren.cloudstorage.utils.uuid.Seq;
 
 public class FileUtils {
 
 	/**
-	 * 生成唯一的存储文件名
-	 *
-	 * 格式：归属分类目录/UUID.扩展名
-	 *
-	 * @param belong 业务归属分类
-	 * @param originalName 原始文件名
-	 * @return 生成的新文件名
-	 */
-	public static String getFileNameHex(String belong, String originalName) {
-		String extension = getFileExtension(originalName);
-		String uuid = UUID.randomUUID().toString().replace("-", "");
-		return String.format("%s/%s.%s", belong, uuid, extension);
+     * 编码文件名(日期格式目录 + 原文件名 + 序列值 + 后缀)
+     * 
+     * @param belong 业务归属分类
+     * @param file 文件
+     * @author ren
+     * @date 2025/06/27 10:10
+     */
+    public static final String extractFilename(String belong, MultipartFile file) {
+        return StringUtils.format("{}/{}/{}_{}.{}", belong, DateUtils.datePath(),
+            FilenameUtils.getBaseName(file.getOriginalFilename()), Seq.getId(Seq.uploadSeqType), getExtension(file));
+    }
+
+    /**
+     * 编编码文件名(日期格式目录 + UUID + 后缀)
+     * 
+     * @param belong 业务归属分类
+     * @param file 文件
+     * @author ren
+     * @date 2025/06/27 10:10
+     */
+    public static final String uuidFilename(String belong, MultipartFile file) {
+        return StringUtils.format("{}/{}/{}.{}", belong, DateUtils.datePath(), IdUtils.fastSimpleUUID(),
+            getExtension(file));
 	}
 
 	/**
@@ -31,17 +49,17 @@ public class FileUtils {
 	}
 
 	/**
-	 * 获取文件扩展名
-	 *
-	 * @param filename 文件名
-	 * @return 文件扩展名（不带点）
-	 */
-	private static String getFileExtension(String filename) {
-		if (filename == null || filename.isEmpty()) {
-			return "";
+     * 获取文件名的后缀
+     *
+     * @param file 表单文件
+     * @return 后缀名
+     */
+    public static final String getExtension(MultipartFile file) {
+        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+        if (StringUtils.isEmpty(extension)) {
+            extension = MimeTypeConstants.getExtension(Objects.requireNonNull(file.getContentType()));
 		}
-		int dotIndex = filename.lastIndexOf('.');
-		return (dotIndex == -1) ? "" : filename.substring(dotIndex + 1);
+        return extension;
 	}
 
 	/**

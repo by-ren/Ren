@@ -38,21 +38,6 @@ public class TimedTaskServiceImpl extends ServiceImpl<TimedTaskMapper, TimedTask
     @Autowired
     private Scheduler scheduler;
 
-    /**
-     * 初始化任务
-     * 
-     * @author ren
-     * @date 2025/06/26 20:37
-     */
-    @PostConstruct
-    public void init() throws SchedulerException, QuartzException {
-        scheduler.clear();
-        List<TimedTask> timedTaskList = timedTaskMapper.listTimedTaskByParam(null);
-        for (TimedTask timedTask : timedTaskList) {
-            QuartzManager.createScheduleJob(scheduler, timedTask);
-        }
-    }
-
     /*===================================================TimedTask====================================================*/
 
     /**

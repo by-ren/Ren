@@ -1,8 +1,11 @@
 package com.ren.cloudstorage.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ren.cloudstorage.domain.dto.AjaxResultDTO;
-import com.ren.cloudstorage.domain.entity.ImageLog;
-import com.ren.cloudstorage.domain.enums.OSSReturnCodeEnum;
+import com.ren.cloudstorage.domain.entity.CloudImageLog;
 import com.ren.cloudstorage.domain.exception.OSSException;
 import com.ren.cloudstorage.properties.AliyunProperties;
 import com.ren.cloudstorage.properties.CloudStorageProperties;
@@ -10,11 +13,6 @@ import com.ren.cloudstorage.service.CloudStorageService;
 import com.ren.cloudstorage.service.route.CloudStorageServiceRouter;
 import com.ren.cloudstorage.utils.FileUtils;
 import com.ren.cloudstorage.utils.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/cloudStorage")
@@ -49,17 +47,13 @@ public class CloudStorageController{
 
         //根据不同的云存储厂商，获取对应的服务
         CloudStorageService cloudStorageService = cloudStorageServiceRouter.getService(cloudStorageProperties.getVendor());
-        try {
-            ImageLog imageLog = cloudStorageService.upload(file.getBytes(),belong,file.getOriginalFilename());
-            AjaxResultDTO ajax = AjaxResultDTO.success();
-            ajax.put("url", imageLog.getImageUrl());
-            ajax.put("fileName", imageLog.getName());
-            ajax.put("newFileName", FileUtils.getName(imageLog.getName()));
-            ajax.put("originalFilename", file.getOriginalFilename());
-            return ajax;
-        } catch (IOException e) {
-            throw new OSSException(OSSReturnCodeEnum.UPLOAD_ERROR, e);
-        }
+        CloudImageLog cloudImageLog = cloudStorageService.upload(file, belong, true);
+        AjaxResultDTO ajax = AjaxResultDTO.success();
+        ajax.put("url", cloudImageLog.getImageUrl());
+        ajax.put("fileName", cloudImageLog.getName());
+        ajax.put("newFileName", FileUtils.getName(cloudImageLog.getName()));
+        ajax.put("originalFilename", file.getOriginalFilename());
+        return ajax;
     }
 
     /**
