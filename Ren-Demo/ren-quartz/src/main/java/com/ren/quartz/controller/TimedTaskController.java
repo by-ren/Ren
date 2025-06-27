@@ -1,7 +1,10 @@
 package com.ren.quartz.controller;
 
+import java.util.List;
 import java.util.Map;
 
+import jakarta.annotation.PostConstruct;
+import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,6 +34,24 @@ public class TimedTaskController extends BaseController {
 
     @Autowired
     TimedTaskService timedTaskService;
+    // Quartz调度器
+    @Autowired
+    private Scheduler scheduler;
+
+    /**
+     * 初始化任务
+     *
+     * @author ren
+     * @date 2025/06/26 20:37
+     */
+    @PostConstruct
+    public void init() throws SchedulerException, QuartzException {
+        scheduler.clear();
+        List<TimedTask> timedTaskList = timedTaskService.listTimedTaskByParam(null);
+        for (TimedTask timedTask : timedTaskList) {
+            QuartzManager.createScheduleJob(scheduler, timedTask);
+        }
+    }
 
     /**
      * 分页获取任务列表

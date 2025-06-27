@@ -1,5 +1,6 @@
 package com.ren.common.properties;
 
+import com.ren.common.utils.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -18,18 +19,10 @@ public class LocalStorageProperties {
     }
 
     /**
-     * 获取下载路径
-     */
-    public static String getDownloadPath()
-    {
-        return getProfile() + "/download/";
-    }
-
-    /**
      * 获取上传路径
      */
-    public static String getUploadPath()
+    public static String getUploadPath(String belong)
     {
-        return getProfile() + "/upload";
+        return StringUtils.isNotBlank(belong) ? getProfile() + "/" + belong : getProfile();
     }
 }

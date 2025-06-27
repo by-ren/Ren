@@ -14,7 +14,14 @@
 					<h3>ImageUpload 属性</h3>
 					<p><code>v-model</code> - 双向绑定已上传的图片URL</p>
 					<p><code>:limit</code> - 限制上传数量（默认5张）</p>
+					<p><code>:action</code> - 上传图片的接口地址</p>
+					<p><code>:data</code> - 上传图片的额外数据</p>
 					<p><code>:is-local</code> - 是否使用本地存储（false使用云存储）</p>
+					<p><code>:fileSize</code> - 限制上传文件大小（单位：MB，默认5MB）</p>
+					<p><code>:fileType</code> - 接受的文件类型（默认"image/*"）</p>
+					<p><code>:isShowTip</code> - 是否显示上传提示（默认true）</p>
+					<p><code>:disabled</code> - 是否禁用上传（默认false）</p>
+					<p><code>:drag</code> - 是否支持拖拽上传（默认true）</p>
 				</div>
 				<div>
 					<h3>ImagePreview 属性</h3>
@@ -32,24 +39,19 @@
 					<el-form label-width="120px" :model="form" class="demo-form">
 						<!-- 上传到云存储 -->
 						<el-form-item label="云存储上传">
-							<ImageUpload v-model="form.cloudUpload" :is-local="false" :limit="3" />
+							<ImageUpload v-model="form.cloudUpload" :is-local="false" :limit="3" :data="{belong: 'article'}"/>
 						</el-form-item>
 
 						<!-- 上传到本地存储 -->
 						<el-form-item label="本地存储上传">
-							<ImageUpload v-model="form.localUpload" :is-local="true" :limit="2" />
+							<ImageUpload v-model="form.localUpload" :is-local="true" :limit="3" :data="{belong: 'article'}"/>
 						</el-form-item>
 
 						<!-- 单图上传 -->
 						<el-form-item label="单图上传">
-							<ImageUpload v-model="form.singleUpload" :is-local="false" :limit="1" />
+							<ImageUpload v-model="form.singleUpload" :is-local="false" :limit="1" :data="{belong: 'article'}"/>
 						</el-form-item>
 					</el-form>
-
-					<div class="value-display">
-						<h3>当前绑定值：</h3>
-						<pre>{{ JSON.stringify(form, null, 2) }}</pre>
-					</div>
 				</div>
 			</el-col>
 

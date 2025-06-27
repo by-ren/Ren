@@ -15,6 +15,7 @@
 
 	<modules>
 		<module>ren-example</module>
+		<module>ren-localstorage</module>
 	</modules>
 
 	<properties>

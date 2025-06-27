@@ -1,10 +1,11 @@
 package com.ren.cloudstorage.service;
 
-import com.ren.cloudstorage.domain.entity.ImageLog;
-import com.ren.cloudstorage.domain.exception.OSSException;
-
-import java.io.InputStream;
 import java.net.URL;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.ren.cloudstorage.domain.entity.CloudImageLog;
+import com.ren.cloudstorage.domain.exception.OSSException;
 
 public interface CloudStorageService {
 
@@ -17,37 +18,34 @@ public interface CloudStorageService {
 	String getServiceType() throws OSSException;
 
 	/**
-	 * 上传字节数组到云存储
-	 *
-	 * @param data          文件字节数组
-	 * @param belong        文件业务归属分类
-	 * @param fileName      原始文件名
-	 * @return 上传后的图片记录信息
-	 * @throws OSSException 上传过程中发生的异常
-	 */
-	ImageLog upload(byte[] data, String belong, String fileName) throws OSSException;
+     * 上传字节数组到云存储
+     *
+     * @param file 文件
+     * @param belong 文件业务归属分类
+     * @return 上传后的图片记录信息
+     * @throws OSSException 上传过程中发生的异常
+     */
+    CloudImageLog upload(MultipartFile file, String belong, boolean useCustomNaming) throws OSSException;
 
 	/**
-	 * 上传字节数组并设置为直接下载模式
-	 *
-	 * @param data          文件字节数组
-	 * @param belong        文件业务归属分类
-	 * @param fileName      原始文件名
-	 * @return 上传后的图片记录信息
-	 * @throws OSSException 上传过程中发生的异常
-	 */
-	ImageLog uploadForDirectDownload(byte[] data, String belong, String fileName) throws OSSException;
+     * 上传字节数组并设置为直接下载模式
+     *
+     * @param file 文件
+     * @param belong 文件业务归属分类
+     * @return 上传后的图片记录信息
+     * @throws OSSException 上传过程中发生的异常
+     */
+    CloudImageLog uploadForDirectDownload(MultipartFile file, String belong, boolean useCustomNaming) throws OSSException;
 
 	/**
-	 * 通过输入流上传文件
-	 *
-	 * @param inputStream   文件输入流
-	 * @param belong        文件业务归属分类
-	 * @param fileName      原始文件名
-	 * @return 上传后的图片记录信息
-	 * @throws OSSException 上传过程中发生的异常
-	 */
-	ImageLog upload(InputStream inputStream, String belong, String fileName) throws OSSException;
+     * 通过输入流上传文件
+     *
+     * @param file 文件
+     * @param belong 文件业务归属分类
+     * @return 上传后的图片记录信息
+     * @throws OSSException 上传过程中发生的异常
+     */
+    CloudImageLog uploadForInputStream(MultipartFile file, String belong, boolean useCustomNaming) throws OSSException;
 
 	/**
 	 * 生成文件预览URL

@@ -1,38 +1,39 @@
 package com.ren.cloudstorage.service.aliyun;
 
+import java.io.ByteArrayInputStream;
+import java.net.URL;
+import java.util.Date;
+
+import com.ren.cloudstorage.mapper.CloudImageLogMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectRequest;
-import com.ren.cloudstorage.domain.entity.ImageLog;
+import com.ren.cloudstorage.domain.entity.CloudImageLog;
 import com.ren.cloudstorage.domain.enums.OSSReturnCodeEnum;
 import com.ren.cloudstorage.domain.exception.OSSException;
-import com.ren.cloudstorage.mapper.ImageLogMapper;
 import com.ren.cloudstorage.properties.AliyunProperties;
 import com.ren.cloudstorage.utils.DateUtils;
 import com.ren.cloudstorage.utils.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Date;
 
 @Service
 public class AliyunCloudStorageServiceImpl implements AliyunCloudStorageService {
 
 	private final OSS ossClient;
 	private final AliyunProperties aLiYunProperties;
-	private final ImageLogMapper imageLogMapper;
+	private final CloudImageLogMapper cloudImageLogMapper;
 
 	@Autowired
-	public AliyunCloudStorageServiceImpl(OSS ossClient, AliyunProperties aLiYunProperties, ImageLogMapper imageLogMapper) {
+	public AliyunCloudStorageServiceImpl(OSS ossClient, AliyunProperties aLiYunProperties, CloudImageLogMapper cloudImageLogMapper) {
 		this.ossClient = ossClient;
 		this.aLiYunProperties = aLiYunProperties;
-		this.imageLogMapper = imageLogMapper;
+		this.cloudImageLogMapper = cloudImageLogMapper;
 	}
 
 	/**
@@ -47,22 +48,19 @@ public class AliyunCloudStorageServiceImpl implements AliyunCloudStorageService 
 	}
 
 	/**
-	 * 标准上传实现：上传字节数组到OSS
-	 * <p>
-	 * 流程：
-	 * 1. 验证输入数据非空
-	 * 2. 生成唯一文件名（belong目录+UUID）
-	 * 3. 上传到OSS
-	 * 4. 获取文件元数据
-	 * 5. 创建图片记录并存入数据库
-	 */
+     * 标准上传实现：上传字节数组到OSS
+     * <p>
+     * 流程： 1. 验证输入数据非空 2. 生成唯一文件名（belong目录+UUID） 3. 上传到OSS 4. 获取文件元数据 5. 创建图片记录并存入数据库
+     * 
+     * @param useCustomNaming 系统自定义文件名（true表示使用UUID自定义文件名，false表示使用包含原本贱名的新文件名）
+     */
 	@Override
-	public ImageLog upload(byte[] data, String belong, String sourceFileName) throws OSSException {
-		Assert.notNull(data, "上传数据不能为空");
-		String fileName = FileUtils.getFileNameHex(belong, sourceFileName);
-
+    public CloudImageLog upload(MultipartFile file, String belong, boolean useCustomNaming) throws OSSException {
+        Assert.notNull(file, "文件不能为空");
+        String fileName =
+            useCustomNaming ? FileUtils.uuidFilename(belong, file) : FileUtils.extractFilename(belong, file);
 		try {
-			ossClient.putObject(aLiYunProperties.getBucketName(), fileName, new ByteArrayInputStream(data));
+            ossClient.putObject(aLiYunProperties.getBucketName(), fileName, new ByteArrayInputStream(file.getBytes()));
 			return createImageLog(fileName, belong, ossClient.getObjectMetadata(aLiYunProperties.getBucketName(), fileName));
 		} catch (Exception e) {
 			throw new OSSException(OSSReturnCodeEnum.UPLOAD_ERROR, e);
@@ -70,20 +68,21 @@ public class AliyunCloudStorageServiceImpl implements AliyunCloudStorageService 
 	}
 
 	/**
-	 * 直接下载模式上传：设置content-type为二进制流
-	 * <p>
-	 * 特殊处理：
-	 * 1. 使用PutObjectRequest显式设置元数据
-	 * 2. 设置content-type为application/octet-stream
-	 * 3. 确保浏览器下载而不是预览
-	 */
+     * 直接下载模式上传：设置content-type为二进制流
+     * <p>
+     * 特殊处理： 1. 使用PutObjectRequest显式设置元数据 2. 设置content-type为application/octet-stream 3. 确保浏览器下载而不是预览
+     * 
+     * @param useCustomNaming 系统自定义文件名（true表示使用UUID自定义文件名，false表示使用包含原本贱名的新文件名）
+     */
 	@Override
-	public ImageLog uploadForDirectDownload(byte[] data, String belong, String sourceFileName) throws OSSException {
-		Assert.notNull(data, "上传数据不能为空");
-		String fileName = FileUtils.getFileNameHex(belong, sourceFileName);
-
+    public CloudImageLog uploadForDirectDownload(MultipartFile file, String belong, boolean useCustomNaming)
+        throws OSSException {
+        Assert.notNull(file, "文件不能为空");
+        String fileName =
+            useCustomNaming ? FileUtils.uuidFilename(belong, file) : FileUtils.extractFilename(belong, file);
 		try {
-			PutObjectRequest request = new PutObjectRequest(aLiYunProperties.getBucketName(), fileName, new ByteArrayInputStream(data));
+            PutObjectRequest request = new PutObjectRequest(aLiYunProperties.getBucketName(), fileName,
+                new ByteArrayInputStream(file.getBytes()));
 
 			ObjectMetadata metadata = new ObjectMetadata();
 			metadata.setContentType("application/octet-stream");
@@ -104,12 +103,14 @@ public class AliyunCloudStorageServiceImpl implements AliyunCloudStorageService 
 	 * 2. 使用OSS的getObjectMetadata获取元数据
 	 */
 	@Override
-	public ImageLog upload(InputStream inputStream, String belong, String sourceFileName) throws OSSException {
-		Assert.notNull(inputStream, "输入流不能为空");
-		String fileName = FileUtils.getFileNameHex(belong, sourceFileName);
+    public CloudImageLog uploadForInputStream(MultipartFile file, String belong, boolean useCustomNaming)
+        throws OSSException {
+        Assert.notNull(file, "文件不能为空");
+        String fileName =
+            useCustomNaming ? FileUtils.uuidFilename(belong, file) : FileUtils.extractFilename(belong, file);
 
 		try {
-			ossClient.putObject(aLiYunProperties.getBucketName(), fileName, inputStream);
+            ossClient.putObject(aLiYunProperties.getBucketName(), fileName, file.getInputStream());
 			return createImageLog(fileName, belong, ossClient.getObjectMetadata(aLiYunProperties.getBucketName(), fileName));
 		} catch (Exception e) {
 			throw new OSSException(OSSReturnCodeEnum.UPLOAD_ERROR, e);
@@ -154,20 +155,20 @@ public class AliyunCloudStorageServiceImpl implements AliyunCloudStorageService 
 	 * @param metadata OSS元数据
 	 * @return 完整的图片日志实体
 	 */
-	private ImageLog createImageLog(String fileName, String belong, ObjectMetadata metadata) {
-		ImageLog imageLog = new ImageLog();
-		imageLog.setBucket(aLiYunProperties.getBucketName());
-		imageLog.setEtag(metadata.getETag());
-		imageLog.setName(fileName);
-		imageLog.setFileSize(metadata.getContentLength());
-		imageLog.setMimeType(metadata.getContentType());
-		imageLog.setImageUrl(FileUtils.getImageUrl(aLiYunProperties.getImageOssPathRead(), fileName));
-		imageLog.setCloudName("aliyun");
-		imageLog.setBelong(belong);
-		imageLog.setCreateTime(DateUtils.currentSeconds());
+	private CloudImageLog createImageLog(String fileName, String belong, ObjectMetadata metadata) {
+		CloudImageLog cloudImageLog = new CloudImageLog();
+		cloudImageLog.setBucket(aLiYunProperties.getBucketName());
+		cloudImageLog.setEtag(metadata.getETag());
+		cloudImageLog.setName(fileName);
+		cloudImageLog.setFileSize(metadata.getContentLength());
+		cloudImageLog.setMimeType(metadata.getContentType());
+		cloudImageLog.setImageUrl(FileUtils.getImageUrl(aLiYunProperties.getImageOssPathRead(), fileName));
+		cloudImageLog.setCloudName("aliyun");
+		cloudImageLog.setBelong(belong);
+		cloudImageLog.setCreateTime(DateUtils.currentSeconds());
 
-		imageLogMapper.insertImageLog(imageLog);
-		return imageLog;
+		cloudImageLogMapper.insertImageLog(cloudImageLog);
+		return cloudImageLog;
 	}
 
 }
