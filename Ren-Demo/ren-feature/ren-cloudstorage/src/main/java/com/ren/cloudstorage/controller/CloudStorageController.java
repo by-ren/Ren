@@ -1,5 +1,6 @@
 package com.ren.cloudstorage.controller;
 
+import com.ren.cloudstorage.properties.AliyunProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -7,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ren.cloudstorage.domain.dto.AjaxResultDTO;
 import com.ren.cloudstorage.domain.entity.CloudImageLog;
 import com.ren.cloudstorage.domain.exception.OSSException;
-import com.ren.cloudstorage.properties.AliyunProperties;
 import com.ren.cloudstorage.properties.CloudStorageProperties;
 import com.ren.cloudstorage.service.CloudStorageService;
 import com.ren.cloudstorage.service.route.CloudStorageServiceRouter;
