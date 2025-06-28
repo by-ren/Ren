@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.Date;
 
 import com.ren.cloudstorage.mapper.CloudImageLogMapper;
+import com.ren.cloudstorage.properties.AliyunProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;

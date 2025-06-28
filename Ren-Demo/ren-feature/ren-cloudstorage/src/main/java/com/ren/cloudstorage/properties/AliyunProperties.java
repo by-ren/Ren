@@ -1,13 +1,17 @@
 package com.ren.cloudstorage.properties;
 
-import com.aliyun.oss.ClientBuilderConfiguration;
-import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
+
+import com.aliyun.oss.ClientBuilderConfiguration;
+import com.aliyun.oss.OSS;
+import com.aliyun.oss.OSSClientBuilder;
+import com.ren.cloudstorage.factory.NestedYamlPropertySourceFactory;
+import com.ren.cloudstorage.utils.StringUtils;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * 阿里云云存储专属配置类
@@ -15,14 +19,18 @@ import org.springframework.stereotype.Component;
  * @date 2025/06/20 13:46
  */
 @Component
-@ConfigurationProperties(prefix = "cloud.storage.vendor.aliyun")
-@PropertySource(value = { "classpath:/config/project/cloud-storage.yml" })
+// 1.该注解表示让SpringBoot自动扫描并加载该配置文件（有一个特点，只要该项目中任何一个地方加了该注释，其他配置类都能读取到该配置文件中的配置项）
+// 但是注意，该配置类其实本身是为了properties格式设计的，不支持yaml，所以如果使用该注解导入yaml文件，虽然yaml被加载了，但是根据前缀匹配将会失效，例如@ConfigurationProperties(prefix =
+// "cloud.storage.aliyun")
+// 只能使用@Value("${aliyun-access-key-id}")这种无前缀方式读取，但是这样，如果项目中存在多个同名配置项，就会出问题，所以如果使用这个注解导入yaml，最好自定义一个工厂类，让他可以正确读取yaml
+@PropertySource(value = {"classpath:/config/project/cloud-storage.yml"},
+    factory = NestedYamlPropertySourceFactory.class)
 public class AliyunProperties
 {
 	/** 阿里云accessKeyId */
-	private String accessKeyId;
+    private String alibabaAccessKeyId;
 	/** 阿里云accessKeySecret */
-	private String accessKeySecret;
+    private String alibabaAccessKeySecret;
 	/** 阿里云OSS存储空间名称 */
 	private String bucketName;
 	/** 阿里云云外网域名地址 */
@@ -32,32 +40,30 @@ public class AliyunProperties
 	/** OSS的处理图片的绑定域名，可以在后面加一些规则来显示图片，详情查看OSS API文档。 */
 	private String imageOssPathRead;
 
-	public String getAccessKeyId() {
-		return accessKeyId;
+    public String getAlibabaAccessKeyId() {
+        return alibabaAccessKeyId;
 	}
 
-	//注意：因为该配置类所对应的配置文件违背SpringBoot的默认规则，所以需要使用@Value注解进行赋值
-	@Value("${access-key-id}")
-	public void setAccessKeyId(String accessKeyId) {
-		this.accessKeyId = accessKeyId;
+	//因为要读取环境变量，所以使用@Value
+    @Value("${cloud.storage.aliyun.alibaba-access-key-id}")
+    public void setAlibabaAccessKeyId(String alibabaAccessKeyId) {
+        this.alibabaAccessKeyId = alibabaAccessKeyId;
 	}
 
-	public String getAccessKeySecret() {
-		return accessKeySecret;
+    public String getAlibabaAccessKeySecret() {
+        return alibabaAccessKeySecret;
 	}
 
-	//注意：因为该配置类所对应的配置文件违背SpringBoot的默认规则，所以需要使用@Value注解进行赋值
-	@Value("${access-key-secret}")
-	public void setAccessKeySecret(String accessKeySecret) {
-		this.accessKeySecret = accessKeySecret;
+    @Value("${cloud.storage.aliyun.alibaba-access-key-secret}")
+    public void setAlibabaAccessKeySecret(String alibabaAccessKeySecret) {
+        this.alibabaAccessKeySecret = alibabaAccessKeySecret;
 	}
 
 	public String getBucketName() {
 		return bucketName;
 	}
 
-	//注意：因为该配置类所对应的配置文件违背SpringBoot的默认规则，所以需要使用@Value注解进行赋值
-	@Value("${bucket-name}")
+    @Value("${cloud.storage.aliyun.bucket-name}")
 	public void setBucketName(String bucketName) {
 		this.bucketName = bucketName;
 	}
@@ -66,8 +72,7 @@ public class AliyunProperties
 		return endpoint;
 	}
 
-	//注意：因为该配置类所对应的配置文件违背SpringBoot的默认规则，所以需要使用@Value注解进行赋值
-	@Value("${endpoint}")
+    @Value("${cloud.storage.aliyun.endpoint}")
 	public void setEndpoint(String endpoint) {
 		this.endpoint = endpoint;
 	}
@@ -76,8 +81,7 @@ public class AliyunProperties
 		return imageUploadPath;
 	}
 
-	//注意：因为该配置类所对应的配置文件违背SpringBoot的默认规则，所以需要使用@Value注解进行赋值
-	@Value("${image-upload-path}")
+    @Value("${cloud.storage.aliyun.image-upload-path}")
 	public void setImageUploadPath(String imageUploadPath) {
 		this.imageUploadPath = imageUploadPath;
 	}
@@ -86,11 +90,28 @@ public class AliyunProperties
 		return imageOssPathRead;
 	}
 
-	//注意：因为该配置类所对应的配置文件违背SpringBoot的默认规则，所以需要使用@Value注解进行赋值
-	@Value("${image_oss_path_read}")
+    @Value("${cloud.storage.aliyun.image_oss_path_read}")
 	public void setImageOssPathRead(String imageOssPathRead) {
 		this.imageOssPathRead = imageOssPathRead;
 	}
+
+    /**
+     * 验证OSS配置是否正确
+     * 
+     * @author ren
+     * @date 2025/06/28 14:34
+     */
+    @PostConstruct
+    public void validateCredentials() {
+        // 验证是否正确获取到OSS配置
+        if (StringUtils.isBlank(alibabaAccessKeyId) || StringUtils.isBlank(alibabaAccessKeySecret)) {
+            throw new SecurityException("阿里云OSS凭证未配置，如不需要上传，请在主模块移除该上传模块!");
+        }
+        // 格式合规性检查（阿里云标准）
+        if (!alibabaAccessKeyId.startsWith("LTAI") || alibabaAccessKeyId.length() < 20) {
+            throw new SecurityException("AccessKey ID 格式异常! 应是以LTAI开头的20-30位字符串，如不需要上传，请在主模块移除该上传模块");
+        }
+    }
 
 	/**
 	 * 创建OSS客户端单例Bean
@@ -109,7 +130,7 @@ public class AliyunProperties
 		conf.setMaxErrorRetry(5);       // 重试5次
 
 		return new OSSClientBuilder()
-				.build(endpoint, accessKeyId, accessKeySecret, conf);
+            .build(endpoint, alibabaAccessKeyId, alibabaAccessKeySecret, conf);
 	}
 
 }
