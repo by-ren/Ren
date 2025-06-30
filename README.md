@@ -119,18 +119,35 @@ ren_demo/
 
 ## ⚡ 5分钟快速体验
 
-```bash
-# 后端启动
+#### 克隆项目
+
+```shell
 git clone https://gitee.com/huimouyixiaojifeigoutiao/Ren.git
 #或
 git clone https://github.com/by-ren/Ren.git
+```
+
+#### 后端启动
+
+```bash
 #注意根据自己下载的项目路径，调整命令
 cd Ren-Demo/ren-admin
-mvn spring-boot:run
 
-# 前端启动
+# 安装依赖
+mvn clean install
+
+# 启动应用
+mvn spring-boot:run
+```
+
+#### 前端启动
+
+```shell
+# 进入前端项目根目录
 cd ren-ui
+# 安装前端依赖
 npm install
+# 运行项目
 npm run dev
 ```
 
