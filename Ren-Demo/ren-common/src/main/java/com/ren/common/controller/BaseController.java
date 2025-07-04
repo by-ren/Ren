@@ -1,9 +1,9 @@
 package com.ren.common.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.ren.common.domain.constant.HttpStatus;
-import com.ren.common.domain.model.dto.AjaxResultDTO;
-import com.ren.common.domain.page.TableDataInfo;
+import com.ren.common.core.constant.HttpStatus;
+import com.ren.common.core.response.AjaxResult;
+import com.ren.common.core.page.TableDataInfo;
 import com.ren.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,57 +40,57 @@ public class BaseController
     /**
      * 返回成功
      */
-    public AjaxResultDTO success()
+    public AjaxResult success()
     {
-        return AjaxResultDTO.success();
+        return AjaxResult.success();
     }
 
     /**
      * 返回失败消息
      */
-    public AjaxResultDTO error()
+    public AjaxResult error()
     {
-        return AjaxResultDTO.error();
+        return AjaxResult.error();
     }
 
     /**
      * 返回成功消息
      */
-    public AjaxResultDTO success(String message)
+    public AjaxResult success(String message)
     {
-        return AjaxResultDTO.success(message);
+        return AjaxResult.success(message);
     }
     
     /**
      * 返回成功消息
      */
-    public AjaxResultDTO success(Object data)
+    public AjaxResult success(Object data)
     {
-        return AjaxResultDTO.success(data);
+        return AjaxResult.success(data);
     }
 
     /**
      * 返回失败消息
      */
-    public AjaxResultDTO error(String message)
+    public AjaxResult error(String message)
     {
-        return AjaxResultDTO.error(message);
+        return AjaxResult.error(message);
     }
 
     /**
      * 返回失败消息
      */
-    public AjaxResultDTO error(int code, String message)
+    public AjaxResult error(int code, String message)
     {
-        return AjaxResultDTO.error(code,message);
+        return AjaxResult.error(code,message);
     }
 
     /**
      * 返回警告消息
      */
-    public AjaxResultDTO warn(String message)
+    public AjaxResult warn(String message)
     {
-        return AjaxResultDTO.warn(message);
+        return AjaxResult.warn(message);
     }
 
     /**
@@ -99,9 +99,9 @@ public class BaseController
      * @param rows 影响行数
      * @return 操作结果
      */
-    protected AjaxResultDTO toAjax(int rows)
+    protected AjaxResult toAjax(int rows)
     {
-        return rows > 0 ? AjaxResultDTO.success() : AjaxResultDTO.error();
+        return rows > 0 ? AjaxResult.success() : AjaxResult.error();
     }
 
     /**
@@ -110,7 +110,7 @@ public class BaseController
      * @param result 结果
      * @return 操作结果
      */
-    protected AjaxResultDTO toAjax(boolean result)
+    protected AjaxResult toAjax(boolean result)
     {
         return result ? success() : error();
     }

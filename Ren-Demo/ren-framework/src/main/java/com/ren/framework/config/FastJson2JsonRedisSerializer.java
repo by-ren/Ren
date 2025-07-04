@@ -2,7 +2,7 @@ package com.ren.framework.config;
 
 import java.nio.charset.Charset;
 
-import com.ren.common.domain.constant.Constants;
+import com.ren.common.core.constant.Constants;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 import com.alibaba.fastjson2.JSON;

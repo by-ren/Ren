@@ -1,35 +1,41 @@
 package com.ren.admin.controller.system;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.convert.Convert;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.ren.common.domain.constant.AppConstants;
-import com.ren.common.controller.BaseController;
-import com.ren.common.domain.model.bo.LoginUser;
-import com.ren.common.domain.model.dto.AjaxResultDTO;
-import com.ren.common.domain.entity.Menu;
-import com.ren.common.domain.entity.Role;
-import com.ren.common.domain.entity.User;
-import com.ren.common.domain.enums.BusinessType;
-import com.ren.common.domain.page.TableDataInfo;
-import com.ren.common.domain.model.vo.DynamicRouteVO;
-import com.ren.common.domain.model.vo.MenuVO;
-import com.ren.common.domain.interfaces.OperLogAnn;
-import com.ren.common.domain.interfaces.Pageable;
-import com.ren.common.utils.TreeUtils;
-import com.ren.system.entity.UserPost;
-import com.ren.system.entity.UserRole;
-import com.ren.system.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.ren.common.core.domain.vo.MenuVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.ren.common.controller.BaseController;
+import com.ren.common.core.constant.AppConstants;
+import com.ren.common.core.domain.entity.Menu;
+import com.ren.common.core.domain.entity.Role;
+import com.ren.common.core.domain.entity.User;
+import com.ren.common.core.enums.BusinessType;
+import com.ren.common.core.interfaces.OperLogAnn;
+import com.ren.common.core.interfaces.Pageable;
+import com.ren.common.core.domain.bo.LoginUser;
+import com.ren.common.core.response.AjaxResult;
+import com.ren.common.core.domain.vo.DynamicRouteVO;
+import com.ren.common.core.page.TableDataInfo;
+import com.ren.common.utils.TreeUtils;
+import com.ren.system.entity.UserPost;
+import com.ren.system.entity.UserRole;
+import com.ren.system.service.*;
+
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.convert.Convert;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/user")
+@Tag(name = "用户管理", description = "用户相关操作接口")
 public class UserController extends BaseController {
 
     @Autowired
@@ -52,9 +58,10 @@ public class UserController extends BaseController {
      * @date 2025/04/17 19:42
      */
     @GetMapping("/info")
-    public AjaxResultDTO getUserInfo(@AuthenticationPrincipal LoginUser loginUser) {
+    @Operation(summary = "获取用户信息", description = "获取当前登录人用户信息")
+    public AjaxResult getUserInfo(@AuthenticationPrincipal LoginUser loginUser) {
         //获取用户信息，并返回
-        AjaxResultDTO ajax = success();
+        AjaxResult ajax = success();
         loginUser.getUser().setPassword(null);
         ajax.put("user", loginUser);
         List<Role> roleList = roleService.listRoleByUserId(loginUser.getUserId());
@@ -129,12 +136,13 @@ public class UserController extends BaseController {
     /*
      * 用户信息（其他模块获取用户信息使用）
      * @param userId
-     * @return com.ren.common.core.dto.AjaxResultDTO
+     * @return com.ren.common.core.dto.AjaxResult
      * @author ren
      * @date 2025/05/12 21:02
      */
     @GetMapping("/info/v2")
-    public AjaxResultDTO getUserInfoV2(Long userId) {
+    @Operation(summary = "获取用户信息", description = "根据用户ID获取用户信息")
+    public AjaxResult getUserInfoV2(@Parameter(description = "用户标识", required = true) Long userId) {
         User user = userService.getUserById(userId);
         List<UserRole> userRoleList = userRoleService.listUserRoleByUserId(userId);
         Long[] roleIdArr = userRoleList.stream().map(UserRole::getRoleId).toArray(Long[]::new);
@@ -150,6 +158,7 @@ public class UserController extends BaseController {
      * @date 2025/04/26 15:55
      */
     @GetMapping("/list/page")
+    @Operation(summary = "用户分页列表", description = "分页获取用户列表")
     @Pageable  //注意，如果要开启分页，请添加该注解
     public TableDataInfo listUserByPage(@RequestParam Map<String,Object> paramMap) {
         IPage<User> userList = userService.listUserByPage(paramMap);
@@ -166,7 +175,8 @@ public class UserController extends BaseController {
      */
     @PostMapping("/add")
     @OperLogAnn(title = "用户模块", businessType = BusinessType.INSERT)
-    public AjaxResultDTO addUser(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) User addUser) {
+    @Operation(summary = "添加用户", description = "添加用户")
+    public AjaxResult addUser(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) User addUser) {
         userService.addUser(addUser,loginUser.getUsername());
         return success();
     }
@@ -181,7 +191,8 @@ public class UserController extends BaseController {
      */
     @PostMapping("/modify")
     @OperLogAnn(title = "用户模块", businessType = BusinessType.UPDATE)
-    public AjaxResultDTO modifyUser(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) User modifyUser) {
+    @Operation(summary = "编辑用户", description = "编辑用户")
+    public AjaxResult modifyUser(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) User modifyUser) {
         userService.modifyUser(modifyUser,loginUser.getUsername());
         return success();
     }
@@ -196,7 +207,9 @@ public class UserController extends BaseController {
      */
     @DeleteMapping("/delete")
     @OperLogAnn(title = "用户模块", businessType = BusinessType.DELETE)
-    public AjaxResultDTO deleteUser(@AuthenticationPrincipal LoginUser loginUser, long userId) {
+    @Operation(summary = "删除用户", description = "删除用户")
+    public AjaxResult deleteUser(@AuthenticationPrincipal LoginUser loginUser,
+								 @Parameter(description = "用户标识", required = true) long userId) {
         userService.modifyUserIsDelById(userId, AppConstants.COMMON_BYTE_YES,loginUser.getUsername());
         return success();
     }
@@ -211,7 +224,8 @@ public class UserController extends BaseController {
      */
     @PostMapping("/resetPassword")
     @OperLogAnn(title = "用户模块", businessType = BusinessType.UPDATE)
-    public AjaxResultDTO resetPassword(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Map<String,Object> paramMap) {
+    @Operation(summary = "重置密码", description = "重置用户密码")
+    public AjaxResult resetPassword(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Map<String,Object> paramMap) {
         userService.resetPassword(Convert.toLong(paramMap.get("userId")),Convert.toStr(paramMap.get("password")),loginUser.getUsername());
         return success();
     }

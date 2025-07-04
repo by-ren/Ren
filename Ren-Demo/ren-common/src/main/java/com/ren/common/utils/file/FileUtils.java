@@ -3,8 +3,8 @@ package com.ren.common.utils.file;
 
 import cn.hutool.core.util.ArrayUtil;
 import com.alibaba.fastjson2.util.IOUtils;
-import com.ren.common.domain.constant.Constants;
-import com.ren.common.domain.constant.MimeTypeConstants;
+import com.ren.common.core.constant.Constants;
+import com.ren.common.core.constant.MimeTypeConstants;
 import com.ren.common.utils.StringUtils;
 import jakarta.servlet.http.HttpServletResponse;
 

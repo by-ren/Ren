@@ -66,13 +66,6 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!--swagger（接口文档自动生成工具包）-->
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-            <version>4.1.0</version>
-        </dependency>
-
         <!-- Hutool 核心 -->
         <dependency>
             <groupId>cn.hutool</groupId>
@@ -123,6 +116,18 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>1.9.20.1</version>
+        </dependency>
+
+        <!--Swagger-->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>webjars-locator-core</artifactId>
+            <version>0.55</version> <!-- 使用最新版本 -->
         </dependency>
 
         <!-- 通用工具-->

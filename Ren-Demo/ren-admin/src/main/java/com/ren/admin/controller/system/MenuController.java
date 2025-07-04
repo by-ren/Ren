@@ -2,18 +2,20 @@ package com.ren.admin.controller.system;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
-import com.ren.common.domain.constant.AppConstants;
+import com.ren.common.core.constant.AppConstants;
 import com.ren.common.controller.BaseController;
-import com.ren.common.domain.model.bo.LoginUser;
-import com.ren.common.domain.model.dto.AjaxResultDTO;
-import com.ren.common.domain.entity.Menu;
-import com.ren.common.domain.enums.BusinessType;
-import com.ren.common.domain.model.vo.TreeSelectVO;
-import com.ren.common.domain.interfaces.OperLogAnn;
+import com.ren.common.core.domain.bo.LoginUser;
+import com.ren.common.core.response.AjaxResult;
+import com.ren.common.core.domain.entity.Menu;
+import com.ren.common.core.enums.BusinessType;
+import com.ren.common.core.domain.vo.TreeSelectVO;
+import com.ren.common.core.interfaces.OperLogAnn;
 import com.ren.common.utils.TreeUtils;
 import com.ren.system.entity.RoleMenu;
 import com.ren.system.service.MenuService;
 import com.ren.system.service.RoleMenuService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/menu")
+@Tag(name = "菜单相关", description = "菜单相关")
 public class MenuController extends BaseController {
 
     @Autowired
@@ -35,12 +38,13 @@ public class MenuController extends BaseController {
     /*
      * 菜单树形列表（页面显示用）
      * @param paramMap
-     * @return com.ren.common.dto.AjaxResultDTO
+     * @return com.ren.common.dto.AjaxResult
      * @author ren
      * @date 2025/05/08 17:14
      */
     @GetMapping("/list/tree")
-    public AjaxResultDTO listMenuTree(@RequestParam Map<String,Object> paramMap)
+    @Operation(summary = "菜单树形列表", description = "菜单树形列表（页面显示用）")
+    public AjaxResult listMenuTree(@RequestParam Map<String,Object> paramMap)
     {
         List<Menu> menuList = menuService.listMenuByParam(paramMap);
         //将列表转为树形结构
@@ -51,12 +55,13 @@ public class MenuController extends BaseController {
     /*
      * 排除本菜单Id的菜单列表（菜单本身修改时下拉列表使用）
      * @param menuId
-     * @return com.ren.common.dto.AjaxResultDTO
+     * @return com.ren.common.dto.AjaxResult
      * @author ren
      * @date 2025/05/08 17:14
      */
     @GetMapping("/list/parent/{menuId}")
-    public AjaxResultDTO listParentMenuTree(@PathVariable(value = "menuId", required = false) Long menuId)
+    @Operation(summary = "排除本菜单Id的菜单列表", description = "排除本菜单Id的菜单列表（菜单本身修改时下拉列表使用）")
+    public AjaxResult listParentMenuTree(@PathVariable(value = "menuId", required = false) Long menuId)
     {
         List<Menu> menuList = menuService.listMenuByParam(null);
         menuList.removeIf(d -> d.getMenuId().intValue() == menuId);
@@ -72,12 +77,13 @@ public class MenuController extends BaseController {
 
     /*
      * 角色菜单列表（其他模块下拉列表使用）
-     * @return com.ren.common.core.dto.AjaxResultDTO
+     * @return com.ren.common.core.dto.AjaxResult
      * @author ren
      * @date 2025/05/12 14:53
      */
     @GetMapping("/list/role")
-    public AjaxResultDTO listRoleMenuTree(Integer roleId)
+    @Operation(summary = "角色菜单列表", description = "角色菜单列表（其他模块下拉列表使用）")
+    public AjaxResult listRoleMenuTree(Integer roleId)
     {
         List<Menu> menuList = menuService.listMenuByParam(null);
         //将列表转为树形结构
@@ -101,13 +107,14 @@ public class MenuController extends BaseController {
      * 添加菜单
      * @param loginUser
      * @param addMenu
-     * @return com.ren.common.dto.AjaxResultDTO
+     * @return com.ren.common.dto.AjaxResult
      * @author ren
      * @date 2025/05/09 17:01
      */
     @PostMapping("/add")
     @OperLogAnn(title = "菜单模块", businessType = BusinessType.INSERT)
-    public AjaxResultDTO addMenu(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Menu addMenu) {
+    @Operation(summary = "添加菜单", description = "添加菜单")
+    public AjaxResult addMenu(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Menu addMenu) {
         menuService.addMenu(addMenu,loginUser.getUsername());
         return success();
     }
@@ -116,13 +123,14 @@ public class MenuController extends BaseController {
      * 编辑菜单
      * @param loginUser
      * @param modifyMenu
-     * @return com.ren.common.dto.AjaxResultDTO
+     * @return com.ren.common.dto.AjaxResult
      * @author ren
      * @date 2025/05/09 17:01
      */
     @PostMapping("/modify")
     @OperLogAnn(title = "菜单模块", businessType = BusinessType.UPDATE)
-    public AjaxResultDTO modifyMenu(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Menu modifyMenu) {
+    @Operation(summary = "编辑菜单", description = "编辑菜单")
+    public AjaxResult modifyMenu(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Menu modifyMenu) {
         menuService.modifyMenuById(modifyMenu,loginUser.getUsername());
         return success();
     }
@@ -131,13 +139,14 @@ public class MenuController extends BaseController {
      * 删除菜单
      * @param loginUser
      * @param menuId
-     * @return com.ren.common.dto.AjaxResultDTO
+     * @return com.ren.common.dto.AjaxResult
      * @author ren
      * @date 2025/05/09 17:01
      */
     @DeleteMapping("/delete")
     @OperLogAnn(title = "菜单模块", businessType = BusinessType.DELETE)
-    public AjaxResultDTO menuDelete(@AuthenticationPrincipal LoginUser loginUser, long menuId) {
+    @Operation(summary = "删除菜单", description = "删除菜单")
+    public AjaxResult menuDelete(@AuthenticationPrincipal LoginUser loginUser, long menuId) {
         //查询是否有子级菜单
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("parentId",menuId);

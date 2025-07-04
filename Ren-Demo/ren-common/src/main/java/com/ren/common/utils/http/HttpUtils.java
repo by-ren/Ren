@@ -1,6 +1,6 @@
 package com.ren.common.utils.http;
 
-import com.ren.common.domain.constant.Constants;
+import com.ren.common.core.constant.Constants;
 import com.ren.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

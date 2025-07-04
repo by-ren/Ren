@@ -2,8 +2,8 @@ package com.ren.system.service.impl;
 
 import cn.hutool.core.convert.Convert;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ren.common.domain.constant.AppConstants;
-import com.ren.common.domain.entity.Dept;
+import com.ren.common.core.constant.AppConstants;
+import com.ren.common.core.domain.entity.Dept;
 import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.StringUtils;
 import com.ren.system.mapper.DeptMapper;

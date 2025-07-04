@@ -1,8 +1,7 @@
 package com.ren.common.utils;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
-import com.ren.common.domain.constant.Constants;
+import com.ren.common.core.constant.Constants;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

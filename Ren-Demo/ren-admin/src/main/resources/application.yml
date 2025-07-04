@@ -11,7 +11,6 @@ spring:
     #	通过spring.config.import导入其他配置文件
     import:
       - "classpath:/config/security/spring-security.yml"  # 导入/security目录下的 spring-security.yml
-      - "classpath:/config/database/jdbc.yml"  # 导入/jdbc目录下的 jdbc.yml
       - "classpath:/config/redis/redis.yml"  # 导入/redis目录下的 redis.yml
       - "classpath:/config/database/mybatis-plus.yml"  # 导入/mybatis目录下的 mybatis-plus.yml
       - "classpath:/config/project/project.yml"  # 导入/project目录下的 project.yml
@@ -26,3 +25,22 @@ logging:
     org.apache.ibatis: DEBUG  #设置MyBatis框架的日志级别为DEBUG,显示SQL语句、参数绑定、结果集映射等数据库操作细节
   file:
     name: logs/ren.log  # 指定文件名（自动创建），相对路径，相对于项目根目录生成文件（如项目在D:\project，则路径为D:\project\logs\app.log）
+
+
+--- #多套配置模式，---表示多文档模式（这里展示的多套配置环境全部写在application.yml中，也可以放在多文件中，配置文件命名格式需要保证application-xxx.yml的格式，当激活对应的环境时，SpringBoot会自动引入）
+spring:
+  config:
+    import:
+      - "classpath:/config/database/jdbc-dev.yml"  # 导入/jdbc目录下的 jdbc-dev.yml
+      - "classpath:/config/swagger/swagger-dev.yml"  # 导入/swagger目录下的 swagger-dev.yml
+    activate:
+      on-profile: dev # 当环境启动时激活的环境是dev时，当前配置生效
+
+---
+spring:
+  config:
+    import:
+      - "classpath:/config/database/jdbc-prod.yml"  # 导入/jdbc目录下的 jdbc-dev.yml
+      - "classpath:/config/swagger/swagger-prod.yml"  # 导入/swagger目录下的 swagger-dev.yml
+    activate:
+      on-profile: prod # 当环境启动时激活的环境是prod时，当前配置生效

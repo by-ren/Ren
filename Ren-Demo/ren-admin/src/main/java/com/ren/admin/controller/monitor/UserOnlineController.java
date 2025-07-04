@@ -3,15 +3,17 @@ package com.ren.admin.controller.monitor;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjUtil;
 import com.ren.common.controller.BaseController;
-import com.ren.common.domain.constant.RedisCacheConstants;
-import com.ren.common.domain.model.bo.LoginUser;
-import com.ren.common.domain.model.dto.AjaxResultDTO;
+import com.ren.common.core.constant.RedisCacheConstants;
+import com.ren.common.core.domain.bo.LoginUser;
+import com.ren.common.core.response.AjaxResult;
 import com.ren.common.manager.SecurityManager;
 import com.ren.common.manager.redis.RedisOperateManager;
 import com.ren.common.utils.StringUtils;
 import com.ren.framework.security.utils.JwtUtils;
-import com.ren.monitor.domain.vo.SysUserOnlineVO;
+import com.ren.monitor.core.domain.vo.SysUserOnlineVO;
 import com.ren.monitor.service.SysUserOnlineService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/monitor/user/online")
 @Slf4j
+@Tag(name = "监控-用户", description = "用户相关监控")
 public class UserOnlineController extends BaseController {
 
     @Autowired
@@ -45,7 +48,8 @@ public class UserOnlineController extends BaseController {
      * @date 2025/06/05 11:42
      */
     @GetMapping("/list")
-    public AjaxResultDTO getOnlineUsers(@RequestParam Map<String,Object> paramMap) {
+    @Operation(summary = "查询在线用户", description = "查询在线用户")
+    public AjaxResult getOnlineUsers(@RequestParam Map<String,Object> paramMap) {
         List<SysUserOnlineVO> userOnlineList = new ArrayList<>();
         String pattern = RedisCacheConstants.REFRESH_TOKEN_KEY + ":" + "*"; // 匹配所有regresh_token:开头的键
         // 使用SCAN命令安全遍历（避免KEYS阻塞）
@@ -81,6 +85,7 @@ public class UserOnlineController extends BaseController {
      * @author ren
      * @date 2025/06/05 16:10
      */
+    @Operation(summary = "条件判断查询登录用户", description = "条件判断查询登录用户")
     private SysUserOnlineVO determineOnlineUser(String ipaddr, String userName,LoginUser user, String key){
         if (StringUtils.isAllNotBlank(ipaddr, userName)) {
             return sysUserOnlineService.selectOnlineByInfo(ipaddr, userName, user, key);
@@ -96,12 +101,13 @@ public class UserOnlineController extends BaseController {
     /**
      * 强退用户
      * @param tokenId
-     * @return com.ren.common.domain.model.dto.AjaxResultDTO
+     * @return com.ren.common.domain.model.dto.AjaxResult
      * @author ren
      * @date 2025/06/05 16:40
      */
     @GetMapping("/compulsoryWithdrawal")
-    public AjaxResultDTO compulsoryWithdrawal(@RequestParam String tokenId, HttpServletRequest request)
+    @Operation(summary = "强退用户", description = "强退用户")
+    public AjaxResult compulsoryWithdrawal(@RequestParam String tokenId, HttpServletRequest request)
     {
         String refreshToken = redisOperateManager.getCacheObject(tokenId);
         if(StringUtils.isNotBlank(refreshToken)){

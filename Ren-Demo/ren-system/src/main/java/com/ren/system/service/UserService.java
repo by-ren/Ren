@@ -2,7 +2,7 @@ package com.ren.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ren.common.domain.entity.User;
+import com.ren.common.core.domain.entity.User;
 
 import java.util.List;
 import java.util.Map;

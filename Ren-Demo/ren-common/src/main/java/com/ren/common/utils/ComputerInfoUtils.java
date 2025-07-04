@@ -1,12 +1,11 @@
 package com.ren.common.utils;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RuntimeUtil;
 import cn.hutool.system.*;
 import cn.hutool.system.oshi.CpuInfo;
 import cn.hutool.system.oshi.OshiUtil;
-import com.ren.common.domain.model.bo.*;
+import com.ren.common.core.domain.vo.*;
 import com.ren.common.utils.file.FileUtils;
 import com.ren.common.utils.ip.IpUtils;
 import oshi.SystemInfo;
@@ -34,11 +33,11 @@ public class ComputerInfoUtils
      * @author ren
      * @date 2025/06/07 16:54
      */
-    public static CpuInfoBO getCpuInfo()
+    public static CpuInfoVO getCpuInfo()
     {
         // 获取Cpu信息
         CpuInfo cpu = OshiUtil.getCpuInfo();
-        return new CpuInfoBO()
+        return new CpuInfoVO()
                 .setCpuNum(cpu.getCpuNum())
                 .setCpuModel(cpu.getCpuModel())
                 .setUsed(NumberUtil.decimalFormat("0.00", cpu.getUsed()) + "%")
@@ -54,11 +53,11 @@ public class ComputerInfoUtils
      * @author ren
      * @date 2025/06/07 17:18
      */
-    public static MemoryInfoBO getMemoryInfo()
+    public static MemoryInfoVO getMemoryInfo()
     {
         // 系统内存相关信息
         GlobalMemory globalMemory = OshiUtil.getMemory();
-        return new MemoryInfoBO()
+        return new MemoryInfoVO()
                 .setTotal(FileUtils.convertFileSize(globalMemory.getTotal()))
                 .setAvailable(FileUtils.convertFileSize(globalMemory.getAvailable()))
                 .setUsed(FileUtils.convertFileSize(globalMemory.getTotal() - globalMemory.getAvailable()))
@@ -76,11 +75,11 @@ public class ComputerInfoUtils
      * @author ren
      * @date 2025/06/07 17:32
      */
-    public static JvmInfoBO getJvmInfo()
+    public static JvmInfoVO getJvmInfo()
     {
         JvmInfo jvmInfo = SystemUtil.getJvmInfo();
         JvmSpecInfo jvmSpecInfo = SystemUtil.getJvmSpecInfo();
-        return new JvmInfoBO()
+        return new JvmInfoVO()
                 .setJvmName(jvmInfo.getName())
                 .setJvmVersion(jvmInfo.getVersion())
                 .setJvmVendor(jvmInfo.getVendor())
@@ -97,12 +96,12 @@ public class ComputerInfoUtils
      * @author ren
      * @date 2025/06/07 17:50
      */
-    public static JavaInfoBO getJavaInfo()
+    public static JavaInfoVO getJavaInfo()
     {
         JavaInfo javaInfo = SystemUtil.getJavaInfo();
         JavaRuntimeInfo javaRuntimeInfo = SystemUtil.getJavaRuntimeInfo();
         JavaSpecInfo javaSpecInfo = SystemUtil.getJavaSpecInfo();
-        return new JavaInfoBO()
+        return new JavaInfoVO()
                 .setJavaVersion(javaInfo.getVersion())
                 .setJavaVersionInt(javaInfo.getVersionInt())
                 .setJavaVendor(javaInfo.getVendor())
@@ -120,12 +119,12 @@ public class ComputerInfoUtils
      * @author ren
      * @date 2025/06/07 17:50
      */
-    public static ComputerSystemInfoBO getComputerSystem()
+    public static ComputerSystemInfoVO getComputerSystem()
     {
 
         ComputerSystem computerSystem = OshiUtil.getSystem();
         OperatingSystem os = OshiUtil.getOs();
-        return new ComputerSystemInfoBO()
+        return new ComputerSystemInfoVO()
                 .setManufacturer(computerSystem.getManufacturer())
                 .setModel(computerSystem.getModel())
                 .setSerialNumber(computerSystem.getSerialNumber())
@@ -146,7 +145,7 @@ public class ComputerInfoUtils
      * @author ren
      * @date 2025/06/07 18:40
      */
-    public static ProjectInfoBO getProjectInfo()
+    public static ProjectInfoVO getProjectInfo()
     {
         // 获取项目路径 (工作目录)
         String projectDir = SystemUtil.getUserInfo().getCurrentDir();
@@ -158,7 +157,7 @@ public class ComputerInfoUtils
         long runningTime = DateUtils.current() - startTime;
         // 获取两个时间之间的间隔，并将间隔转换为人类可读的形式
         String runningTimeStr = DateUtils.formatBetween(runningTime);
-        return new ProjectInfoBO()
+        return new ProjectInfoVO()
                 .setProjectDir(projectDir)
                 .setStartTimeStr(startTimeStr)
                 .setRunningTimeStr(runningTimeStr);
@@ -170,11 +169,11 @@ public class ComputerInfoUtils
      * @author ren
      * @date 2025/06/07 17:32
      */
-    public static List<DiskInfoBO> getDiskInfo() {
+    public static List<DiskInfoVO> getDiskInfo() {
         SystemInfo si = new SystemInfo();
         FileSystem fileSystem = si.getOperatingSystem().getFileSystem();
         List<OSFileStore> fsArray = fileSystem.getFileStores();
-        return fsArray.stream().map(DiskInfoBO :: new).toList();
+        return fsArray.stream().map(DiskInfoVO:: new).toList();
     }
 
     /**
@@ -183,11 +182,11 @@ public class ComputerInfoUtils
      * @author ren
      * @date 2025/06/07 17:54
      */
-    public static List<NetWorkInfoBO> getNetWorkInfo()
+    public static List<NetWorkInfoVO> getNetWorkInfo()
     {
         //可能返回多个网卡（例如Wifi接口，多个以太网接口）
         List<NetworkIF> networkIFList = OshiUtil.getNetworkIFs();
-        return networkIFList.stream().map(NetWorkInfoBO :: new).toList();
+        return networkIFList.stream().map(NetWorkInfoVO:: new).toList();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.ren.framework.security.filter;
 
-import com.ren.common.domain.model.bo.LoginUser;
+import com.ren.common.core.domain.bo.LoginUser;
 import com.ren.common.manager.redis.RedisOperateManager;
 import com.ren.framework.security.utils.JwtUtils;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -127,10 +127,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 matcher.match("/profile/**", uri) || // 所有profile路径
 
                 // 其他开放端点
-                matcher.match("/swagger-ui.html", uri) ||
+                matcher.match("/swagger-ui/**", uri) ||
+                matcher.match("/*/api-docs/**", uri) ||
                 matcher.match("/swagger-resources/**", uri) ||
                 matcher.match("/webjars/**", uri) ||
-                matcher.match("/*/api-docs", uri) ||
                 matcher.match("/druid/**", uri) ||
 
                 // 特殊匹配：OPTIONS 方法通配

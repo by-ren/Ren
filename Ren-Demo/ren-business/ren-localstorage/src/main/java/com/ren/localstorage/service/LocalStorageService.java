@@ -4,9 +4,9 @@ import java.io.IOException;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ren.common.domain.exception.file.FileNameLengthLimitExceededException;
-import com.ren.common.domain.exception.file.FileSizeLimitExceededException;
-import com.ren.common.domain.exception.file.InvalidExtensionException;
+import com.ren.common.core.exception.file.FileNameLengthLimitExceededException;
+import com.ren.common.core.exception.file.FileSizeLimitExceededException;
+import com.ren.common.core.exception.file.InvalidExtensionException;
 
 /**
  * ImageLogService 本地图片上传接口

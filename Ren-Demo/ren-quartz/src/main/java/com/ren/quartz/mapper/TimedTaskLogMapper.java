@@ -2,7 +2,7 @@
 package com.ren.quartz.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ren.quartz.domain.entity.TimedTaskLog;
+import com.ren.quartz.core.domain.entity.TimedTaskLog;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
