@@ -7,9 +7,9 @@ import org.quartz.SchedulerException;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ren.quartz.domain.entity.TimedTask;
-import com.ren.quartz.domain.entity.TimedTaskLog;
-import com.ren.quartz.domain.exception.QuartzException;
+import com.ren.quartz.core.domain.entity.TimedTask;
+import com.ren.quartz.core.domain.entity.TimedTaskLog;
+import com.ren.quartz.core.exception.QuartzException;
 
 public interface TimedTaskService extends IService<TimedTask> {
 

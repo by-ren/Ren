@@ -4,19 +4,21 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import com.ren.common.controller.BaseController;
-import com.ren.common.domain.constant.AppConstants;
-import com.ren.common.domain.entity.Dept;
-import com.ren.common.domain.entity.User;
-import com.ren.common.domain.enums.BusinessType;
-import com.ren.common.domain.interfaces.OperLogAnn;
-import com.ren.common.domain.model.bo.LoginUser;
-import com.ren.common.domain.model.dto.AjaxResultDTO;
+import com.ren.common.core.constant.AppConstants;
+import com.ren.common.core.domain.entity.Dept;
+import com.ren.common.core.domain.entity.User;
+import com.ren.common.core.enums.BusinessType;
+import com.ren.common.core.interfaces.OperLogAnn;
+import com.ren.common.core.domain.bo.LoginUser;
+import com.ren.common.core.response.AjaxResult;
 import com.ren.common.utils.StringUtils;
 import com.ren.common.utils.TreeUtils;
 import com.ren.system.entity.RoleDept;
 import com.ren.system.service.DeptService;
 import com.ren.system.service.RoleDeptService;
 import com.ren.system.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/dept")
+@Tag(name = "部门相关", description = "部门相关")
 public class DeptController extends BaseController {
 
     @Autowired
@@ -39,12 +42,13 @@ public class DeptController extends BaseController {
     /*
      * 部门树形列表（页面显示用）
      * @param paramMap
-     * @return com.ren.common.dto.AjaxResultDTO
+     * @return com.ren.common.dto.AjaxResult
      * @author ren
      * @date 2025/05/08 17:14
      */
     @GetMapping("/list/tree")
-    public AjaxResultDTO listDeptTree(@RequestParam Map<String,Object> paramMap)
+    @Operation(summary = "部门树形列表", description = "部门树形列表（页面显示用）")
+    public AjaxResult listDeptTree(@RequestParam Map<String,Object> paramMap)
     {
         List<Dept> deptList = deptService.listDeptByParam(paramMap);
         //将列表转为树形结构
@@ -54,12 +58,13 @@ public class DeptController extends BaseController {
 
     /*
      * 部门树形列表（其他模块下拉列表用）
-     * @return com.ren.common.core.dto.AjaxResultDTO
+     * @return com.ren.common.core.dto.AjaxResult
      * @author ren
      * @date 2025/05/10 18:06
      */
     @GetMapping("/list")
-    public AjaxResultDTO listDeptTree()
+    @Operation(summary = "部门树形列表", description = "部门树形列表（其他模块下拉列表用）")
+    public AjaxResult listDeptTree()
     {
         List<Dept> deptList = deptService.listDeptByParam(null);
         //将列表转为树形结构
@@ -70,12 +75,13 @@ public class DeptController extends BaseController {
     /*
      * 排除本部门Id的部门列表（部门本身修改时下拉列表使用）
      * @param deptId
-     * @return com.ren.common.dto.AjaxResultDTO
+     * @return com.ren.common.dto.AjaxResult
      * @author ren
      * @date 2025/05/08 17:14
      */
     @GetMapping("/list/parent/{deptId}")
-    public AjaxResultDTO listParentDept(@PathVariable(value = "deptId", required = false) Long deptId)
+    @Operation(summary = "排除本部门Id的部门列表", description = "排除本部门Id的部门列表（部门本身修改时下拉列表使用）")
+    public AjaxResult listParentDept(@PathVariable(value = "deptId", required = false) Long deptId)
     {
         List<Dept> deptList = deptService.listDeptByParam(null);
         deptList.removeIf(d -> d.getDeptId().intValue() == deptId || CollUtil.contains(
@@ -91,12 +97,13 @@ public class DeptController extends BaseController {
     /*
      * 角色部门权限列表
      * @param roleId
-     * @return com.ren.common.core.dto.AjaxResultDTO
+     * @return com.ren.common.core.dto.AjaxResult
      * @author ren
      * @date 2025/05/12 16:18
      */
     @GetMapping("/list/role")
-    public AjaxResultDTO listRoleDept(Integer roleId)
+    @Operation(summary = "角色部门权限列表", description = "角色部门权限列表")
+    public AjaxResult listRoleDept(Integer roleId)
     {
         List<Dept> deptList = deptService.listDeptByParam(null);
         //将列表转为树形结构
@@ -118,13 +125,14 @@ public class DeptController extends BaseController {
      * 添加部门
      * @param loginUser
      * @param addDept
-     * @return com.ren.common.dto.AjaxResultDTO
+     * @return com.ren.common.dto.AjaxResult
      * @author ren
      * @date 2025/05/09 17:01
      */
     @PostMapping("/add")
     @OperLogAnn(title = "部门模块", businessType = BusinessType.INSERT)
-    public AjaxResultDTO addDept(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Dept addDept) {
+    @Operation(summary = "添加部门", description = "添加部门")
+    public AjaxResult addDept(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Dept addDept) {
         deptService.addDept(addDept,loginUser.getUsername());
         return success();
     }
@@ -133,13 +141,14 @@ public class DeptController extends BaseController {
      * 编辑部门
      * @param loginUser
      * @param modifyDept
-     * @return com.ren.common.dto.AjaxResultDTO
+     * @return com.ren.common.dto.AjaxResult
      * @author ren
      * @date 2025/05/09 17:01
      */
     @PostMapping("/modify")
     @OperLogAnn(title = "部门模块", businessType = BusinessType.UPDATE)
-    public AjaxResultDTO modifyDept(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Dept modifyDept) {
+    @Operation(summary = "编辑部门", description = "编辑部门")
+    public AjaxResult modifyDept(@AuthenticationPrincipal LoginUser loginUser, @RequestBody(required = false) Dept modifyDept) {
         deptService.modifyDeptById(modifyDept,loginUser.getUsername());
         return success();
     }
@@ -148,13 +157,14 @@ public class DeptController extends BaseController {
      * 删除部门
      * @param loginUser
      * @param deptId
-     * @return com.ren.common.dto.AjaxResultDTO
+     * @return com.ren.common.dto.AjaxResult
      * @author ren
      * @date 2025/05/09 17:01
      */
     @DeleteMapping("/delete")
     @OperLogAnn(title = "部门模块", businessType = BusinessType.DELETE)
-    public AjaxResultDTO deptDelete(@AuthenticationPrincipal LoginUser loginUser, long deptId) {
+    @Operation(summary = "删除部门", description = "删除部门")
+    public AjaxResult deptDelete(@AuthenticationPrincipal LoginUser loginUser, long deptId) {
         //查询是否有子级部门
         Map<String,Object> paramMap = new HashMap<>();
         paramMap.put("parentId",deptId);

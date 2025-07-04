@@ -1,10 +1,10 @@
 package com.ren.framework.security.config;
 
-import com.ren.common.domain.constant.AppConstants;
-import com.ren.common.domain.entity.Menu;
-import com.ren.common.domain.entity.Role;
-import com.ren.common.domain.entity.User;
-import com.ren.common.domain.model.bo.LoginUser;
+import com.ren.common.core.constant.AppConstants;
+import com.ren.common.core.domain.entity.Menu;
+import com.ren.common.core.domain.entity.Role;
+import com.ren.common.core.domain.entity.User;
+import com.ren.common.core.domain.bo.LoginUser;
 import com.ren.common.utils.StringUtils;
 import com.ren.system.mapper.MenuMapper;
 import com.ren.system.mapper.RoleMapper;

@@ -1,8 +1,8 @@
 package com.ren.framework.handler;
 
-import com.ren.common.domain.model.dto.AjaxResultDTO;
-import com.ren.common.domain.constant.HttpStatus;
-import com.ren.common.domain.exception.BusinessException;
+import com.ren.common.core.response.AjaxResult;
+import com.ren.common.core.constant.HttpStatus;
+import com.ren.common.core.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
 	 * 处理参数校验异常（JSR 303规范）
 	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public AjaxResultDTO handleValidationException(MethodArgumentNotValidException ex) {
+	public AjaxResult handleValidationException(MethodArgumentNotValidException ex) {
 		BindingResult bindingResult = ex.getBindingResult();
 		List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
@@ -36,25 +36,25 @@ public class GlobalExceptionHandler {
 				.collect(Collectors.joining(", "));
 
 		log.error("参数校验失败: {}", errorMsg);
-		return AjaxResultDTO.error(HttpStatus.BAD_REQUEST, "参数错误: " + errorMsg);
+		return AjaxResult.error(HttpStatus.BAD_REQUEST, "参数错误: " + errorMsg);
 	}
 
 	/**
 	 * 处理自定义业务异常（需自行定义 BusinessException）
 	 */
 	@ExceptionHandler(BusinessException.class)
-	public AjaxResultDTO handleBusinessException(BusinessException ex) {
+	public AjaxResult handleBusinessException(BusinessException ex) {
 		log.error("业务异常[code={}]: {}", ex.getCode(), ex.getMessage());
-		return AjaxResultDTO.error(ex.getCode(), ex.getMessage());
+		return AjaxResult.error(ex.getCode(), ex.getMessage());
 	}
 
 	/**
 	 * 处理其他未捕获异常
 	 */
 	@ExceptionHandler(Exception.class)
-	public AjaxResultDTO handleGlobalException(Exception ex) {
+	public AjaxResult handleGlobalException(Exception ex) {
 		log.error("系统异常: ", ex); // 打印堆栈信息
-		return AjaxResultDTO.error(
+		return AjaxResult.error(
 				HttpStatus.ERROR,
 				"系统繁忙，请稍后再试"
 		);

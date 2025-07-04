@@ -7,10 +7,10 @@ import java.util.Objects;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ren.common.domain.constant.Constants;
-import com.ren.common.domain.constant.MimeTypeConstants;
-import com.ren.common.domain.exception.file.FileSizeLimitExceededException;
-import com.ren.common.domain.exception.file.InvalidExtensionException;
+import com.ren.common.core.constant.Constants;
+import com.ren.common.core.constant.MimeTypeConstants;
+import com.ren.common.core.exception.file.FileSizeLimitExceededException;
+import com.ren.common.core.exception.file.InvalidExtensionException;
 import com.ren.common.properties.LocalStorageProperties;
 import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.StringUtils;

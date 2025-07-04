@@ -74,10 +74,10 @@ import { reactive, ref, onMounted, watch } from "vue";
 import { useAuthStore } from "@/stores/authStore";
 import { useRoute } from "vue-router";
 import router from "@/router";
-import type { MenuVO } from "@/types/MenuVo";
-import { storeToRefs } from "pinia";
+import type { Menu } from "@/types/Menu";
 // 该组件是递归组件，所以无法自动导入，需要手动导入
 import SidebarItem from "@/components/SidebarItem/index.vue";
+import { storeToRefs } from "pinia";
 /*============================通用参数开始============================*/
 // auth相关pinia
 const authStore = useAuthStore();
@@ -93,7 +93,7 @@ const isCollapse = ref(false);
 const collapseFun = () => {
 	isCollapse.value = !isCollapse.value;
 };
-const menuItems = ref<MenuVO[]>([]);
+const menuItems = ref<Menu[]>([]);
 
 /*============================菜单栏相关结束============================*/
 

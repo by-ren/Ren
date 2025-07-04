@@ -1,0 +1,104 @@
+springdoc:
+  swagger-ui:
+    enabled: true # 开启swagger界面，依赖OpenApi，需要OpenApi同时开启
+    path: /swagger-ui/index.html # 自定义路径，默认为"/swagger-ui/index.html"
+    url: /v3/api-docs  # 指定OpenAPI文档的URL（注意这里一定要配置，并且一定要与api-docs.path保持一致，否则会去请求示例项目）
+    disable-swagger-default-url: true  # 禁用默认的Swagger URL（/swagger-ui.html）
+  api-docs:
+    enabled: true   # 是否启用OpenAPI文档端点（v3/api-docs）
+    path: /v3/api-docs  # 自定义路径，默认为 "/v3/api-docs"
+  show-actuator: false  # 是否显示Actuator端点，设置false，默认隐藏SpringBoot的actuator端点（如：/actuator/health, /actuator/info 等）
+#  packages-to-scan:
+#    - com.ren.admin.controller  # 指定要扫描的控制器包，不建议直接这样设置，因为他会扫描所有的内容，可能会导致性能问题，而且一旦配置了分组这里会失效，配置了也没意义，不如直接配置分组
+
+#项目中的API分组
+modules:
+  groups:
+    # 用户模块
+    - name: 用户模块
+      matchMode: PATH
+      paths:
+        - /user
+        - /user/**
+        - /auth/**
+        - /post/**
+      title: 用户管理接口
+      description: 用户、认证和帖子相关接口
+      version: 1.0.0
+      contactName: 技术支持
+      contactEmail: support@example.com
+      licenseName: Apache 2.0
+      licenseUrl: https://www.apache.org/licenses/LICENSE-2.0.html
+
+    # 部门模块
+    - name: 部门模块
+      matchMode: PATH
+      paths:
+        - /dept/**
+      title: 部门管理接口
+      description: 部门组织结构管理相关接口
+      version: 1.0.1
+      contactName: 技术支持
+      contactEmail: support@example.com
+
+    # 系统接口
+    - name: 系统接口
+      matchMode: PATH
+      paths:
+        - /config/**
+        - /dictData/**
+        - /dictType/**
+        - /menu/**
+        - /notice/**
+        - /role/**
+      title: 系统管理接口
+      description: 系统配置、字典、菜单、通知和角色管理接口
+      version: 1.0.2
+
+    # 日志模块
+    - name: 日志模块
+      matchMode: PATH
+      paths:
+        - /logininfor/**
+        - /operLog/**
+      title: 日志管理接口
+      description: 登录日志和操作日志管理接口
+      version: 1.0.3
+
+    # 定时任务模块
+    - name: 定时任务模块
+      matchMode: PATH
+      paths:
+        - /timedTask/**
+      title: 定时任务管理接口
+      description: 定时任务管理接口
+      version: 1.0.3
+
+    # 本地上传模块
+    - name: 本地上传模块
+      matchMode: PATH
+      paths:
+        - /localStorage/**
+      title: 本地上传接口
+      description: 本地上传接口
+      version: 1.0.3
+
+    # 云上传模块
+    - name: 云上传模块
+      matchMode: PATH
+      paths:
+        - /cloudStorage/**
+      title: 云上传接口
+      description: 云上传接口
+      version: 1.0.3
+
+    # 监控模块
+    - name: 监控模块
+      matchMode: PATH
+      paths:
+        - /monitor/**
+      title: 监控相关接口
+      description: 监控相关接口
+      version: 1.0.3
+  #基础路径
+  basePath: /prod-api

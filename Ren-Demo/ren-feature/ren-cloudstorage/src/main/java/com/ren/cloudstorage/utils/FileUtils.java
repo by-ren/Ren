@@ -5,7 +5,7 @@ import java.util.Objects;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ren.cloudstorage.domain.constant.MimeTypeConstants;
+import com.ren.cloudstorage.core.constant.MimeTypeConstants;
 import com.ren.cloudstorage.utils.uuid.IdUtils;
 import com.ren.cloudstorage.utils.uuid.Seq;
 

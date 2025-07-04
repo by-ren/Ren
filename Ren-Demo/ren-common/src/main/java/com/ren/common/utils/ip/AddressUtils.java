@@ -1,7 +1,7 @@
 package com.ren.common.utils.ip;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.ren.common.domain.constant.Constants;
+import com.ren.common.core.constant.Constants;
 import com.ren.common.utils.StringUtils;
 import com.ren.common.utils.http.HttpUtils;
 import com.ren.common.utils.json.FastJSON2Utils;

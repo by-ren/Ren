@@ -1,7 +1,7 @@
 package com.ren.system.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ren.common.domain.entity.Dept;
+import com.ren.common.core.domain.entity.Dept;
 
 import java.util.List;
 import java.util.Map;

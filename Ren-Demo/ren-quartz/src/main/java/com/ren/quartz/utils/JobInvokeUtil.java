@@ -2,7 +2,7 @@ package com.ren.quartz.utils;
 import cn.hutool.core.util.ObjUtil;
 import com.ren.common.manager.SpringManager;
 import com.ren.common.utils.StringUtils;
-import com.ren.quartz.domain.entity.TimedTask;
+import com.ren.quartz.core.domain.entity.TimedTask;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

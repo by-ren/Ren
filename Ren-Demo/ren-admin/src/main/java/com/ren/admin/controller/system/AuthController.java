@@ -1,14 +1,12 @@
 package com.ren.admin.controller.system;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
-import com.ren.common.domain.constant.AppConstants;
+import com.ren.common.core.constant.AppConstants;
 import com.ren.common.controller.BaseController;
-import com.ren.common.domain.model.bo.LoginUser;
-import com.ren.common.domain.model.dto.AjaxResultDTO;
+import com.ren.common.core.domain.bo.LoginUser;
+import com.ren.common.core.response.AjaxResult;
 import com.ren.common.manager.redis.RedisOperateManager;
 import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.ServletUtils;
@@ -20,6 +18,8 @@ import com.ren.framework.factory.AsyncFactory;
 import com.ren.common.properties.TokenProperties;
 import com.ren.framework.security.config.AuthenticationContextHolder;
 import com.ren.framework.security.utils.JwtUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +41,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/auth")
 @Slf4j
+@Tag(name = "登录登出相关", description = "登录登出相关")
 public class AuthController extends BaseController {
 
     @Autowired
@@ -60,7 +61,8 @@ public class AuthController extends BaseController {
      * @date 2025/04/24 10:28
      */
     @PostMapping("/login")
-    public AjaxResultDTO login(@RequestBody Map<String,Object> paramMap, HttpServletRequest httpRequest) {
+    @Operation(summary = "用户登录", description = "用户登录")
+    public AjaxResult login(@RequestBody Map<String,Object> paramMap, HttpServletRequest httpRequest) {
         try {
 
             //验证用户名密码
@@ -134,12 +136,13 @@ public class AuthController extends BaseController {
      * 自动登录功能（没有什么其他操作，前台调用该接口实现自动登录，修改是否登录字段使用）
      * @param paramMap
      * @param httpRequest
-     * @return com.ren.common.domain.dto.AjaxResultDTO
+     * @return com.ren.common.domain.dto.AjaxResult
      * @author ren
      * @date 2025/05/16 17:21
      */
     @PostMapping("/auto/login")
-    public AjaxResultDTO autoLogin() {
+    @Operation(summary = "用户自动登录", description = "用户自动登录")
+    public AjaxResult autoLogin() {
         return success();
     }
 
@@ -151,7 +154,8 @@ public class AuthController extends BaseController {
      * @date 2025/04/24 10:28
      */
     @PostMapping("/logout")
-    public AjaxResultDTO logout(@AuthenticationPrincipal LoginUser loginUser, HttpServletRequest request) {
+    @Operation(summary = "用户登出", description = "用户登出")
+    public AjaxResult logout(@AuthenticationPrincipal LoginUser loginUser, HttpServletRequest request) {
         // 手动清理Security上下文
         SecurityContextHolder.clearContext();
 
@@ -179,7 +183,8 @@ public class AuthController extends BaseController {
      * @date 2025/04/24 10:28
      */
     @PostMapping("/refreshToken")
-    public AjaxResultDTO refreshToken(HttpServletRequest request) {
+    @Operation(summary = "刷新Token", description = "刷新Token")
+    public AjaxResult refreshToken(HttpServletRequest request) {
         //从请求头中获取RefreshToken，只有RefreshToken有效才允许刷新Token，并验证refreshToken是否有效
         String refreshToken = jwtUtils.getRefreshToken(request);
         if (!jwtUtils.validateRefreshToken(refreshToken,request)) {

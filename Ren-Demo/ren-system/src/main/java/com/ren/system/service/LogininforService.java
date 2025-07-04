@@ -2,7 +2,7 @@ package com.ren.system.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.ren.common.domain.entity.Logininfor;
+import com.ren.common.core.domain.entity.Logininfor;
 
 import java.util.Map;
 

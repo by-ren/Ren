@@ -4,8 +4,8 @@ import java.net.URL;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ren.cloudstorage.domain.entity.CloudImageLog;
-import com.ren.cloudstorage.domain.exception.OSSException;
+import com.ren.cloudstorage.core.domain.entity.CloudImageLog;
+import com.ren.cloudstorage.core.exception.OSSException;
 
 public interface CloudStorageService {
 

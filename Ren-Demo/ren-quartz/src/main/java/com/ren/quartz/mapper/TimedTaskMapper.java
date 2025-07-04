@@ -4,7 +4,7 @@ package com.ren.quartz.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ren.quartz.domain.entity.TimedTask;
+import com.ren.quartz.core.domain.entity.TimedTask;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
