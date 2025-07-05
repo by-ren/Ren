@@ -1,8 +1,8 @@
 package com.ren.common.manager;
 
-import com.ren.common.domain.constant.HttpStatus;
-import com.ren.common.domain.model.bo.LoginUser;
-import com.ren.common.domain.exception.ServiceException;
+import com.ren.common.core.constant.HttpStatus;
+import com.ren.common.core.domain.bo.LoginUser;
+import com.ren.common.core.exception.ServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,11 +1,13 @@
 package com.ren.admin.controller.localstorage;
 
-import com.ren.common.domain.model.dto.AjaxResultDTO;
+import com.ren.common.core.response.AjaxResult;
 import com.ren.common.properties.LocalStorageProperties;
 import com.ren.common.utils.ServletUtils;
 import com.ren.common.utils.StringUtils;
 import com.ren.common.utils.file.FileUtils;
 import com.ren.localstorage.service.LocalStorageService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/localStorage")
 @Slf4j
+@Tag(name = "本地上传模块", description = "文件本地上传模块")
 public class LocalStorageController {
 
     private static final String FILE_DELIMETER = ",";
@@ -33,12 +36,13 @@ public class LocalStorageController {
     /**
      * 上传文件至本地（单个）
      * @param file
-     * @return com.ren.localstorage.domain.dto.AjaxResultDTO
+     * @return com.ren.localstorage.domain.dto.AjaxResult
      * @author ren
      * @date 2025/06/21 15:26
      */
     @PostMapping("/upload")
-    public AjaxResultDTO uploadFile(MultipartFile file, String belong) throws Exception
+    @Operation(summary = "上传文件至本地", description = "上传文件至本地")
+    public AjaxResult uploadFile(MultipartFile file, String belong) throws Exception
     {
         try
         {
@@ -47,7 +51,7 @@ public class LocalStorageController {
             // 上传并返回新文件名称
             String lastFilePath = localStorageService.uploadV2(filePath, file);
             String url = ServletUtils.getUrl() + lastFilePath;
-            AjaxResultDTO ajax = AjaxResultDTO.success();
+            AjaxResult ajax = AjaxResult.success();
             ajax.put("url", url);
             ajax.put("fileName", lastFilePath);
             ajax.put("newFileName", FileUtils.getName(lastFilePath));
@@ -56,19 +60,20 @@ public class LocalStorageController {
         }
         catch (Exception e)
         {
-            return AjaxResultDTO.error(e.getMessage());
+            return AjaxResult.error(e.getMessage());
         }
     }
 
     /**
      * 上传文件至本地（多个）
      * @param files
-     * @return com.ren.localstorage.domain.dto.AjaxResultDTO
+     * @return com.ren.localstorage.domain.dto.AjaxResult
      * @author ren
      * @date 2025/06/21 15:25
      */
     @PostMapping("/uploads")
-    public AjaxResultDTO uploadFiles(List<MultipartFile> files, String belong) throws Exception
+    @Operation(summary = "上传文件至本地（多个）", description = "上传文件至本地（多个）")
+    public AjaxResult uploadFiles(List<MultipartFile> files, String belong) throws Exception
     {
         try
         {
@@ -88,7 +93,7 @@ public class LocalStorageController {
                 newFileNames.add(FileUtils.getName(fileName));
                 originalFilenames.add(file.getOriginalFilename());
             }
-            AjaxResultDTO ajax = AjaxResultDTO.success();
+            AjaxResult ajax = AjaxResult.success();
             ajax.put("urls", StringUtils.join(FILE_DELIMETER, urls));
             ajax.put("fileNames", StringUtils.join(FILE_DELIMETER, fileNames));
             ajax.put("newFileNames", StringUtils.join(FILE_DELIMETER, newFileNames));
@@ -97,7 +102,7 @@ public class LocalStorageController {
         }
         catch (Exception e)
         {
-            return AjaxResultDTO.error(e.getMessage());
+            return AjaxResult.error(e.getMessage());
         }
     }
 
@@ -110,6 +115,7 @@ public class LocalStorageController {
      * @date 2025/06/21 15:24
      */
     @GetMapping("/download/resource")
+    @Operation(summary = "下载指定路径下的文件", description = "下载指定路径下（除基础路径外的路径，路径最开头是文件请求前缀/profile，文件结尾是文件名）的文件）")
     public void resourceDownload(String resource, HttpServletRequest request, HttpServletResponse response)
             throws Exception
     {

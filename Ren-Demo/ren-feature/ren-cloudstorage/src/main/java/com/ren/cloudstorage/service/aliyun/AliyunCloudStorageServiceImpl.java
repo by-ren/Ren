@@ -16,9 +16,9 @@ import com.aliyun.oss.OSS;
 import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectRequest;
-import com.ren.cloudstorage.domain.entity.CloudImageLog;
-import com.ren.cloudstorage.domain.enums.OSSReturnCodeEnum;
-import com.ren.cloudstorage.domain.exception.OSSException;
+import com.ren.cloudstorage.core.domain.entity.CloudImageLog;
+import com.ren.cloudstorage.core.enums.OSSReturnCodeEnum;
+import com.ren.cloudstorage.core.exception.OSSException;
 import com.ren.cloudstorage.utils.DateUtils;
 import com.ren.cloudstorage.utils.FileUtils;
 

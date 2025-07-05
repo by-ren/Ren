@@ -1,7 +1,7 @@
 package com.ren.cloudstorage.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ren.cloudstorage.domain.entity.CloudImageLog;
+import com.ren.cloudstorage.core.domain.entity.CloudImageLog;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

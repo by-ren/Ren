@@ -1,7 +1,7 @@
 package com.ren.framework.security.utils;
 
 import com.alibaba.fastjson2.JSON;
-import com.ren.common.domain.model.bo.LoginUser;
+import com.ren.common.core.domain.bo.LoginUser;
 import com.ren.common.properties.TokenProperties;
 import com.ren.common.utils.DateUtils;
 import com.ren.common.utils.json.FastJSON2Utils;

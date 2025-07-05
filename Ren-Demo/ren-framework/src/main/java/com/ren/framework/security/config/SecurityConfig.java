@@ -1,6 +1,7 @@
 package com.ren.framework.security.config;
 
-import com.ren.framework.security.filter.JwtAuthenticationFilter;
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
+import com.ren.framework.security.filter.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -58,6 +59,18 @@ public class SecurityConfig {
         // 配置具体的 CORS 规则
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
+        // http.headers().cacheControl().disable().and(); // 禁用缓存控制头(主要用于禁止浏览器缓存)，该方式在SpringSecurity6.1版本已经被移除
+        // http.headers(headers -> headers.cacheControl(cache -> cache.disable()))  //新版禁用缓存控制头
+        // http.headers().frameOptions().disable(); // 禁用X-Frame-Options(主要实现前端IFream可以访问，但是这里直接允许所有元访问，不太安全不太优雅，所以最好使用下面的方式允许指定源)，该方式在SpringSecurity6.1版本已经被移除
+        // .headers(headers -> headers.frameOptions(frame -> frame.disable()))  // 新版禁用所有源X-Frame-Options
+
+        // 针对指定源禁用 X-Frame-Options
+        http.headers(headers -> headers
+            // 禁用默认的 X-Frame-Options (避免冲突)
+            .frameOptions(frame -> frame.disable())
+            // 指定允许的嵌入源（前端端口）
+            .contentSecurityPolicy(csp -> csp.policyDirectives("frame-ancestors 'self' http://localhost:5173;")));
+
         // 配置会话管理为无状态，告诉 Spring Security 不要用 Session 存储用户状态，所有认证信息通过 Token 传递
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -72,7 +85,8 @@ public class SecurityConfig {
                     String path = request.getServletPath();
                     return (request.getMethod().equals("GET") && ( "/".equals(path) || path.endsWith(".html") || path.endsWith(".css") || path.endsWith(".js") || path.startsWith("/profile/")));
                 }).permitAll()
-                .requestMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs", "/druid/**").permitAll()
+            .requestMatchers("/swagger-ui/**", "/*/api-docs/**", "/swagger-resources/**", "/webjars/**", "/druid/**")
+            .permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
 

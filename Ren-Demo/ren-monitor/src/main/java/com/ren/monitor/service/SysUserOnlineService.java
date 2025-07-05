@@ -1,7 +1,7 @@
 package com.ren.monitor.service;
 
-import com.ren.common.domain.model.bo.LoginUser;
-import com.ren.monitor.domain.vo.SysUserOnlineVO;
+import com.ren.common.core.domain.bo.LoginUser;
+import com.ren.monitor.core.domain.vo.SysUserOnlineVO;
 
 /**
  * 在线用户 服务层

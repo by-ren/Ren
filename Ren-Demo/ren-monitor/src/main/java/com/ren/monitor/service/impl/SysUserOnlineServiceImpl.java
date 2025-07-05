@@ -1,11 +1,10 @@
 package com.ren.monitor.service.impl;
 
 import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.ren.common.domain.model.bo.LoginUser;
+import com.ren.common.core.domain.bo.LoginUser;
 import com.ren.common.utils.DateUtils;
-import com.ren.monitor.domain.vo.SysUserOnlineVO;
+import com.ren.monitor.core.domain.vo.SysUserOnlineVO;
 import com.ren.monitor.service.SysUserOnlineService;
 import org.springframework.stereotype.Service;
 
